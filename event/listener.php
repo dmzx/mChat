@@ -26,13 +26,14 @@ class listener implements EventSubscriberInterface
 	
 	protected $php_ext;
 	
+	/** @var \phpbb\controller\helper */
+	protected $controller_helper;
 	
-
-
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $php_ext, $auth)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $php_ext, $auth)
 	{
 		$this->config = $config;
 		$this->template = $template;
+		$this->controller_helper = $controller_helper;
 		$this->user = $user;
 		$this->db = $db;
 		$this->root_path = $root_path;
@@ -44,10 +45,11 @@ class listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.user_setup'	=> 'load_language_on_setup',
+			'core.page_header'	=> 'add_page_header_link',
 		);
 	}
 
-		public function load_language_on_setup($event)
+	public function load_language_on_setup($event)
 	{
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = array(
@@ -55,5 +57,19 @@ class listener implements EventSubscriberInterface
 			'lang_set' => 'common',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
+	}
+
+	/**
+	* Create a URL to the mchat controller file for the header linklist
+	*
+	* @param object $event The event object
+	* @return null
+	* @access public
+	*/
+	public function add_page_header_link($event)
+	{
+		$this->template->assign_vars(array(
+			'U_MCHAT' => $this->controller_helper->route('dmzx_mchat_controller'),
+		));
 	}
 }
