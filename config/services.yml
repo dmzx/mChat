@@ -28,6 +28,7 @@ services:
         arguments:
             - @auth
             - @config
+            - @controller.helper
             - @template
             - @user
             - @dbal.conn
