@@ -1,0 +1,32 @@
+{
+    "name": "dmzx/mchat",
+    "type": "phpbb-extension",
+    "description": "mChat Extension for phpbb 3.1.x",
+    "homepage": "http://www.dmzx-web.net",
+    "version": "0.0.1",
+    "time": "2015-03-10",
+	"keywords": ["phpbb", "extension", "mchat"],
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "dmzx",
+            "homepage": "http://www.dmzx-web.net",
+			"email": "info@dmzx-web.net",
+            "role": "Extension Developer"
+        },
+		{
+			"name": "Rich McGirr",
+			"homepage": "http://rmcgirr83.org",
+			"role": "Author"
+		}
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "extra": {
+        "display-name": "mChat Extension",
+        "soft-require": {
+           "phpbb/phpbb": "3.1.*"
+        }
+    }
+}

@@ -1,0 +1,3 @@
+dmzx_mchat_controller:
+    path: /chat
+    defaults: { _controller: dmzx.mchat.controller:handle }

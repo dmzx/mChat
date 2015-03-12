@@ -1,0 +1,38 @@
+services:
+    dmzx.mchat.controller:
+        class: dmzx\mchat\controller\mchat
+        arguments:
+            - @dmzx.mchat.functions_mchat
+            - @config
+            - @controller.helper
+            - @template
+            - @user
+            - @auth
+            - @dbal.conn
+            - @cache
+            - @request
+            - %core.root_path%
+            - %core.php_ext%
+            - %core.table_prefix%
+    dmzx.mchat.functions_mchat:
+        class: dmzx\mchat\core\functions_mchat
+        arguments:
+            - @template
+            - @user
+            - @auth
+            - @dbal.conn
+            - @cache
+            - %core.table_prefix%
+    dmzx.mchat.listener:
+        class: dmzx\mchat\event\listener
+        arguments:
+            - @auth
+            - @config
+            - @template
+            - @user
+            - @dbal.conn
+            - @cache
+            - %core.root_path%
+            - %core.php_ext%
+        tags:
+            - { name: event.listener }
