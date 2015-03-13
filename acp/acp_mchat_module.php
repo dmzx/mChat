@@ -89,29 +89,29 @@ class acp_mchat_module
 		$submit = (isset($_POST['submit'])) ? true : false;
 		
 		$mchat_row = array(
-			'location'			=> request_var('mchat_location', 0),
-			'refresh' 			=> request_var('mchat_refresh', 0),
-			'message_limit'		=> request_var('mchat_message_limit', 0),
-			'message_num'		=> request_var('mchat_message_num', 0),
-			'archive_limit'		=> request_var('mchat_archive_limit', 0),
-			'flood_time'		=> request_var('mchat_flood_time', 0),
-			'max_message_lngth'	=> request_var('mchat_max_message_lngth', 0),
-			'custom_page'		=> request_var('mchat_custom_page', 0),
-			'date'				=> request_var('mchat_date', '', true),
-			'whois'				=> request_var('mchat_whois', 0),
-			'whois_refresh'		=> request_var('mchat_whois_refresh', 0),
-			'bbcode_disallowed'	=> utf8_normalize_nfc(request_var('mchat_bbcode_disallowed', '', true)),
-			'prune_enable'		=> request_var('mchat_prune_enable', 0),
-			'prune_num'			=> request_var('mchat_prune_num', 0),
-			'index_height'		=> request_var('mchat_index_height', 0),
-			'custom_height'		=> request_var('mchat_custom_height', 0),
-			'static_message'	=> utf8_normalize_nfc(request_var('mchat_static_message', '', true)),
-			'override_min_post_chars'	=> request_var('mchat_override_min_post_chars', 0),
-			'override_smilie_limit'	=> request_var('mchat_override_smilie_limit', 0),
-			'timeout'			=> request_var('mchat_timeout', 0),
-			'pause_on_input'	=> request_var('mchat_pause_on_input', 0),
-			'rules'				=> utf8_normalize_nfc(request_var('mchat_rules', '', true)),
-			'avatars'			=> request_var('mchat_avatars', 0),
+			'location'			=> $request->variable('mchat_location', 0),
+			'refresh' 			=> $request->variable('mchat_refresh', 0),
+			'message_limit'		=> $request->variable('mchat_message_limit', 0),
+			'message_num'		=> $request->variable('mchat_message_num', 0),
+			'archive_limit'		=> $request->variable('mchat_archive_limit', 0),
+			'flood_time'		=> $request->variable('mchat_flood_time', 0),
+			'max_message_lngth'	=> $request->variable('mchat_max_message_lngth', 0),
+			'custom_page'		=> $request->variable('mchat_custom_page', 0),
+			'date'				=> $request->variable('mchat_date', '', true),
+			'whois'				=> $request->variable('mchat_whois', 0),
+			'whois_refresh'		=> $request->variable('mchat_whois_refresh', 0),
+			'bbcode_disallowed'	=> utf8_normalize_nfc($request->variable('mchat_bbcode_disallowed', '', true)),
+			'prune_enable'		=> $request->variable('mchat_prune_enable', 0),
+			'prune_num'			=> $request->variable('mchat_prune_num', 0),
+			'index_height'		=> $request->variable('mchat_index_height', 0),
+			'custom_height'		=> $request->variable('mchat_custom_height', 0),
+			'static_message'	=> utf8_normalize_nfc($request->variable('mchat_static_message', '', true)),
+			'override_min_post_chars'	=> $request->variable('mchat_override_min_post_chars', 0),
+			'override_smilie_limit'	=> $request->variable('mchat_override_smilie_limit', 0),
+			'timeout'			=> $request->variable('mchat_timeout', 0),
+			'pause_on_input'	=> $request->variable('mchat_pause_on_input', 0),
+			'rules'				=> utf8_normalize_nfc($request->variable('mchat_rules', '', true)),
+			'avatars'			=> $request->variable('mchat_avatars', 0),
 		);		
 		
 		if ($submit)
@@ -159,13 +159,13 @@ class acp_mchat_module
 				}
 				
 				//update setting in config table for mod enabled or not
-				set_config('mchat_enable', request_var('mchat_enable', 0));
+				$config->set('mchat_enable', $request->variable('mchat_enable', 0));
 				// update setting in config table for allowing on index or not
-				set_config('mchat_on_index', request_var('mchat_on_index', 0));
+				$config->set('mchat_on_index', $request->variable('mchat_on_index', 0));
 				// update setting in config table to allow new posts to display or not
-				set_config('mchat_new_posts', request_var('mchat_new_posts', 0));
+				$config->set('mchat_new_posts', $request->variable('mchat_new_posts', 0));
 				// update setting in config table for stats on index
-				set_config('mchat_stats_index', request_var('mchat_stats_index', 0));
+				$config->set('mchat_stats_index', $request->variable('mchat_stats_index', 0));
 				// and an entry into the log table
 				add_log('admin', 'LOG_MCHAT_CONFIG_UPDATE');
 				
@@ -195,6 +195,7 @@ class acp_mchat_module
 		$mchat_new_posts = isset($config['mchat_new_posts']) ? $config['mchat_new_posts'] : 0;
 		$mchat_stats_index = isset($config['mchat_stats_index']) ? $config['mchat_stats_index'] : 0;
 		
+
 		$dateformat_options = '';
 		foreach ($user->lang['dateformats'] as $format => $null)
 		{
