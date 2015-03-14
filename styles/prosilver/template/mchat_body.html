@@ -175,7 +175,7 @@
 <h3>{L_WHO_IS_CHATTING}</h3>
 	<div class="mChatStats" id="mChatStats"><!-- IF MCHAT_USERS_LIST --><a href="#" onclick="mChat.toggle('UserList'); return false;">{MCHAT_USERS_COUNT}</a><!-- ELSE -->{MCHAT_USERS_COUNT}<!-- ENDIF -->&nbsp;{L_MCHAT_ONLINE_EXPLAIN}<br /><span id="mChatUserList">{MCHAT_USERS_LIST}</span></div>
 	<div class="mChatRefresh"><span id="mChatRefresh">{L_MCHAT_WHOIS_REFRESH_EXPLAIN}</span><span id="mChatRefreshN" style="display: none;">{L_MCHAT_REFRESHING}</span>
-<!-- IF LEGEND --><br /><em>{L_LEGEND}: {LEGEND}</em><!-- ENDIF --></div>
+<!-- IF LEGEND --><br /><em>{L_LEGEND}{L_COLON} {LEGEND}</em><!-- ENDIF --></div>
 <!-- ENDIF -->
 <!-- IF MCHAT_ARCHIVE_MODE or MCHAT_CUSTOM_PAGE -->
 <!-- INCLUDE overall_footer.html -->

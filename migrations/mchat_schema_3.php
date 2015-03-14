@@ -62,7 +62,7 @@ class mchat_schema_3 extends \phpbb\db\migration\migration
 				),
 				array(			
 					'config_name' 	=> 'whois',
-					'config_value'	=> '0',
+					'config_value'	=> '1',
 				),	
 				array(			
 					'config_name' 	=> 'bbcode_disallowed',

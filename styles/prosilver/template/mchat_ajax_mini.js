@@ -426,8 +426,9 @@ var mChat={
                    $jQ('#mChatRefresh').hide()
                 }
               },
-             success:function(stats){
-                $jQ('#mChatStats').replaceWith(stats);
+             success: function (data) {
+             	var json = $.parseJSON(data);
+             	$('#mChatStats').replaceWith(json.message);
                 if(mChatCustomPage){
                    setTimeout(function(){
                       $jQ('#mChatRefreshN').hide();
