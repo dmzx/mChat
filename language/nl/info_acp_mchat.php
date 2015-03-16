@@ -31,7 +31,6 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-
 $lang = array_merge($lang, array(
 
 	// UMIL stuff
@@ -56,7 +55,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Inschakelen mChat Extensie',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'In of Uitschakelen van deze extensie.',
 	'MCHAT_AVATARS'					=> 'Toon avatars',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'Als je ja hebt aangevinkt, verkleinde gebruikers avatars zullen worden getoond',		
+	'MCHAT_AVATARS_EXPLAIN'			=> 'Als je ja hebt aangevinkt, verkleinde gebruikers avatars zullen worden getoond',
 	'MCHAT_ON_INDEX'				=> 'mChat Op de Index pagina',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Toestaan om de mChat te tonen op de Index pagina.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Index pagina hoogte',
@@ -70,7 +69,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Inschakelen opschonen van berichten',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Vink Ja aan als je het opschonen van berichten wilt inschakelen.<br /><em>Werkt alleen als een gebruiker de gemaakte of archief pagina bekijkt</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Het aantal berichten welke bewaard moeten worden in de mChat',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Geef hier het aantal in, van de berichten welke je bewaard wilt houden in de mChat.',	
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Geef hier het aantal in, van de berichten welke je bewaard wilt houden in de mChat.',
 	'MCHAT_MESSAGE_LIMIT'			=> 'Berichten limiet',
 	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Maximaal aantal berichten, welke getoond worden in de mChat.<br /><em>Aanbevolen is tussen de 10 en 30 berichten</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Index pagina berichten limiet',
@@ -111,7 +110,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Berichten instellingen',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pauze op eventuele inactiviteit van mChat',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Stel je ja in, dan wordt mChat niet automatisch vernieuwd, todat een gebruiker een bericht plaatst in mChat',
-	
+
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'De mChat extensie moet worden bijgewerkt. Neem contact op met de forum beheerder om de mChat bij te laten werken.',
 	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geinstalleerd.  Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
@@ -131,16 +130,16 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'De waarde van de maximale lengte van het aantal woorden is te klein.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'De waarde van de maximale lengte van het aantal woorden is te groot.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'De verversing van de whois waarde is te klein.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'De verversing van de whois waarde is te groot.',	
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'De verversing van de whois waarde is te groot.',
 	'TOO_SMALL_INDEX_HEIGHT'	=> 'De waarde van de index hoogte is te klein.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'De waarde van de index hoogte is te groot.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'De waarde van de gemaakte hoogte is te klein.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'De waarde van de gemaakte hoogte is te groot.',
 	'TOO_SHORT_STATIC_MESSAGE'	=> 'De waarde van de statische berichten is te kort.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'De waarde van de statische berichten is te lang.',	
+	'TOO_LONG_STATIC_MESSAGE'	=> 'De waarde van de statische berichten is te lang.',
 	'TOO_SMALL_TIMEOUT'	=> 'De waarde van de timeout voor gebruikers is te klein.',
 	'TOO_LARGE_TIMEOUT'	=> 'De waarde van de timeout voor gebruikers is te groot.',
-	
+
 		// User perms
 	'ACL_U_MCHAT_USE'			=> 'Je kunt mChat gebruiken',
 	'ACL_U_MCHAT_VIEW'			=> 'Je kunt mChat bekijken',
@@ -155,5 +154,5 @@ $lang = array_merge($lang, array(
 
 	// Admin perms
 	'ACL_A_MCHAT'				=> array('lang' => 'Can manage mChat settings', 'cat' => 'permissions'), // Using a phpBB category here
-	
+
 ));

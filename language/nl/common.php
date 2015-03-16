@@ -7,7 +7,6 @@
 *
 */
 
-
 /**
 * DO NOT CHANGE!
 */
@@ -42,8 +41,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_TITLE'				=> 'Mini-Chat',
 	'MCHAT_ADD'					=> 'Versturen',
 	'MCHAT_ANNOUNCEMENT'		=> 'Aankondiging',
-	'MCHAT_ARCHIVE'				=> 'Archief',	
-	'MCHAT_ARCHIVE_PAGE'		=> 'Mini-Chat Archief',	
+	'MCHAT_ARCHIVE'				=> 'Archief',
+	'MCHAT_ARCHIVE_PAGE'		=> 'Mini-Chat Archief',
 	'MCHAT_BBCODES'				=> 'BBCodes',
 	'MCHAT_CLEAN'				=> 'Opschonen',
 	'MCHAT_CLEANED'				=> 'Alle berichten zijn succesvol verwijderd',
@@ -55,23 +54,23 @@ $lang = array_merge($lang, array(
 	'MCHAT_DELITE'				=> 'Verwijder',
 	'MCHAT_EDIT'				=> 'Bewerk',
 	'MCHAT_EDITINFO'			=> 'Bewerk het bericht en klik op OKE',
-	'MCHAT_ENABLE'				=> 'Sorry, de Mini-Chat is momenteel niet beschikbaar',	
-	'MCHAT_ERROR'				=> 'Fout',	
-	'MCHAT_FLOOD'				=> 'Je kunt niet zo snel een bericht plaatsen, na jouw laatste bericht !!',	
+	'MCHAT_ENABLE'				=> 'Sorry, de Mini-Chat is momenteel niet beschikbaar',
+	'MCHAT_ERROR'				=> 'Fout',
+	'MCHAT_FLOOD'				=> 'Je kunt niet zo snel een bericht plaatsen, na jouw laatste bericht !!',
 	'MCHAT_FOE'					=> 'Dit bericht was gemaakt door <strong>%1$s</strong> die momenteel op jouw negeerlijst staat.',
 	'MCHAT_HELP'				=> 'mChat Regels',
-	'MCHAT_HIDE_LIST'			=> 'Lijst verbergen',	
+	'MCHAT_HIDE_LIST'			=> 'Lijst verbergen',
 	'MCHAT_HOUR'				=> 'uur ',
 	'MCHAT_HOURS'				=> 'uren',
 	'MCHAT_IP'					=> 'IP whois voor',
-	
+
 	'MCHAT_MINUTE'				=> 'minuut ',
 	'MCHAT_MINUTES'				=> 'minuten ',
-	'MCHAT_MESS_LONG'			=> 'Jou bericht is te lang.Beperk dit a.u.b. tot %s karakters',	
-	'MCHAT_NO_CUSTOM_PAGE'		=> 'De gebruikte mChat pagina is niet actief op dit moment!',	
+	'MCHAT_MESS_LONG'			=> 'Jou bericht is te lang.Beperk dit a.u.b. tot %s karakters',
+	'MCHAT_NO_CUSTOM_PAGE'		=> 'De gebruikte mChat pagina is niet actief op dit moment!',
 	'MCHAT_NOACCESS'			=> 'Je hebt geen permissie om een bericht in mChat te plaatsen',
-	'MCHAT_NOACCESS_ARCHIVE'	=> 'Je hebt geen permissie om het archief te bekijken',	
-	'MCHAT_NOJAVASCRIPT'		=> 'Je browser ondersteunt geen JavaScript of JavaScript is uitgeschakeld',		
+	'MCHAT_NOACCESS_ARCHIVE'	=> 'Je hebt geen permissie om het archief te bekijken',
+	'MCHAT_NOJAVASCRIPT'		=> 'Je browser ondersteunt geen JavaScript of JavaScript is uitgeschakeld',
 	'MCHAT_NOMESSAGE'			=> 'Geen berichten',
 	'MCHAT_NOMESSAGEINPUT'		=> 'Je hebt geen bericht ingevoerd',
 	'MCHAT_NOSMILE'				=> 'Smilies zijn niet gevonden',
@@ -79,14 +78,14 @@ $lang = array_merge($lang, array(
 	'MCHAT_NOT_INSTALLED'		=> 'mChat database invoeringen ontbreken.<br />voer a.u.b. de %sinstaller%s om de database veranderingen te maken voor deze modificatie.',
 	'MCHAT_OK'					=> 'OK',
 	'MCHAT_PAUSE'				=> 'Pauze',
-	'MCHAT_LOAD'				=> 'Laden',      
+	'MCHAT_LOAD'				=> 'Laden',
 	'MCHAT_PERMISSIONS'			=> 'Verander gebruikers permissie',
 	'MCHAT_REFRESHING'			=> 'Verversen...',
 	'MCHAT_REFRESH_NO'			=> 'Verversen is uit',
 	'MCHAT_REFRESH_YES'			=> 'Ververs iedere <strong>%d</strong> seconden',
 	'MCHAT_RESPOND'				=> 'Reageer naar gebruiker',
 	'MCHAT_RESET_QUESTION'		=> 'Schoon het ingave veld op?',
-	'MCHAT_SESSION_OUT'			=> 'Chat sessie is verlopen',	
+	'MCHAT_SESSION_OUT'			=> 'Chat sessie is verlopen',
 	'MCHAT_SHOW_LIST'			=> 'Toon lijst',
 	'MCHAT_SECOND'				=> 'seconde ',
 	'MCHAT_SECONDS'				=> 'seconden ',
@@ -95,21 +94,20 @@ $lang = array_merge($lang, array(
 
 	'MCHAT_TOTALMESSAGES'		=> 'Total berichten: <strong>%s</strong>',
 	'MCHAT_USESOUND'			=> 'Gebruik geluid?',
-	
 
 	'MCHAT_ONLINE_USERS_TOTAL'			=> 'In totaal zijn er <strong>%d</strong> gebruikers aan het chatten ',
 	'MCHAT_ONLINE_USER_TOTAL'			=> 'In total is er <strong>%d</strong> gebruiker aan het chatten ',
 	'MCHAT_NO_CHATTERS'					=> 'NNiemand is aan het chatten',
 	'MCHAT_ONLINE_EXPLAIN'				=> 'gebasserd op actieve gebruikers over de afgelopen %s',
-	
+
 	'WHO_IS_CHATTING'			=> 'Wie is aan het chatten',
 	'WHO_IS_REFRESH_EXPLAIN'	=> 'ververst iedere <strong>%d</strong> seconden',
-	'MCHAT_NEW_TOPIC'			=> '<strong>Nieuw Topic</strong>',		
-	'MCHAT_NEW_REPLY'			=> '<strong>Nieuw antwoord</strong>',	
-	
+	'MCHAT_NEW_TOPIC'			=> '<strong>Nieuw Topic</strong>',
+	'MCHAT_NEW_REPLY'			=> '<strong>Nieuw antwoord</strong>',
+
 	// UCP
 	'UCP_PROFILE_MCHAT'	=> 'mChat voorkeuren',
-	
+
 	'DISPLAY_MCHAT' 	=> 'Toon mChat op de index pagina',
 	'SOUND_MCHAT'		=> 'Inschakelen geluid mChat',
 	'DISPLAY_STATS_INDEX'	=> 'Toon de wie is er aan het chatten op de index pagina',
@@ -118,7 +116,7 @@ $lang = array_merge($lang, array(
 	'CHAT_AREA'		=> 'Invoer type',
 	'CHAT_AREA_EXPLAIN'	=> 'Kies welke type te gebruiken om een chat in te voeren:<br />een tekst gebied of<br />een invoerveld',
 	'INPUT_AREA'		=> 'Invoerveld',
-	'TEXT_AREA'			=> 'Tekst gebied',	
+	'TEXT_AREA'			=> 'Tekst gebied',
 	// ACP
 	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Verander hier de regels van het forum.  Elke regel op een nieuwe lijn.<br />Je kunt maximaal 255 karakters gebruiken.<br /><strong>Deze boodschap kan worden vertaald..</strong> (Je moet de mchat_lang.php file aanpassen en lees de instructies).',
 	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>Update mChat configuratie </strong>',
@@ -128,7 +126,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Inschakelen mChat Extensie',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'In of Uitschakelen van deze extensie.',
 	'MCHAT_AVATARS'					=> 'Toon avatars',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'Als je ja hebt aangevinkt, verkleinde gebruikers avatars zullen worden getoond',	
+	'MCHAT_AVATARS_EXPLAIN'			=> 'Als je ja hebt aangevinkt, verkleinde gebruikers avatars zullen worden getoond',
 	'MCHAT_ON_INDEX'				=> 'mChat Op de Index pagina',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Toestaan om de mChat te tonen op de Index pagina.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Index pagina hoogte',
@@ -142,7 +140,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Inschakelen opschonen van berichten',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Vink Ja aan als je het opschonen van berichten wilt inschakelen.<br /><em>Werkt alleen als een gebruiker de gemaakte of archief pagina bekijkt</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Het aantal berichten welke bewaard moeten worden in de mChat',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Geef hier het aantal in, van de berichten welke je bewaard wilt houden in de mChat.',	
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Geef hier het aantal in, van de berichten welke je bewaard wilt houden in de mChat.',
 	'MCHAT_MESSAGE_LIMIT'			=> 'Berichten limiet',
 	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Maximaal aantal berichten, welke getoond worden in de mChat.<br /><em>Aanbevolen is tussen de 10 en 30 berichten</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Index pagina berichten limiet',
@@ -183,7 +181,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Berichten instellingen',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pauze op eventuele inactiviteit van mChat',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Stel je ja in, dan wordt mChat niet automatisch vernieuwd, todat een gebruiker een bericht plaatst in mChat',
-	
+
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'De mChat extensie moet worden bijgewerkt. Neem contact op met de forum beheerder om de mChat bij te laten werken.',
 	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geinstalleerd.  Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
@@ -203,24 +201,24 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'De waarde van de maximale lengte van het aantal woorden is te klein.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'De waarde van de maximale lengte van het aantal woorden is te groot.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'De verversing van de whois waarde is te klein.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'De verversing van de whois waarde is te groot.',	
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'De verversing van de whois waarde is te groot.',
 'TOO_SMALL_INDEX_HEIGHT'	=> 'De waarde van de index hoogte is te klein.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'De waarde van de index hoogte is te groot.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'De waarde van de gemaakte hoogte is te klein.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'De waarde van de gemaakte hoogte is te groot.',
 		'TOO_SHORT_STATIC_MESSAGE'	=> 'De waarde van de statische berichten is te kort.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'De waarde van de statische berichten is te lang.',	
+	'TOO_LONG_STATIC_MESSAGE'	=> 'De waarde van de statische berichten is te lang.',
 	'TOO_SMALL_TIMEOUT'	=> 'De waarde van de timeout voor gebruikers is te klein.',
 	'TOO_LARGE_TIMEOUT'	=> 'De waarde van de timeout voor gebruikers is te groot.',
 	'UCP_CAT_MCHAT'		=> 'mChat',
 	'UCP_MCHAT_CONFIG'	=> 'mChat', //Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'mChat tabel is ingekort',
 	'ACP_USER_MCHAT'			=> 'mChat Instellingen',
-	'LOG_DELETED_MCHAT'      => '<strong>Verwijder mChat berichten</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'      => '<strong>Bewerk mChat berichten</strong><br />» %1$s',	
+	'LOG_DELETED_MCHAT'	  => '<strong>Verwijder mChat berichten</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'	  => '<strong>Bewerk mChat berichten</strong><br />» %1$s',
 	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Overgebleven karakters: <span class="charsLeft error"><strong>%d</strong></span>',
-	'MCHAT_TOP_POSTERS'            => 'Top Spammers',
-	'MCHAT_NEW_CHAT'            => 'Nieuw Chat bericht!',
+	'MCHAT_TOP_POSTERS'			=> 'Top Spammers',
+	'MCHAT_NEW_CHAT'			=> 'Nieuw Chat bericht!',
 	'FONT_COLOR'				=> 'letter kleur',
 	'FONT_COLOR_HIDE'			=> 'verberg letter kleur',
 	'FONT_HUGE'					=> 'Zeer Groot',
@@ -229,7 +227,7 @@ $lang = array_merge($lang, array(
 	'FONT_SIZE'					=> 'Letter grootte',
 	'FONT_SMALL'				=> 'Klein',
 	'FONT_TINY'					=> 'zeer klein',
-	'MCHAT_SEND_PM'             => 'Stuur prive bericht',
-    'MCHAT_PM'                  => '(PM)',
-	'MORE_SMILIES'              => 'Meer Smilies',
+	'MCHAT_SEND_PM'			 => 'Stuur prive bericht',
+	'MCHAT_PM'				  => '(PM)',
+	'MORE_SMILIES'			  => 'Meer Smilies',
 ));
