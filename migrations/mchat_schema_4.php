@@ -13,11 +13,11 @@ class mchat_schema_4 extends \phpbb\db\migration\migration
 {
 
 	static public function depends_on()
-	{	
+	{
 		return array(
 			'\dmzx\mchat\migrations\mchat_schema_3',
 		);
-	}	
+	}
 	public function update_schema()
 	{
 		return array(

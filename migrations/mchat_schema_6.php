@@ -17,7 +17,7 @@ class mchat_schema_6 extends \phpbb\db\migration\migration
 		return array(
 			'\dmzx\mchat\migrations\mchat_schema_5',
 		);
-	}		
+	}
 	public function update_data()
 	{
 		return array(
@@ -40,8 +40,8 @@ class mchat_schema_6 extends \phpbb\db\migration\migration
 					'module_auth'		=> 'u_mchat_use',
 				),
 			),
-			
-	    ),
+
+		),
 		);
 	}
 }

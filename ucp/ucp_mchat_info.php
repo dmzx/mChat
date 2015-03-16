@@ -19,9 +19,9 @@ class ucp_mchat_info
 			'version'	=> '1.3.8',
 			'modes'		=> array(
 				'configuration'	=> array(
-				    'title' => 'UCP_MCHAT_CONFIG', 
-				    'auth' => 'ext_dmzx/mchat && acl_u_mchat_use', 
-				    'cat' => array('UCP_MCHAT_CONFIG')),
+					'title' => 'UCP_MCHAT_CONFIG',
+					'auth' => 'ext_dmzx/mchat && acl_u_mchat_use',
+					'cat' => array('UCP_MCHAT_CONFIG')),
 			),
 		);
 	}

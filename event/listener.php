@@ -19,16 +19,16 @@ class listener implements EventSubscriberInterface
 	protected $template;
 
 	protected $user;
-	
+
 	protected $db;
-	
+
 	protected $root_path;
-	
+
 	protected $php_ext;
-	
+
 	/** @var \phpbb\controller\helper */
 	protected $controller_helper;
-	
+
 	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $php_ext, $auth)
 	{
 		$this->config = $config;
@@ -40,7 +40,7 @@ class listener implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 		$this->auth = $auth;
 	}
-	
+
 	static public function getSubscribedEvents()
 	{
 		return array(

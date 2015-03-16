@@ -13,7 +13,7 @@ class acp_mchat_module
 {
 	/** @var \dmzx\mchat\core\functions_mchat */
 	protected $functions_mchat;
-	
+
 	/** @var \phpbb\config\config */
 	protected $config;
 
@@ -71,7 +71,6 @@ class acp_mchat_module
 		$this->php_ext = $phpEx;
 		$this->table_prefix = $phpbb_container->getParameter('core.table_prefix');
 
-	
 		// Add the wpm ACP lang file
 		$user->add_lang_ext('dmzx/mchat', 'info_acp_mchat');
 
@@ -84,10 +83,10 @@ class acp_mchat_module
 		// Define the name of the form for use as a form key
 		$form_name = 'acp_mchat';
 		add_form_key($form_name);
-		
+
 		// something was submitted
 		$submit = (isset($_POST['submit'])) ? true : false;
-		
+
 		$mchat_row = array(
 			'location'			=> $request->variable('mchat_location', 0),
 			'refresh' 			=> $request->variable('mchat_refresh', 0),
@@ -112,21 +111,21 @@ class acp_mchat_module
 			'pause_on_input'	=> $request->variable('mchat_pause_on_input', 0),
 			'rules'				=> utf8_normalize_nfc($request->variable('mchat_rules', '', true)),
 			'avatars'			=> $request->variable('mchat_avatars', 0),
-		);		
-		
+		);
+
 		if ($submit)
 		{
 			if (!function_exists('validate_data'))
 			{
 				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 			}
-			
+
 			// validate the entries...most of them anyway
 			$mchat_array = array(
 				'static_message'	=> array('string', false, 0, 255),
 				'index_height'		=> array('num', false, 50, 1000),
 				'custom_height'		=> array('num', false, 50, 1000),
-				'whois_refresh'		=> array('num', false, 30, 300),				
+				'whois_refresh'		=> array('num', false, 30, 300),
 				'refresh'			=> array('num', false, 5, 60),
 				'message_limit'		=> array('num', false, 10, 30),
 				'message_num'		=> array('num', false, 10, 50),
@@ -135,8 +134,8 @@ class acp_mchat_module
 				'max_message_lngth'	=> array('num', false, 0, 500),
 				'timeout'			=> array('num', false, 0, (int) $config['session_length']),
 				'rules'				=> array('string', false, 0, 255),
-			);		
-			
+			);
+
 			$error = validate_data($mchat_row, $mchat_array);
 
 			if (!check_form_key('acp_mchat'))
@@ -145,8 +144,7 @@ class acp_mchat_module
 			}
 
 			// Replace "error" strings with their real, localised form
-			$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);			
-
+			$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
 
 			if (!sizeof($error))
 			{
@@ -157,7 +155,7 @@ class acp_mchat_module
 						WHERE config_name = '" . $db->sql_escape($config_name) . "'";
 					$db->sql_query($sql);
 				}
-				
+
 				//update setting in config table for mod enabled or not
 				$config->set('mchat_enable', $request->variable('mchat_enable', 0));
 				// update setting in config table for allowing on index or not
@@ -168,33 +166,32 @@ class acp_mchat_module
 				$config->set('mchat_stats_index', $request->variable('mchat_stats_index', 0));
 				// and an entry into the log table
 				add_log('admin', 'LOG_MCHAT_CONFIG_UPDATE');
-				
+
 				// purge the cache
 				$this->cache->destroy('_mchat_config');
 
 				// rebuild the cache
 				$this->functions_mchat->mchat_cache();
-							
+
 				trigger_error($user->lang['MCHAT_CONFIG_SAVED'] . adm_back_link($this->u_action));
 			}
 		}
-		
+
 		// let's get it on
 		$sql = 'SELECT * FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_CONFIG_TABLE;
 		$result = $db->sql_query($sql);
 		$mchat_config = array();
-		while ($row = $db->sql_fetchrow($result))	
+		while ($row = $db->sql_fetchrow($result))
 		{
 			$mchat_config[$row['config_name']] = $row['config_value'];
 		}
 		$db->sql_freeresult($result);
-						
+
 		$mchat_enable = isset($config['mchat_enable']) ? $config['mchat_enable'] : 0;
 		$mchat_on_index = isset($config['mchat_on_index']) ? $config['mchat_on_index'] : 0;
 		$mchat_version = isset($config['mchat_version']) ? $config['mchat_version'] : '';
 		$mchat_new_posts = isset($config['mchat_new_posts']) ? $config['mchat_new_posts'] : 0;
 		$mchat_stats_index = isset($config['mchat_stats_index']) ? $config['mchat_stats_index'] : 0;
-		
 
 		$dateformat_options = '';
 		foreach ($user->lang['dateformats'] as $format => $null)
@@ -226,12 +223,12 @@ class acp_mchat_module
 			'MCHAT_MESSAGE_LIMIT'			=> !empty($mchat_row['message_limit']) ? $mchat_row['message_limit'] : $mchat_config['message_limit'],
 			'MCHAT_MESSAGE_NUM'				=> !empty($mchat_row['message_num']) ? $mchat_row['message_num'] : $mchat_config['message_num'],
 			'MCHAT_ARCHIVE_LIMIT'			=> !empty($mchat_row['archive_limit']) ? $mchat_row['archive_limit'] : $mchat_config['archive_limit'],
-			'MCHAT_AVATARS'					=> !empty($mchat_row['avatars']) ? $mchat_row['avatars'] : $mchat_config['avatars'],			
+			'MCHAT_AVATARS'					=> !empty($mchat_row['avatars']) ? $mchat_row['avatars'] : $mchat_config['avatars'],
 			'MCHAT_FLOOD_TIME'				=> !empty($mchat_row['flood_time']) ? $mchat_row['flood_time'] : $mchat_config['flood_time'],
 			'MCHAT_MAX_MESSAGE_LNGTH'		=> !empty($mchat_row['max_message_lngth']) ? $mchat_row['max_message_lngth'] : $mchat_config['max_message_lngth'],
 			'MCHAT_CUSTOM_PAGE'				=> !empty($mchat_row['custom_page']) ? $mchat_row['custom_page'] : $mchat_config['custom_page'],
 			'MCHAT_DATE'					=> !empty($mchat_row['date']) ? $mchat_row['date'] : $mchat_config['date'],
-			'MCHAT_DEFAULT_DATEFORMAT'		=> $config['default_dateformat'],		
+			'MCHAT_DEFAULT_DATEFORMAT'		=> $config['default_dateformat'],
 			'MCHAT_RULES'					=> !empty($mchat_row['rules']) ? $mchat_row['rules'] : $mchat_config['rules'],
 			'MCHAT_WHOIS'					=> !empty($mchat_row['whois']) ? $mchat_row['whois'] : $mchat_config['whois'],
 			'MCHAT_STATS_INDEX'				=> ($mchat_stats_index) ? true : false,
@@ -244,15 +241,15 @@ class acp_mchat_module
 			'MCHAT_TIMEOUT'					=> !empty($mchat_row['timeout']) ? $mchat_row['timeout'] : $mchat_config['timeout'],
 			'MCHAT_NEW_POSTS'				=> ($mchat_new_posts) ? true : false,
 			'MCHAT_PAUSE_ON_INPUT'			=> !empty($mchat_row['pause_on_input']) ? $mchat_row['pause_on_input'] : $mchat_config['pause_on_input'],
-			
+
 			'L_MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> sprintf($user->lang['MCHAT_BBCODES_DISALLOWED_EXPLAIN'], '<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=bbcodes', true, $user->session_id) . '">', '</a>'),
 			'L_MCHAT_TIMEOUT_EXPLAIN'		=> sprintf($user->lang['MCHAT_USER_TIMEOUT_EXPLAIN'],'<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=board&amp;mode=load', true, $user->session_id) . '">', '</a>', $config['session_length']),
-			
+
 			'S_MCHAT_DATEFORMAT_OPTIONS'	=> $dateformat_options,
 			'S_CUSTOM_DATEFORMAT'			=> $s_custom,
-			
+
 			'U_ACTION'						=> $this->u_action)
 		);
-		
+
  }
 }

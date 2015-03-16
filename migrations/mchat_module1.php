@@ -17,14 +17,13 @@ class mchat_module1 extends \phpbb\db\migration\migration
 		return array(
 			array('module.add', array('ucp', 'UCP_MAIN', 'UCP_MCHAT_CONFIG')),
 			array('module.add', array(
-			    'ucp', 'UCP_MCHAT_CONFIG',       array(
+				'ucp', 'UCP_MCHAT_CONFIG',	   array(
 				'module_basename'	=> '\dmzx\mchat\ucp\ucp_mchat_module',
-				'modes'		        => array('configuration'),
+				'modes'				=> array('configuration'),
 				'module_auth'		=> 'acl_u_mchat_use',
 			))),
 		);
 	}
 }
-
 
 		

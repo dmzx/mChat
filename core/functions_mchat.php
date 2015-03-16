@@ -13,9 +13,9 @@ class functions_mchat
 {
 	/**
 	 * CONSTANTS SECTION
-	 * 
+	 *
 	 * To access them, you need to use the class.
-	 * 
+	 *
 	 */
 	const MCHAT_CONFIG_TABLE	= 'mchat_config';
 	const MCHAT_TABLE			= 'mchat';
@@ -74,7 +74,7 @@ class functions_mchat
 			$sql = 'SELECT * FROM ' . $this->table_prefix . self::MCHAT_CONFIG_TABLE;
 			$result = $this->db->sql_query($sql);
 			$config_mchat = array();
-			while ($row = $this->db->sql_fetchrow($result))	
+			while ($row = $this->db->sql_fetchrow($result))
 			{
 				$config_mchat[$row['config_name']] = $row['config_value'];
 			}
@@ -109,9 +109,9 @@ class functions_mchat
 		// fix the display of the time limit
 		// hours, minutes, seconds
 		$chat_session = '';
-		$chat_timeout = (int) $time;	
+		$chat_timeout = (int) $time;
 		$hours = $minutes = $seconds = 0;
-		
+
 		if ($chat_timeout >= 3600)
 		{
 			$hours = floor($chat_timeout / 3600);
@@ -130,8 +130,8 @@ class functions_mchat
 		{
 			$seconds = $seconds > 1 ? ($seconds . '&nbsp;' . $this->user->lang['MCHAT_SECONDS']) : ($seconds . '&nbsp;' . $this->user->lang['MCHAT_SECOND']);
 			$chat_session .= $seconds;
-		}		
-		return sprintf($this->user->lang['MCHAT_ONLINE_EXPLAIN'], $chat_session);	
+		}
+		return sprintf($this->user->lang['MCHAT_ONLINE_EXPLAIN'], $chat_session);
 	}
 
 	// mchat_users
@@ -141,19 +141,19 @@ class functions_mchat
 	function mchat_users($session_time, $on_page = false)
 	{
 		$check_time = time() - (int) $session_time;
-		
+
 		$sql = 'DELETE FROM ' . $this->table_prefix . self::MCHAT_SESSIONS_TABLE . ' WHERE user_lastupdate < ' . $check_time;
-		$this->db->sql_query($sql);	
-		
+		$this->db->sql_query($sql);
+
 		// add the user into the sessions upon first visit
 		if($on_page && ($this->user->data['user_id'] != ANONYMOUS && !$this->user->data['is_bot']))
 		{
 			$this->mchat_sessions($session_time);
 		}
-		
+
 		$mchat_user_count = 0;
 		$mchat_user_list = '';
-		
+
 		$sql = 'SELECT m.user_id, u.username, u.user_type, u.user_allow_viewonline, u.user_colour
 		FROM ' . $this->table_prefix . self::MCHAT_SESSIONS_TABLE . ' m
 		LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
@@ -180,7 +180,7 @@ class functions_mchat
 		}
 		$this->db->sql_freeresult($result);
 
-		$refresh_message = $this->mchat_session_time($session_time);	
+		$refresh_message = $this->mchat_session_time($session_time);
 		if (!$mchat_user_count)
 		{
 			return array(
@@ -208,7 +208,7 @@ class functions_mchat
 		$check_time = time() - (int) $session_time;
 		$sql = 'DELETE FROM ' . $this->table_prefix . self::MCHAT_SESSIONS_TABLE . ' WHERE user_lastupdate <' . $check_time;
 		$this->db->sql_query($sql);
-		
+
 		// insert user into the mChat sessions table
 		if ($this->user->data['user_type'] == USER_FOUNDER || $this->user->data['user_type'] == USER_NORMAL)
 		{
@@ -234,7 +234,7 @@ class functions_mchat
 				$sql = 'UPDATE ' . $this->table_prefix . self::MCHAT_SESSIONS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . ' WHERE user_id =' . (int) $this->user->data['user_id'];
 				$this->db->sql_query($sql);
 			}
-		}					
+		}
 		return;
 	}
 
@@ -282,41 +282,41 @@ class functions_mchat
 			$result = $this->db->sql_query_limit('SELECT * FROM '. $this->table_prefix . self::MCHAT_TABLE . ' ORDER BY message_id ASC', 1);
 			$row = $this->db->sql_fetchrow($result);
 			$first_id = (int) $row['message_id'];
-			
+
 			$this->db->sql_freeresult($result);
-			
-			// compute the delete id 
+
+			// compute the delete id
 			$delete_id = $mchat_total_messages - $mchat_prune_amount + $first_id;
 
 			// let's go delete them...if the message id is less than the delete id
 			$sql = 'DELETE FROM ' . $this->table_prefix . self::MCHAT_TABLE . '
 			WHERE message_id < ' . (int) $delete_id;
 			$this->db->sql_query($sql);
-			
+
 			add_log('admin', 'LOG_MCHAT_TABLE_PRUNED');
 		}
 		// free up some memory...variable(s) are no longer needed.
 		unset($mchat_total_messages);
-		
+
 		// return to what we were doing
 		return;
-		
+
 	}
 	// display_mchat_bbcodes
-	// can't use the default phpBB one but 
+	// can't use the default phpBB one but
 	// most of code is from similar function
 	/**
 	 * @param mixed $mchat_prune_amount set from mchat config entry
 	 */
 	function display_mchat_bbcodes()
 	{
-		// grab the bbcodes that aren't allowed 
+		// grab the bbcodes that aren't allowed
 		$config_mchat = $this->cache->get('_mchat_config');
-		
+
 		$disallowed_bbcode_array = explode('|', strtoupper($config_mchat['bbcode_disallowed']));
 		preg_replace('#^(.*?)=#si','$1',$disallowed_bbcode_array);
 		$default_bbcodes = array('b','i','u','quote','code','list','img','url','size','color','email','flash');
-		
+
 		// let's remove the default bbcodes
 		if (sizeof($disallowed_bbcode_array))
 		{
@@ -347,7 +347,7 @@ class functions_mchat
 		{
 			$bbcode_tag_name = strtoupper($row['bbcode_tag']);
 			if (sizeof($disallowed_bbcode_array))
-			{	
+			{
 				if (in_array($bbcode_tag_name, $disallowed_bbcode_array))
 				{
 					continue;

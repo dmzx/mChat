@@ -80,7 +80,7 @@ class ucp_mchat_module
 					$this->functions_mchat->mchat_cache();
 				}
 				$mchat_cache = $cache->get('_mchat_config');
-				
+
 				$template->assign_vars(array(
 					'ERROR'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 
@@ -108,5 +108,5 @@ class ucp_mchat_module
 		$this->page_title = 'UCP_PROFILE_MCHAT';
 	}
 //	$this->page_title = 'UCP_PROFILE_MCHAT';
-	
+
 }

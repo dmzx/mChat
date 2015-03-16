@@ -31,7 +31,6 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-
 $lang = array_merge($lang, array(
 
 	// UMIL stuff
@@ -56,7 +55,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Enable mChat Extension',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'Enable or disable the extension globally.',
 	'MCHAT_AVATARS'					=> 'Display avatars',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'If set yes, resized user avatars will be displayed',	
+	'MCHAT_AVATARS_EXPLAIN'			=> 'If set yes, resized user avatars will be displayed',
 	'MCHAT_ON_INDEX'				=> 'mChat On Index',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Allow the display of the mChat on the index page.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Index Page Height',
@@ -70,7 +69,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Enable Prune',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Set to yes to enable the prune feature.<br /><em>Only occurs if a user views the custom or archive pages</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Prune Number',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'The number of messages to retain in the chat.',	
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'The number of messages to retain in the chat.',
 	'MCHAT_MESSAGE_LIMIT'			=> 'Message limit',
 	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'The maximum number of messages to show in the chat area.<br /><em>Recommended from 10 to 30</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Index page message limit',
@@ -111,7 +110,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Message Settings',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pause on input',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'If set Yes, then the chat will not autoupdate upon a user entering a message in the input area',
-	
+
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'The mChat extension needs updating.  Please have a forum founder visit this section to run the installer.',
 	'MCHAT_WRONG_VERSION'	=> 'The wrong version of the extension is installed.  Please run the %sinstaller%s for the new version of the modification.',
@@ -131,16 +130,16 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'The max words length value is too small.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'The max words length value is too large.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'The whois refresh value is too small.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'The whois refresh value is too large.',	
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'The whois refresh value is too large.',
 	'TOO_SMALL_INDEX_HEIGHT'	=> 'The index height value is too small.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'The index height value is too large.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'The custom height value is too small.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'The custom height value is too large.',
 	'TOO_SHORT_STATIC_MESSAGE'	=> 'The static message value is too short.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'The static message value is too long.',	
+	'TOO_LONG_STATIC_MESSAGE'	=> 'The static message value is too long.',
 	'TOO_SMALL_TIMEOUT'	=> 'The user timeout value is too small.',
 	'TOO_LARGE_TIMEOUT'	=> 'The user timeout value is too large.',
-	
+
 		// User perms
 	'ACL_U_MCHAT_USE'			=> 'Can use mChat mchat',
 	'ACL_U_MCHAT_VIEW'			=> 'Can view mChat mchat',
@@ -155,5 +154,5 @@ $lang = array_merge($lang, array(
 
 	// Admin perms
 	'ACL_A_MCHAT'				=> array('lang' => 'Can manage mChat settings', 'cat' => 'permissions'), // Using a phpBB category here
-	
+
 ));

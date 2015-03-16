@@ -28,79 +28,77 @@ class mchat_schema_3 extends \phpbb\db\migration\migration
 	{
 		global $user;
 
-	
-
 		// Define sample rule data
 		$sample_data = array(
 			array(
 				'config_name' 	=> 'refresh',
 					'config_value'	=> '10',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'message_limit',
 					'config_value'	=> '10',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'archive_limit',
 					'config_value'	=> '25',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'flood_time',
 					'config_value'	=> '20',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'max_message_lngth',
 					'config_value'	=> '500',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'custom_page',
 					'config_value'	=> '1',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'date',
 					'config_value'	=> 'D M d, Y g:i a',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'whois',
 					'config_value'	=> '1',
-				),	
-				array(			
+				),
+				array(
 					'config_name' 	=> 'bbcode_disallowed',
 					'config_value'	=> '',
-			    ),
-				array(			
+				),
+				array(
 					'config_name' 	=> 'prune_enable',
 					'config_value'	=> '0',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'prune_num',
 					'config_value'	=> '0',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'location',
 					'config_value'	=> '1',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'whois_refresh',
 					'config_value'	=> '30',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'static_message',
 					'config_value'	=> '',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'index_height',
 					'config_value'	=> '250',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'custom_height',
 					'config_value'	=> '350',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'override_min_post_chars',
 					'config_value'	=> '0',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'timeout',
 					'config_value'	=> '0',
 				),
@@ -108,19 +106,19 @@ class mchat_schema_3 extends \phpbb\db\migration\migration
 					'config_name'	=> 'override_smilie_limit',
 					'config_value'	=> '0',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'pause_on_input',
 					'config_value'	=> '0',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'rules',
 					'config_value'	=> '',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'avatars',
 					'config_value'	=> '0',
 				),
-				array(			
+				array(
 					'config_name' 	=> 'message_num',
 					'config_value'	=> '10',
 				),

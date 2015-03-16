@@ -1,5 +1,13 @@
 <!-- IF MCHAT_ARCHIVE_MODE or MCHAT_CUSTOM_PAGE -->
 	<!-- INCLUDE overall_header.html -->
+
+<!-- INCLUDEJS editor.js -->
+<!-- INCLUDEJS jquery.titlealert.min.js -->
+<!-- INCLUDEJS jquery_cookie_mini.js -->
+<!-- INCLUDEJS mchat_ajax_mini.js -->
+<!-- INCLUDEJS jquery-1.8.3.min.js -->
+<!-- INCLUDEJS jquery.maxlength.min.js -->
+
 <!-- ENDIF -->
 <!-- IF MCHAT_ARCHIVE_MODE -->
 <!--**
@@ -88,7 +96,7 @@
 			// ]]>
 			</script>
 			<!-- IF not MCHAT_ARCHIVE_MODE -->
-		
+
 			<div id="mChatmain" <!-- IF MCHAT_CUSTOM_PAGE -->class="mChatRowLimitCustom" style="height: {MCHAT_CUSTOM_HEIGHT}px;"<!-- ELSE -->class="mChatRowLimit" style="height: {MCHAT_INDEX_HEIGHT}px;"<!-- ENDIF -->>
 			<!-- ENDIF -->
 			<div id="mChatData">
@@ -101,10 +109,10 @@
 		<!-- IF not MCHAT_READ_MODE -->
 					<!-- IF MCHAT_NOMESSAGE_MODE --><div id="mChatNoMessage">{L_MCHAT_NOMESSAGE}</div><!-- ENDIF -->
 			</div>
-			<!-- IF not MCHAT_ARCHIVE_MODE -->			
+			<!-- IF not MCHAT_ARCHIVE_MODE -->
 			</div>
 			<!-- IF MCHAT_STATIC_MESS --><div class="mChatStatic"><strong>{L_MCHAT_ANNOUNCEMENT}:</strong> <span style="color:#990000;">{MCHAT_STATIC_MESS}</span></div><!-- ENDIF -->
-			<!-- IF not (MCHAT_ARCHIVE_MODE or MCHAT_CUSTOM_PAGE) and MCHAT_WHOIS and S_MCHAT_INDEX_STATS --><div class="mChatStats" id="mChatStats"><!-- IF MCHAT_USERS_LIST --><a href="#" onclick="mChat.toggle('UserList'); return false;">{MCHAT_USERS_COUNT}</a><!-- ELSE -->{MCHAT_USERS_COUNT}<!-- ENDIF -->&nbsp;{L_MCHAT_ONLINE_EXPLAIN}<br /><span id="mChatUserList">{MCHAT_USERS_LIST}</span></div><!-- ENDIF -->			
+			<!-- IF not (MCHAT_ARCHIVE_MODE or MCHAT_CUSTOM_PAGE) and MCHAT_WHOIS and S_MCHAT_INDEX_STATS --><div class="mChatStats" id="mChatStats"><!-- IF MCHAT_USERS_LIST --><a href="#" onclick="mChat.toggle('UserList'); return false;">{MCHAT_USERS_COUNT}</a><!-- ELSE -->{MCHAT_USERS_COUNT}<!-- ENDIF -->&nbsp;{L_MCHAT_ONLINE_EXPLAIN}<br /><span id="mChatUserList">{MCHAT_USERS_LIST}</span></div><!-- ENDIF -->
 			<form method="post" action="javascript://" onsubmit="mChat.add();" id="postform">
 			<div class="mChatPanel">
 				<noscript><div class="mchat_alert">{L_MCHAT_NOJAVASCRIPT}</div></noscript>
@@ -137,11 +145,11 @@
 				<!-- ENDIF -->
 				{S_FORM_TOKEN}
 				<!-- IF MCHAT_ALLOW_SMILES and .smiley -->
-				<div id="mChatSmiles" style="padding: 5px; display: none;">					
+				<div id="mChatSmiles" style="padding: 5px; display: none;">
 					<!-- BEGIN smiley -->
 					<a href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
 					<!-- END smiley -->
-					<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>					
+					<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 				</div>
 				<!-- ENDIF -->
 				<div style="padding: 3px;">
@@ -156,7 +164,7 @@
 			</form>
 			<!-- ENDIF -->
 			<div id="mChatSound" class="mChatSound"></div>
-			
+
 		<!-- ENDIF -->
 	<!-- ELSE -->
 	<div class="mchat_alert">{L_MCHAT_ENABLE}</div>

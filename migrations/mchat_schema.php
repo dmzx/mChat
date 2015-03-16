@@ -11,7 +11,7 @@ namespace dmzx\mchat\migrations;
 
 class mchat_schema extends \phpbb\db\migration\migration
 {
-	
+
 	public function update_data()
 	{
 		return array(
@@ -20,9 +20,9 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('config.add', array('mchat_on_index', true)),
 			array('config.add', array('mchat_new_posts', false)),
 			array('config.add', array('mchat_stats_index', false)),
-			array('config.add', array('mchat_version','0.0.3')),
-			
-		    array('permission.add', array('u_mchat_use')),
+			array('config.add', array('mchat_version','0.0.4')),
+
+			array('permission.add', array('u_mchat_use')),
 			array('permission.add', array('u_mchat_view')),
 			array('permission.add', array('u_mchat_edit')),
 			array('permission.add', array('u_mchat_delete')),
@@ -54,7 +54,7 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_urls', 'group')),
 		);
 	}
-	
+
 	public function update_schema()
 	{
 		return array(
@@ -69,7 +69,6 @@ class mchat_schema extends \phpbb\db\migration\migration
 			),
 		);
 	}
-	
 
 		public function revert_schema()
 	{
@@ -79,6 +78,5 @@ class mchat_schema extends \phpbb\db\migration\migration
 			),
 		);
 	}
-	
-	
+
 }
