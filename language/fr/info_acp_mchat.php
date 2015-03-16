@@ -31,6 +31,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
+
 $lang = array_merge($lang, array(
 
 	// UMIL stuff
@@ -55,7 +56,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Activer le MOD mChat',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'Activer ou désactiver le MOD dans sa globalité.',
 	'MCHAT_AVATARS'					=> 'Afficher les avatars',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'Si activée, les avatars redimensionnés des utilisateurs seront affichés.',
+	'MCHAT_AVATARS_EXPLAIN'			=> 'Si activée, les avatars redimensionnés des utilisateurs seront affichés.',	
 	'MCHAT_ON_INDEX'				=> 'mChat sur l’index',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Permettre l’affichage de mChat sur la page d’index.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Hauteur sur la page d’index',
@@ -69,7 +70,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Activer le délestage',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Mettez Oui pour activer la fonction de délestage.<br/><em>Survient seulement si un utilisateur affiche les pages personnalisées ou d’archives</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Nombre de messages',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Le nombre de messages à retenir dans mChat.',
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Le nombre de messages à retenir dans mChat.',	
 	'MCHAT_MESSAGE_LIMIT'			=> 'Limite de messages',
 	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Le nombre maximum de messages à afficher dans la zone du mini-chat.<br/><em>Recommandation : de 10 à 30 messages</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Limite de messages sur la page d’index',
@@ -110,7 +111,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Paramètres des messages',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pause sur la saisie',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Si activée, le mini-chat ne sera pas mis à jour automatiquement lorsque l’utilisateur rédige un message dans la zone de saisie.',
-
+	
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'Le MOD mChat a besoin d’être mis à jour. Le fondateur du forum doit visiter cette section pour commencer l’installation.',
 	'MCHAT_WRONG_VERSION'	=> 'La mauvaise version du MOD est installée. Démarrez l’%sinstallation%s pour une nouvelle version du MOD.',
@@ -130,16 +131,16 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'La longueur maximale des mots est trop petite.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'La longueur maximale des mots est trop grande.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'L’actualisation du Qui est-ce? es trop petite.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'L’actualisation du Qui est-ce? est trop grande.',
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'L’actualisation du Qui est-ce? est trop grande.',	
 	'TOO_SMALL_INDEX_HEIGHT'	=> 'La hauteur du mini-chat sur l’index est trop petite.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'La hauteur du mini-chat sur l’index est trop grande.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'La hauteur du mini-chat dans la page personnalisé est trop petite.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'La hauteur du mini-chat dans la page personnalisé est trop grande.',
 	'TOO_SHORT_STATIC_MESSAGE'	=> 'Le message statique est trop court.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'Le message statique est trop long.',
+	'TOO_LONG_STATIC_MESSAGE'	=> 'Le message statique est trop long.',	
 	'TOO_SMALL_TIMEOUT'	=> 'Le délai d’attente de l’utilisateur est trop petit.',
 	'TOO_LARGE_TIMEOUT'	=> 'Le délai d’attente de l’utilisateur est trop grand.',
-
+	
 		// User perms
 	'ACL_U_MCHAT_USE'			=> 'Peut utiliser mChat',
 	'ACL_U_MCHAT_VIEW'			=> 'Peut voir mChat',
@@ -154,5 +155,5 @@ $lang = array_merge($lang, array(
 
 	// Admin perms
 	'ACL_A_MCHAT'				=> array('lang' => 'Peut gérer les paramètres de mChat', 'cat' => 'permissions'), // Using a phpBB category here
-
+	
 ));

@@ -31,6 +31,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
+
 $lang = array_merge($lang, array(
 
 	// UMIL stuff
@@ -55,7 +56,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Abilita mChat Estensione',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'Abilita o disabilita questa estensione globalmente.',
 	'MCHAT_AVATARS'					=> 'Visualizza avatar',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'Se impostato su Sì, verranno visualizzati gli avatar degli utenti ridimensionate',
+	'MCHAT_AVATARS_EXPLAIN'			=> 'Se impostato su Sì, verranno visualizzati gli avatar degli utenti ridimensionate',	
 	'MCHAT_ON_INDEX'				=> 'mChat in indice',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Consentire la visualizzazione di mChat nella pagina indice.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Indice Pagina Altezza',
@@ -69,7 +70,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Abilita cancellazione automatica',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Impostare su SI per abilitare la funzione di cancellazione automatica.<br /><em>Si verifica solo se un utente visualizza le pagine personalizzate o di archivio</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Numero cancellazione automatica',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Il numero di messaggi da mantenere in chat.',
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Il numero di messaggi da mantenere in chat.',	
 	'MCHAT_MESSAGE_LIMIT'			=> 'Messaggi limite',
 	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Il numero massimo di messaggi da visualizzare in chat.<br /><em>Recommandato da 10 a 30</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Limite messaggio di pagina Indice',
@@ -110,7 +111,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Opzioni Messaggi',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pausa in ingresso',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Se impostato Sì, allora la chat non verrà aggiornata automaticamente se un utente inserisce un messaggio in area di immissione',
-
+	
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'Questa estensione mChat necessita di un aggiornamento. Si prega di visitare il fondatore per eseguire il programma di installazione.',
 	'MCHAT_WRONG_VERSION'	=> 'È installata una versione errata di questa estensione. Eseguire il %sinstaller%s per la nuova versione.',
@@ -130,16 +131,16 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'Il valore della lunghezza massima delle parole è troppo piccolo.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'Il valore della lunghezza massima delle parole è troppo grande.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'Il valore di aggiornamento whois è troppo piccolo.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'Il valore di aggiornamento whois è troppo grande.',
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'Il valore di aggiornamento whois è troppo grande.',	
 	'TOO_SMALL_INDEX_HEIGHT'	=> 'Il valore di altezza indice è troppo piccolo.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'Il valore di altezza indice è troppo grande.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'Il valore di altezza personalizzato è troppo piccolo.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'Il valore di altezza personalizzato è troppo grande.',
 	'TOO_SHORT_STATIC_MESSAGE'	=> 'Il valore di messaggio statico è troppo corto.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'Il valore di messaggio statico è troppo grande.',
+	'TOO_LONG_STATIC_MESSAGE'	=> 'Il valore di messaggio statico è troppo grande.',	
 	'TOO_SMALL_TIMEOUT'	=> 'Il valore di timeout utente è troppo piccolo.',
 	'TOO_LARGE_TIMEOUT'	=> 'Il valore di timeout utente è troppo grande.',
-
+	
 		// User perms
 	'ACL_U_MCHAT_USE'			=> 'Puoi usare mchat',
 	'ACL_U_MCHAT_VIEW'			=> 'Puoi vedere mChat mchat',
@@ -154,5 +155,5 @@ $lang = array_merge($lang, array(
 
 	// Admin perms
 	'ACL_A_MCHAT'				=> array('lang' => 'Puoi modificare impostazioni mChat', 'cat' => 'permessi'), // Using a phpBB category here
-
+	
 ));

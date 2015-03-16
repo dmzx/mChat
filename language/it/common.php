@@ -7,6 +7,7 @@
 *
 */
 
+
 /**
 * DO NOT CHANGE!
 */
@@ -41,8 +42,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_TITLE'				=> 'Mini-Chat',
 	'MCHAT_ADD'					=> 'Invia',
 	'MCHAT_ANNOUNCEMENT'		=> 'Announcio',
-	'MCHAT_ARCHIVE'				=> 'Archivio',
-	'MCHAT_ARCHIVE_PAGE'		=> 'Mini-Chat Archivio',
+	'MCHAT_ARCHIVE'				=> 'Archivio',	
+	'MCHAT_ARCHIVE_PAGE'		=> 'Mini-Chat Archivio',	
 	'MCHAT_BBCODES'				=> 'BBCodes',
 	'MCHAT_CLEAN'				=> 'Cancella',
 	'MCHAT_CLEANED'				=> 'Tutti i messaggi sono stati rimossi',
@@ -54,23 +55,23 @@ $lang = array_merge($lang, array(
 	'MCHAT_DELITE'				=> 'Cancella',
 	'MCHAT_EDIT'				=> 'Modifica',
 	'MCHAT_EDITINFO'			=> 'Modifica il messaggio e clicca OK',
-	'MCHAT_ENABLE'				=> 'Spiacente, la Mini-Chat non è al momento disponibile',
-	'MCHAT_ERROR'				=> 'Errore',
-	'MCHAT_FLOOD'				=> 'Non puoi inviare un altro messaggio così presto dopo ultimo',
+	'MCHAT_ENABLE'				=> 'Spiacente, la Mini-Chat non è al momento disponibile',	
+	'MCHAT_ERROR'				=> 'Errore',	
+	'MCHAT_FLOOD'				=> 'Non puoi inviare un altro messaggio così presto dopo ultimo',	
 	'MCHAT_FOE'					=> 'Questo messaggio è stato inviato da <strong>%1$s</strong> che è attualmente sulla tua lista da ignorare.',
 	'MCHAT_HELP'				=> 'Regole mChat',
-	'MCHAT_HIDE_LIST'			=> 'Nascondi Lista',
+	'MCHAT_HIDE_LIST'			=> 'Nascondi Lista',	
 	'MCHAT_HOUR'				=> 'ora ',
 	'MCHAT_HOURS'				=> 'ore',
 	'MCHAT_IP'					=> 'IP whois per',
-
+	
 	'MCHAT_MINUTE'				=> 'minuto ',
 	'MCHAT_MINUTES'				=> 'minuti ',
-	'MCHAT_MESS_LONG'			=> 'Il tuo messaggio è troppo lungo.\n Perfavore limita a %s caratteri',
-	'MCHAT_NO_CUSTOM_PAGE'		=> 'La pagina mChat personalizzata non si attiva in questo momento!',
+	'MCHAT_MESS_LONG'			=> 'Il tuo messaggio è troppo lungo.\n Perfavore limita a %s caratteri',	
+	'MCHAT_NO_CUSTOM_PAGE'		=> 'La pagina mChat personalizzata non si attiva in questo momento!',	
 	'MCHAT_NOACCESS'			=> 'Non hai il permesso di postare in mChat',
-	'MCHAT_NOACCESS_ARCHIVE'	=> 'Non hai il permesso di visualizzare questo archivio',
-	'MCHAT_NOJAVASCRIPT'		=> 'Il tuo browser non supporta JavaScript oppure JavaScript è disabilitato',
+	'MCHAT_NOACCESS_ARCHIVE'	=> 'Non hai il permesso di visualizzare questo archivio',	
+	'MCHAT_NOJAVASCRIPT'		=> 'Il tuo browser non supporta JavaScript oppure JavaScript è disabilitato',		
 	'MCHAT_NOMESSAGE'			=> 'Nessun messaggio',
 	'MCHAT_NOMESSAGEINPUT'		=> 'Non hai inserito un messaggio',
 	'MCHAT_NOSMILE'				=> 'Smile non trovato',
@@ -78,14 +79,14 @@ $lang = array_merge($lang, array(
 	'MCHAT_NOT_INSTALLED'		=> 'mChat database voci mancanti.<br />Eseguire il %sinstaller%s per apportare le modifiche del database.',
 	'MCHAT_OK'					=> 'OK',
 	'MCHAT_PAUSE'				=> 'Pausa',
-	'MCHAT_LOAD'				=> 'Loading',
+	'MCHAT_LOAD'				=> 'Loading',      
 	'MCHAT_PERMISSIONS'			=> 'Cambia permessi utente',
 	'MCHAT_REFRESHING'			=> 'Refresh...',
 	'MCHAT_REFRESH_NO'			=> 'Autoupdate è off',
 	'MCHAT_REFRESH_YES'			=> 'Autoupdate ogni <strong>%d</strong> secondi',
 	'MCHAT_RESPOND'				=> 'Rispondere',
 	'MCHAT_RESET_QUESTION'		=> 'Cancellare area ingresso ?',
-	'MCHAT_SESSION_OUT'			=> 'Chat sessione scaduta',
+	'MCHAT_SESSION_OUT'			=> 'Chat sessione scaduta',	
 	'MCHAT_SHOW_LIST'			=> 'Mostra lista',
 	'MCHAT_SECOND'				=> 'secondo ',
 	'MCHAT_SECONDS'				=> 'secondi ',
@@ -94,20 +95,21 @@ $lang = array_merge($lang, array(
 
 	'MCHAT_TOTALMESSAGES'		=> 'Totale messaggi: <strong>%s</strong>',
 	'MCHAT_USESOUND'			=> 'Usa suono ?',
+	
 
 	'MCHAT_ONLINE_USERS_TOTAL'			=> 'In totale ci sono <strong>%d</strong> utenti in chat ',
 	'MCHAT_ONLINE_USER_TOTAL'			=> 'In totale un <strong>%d</strong> utente in chat ',
 	'MCHAT_NO_CHATTERS'					=> 'Nessuno sta chattando',
 	'MCHAT_ONLINE_EXPLAIN'				=> 'basato sugli utenti attivi negli ultimi %s',
-
+	
 	'WHO_IS_CHATTING'			=> 'Chi è in chat',
 	'WHO_IS_REFRESH_EXPLAIN'	=> 'Refresh ogni <strong>%d</strong> secondi',
-	'MCHAT_NEW_TOPIC'			=> '<strong>Nuovo Topic</strong>',
-	'MCHAT_NEW_REPLY'			=> '<strong>Nuova risposta</strong>',
-
+	'MCHAT_NEW_TOPIC'			=> '<strong>Nuovo Topic</strong>',		
+	'MCHAT_NEW_REPLY'			=> '<strong>Nuova risposta</strong>',	
+	
 	// UCP
 	'UCP_PROFILE_MCHAT'	=> 'mChat Preferenze',
-
+	
 	'DISPLAY_MCHAT' 	=> 'Visualizza mChat in Index',
 	'SOUND_MCHAT'		=> 'Abilita suono mChat',
 	'DISPLAY_STATS_INDEX'	=> 'Visualizzare le statistiche di chi sta chattando a pagina index',
@@ -116,7 +118,7 @@ $lang = array_merge($lang, array(
 	'CHAT_AREA'		=> 'Tipo di ingresso',
 	'CHAT_AREA_EXPLAIN'	=> 'Scegli il tipo di superficie da utilizzare per inserire la chat:<br />Area di testo o<br />area input',
 	'INPUT_AREA'		=> 'Input area',
-	'TEXT_AREA'			=> 'Testo area',
+	'TEXT_AREA'			=> 'Testo area',	
 	// ACP
 	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Inserire le regole del forum qui. Ogni regola su una nuova linea.<br />Limite a 255 caratteri.<br /><strong>Questo messaggio può essere tradotto.</strong> (necessario modificare il file mchat_lang.php archiviare e leggere le istruzioni).',
 	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>Aggiornamento configurazione mChat </strong>',
@@ -126,7 +128,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Abilita Estensione mChat',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'Abilita o disabilita Mchat globalmente.',
 	'MCHAT_AVATARS'					=> 'Visualizza avatars',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'Se impostato su Sì, verranno visualizzati gli avatar degli utenti ridimensionate',
+	'MCHAT_AVATARS_EXPLAIN'			=> 'Se impostato su Sì, verranno visualizzati gli avatar degli utenti ridimensionate',	
 	'MCHAT_ON_INDEX'				=> 'mChat in Indice',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Consentire la visualizzazione di mChat nella pagina indice.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Indice Altezza Pagina',
@@ -140,7 +142,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Abilita Cancellazione',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Impostare su SI per abilitare la funzione cancellazione automatica.<br /><em>Si verifica solo se un utente visualizza le pagine personalizzate o di archivio</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Cancellazione numero',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Il numero di messaggi da mantenere in chat.',
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Il numero di messaggi da mantenere in chat.',	
 	'MCHAT_MESSAGE_LIMIT'			=> 'Messaggi limite',
 	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Il numero massimo di messaggi da visualizzare nella chat.<br /><em>Recommandati da 10 a 30</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Limite messaggi di pagina in Indice',
@@ -181,7 +183,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Impostazioni messaggi',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pausa ingresso',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Se impostato Sì, la chat non verrà aggiornata automaticamente se un utente posta in un messaggio in area di immissione',
-
+	
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'Questa estensione necessita di un aggiornamento. Si prega di visitare il sito fondatore per eseguire il programma di installazione.',
 	'MCHAT_WRONG_VERSION'	=> 'È installata una versione errata di questa estensione.  Perfavore vai al sito %sinstaller%s per la nuova versione.',
@@ -201,24 +203,24 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'Il valore della lunghezza massima delle parole è troppo piccolo.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'Il valore della lunghezza massima delle parole è troppo alto.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'Il valore di aggiornamento whois è troppo piccolo.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'Il valore di aggiornamento whois è troppo alto.',
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'Il valore di aggiornamento whois è troppo alto.',	
 	'TOO_SMALL_INDEX_HEIGHT'	=> 'Il valore di altezza indice è troppo piccolo.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'Il valore di altezza indice è troppo alto.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'Il valore di altezza personalizzato è troppo piccolo.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'Il valore di altezza personalizzato è troppo alto.',
 	'TOO_SHORT_STATIC_MESSAGE'	=> 'Il valore di messaggio statico è troppo corto.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'Il valore di messaggio statico è troppo lungo.',
+	'TOO_LONG_STATIC_MESSAGE'	=> 'Il valore di messaggio statico è troppo lungo.',	
 	'TOO_SMALL_TIMEOUT'	=> 'Il valore di timeout utente è troppo piccolo.',
 	'TOO_LARGE_TIMEOUT'	=> 'Il valore di timeout utente è troppo alto.',
 	'UCP_CAT_MCHAT'		=> 'mChat',
 	'UCP_MCHAT_CONFIG'	=> 'mChat', //Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'mChat tabelle cancellate',
 	'ACP_USER_MCHAT'			=> 'mChat Opzioni',
-	'LOG_DELETED_MCHAT'	  => '<strong>Cancella messaggi mChat</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'	  => '<strong>Modifica messaggi mChat</strong><br />» %1$s',
+	'LOG_DELETED_MCHAT'      => '<strong>Cancella messaggi mChat</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'      => '<strong>Modifica messaggi mChat</strong><br />» %1$s',	
 	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Caratteri: <span class="charsLeft error"><strong>%d</strong></span>',
-	'MCHAT_TOP_POSTERS'			=> 'Miglior Spammer',
-	'MCHAT_NEW_CHAT'			=> 'Nuovo messaggio in Chat !',
+	'MCHAT_TOP_POSTERS'            => 'Miglior Spammer',
+	'MCHAT_NEW_CHAT'            => 'Nuovo messaggio in Chat !',
 	'FONT_COLOR'				=> 'Font colore',
 	'FONT_COLOR_HIDE'			=> 'Nascondi colore font',
 	'FONT_HUGE'					=> 'Enorme',
@@ -227,7 +229,7 @@ $lang = array_merge($lang, array(
 	'FONT_SIZE'					=> 'Grandezza Font',
 	'FONT_SMALL'				=> 'Piccolo',
 	'FONT_TINY'					=> 'Molto Piccolo',
-	'MCHAT_SEND_PM'			 => 'Invia messaggio privato',
-	'MCHAT_PM'				  => '(PM)',
-	'MORE_SMILIES'			  => 'Altre Smile',
+	'MCHAT_SEND_PM'             => 'Invia messaggio privato',
+    'MCHAT_PM'                  => '(PM)',
+	'MORE_SMILIES'              => 'Altre Smile',
 ));
