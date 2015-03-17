@@ -31,6 +31,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
+
 $lang = array_merge($lang, array(
 
 	// UMIL stuff
@@ -55,11 +56,11 @@ $lang = array_merge($lang, array(
 	'MCHAT_ENABLE'					=> 'Włącz rozszerzenie mChat',
 	'MCHAT_ENABLE_EXPLAIN'			=> 'Włącz lub wyłącz rozszerzenie globalnie.',
 	'MCHAT_AVATARS'					=> 'Wyświetlaj avatary',
-	'MCHAT_AVATARS_EXPLAIN'			=> 'Zaznacz TAK aby wyświetlać miniaturki avatarów',
+	'MCHAT_AVATARS_EXPLAIN'			=> 'Zaznacz TAK aby wyświetlać miniaturki avatarów',	
 	'MCHAT_ON_INDEX'				=> 'mChat na stronie głównej',
 	'MCHAT_ON_INDEX_EXPLAIN'		=> 'Zezwól na wyświetlanie mChat na stronie głównej.',
 	'MCHAT_INDEX_HEIGHT'			=> 'Wysokość na stronie głównej',
-	'MCHAT_INDEX_HEIGHT_EXPLAIN'	=> 'Wysokość okna rozmowy w pikselach na głównej stronie.<br /><em>Limit wynosi od 50 do 1000</em>.',
+	'MCHAT_INDEX_HEIGHT_EXPLAIN'	=> 'Wysokość okna rozmowy w pikselach na stronie głównej.<br /><em>Limit wynosi od 50 do 1000</em>.',
 	'MCHAT_LOCATION'				=> 'Lokalizacja na forum',
 	'MCHAT_LOCATION_EXPLAIN'		=> 'Wybierz lokalizację mChat na stronie głównej.',
 	'MCHAT_TOP_OF_FORUM'			=> 'Góra',
@@ -69,9 +70,9 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE'					=> 'Włącz opcję wyczyszczenia wiadomości',
 	'MCHAT_PRUNE_EXPLAIN'			=> 'Jeśli zaznaczono tak, opcja wyczyszczenia wiadomości będzie dostępna.<br /><em>Tylko wtedy, jeśli użytkownik wyświetli stronę niestandardową lub archiwum</em>.',
 	'MCHAT_PRUNE_NUM'				=> 'Ilość wyczyszczonych wiadomości',
-	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Wpisz liczbę',
+	'MCHAT_PRUNE_NUM_EXPLAIN'		=> 'Wpisz liczbę',	
 	'MCHAT_MESSAGE_LIMIT'			=> 'Limit wiadomości',
-	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Maksymalna ilość wiadomości wyświetlana w oknie mChat.<br /><em>Rekomendowane od 10 do 30</em>.',
+	'MCHAT_MESSAGE_LIMIT_EXPLAIN'	=> 'Ilość wiadomości wyświetlana w oknie mChat.<br /><em>Rekomendowane od 10 do 30</em>.',
 	'MCHAT_MESSAGE_NUM'				=> 'Limit wiadomości na stronie głównej',
 	'MCHAT_MESSAGE_NUM_EXPLAIN'	=> 'Maksymalna ilość wiadomości wyświetlana w mChat na stronie głównej.<br /><em>Rekomendowane od 10 do 30</em>.',
 	'MCHAT_ARCHIVE_LIMIT'			=> 'Limit Archiwum',
@@ -83,20 +84,20 @@ $lang = array_merge($lang, array(
 	'MCHAT_CUSTOM_PAGE'				=> 'Strona niestandardowa',
 	'MCHAT_CUSTOM_PAGE_EXPLAIN'		=> 'Zewól na używanie strony niestandardowej',
 	'MCHAT_CUSTOM_HEIGHT'			=> 'Wysokość strony niestandardowej',
-	'MCHAT_CUSTOM_HEIGHT_EXPLAIN'	=> 'Wysokość okna rozmowy w pikselach na on osobnej stronie mChat.<br /><em>Limit wynosi od 50 do 1000</em>.',
+	'MCHAT_CUSTOM_HEIGHT_EXPLAIN'	=> 'Wysokość okna rozmowy w pikselach na osobnej stronie mChat.<br /><em>Limit wynosi od 50 do 1000</em>.',
 	'MCHAT_DATE_FORMAT'				=> 'Format Daty',
-	'MCHAT_DATE_FORMAT_EXPLAIN'		=> 'Użyta składnia jest taka sama jak w PHP <a href="http://www.php.net/date">date()</a> function.',
+	'MCHAT_DATE_FORMAT_EXPLAIN'		=> 'Użyta składnia jest taka sama jak w <a href="http://www.php.net/date">PHP</a>.',
 	'MCHAT_CUSTOM_DATEFORMAT'		=> 'Niestandardowa…',
 	'MCHAT_WHOIS'					=> 'Kto aktualnie czatuje',
 	'MCHAT_WHOIS_EXPLAIN'			=> 'Pozwala na wyświetlanie użytkowników, którzy aktualnie korzystają z mChat',
 	'MCHAT_WHOIS_REFRESH'			=> 'Odświeżanie czatujących użytkowników',
 	'MCHAT_WHOIS_REFRESH_EXPLAIN'	=> 'Po ilu sekundach nastąpi automatyczne odświeżanie czatujących użytkowników.<br /><em>Limit wynosi od 30 do 300 sekund</em>.',
 	'MCHAT_BBCODES_DISALLOWED'		=> 'Niedozwolone bbcodes',
-	'MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> 'Tutaj umieść bbcodes których nie będzie można używać w wiadomościach.<br />Oddzielne bbcodes z pionową kreską, na przykład: <br />b|i|u|code|list|list=|flash|quote i/lub %wybierz z tych%s',
+	'MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> 'Tutaj umieść bbcodes których nie będzie można używać w wiadomościach.<br />Oddziel bbcodes pionową kreską, na przykład: <br />b|i|u|code|list|list=|flash|quote i/lub %wybierz z tych%s',
 	'MCHAT_STATIC_MESSAGE'			=> 'Ogłoszenie',
-	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Tutaj możesz umieścić ogłoszenie które wyświetli się osobą czatującym.  kod HTML jest dozwolony.<br />Zostaw puste aby wyłączyć wyświetlanie.  Limit wynosi max 255 znaków.<br /></strong>',
+	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Tutaj możesz umieścić ogłoszenie które wyświetli się osobą korzystającym z mChat.  kod HTML jest dozwolony.<br />Zostaw puste aby wyłączyć wyświetlanie.  Limit wynosi max 255 znaków.<br /></strong>',
 	'MCHAT_USER_TIMEOUT'			=> 'Limit czasu dla użytkownika',
-	'MCHAT_USER_TIMEOUT_EXPLAIN'	=> 'Ustaw czas w sekundach do zakończenia sesji użytkownika. Ustaw 0 sby wyłączyć.<br /><em>Limit znajdziesz tutaj %sforum konfiguracja ustawień dla sessji%s aktualnie jest ustawione na %s sekund</em>',
+	'MCHAT_USER_TIMEOUT_EXPLAIN'	=> 'Ustaw czas w sekundach do zakończenia sesji użytkownika. Ustaw 0 aby wyłączyć.<br /><em>Limit znajdziesz %stutaj%s aktualnie jest ustawione na %s sekund</em>',
 	'MCHAT_OVERRIDE_SMILIE_LIMIT'	=> 'Limit emotikon',
 	'MCHAT_OVERRIDE_SMILIE_LIMIT_EXPLAIN'	=> 'Zaznacz TAK aby włączyć limit emotikon używanych w wiadmościach mChat',
 	'MCHAT_OVERRIDE_MIN_POST_CHARS'	=> 'Limit znaków',
@@ -106,11 +107,11 @@ $lang = array_merge($lang, array(
 	'MCHAT_MAIN'					=> 'Główne ustawienia',
 	'MCHAT_STATS'					=> 'Kto czatuje ?',
 	'MCHAT_STATS_INDEX'				=> 'Statystyki na stronie głównej',
-	'MCHAT_STATS_INDEX_EXPLAIN'		=> 'Pokaż kto korysta z mChat w dziale statystyki na forum',
+	'MCHAT_STATS_INDEX_EXPLAIN'		=> 'Pokaż kto korzysta z mChat w dziale statystyki na stronie głównej',
 	'MCHAT_MESSAGES'				=> 'Ustawienia wiadomości',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Auto-aktuaizacja podczas pisania wiadomości',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Zaznacz TAK aby nie auto-aktualizować mChatu gdy użytkownik pisze wiadomość',
-
+	
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'Rozszerzenie mChat musi zostać zaktualizowane.  Proszę skontaktuj się z administratorem.',
 	'MCHAT_WRONG_VERSION'	=> 'Zainstalowano złą wersję rozszerzenia.  Proszę uruchom %instalator%s aby zainstalować nową wersję rozszerzenia.',
@@ -130,16 +131,16 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MAX_WORDS_LNGTH'	=> 'Ustawiona wartość długości słowa jest za mała.',
 	'TOO_LARGE_MAX_WORDS_LNGTH'	=> 'Ustawiona wartość długości słowa jest za duża.',
 	'TOO_SMALL_WHOIS_REFRESH'	=> 'Ustawiona wartość odświeżania osób czatujących jest za mała.',
-	'TOO_LARGE_WHOIS_REFRESH'	=> 'Ustawiona wartość odświeżania osób czatujących jest za duża.',
+	'TOO_LARGE_WHOIS_REFRESH'	=> 'Ustawiona wartość odświeżania osób czatujących jest za duża.',	
 	'TOO_SMALL_INDEX_HEIGHT'	=> 'Ustawiona wartość wysokości mChat na stronie głównej jest za mała.',
 	'TOO_LARGE_INDEX_HEIGHT'	=> 'Ustawiona wartość wysokości mChat na stronie głównej jest za duża.',
 	'TOO_SMALL_CUSTOM_HEIGHT'	=> 'Ustawiona wartość wysokości strony niestandardowej mChat jest za mała.',
 	'TOO_LARGE_CUSTOM_HEIGHT'	=> 'Ustawiona wartość wysokości strony niestandardowej mChat jest za duża.',
 	'TOO_SHORT_STATIC_MESSAGE'	=> 'Ustawiona wartość limitu czasu dla użytkownika jest za mała.',
-	'TOO_LONG_STATIC_MESSAGE'	=> 'Ustawiona wartość limitu czasu dla użytkownika jest za duża.',
+	'TOO_LONG_STATIC_MESSAGE'	=> 'Ustawiona wartość limitu czasu dla użytkownika jest za duża.',	
 	'TOO_SMALL_TIMEOUT'	=> 'Ustawiona wartość ogłoszenia jest za mała.',
 	'TOO_LARGE_TIMEOUT'	=> 'Ustawiona wartość ogłoszenia jest za duża.',
-
+	
 		// User perms
 	'ACL_U_MCHAT_USE'			=> 'Może używać mChat',
 	'ACL_U_MCHAT_VIEW'			=> 'Może przeglądać mChat',
@@ -154,5 +155,5 @@ $lang = array_merge($lang, array(
 
 	// Admin perms
 	'ACL_A_MCHAT'				=> array('lang' => 'Może zarządzać ustawieniami Mchat', 'cat' => 'permissions'), // Using a phpBB category here
-
+	
 ));
