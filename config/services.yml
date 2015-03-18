@@ -2,6 +2,12 @@ services:
     dmzx.mchat.controller:
         class: dmzx\mchat\controller\mchat
         arguments:
+            - @dmzx.mchat.render_helper
+            - @controller.helper
+            - @request
+    dmzx.mchat.render_helper:
+        class: dmzx\mchat\core\render_helper
+        arguments:
             - @dmzx.mchat.functions_mchat
             - @config
             - @controller.helper
@@ -26,6 +32,7 @@ services:
     dmzx.mchat.listener:
         class: dmzx\mchat\event\listener
         arguments:
+            - @dmzx.mchat.render_helper
             - @auth
             - @config
             - @controller.helper
