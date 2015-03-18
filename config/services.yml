@@ -39,7 +39,6 @@ services:
             - @template
             - @user
             - @dbal.conn
-            - @cache
             - %core.root_path%
             - %core.php_ext%
         tags:

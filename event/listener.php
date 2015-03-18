@@ -16,6 +16,9 @@ class listener implements EventSubscriberInterface
 	/** @var \dmzx\mchat\core\render_helper */
 	protected $render_helper;
 
+	/** @var \phpbb\auth\auth */
+	protected $auth;
+
 	protected $config;
 
 	/** @var \phpbb\template\template */
@@ -32,9 +35,10 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\controller\helper */
 	protected $controller_helper;
 
-	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $php_ext, $auth)
+	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $php_ext)
 	{
 		$this->render_helper = $render_helper;
+		$this->auth = $auth;
 		$this->config = $config;
 		$this->template = $template;
 		$this->controller_helper = $controller_helper;
@@ -42,7 +46,6 @@ class listener implements EventSubscriberInterface
 		$this->db = $db;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
-		$this->auth = $auth;
 	}
 
 	static public function getSubscribedEvents()
@@ -88,8 +91,9 @@ class listener implements EventSubscriberInterface
 	public function display_mchat_on_index($event)
 	{
 		$mchat_on_index = $this->config['mchat_on_index'];
+		$mchat_view	= ($this->auth->acl_get('u_mchat_view')) ? true : false;
 
-		if ($mchat_on_index)
+		if ($mchat_on_index && $mchat_view)
 		{
 			$this->template->assign_var('S_MCHAT_ON_INDEX', true);
 
