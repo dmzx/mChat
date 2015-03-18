@@ -41,7 +41,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_TABLE_DELETED'			=> 'De mChat tabel is succesvol verwijderd',
 	'MCHAT_TABLE_CREATED'			=> 'De mChat tabel is succesvol aangemaakt',
 	'MCHAT_TABLE_UPDATED'			=> 'De mChat tabel is succesvol bijgewerkt.',
-	'MCHAT_NOTHING_TO_UPDATE'		=> 'Niks te doen..... door gaan',
+	'MCHAT_NOTHING_TO_UPDATE'		=> 'Niks te doen..... doorgaan',
 	'UCP_CAT_MCHAT'					=> 'mChat voorkeuren',
 	'UCP_MCHAT_CONFIG'				=> 'Gebruiker mChat voorkeuren',
 
@@ -53,7 +53,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_TITLE'					=> 'Mini-Chat',
 	'MCHAT_VERSION'					=> 'Versie:',
 	'MCHAT_ENABLE'					=> 'Inschakelen mChat Extensie',
-	'MCHAT_ENABLE_EXPLAIN'			=> 'In of Uitschakelen van deze extensie.',
+	'MCHAT_ENABLE_EXPLAIN'			=> 'In- of Uitschakelen van deze extensie.',
 	'MCHAT_AVATARS'					=> 'Toon avatars',
 	'MCHAT_AVATARS_EXPLAIN'			=> 'Als je ja hebt aangevinkt, verkleinde gebruikers avatars zullen worden getoond',
 	'MCHAT_ON_INDEX'				=> 'mChat Op de Index pagina',
@@ -113,7 +113,7 @@ $lang = array_merge($lang, array(
 
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'De mChat extensie moet worden bijgewerkt. Neem contact op met de forum beheerder om de mChat bij te laten werken.',
-	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geinstalleerd.  Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
+	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geïnstalleerd.  Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
 	'WARNING'	=> 'Waarschuwing',
 	'TOO_LONG_DATE'		=> 'De datum weergave die je hebt ingegeven is te lang.',
 	'TOO_SHORT_DATE'	=> 'De datum weergave die je hebt ingegeven is te kort.',
@@ -153,6 +153,6 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_URLS'			=> 'Je kunt urls posten in mChat',
 
 	// Admin perms
-	'ACL_A_MCHAT'				=> array('lang' => 'Can manage mChat settings', 'cat' => 'permissions'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> array('lang' => 'Kan mChat instellingen beheren', 'cat' => 'permissions'), // Using a phpBB category here
 
 ));
