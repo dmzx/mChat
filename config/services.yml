@@ -1,3 +1,6 @@
+imports:
+    - { resource: tables.yml }
+
 services:
     dmzx.mchat.controller:
         class: dmzx\mchat\controller\mchat
@@ -20,6 +23,7 @@ services:
             - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%
+            - %dmzx.mchat.table.mchat%
     dmzx.mchat.functions_mchat:
         class: dmzx\mchat\core\functions_mchat
         arguments:
@@ -29,6 +33,9 @@ services:
             - @dbal.conn
             - @cache
             - %core.table_prefix%
+            - %dmzx.mchat.table.mchat%
+            - %dmzx.mchat.table.mchat_config%
+            - %dmzx.mchat.table.mchat_sessions%
     dmzx.mchat.listener:
         class: dmzx\mchat\event\listener
         arguments:
