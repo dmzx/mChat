@@ -1059,6 +1059,21 @@ class render_helper
 				}
 				break;
 		}
+
+		// show index stats
+		if (!empty($this->config['mchat_stats_index']) && !empty($this->user->data['user_mchat_stats_index']))
+		{
+			// stats display
+			$mchat_session_time = !empty($this->config_mchat['timeout']) ? $this->config_mchat['timeout'] : $this->config['session_length'];
+			$mchat_stats = $this->functions_mchat->mchat_users($mchat_session_time);
+			$this->template->assign_vars(array(
+				'MCHAT_INDEX_STATS'	=> true,
+				'MCHAT_INDEX_USERS_COUNT'	=> $mchat_stats['mchat_users_count'],
+				'MCHAT_INDEX_USERS_LIST'	=> !empty($mchat_stats['online_userlist']) ? $mchat_stats['online_userlist'] : '',
+				'L_MCHAT_ONLINE_EXPLAIN'	=> $mchat_stats['refresh_message'],
+			));
+		}
+
 		$copyright = base64_decode('PGEgaHJlZj0iaHR0cDovL3JtY2dpcnI4My5vcmciPlJNY0dpcnI4MzwvYT4gJmNvcHk7IDxhIGhyZWY9Imh0dHA6Ly93d3cuZG16eC13ZWIubmV0IiB0aXRsZT0id3d3LmRtengtd2ViLm5ldCI+ZG16eDwvYT4=');
 		add_form_key('mchat_posting');
 		// Template function...
@@ -1100,6 +1115,7 @@ class render_helper
 			'S_MCHAT_INDEX_STATS'	=> $this->user->data['user_mchat_stats_index'],
 			'U_MORE_SMILIES'		=> append_sid("{$this->phpbb_root_path}posting.{$this->phpEx}", 'mode=smilies'),
 			'U_MCHAT_RULES'			=> $this->helper->route('dmzx_mchat_controller', array('mode' => 'rules')),
+			'S_MCHAT_ON_INDEX'		=> ($this->config['mchat_on_index'] && !empty($this->user->data['user_mchat_index'])) ? true : false,
 		));
 
 		// Return for: \$this->helper->render(filename, lang_title);
