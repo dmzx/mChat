@@ -19,8 +19,12 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('config.add', array('mchat_enable', true)),
 			array('config.add', array('mchat_on_index', true)),
 			array('config.add', array('mchat_new_posts', false)),
+			array('config.add', array('mchat_new_posts_topic', false)),
+			array('config.add', array('mchat_new_posts_reply', false)),
+			array('config.add', array('mchat_new_posts_edit', false)),
+			array('config.add', array('mchat_new_posts_quote', false)),
 			array('config.add', array('mchat_stats_index', false)),
-			array('config.add', array('mchat_version','0.0.8')),
+			array('config.add', array('mchat_version','0.0.9')),
 
 			array('permission.add', array('u_mchat_use')),
 			array('permission.add', array('u_mchat_view')),

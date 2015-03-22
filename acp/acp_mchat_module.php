@@ -162,6 +162,14 @@ class acp_mchat_module
 				$config->set('mchat_on_index', $request->variable('mchat_on_index', 0));
 				// update setting in config table to allow new posts to display or not
 				$config->set('mchat_new_posts', $request->variable('mchat_new_posts', 0));
+				// update setting in config table to allow new posts to display or not
+				$config->set('mchat_new_posts_topic', $request->variable('mchat_new_posts_topic', 0));
+				// update setting in config table to allow new replies to display or not
+				$config->set('mchat_new_posts_reply', $request->variable('mchat_new_posts_reply', 0));
+				// update setting in config table to allow new edit posts to display or not
+				$config->set('mchat_new_posts_edit', $request->variable('mchat_new_posts_edit', 0));
+				// update setting in config table to allow quoted posts to display or not
+				$config->set('mchat_new_posts_quote', $request->variable('mchat_new_posts_quote', 0));
 				// update setting in config table for stats on index
 				$config->set('mchat_stats_index', $request->variable('mchat_stats_index', 0));
 				// and an entry into the log table
@@ -191,6 +199,11 @@ class acp_mchat_module
 		$mchat_on_index = isset($config['mchat_on_index']) ? $config['mchat_on_index'] : 0;
 		$mchat_version = isset($config['mchat_version']) ? $config['mchat_version'] : '';
 		$mchat_new_posts = isset($config['mchat_new_posts']) ? $config['mchat_new_posts'] : 0;
+		$mchat_new_posts_topic = isset($config['mchat_new_posts_topic']) ? $config['mchat_new_posts_topic'] : 0;
+		$mchat_new_posts_reply = isset($config['mchat_new_posts_reply']) ? $config['mchat_new_posts_reply'] : 0;
+		$mchat_new_posts_edit = isset($config['mchat_new_posts_edit']) ? $config['mchat_new_posts_edit'] : 0;
+		$mchat_new_posts_quote = isset($config['mchat_new_posts_quote']) ? $config['mchat_new_posts_quote'] : 0;
+
 		$mchat_stats_index = isset($config['mchat_stats_index']) ? $config['mchat_stats_index'] : 0;
 
 		$dateformat_options = '';
@@ -240,6 +253,11 @@ class acp_mchat_module
 			'MCHAT_OVERRIDE_MIN_POST_CHARS'	=> !empty($mchat_row['override_min_post_chars']) ? $mchat_row['override_min_post_chars'] : $mchat_config['override_min_post_chars'],
 			'MCHAT_TIMEOUT'					=> !empty($mchat_row['timeout']) ? $mchat_row['timeout'] : $mchat_config['timeout'],
 			'MCHAT_NEW_POSTS'				=> ($mchat_new_posts) ? true : false,
+			'MCHAT_NEW_POSTS_TOPIC'				=> ($mchat_new_posts_topic) ? true : false,
+			'MCHAT_NEW_POSTS_REPLY'				=> ($mchat_new_posts_reply) ? true : false,
+			'MCHAT_NEW_POSTS_EDIT'				=> ($mchat_new_posts_edit) ? true : false,
+			'MCHAT_NEW_POSTS_QUOTE'				=> ($mchat_new_posts_quote) ? true : false,
+
 			'MCHAT_PAUSE_ON_INPUT'			=> !empty($mchat_row['pause_on_input']) ? $mchat_row['pause_on_input'] : $mchat_config['pause_on_input'],
 
 			'L_MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> sprintf($user->lang['MCHAT_BBCODES_DISALLOWED_EXPLAIN'], '<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=bbcodes', true, $user->session_id) . '">', '</a>'),
