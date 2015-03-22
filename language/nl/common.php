@@ -101,7 +101,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_TOPIC'			=> 'Een nieuw Topic gemaakt',
 	'MCHAT_NEW_REPLY'			=> 'Een nieuw antwoord gemaakt',
 	'MCHAT_NEW_QUOTE'			=> 'Beantwoord met een Citaat',
-	'MCHAT_NEW_EDIT'			=> 'Maak een bewerking',
+	'MCHAT_NEW_EDIT'			=> 'Een bewerking gemaakt',
 	// UCP
 	'UCP_PROFILE_MCHAT'	=> 'mChat voorkeuren',
 	'DISPLAY_MCHAT' 	=> 'Toon mChat op de index pagina',
