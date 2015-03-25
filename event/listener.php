@@ -59,11 +59,23 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
+			'core.viewonline_overwrite_location'				  => 'add_page_viewonline',
 			'core.user_setup'					=> 'load_language_on_setup',
 			'core.page_header'					=> 'add_page_header_link',
 			'core.index_modify_page_title'		=> 'display_mchat_on_index',
 			'core.posting_modify_submit_post_after'	 => 'posting_modify_submit_post_after',
 		);
+	}
+
+	public function add_page_viewonline($event)
+	{
+	global $user, $phpbb_container, $phpEx;
+
+	   if (strrpos($event['row']['session_page'], 'app.' . $phpEx . '/chat') === 0)
+	   {
+		$event['location'] = $user->lang('MCHAT_TITLE');
+		$event['location_url'] = $phpbb_container->get('controller.helper')->route('dmzx_mchat_controller');
+	   }
 	}
 
 	public function load_language_on_setup($event)
@@ -144,7 +156,7 @@ class listener implements EventSubscriberInterface
 	  $uid = $bitfield = $options = ''; // will be modified by generate_text_for_storage
 	  generate_text_for_storage($message, $uid, $bitfield, $options, true, false, false);
 	  $sql_ary = array(
-		 'forum_id'		 => ($topic_type == POST_GLOBAL) ? 0 : $event['forum_id'],
+		 'forum_id'		 => $event['forum_id'],
 		 'post_id'		 => $event['post_id'],
 			'user_id'		 => $this->user->data['user_id'],
 			'user_ip'		 => $this->user->data['session_ip'],
