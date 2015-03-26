@@ -342,9 +342,7 @@ class render_helper
 							'MCHAT_ALLOW_DEL'		=> $mchat_del,
 							'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 							'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
-							'BOT_USER_ID' => $row['user_id'] != '1',
-							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '55' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 							'MCHAT_MESSAGE_ID'		=> $row['message_id'],
 							'MCHAT_USERNAME_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']),
@@ -458,9 +456,7 @@ class render_helper
 						'MCHAT_ALLOW_DEL'		=> $mchat_del,
 						'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 						'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-						'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
-						'BOT_USER_ID' => $row['user_id'] != '1',
-						'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+						'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '55' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 						'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 						'MCHAT_MESSAGE_ID' 		=> $row['message_id'],
 						'MCHAT_USERNAME_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']),
@@ -512,7 +508,7 @@ class render_helper
 					// Return for: \Symfony\Component\HttpFoundation\JsonResponse
 					return array(
 						'json'			=> true,
-						'message'		  => str_replace('\'', '&rsquo;', $message),
+						'message'		=> $message,
 					);
 				}
 				else
@@ -768,9 +764,7 @@ class render_helper
 					'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 					'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 					'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-					'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
-					'BOT_USER_ID' => $row['user_id'] != '1',
-					'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+					'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '55' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 					'MCHAT_MESSAGE_ID'		=> $row['message_id'],
 					'MCHAT_USERNAME_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']),
 					'MCHAT_USERNAME'		=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']),
@@ -895,20 +889,21 @@ class render_helper
 					if ($this->config_mchat['whois'])
 					{
 						// Grab group details for legend display for who is online on the custom page.
+						$order_legend = ($this->config['legend_sort_groupname']) ? 'group_name' : 'group_legend';
 						if ($this->auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 						{
 							$sql = 'SELECT group_id, group_name, group_colour, group_type FROM ' . GROUPS_TABLE . '
-						WHERE group_legend = 1
-							ORDER BY group_name ASC';
+						WHERE group_legend <> 0
+							ORDER BY ' . $order_legend . ' ASC';
 						}
 						else
 						{
 							$sql = 'SELECT g.group_id, g.group_name, g.group_colour, g.group_type FROM ' . GROUPS_TABLE . ' g
 						LEFT JOIN ' . USER_GROUP_TABLE . ' ug ON (g.group_id = ug.group_id AND ug.user_id = ' . $this->user->data['user_id'] . ' AND ug.user_pending = 0)
-							WHERE g.group_legend = 1
+							WHERE g.group_legend <> 0
 								AND (g.group_type <> ' . GROUP_HIDDEN . '
 									OR ug.user_id = ' . (int) $this->user->data['user_id'] . ')
-							ORDER BY g.group_name ASC';
+							ORDER BY g.' . $order_legend . ' ASC';
 						}
 						$result = $this->db->sql_query($sql);
 						$legend = array();
@@ -997,9 +992,7 @@ class render_helper
 							'MCHAT_ALLOW_DEL'		=> $mchat_del,
 							'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 							'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-                            'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
-                            'BOT_USER_ID' => $row['user_id'] != '1',
-							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '55' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 							'MCHAT_MESSAGE_ID'		=> $row['message_id'],
 							'MCHAT_USERNAME_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']),
