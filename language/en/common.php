@@ -136,6 +136,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_PM'				  => '(PM)',
 	'MORE_SMILIES'			  => 'More Smilies',
 
-	//Cusome edits
+	//Custom edits
 	'REPLY_WITH_LIKE'	   =>'Like This Post',
 	));

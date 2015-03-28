@@ -135,4 +135,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_SEND_PM'			 => 'Invia messaggio privato',
 	'MCHAT_PM'				  => '(PM)',
 	'MORE_SMILIES'			  => 'Altre Smile',
+	
+	//Custom edits
+	'REPLY_WITH_LIKE'	   =>'Like This Post',
 ));
