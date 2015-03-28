@@ -235,7 +235,7 @@ var mChat={
 	   },
 	   edit:function(id){
 		 var message=$jQ('#edit'+id).val();
-		 apprise(mChatEditInfo + ' (Shift and Enter for new line)',{
+		 apprise(mChatEditInfo,{
 		   'textarea':message,
 		   'animate':true,
 		   'position':200,

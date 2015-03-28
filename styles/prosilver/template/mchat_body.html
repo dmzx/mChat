@@ -5,7 +5,11 @@
 <!-- INCLUDEJS editor.js -->
 <!-- INCLUDEJS jquery.titlealert.min.js -->
 <!-- INCLUDEJS jquery_cookie_mini.js -->
+<!-- IF MCHAT_MESSAGE_TOP  -->
 <!-- INCLUDEJS mchat_ajax_mini.js -->
+<!-- ELSE -->
+<!-- INCLUDEJS mchat_ajax_mini_top.js -->
+<!-- ENDIF -->
 <!-- INCLUDEJS jquery-1.8.3.min.js -->
 <!-- INCLUDEJS jquery.maxlength.min.js -->
 
@@ -94,24 +98,44 @@
 			var mChatFocusFix = true;
 			<!-- ENDIF -->
 			function insert_quote(user,text)
-            {
-               var quote = decodeURIComponent(text.replace(/\+/g, " "));
-               quote = quote.replace(/&lt;/g, "<");
-               quote = quote.replace(/&gt;/g, ">");
-               quote = quote.replace(/&#58;/g, ':');
-               quote = quote.replace(/&#46;/g, '.');
-               quote = quote.replace(/&amp;/g, '&');
-               quote = quote.replace(/&quot;/g, '"');
-               var username = decodeURIComponent(user.replace(/\+/g, " "));
-               username = username.replace(/&lt;/g, "<");
-               username = username.replace(/&gt;/g, ">");
-               username = username.replace(/&#58;/g, ':');
-               username = username.replace(/&#46;/g, '.');
-               username = username.replace(/&amp;/g, '&');
-               username = username.replace(/&quot;/g, '"');
-               document.getElementById('mChatMessage').value += '[quote="' + username + '"]' + ' ' + quote + '[/quote]';
-               document.getElementById('mChatMessage').focus();
-            }
+			{
+			   var quote = decodeURIComponent(text.replace(/\+/g, " "));
+			   quote = quote.replace(/&lt;/g, "<");
+			   quote = quote.replace(/&gt;/g, ">");
+			   quote = quote.replace(/&#58;/g, ':');
+			   quote = quote.replace(/&#46;/g, '.');
+			   quote = quote.replace(/&amp;/g, '&');
+			   quote = quote.replace(/&quot;/g, '"');
+			   var username = decodeURIComponent(user.replace(/\+/g, " "));
+			   username = username.replace(/&lt;/g, "<");
+			   username = username.replace(/&gt;/g, ">");
+			   username = username.replace(/&#58;/g, ':');
+			   username = username.replace(/&#46;/g, '.');
+			   username = username.replace(/&amp;/g, '&');
+			   username = username.replace(/&quot;/g, '"');
+			   document.getElementById('mChatMessage').value += '[quote="' + username + '"]' + ' ' + quote + '[/quote]';
+			   document.getElementById('mChatMessage').focus();
+			}
+
+			function insert_like(user,text)
+			{
+			   var quote = decodeURIComponent(text.replace(/\+/g, " "));
+			   quote = quote.replace(/&lt;/g, "<");
+			   quote = quote.replace(/&gt;/g, ">");
+			   quote = quote.replace(/&#58;/g, ':');
+			   quote = quote.replace(/&#46;/g, '.');
+			   quote = quote.replace(/&amp;/g, '&');
+			   quote = quote.replace(/&quot;/g, '"');
+			   var username = decodeURIComponent(user.replace(/\+/g, " "));
+			   username = username.replace(/&lt;/g, "<");
+			   username = username.replace(/&gt;/g, ">");
+			   username = username.replace(/&#58;/g, ':');
+			   username = username.replace(/&#46;/g, '.');
+			   username = username.replace(/&amp;/g, '&');
+			   username = username.replace(/&quot;/g, '"');
+			   document.getElementById('mChatMessage').value += 'Like\'s this post.[quote="' + username + '"]' + ' ' + quote + '[/quote]';
+			   document.getElementById('mChatMessage').focus();
+			}
 			// ]]>
 			</script>
 			<!-- IF not MCHAT_ARCHIVE_MODE -->

@@ -40,6 +40,7 @@ $lang = array_merge($lang, array(
 
 	'MCHAT_TITLE'				=> 'Mini-Chat',
 	'MCHAT_ADD'					=> 'Envoyer',
+	'MCHAT_IN'					=> 'In',
 	'MCHAT_ANNOUNCEMENT'		=> 'Annonce',
 	'MCHAT_ARCHIVE'				=> 'Archives',
 	'MCHAT_ARCHIVE_PAGE'		=> 'Archives du mini-chat',

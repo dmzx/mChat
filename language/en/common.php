@@ -40,6 +40,7 @@ $lang = array_merge($lang, array(
 
 	'MCHAT_TITLE'				=> 'Mini-Chat',
 	'MCHAT_ADD'					=> 'Send',
+	'MCHAT_IN'					=> 'In',
 	'MCHAT_ANNOUNCEMENT'		=> 'Announcement',
 	'MCHAT_ARCHIVE'				=> 'Archive',
 	'MCHAT_ARCHIVE_PAGE'		=> 'Mini-Chat Archive',
@@ -134,4 +135,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_SEND_PM'			 => 'Send Private Message',
 	'MCHAT_PM'				  => '(PM)',
 	'MORE_SMILIES'			  => 'More Smilies',
-));
+
+	//Cusome edits
+	'REPLY_WITH_LIKE'	   =>'Like This Post',
+	));

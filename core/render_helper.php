@@ -69,7 +69,6 @@ class render_helper
 		$this->db = $db;
 		$this->cache = $cache;
 		$this->request = $request;
-
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->phpEx = $phpEx;
 		$this->table_prefix = $table_prefix;
@@ -417,7 +416,10 @@ class render_helper
 				$rows = $this->db->sql_fetchrowset($result);
 				$this->db->sql_freeresult($result);
 				// Reverse the array wanting messages appear in reverse
+				if($this->config['mchat_message_top'])
+				{
 				$rows = array_reverse($rows);
+				}
 
 				foreach($rows as $row)
 				{
@@ -534,7 +536,7 @@ class render_helper
 				}
 
 				// Reguest...
-				$message = utf8_normalize_nfc(request_var('message', '', true));
+				$message = utf8_ucfirst(utf8_normalize_nfc(request_var('message', '', true)));
 
 				// must have something other than bbcode in the message
 				if (empty($mchatregex))
@@ -956,7 +958,10 @@ class render_helper
 					$rows = $this->db->sql_fetchrowset($result);
 					$this->db->sql_freeresult($result);
 
+					if($this->config['mchat_message_top'])
+					{
 					$rows = array_reverse($rows, true);
+					}
 
 					foreach($rows as $row)
 					{
@@ -999,7 +1004,7 @@ class render_helper
 							'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 							'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
 							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
-                            'BOT_USER_ID' => $row['user_id'] != '1',
+							'BOT_USER_ID' => $row['user_id'] != '1',
 							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 							'MCHAT_MESSAGE_ID'		=> $row['message_id'],
@@ -1098,6 +1103,7 @@ class render_helper
 			'MCHAT_ALLOW_IP'		=> $mchat_ip,
 			'MCHAT_NOMESSAGE_MODE'	=> $mchat_no_message,
 			'MCHAT_ALLOW_BBCODES'	=> ($mchat_allow_bbcode && $this->config['allow_bbcode']) ? true : false,
+			'MCHAT_MESSAGE_TOP'		=> $this->config['mchat_message_top'] ? true : false,
 			'MCHAT_ENABLE'			=> $this->config['mchat_enable'],
 			'MCHAT_ARCHIVE_URL'		=> $this->helper->route('dmzx_mchat_controller', array('mode' => 'archive')),
 			'MCHAT_CUSTOM_PAGE'		=> $mchat_custom_page,

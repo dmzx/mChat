@@ -172,6 +172,9 @@ class acp_mchat_module
 				$config->set('mchat_new_posts_quote', $request->variable('mchat_new_posts_quote', 0));
 				// update setting in config table for stats on index
 				$config->set('mchat_stats_index', $request->variable('mchat_stats_index', 0));
+				// update setting in config table for message om top
+				$config->set('mchat_message_top', $request->variable('mchat_message_top', 0));
+
 				// and an entry into the log table
 				add_log('admin', 'LOG_MCHAT_CONFIG_UPDATE');
 
@@ -206,6 +209,8 @@ class acp_mchat_module
 
 		$mchat_stats_index = isset($config['mchat_stats_index']) ? $config['mchat_stats_index'] : 0;
 
+		$mchat_message_top = isset($config['mchat_message_top']) ? $config['mchat_message_top'] : 0;
+
 		$dateformat_options = '';
 		foreach ($user->lang['dateformats'] as $format => $null)
 		{
@@ -230,6 +235,7 @@ class acp_mchat_module
 			'MCHAT_PRUNE_NUM'				=> !empty($mchat_row['prune_num']) ? $mchat_row['prune_num'] : $mchat_config['prune_num'],
 			'MCHAT_ENABLE'					=> ($mchat_enable) ? true : false,
 			'MCHAT_ON_INDEX'				=> ($mchat_on_index) ? true : false,
+			'MCHAT_MESSAGE_TOP'				=> ($mchat_message_top) ? true : false,
 			'MCHAT_LOCATION'				=> !empty($mchat_row['location']) ? $mchat_row['location'] : $mchat_config['location'],
 			'MCHAT_REFRESH'					=> !empty($mchat_row['refresh']) ? $mchat_row['refresh'] : $mchat_config['refresh'],
 			'MCHAT_WHOIS_REFRESH'			=> !empty($mchat_row['whois_refresh']) ? $mchat_row['whois_refresh'] : $mchat_config['whois_refresh'],

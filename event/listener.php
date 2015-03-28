@@ -151,7 +151,7 @@ class listener implements EventSubscriberInterface
 			 }
 
 	  // Data...
-	  $message = utf8_normalize_nfc($mchat_new_data . ': [url=' . generate_board_url() . '/viewtopic.' . $this->phpEx . '?p=' . $event['data']['post_id'] . '#p' . $event['data']['post_id'] . ']' . $event['post_data']['post_subject'] . '[/url] in [url=' . generate_board_url() . '/viewforum.' . $this->phpEx . '?f=' . $event['forum_id'] . ']' . $event['post_data']['forum_name'] . ' Section[/url] ');
+	  $message = utf8_normalize_nfc($mchat_new_data . ': [url=' . generate_board_url() . '/viewtopic.' . $this->phpEx . '?p=' . $event['data']['post_id'] . '#p' . $event['data']['post_id'] . ']' . $event['post_data']['post_subject'] . '[/url] '. $this->user->lang['MCHAT_IN'] .' [url=' . generate_board_url() . '/viewforum.' . $this->phpEx . '?f=' . $event['forum_id'] . ']' . $event['post_data']['forum_name'] . ' Section[/url] ');
 
 	  $uid = $bitfield = $options = ''; // will be modified by generate_text_for_storage
 	  generate_text_for_storage($message, $uid, $bitfield, $options, true, false, false);
