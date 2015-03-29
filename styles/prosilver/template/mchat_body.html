@@ -72,6 +72,7 @@
 			var mChatRefreshYes = '{MCHAT_REFRESH_YES}';
 			var mChatRefreshNo = '{LA_MCHAT_REFRESH_NO}';
 			var mChatMssgLngthLong = '{MCHAT_MESS_LONG}';
+			var mChatLikes = '{LA_MCHAT_LIKES}';
 			<!-- IF MCHAT_MESSAGE_LNGTH -->
 			var mChatMssgLngth = '{MCHAT_MESSAGE_LNGTH}';
 			<!-- ELSE -->
@@ -133,7 +134,7 @@
 			   username = username.replace(/&#46;/g, '.');
 			   username = username.replace(/&amp;/g, '&');
 			   username = username.replace(/&quot;/g, '"');
-			   document.getElementById('mChatMessage').value += 'Like\'s this post.[quote="' + username + '"]' + ' ' + quote + '[/quote]';
+			   document.getElementById('mChatMessage').value += '' + mChatLikes + '[quote="' + username + '"]' + ' ' + quote + '[/quote]';
 			   document.getElementById('mChatMessage').focus();
 			}
 			// ]]>

@@ -86,6 +86,7 @@ class render_helper
 
 		// Add lang file
 		//$this->user->add_lang(array('mods/mchat_lang', 'viewtopic', 'posting'));
+		$this->user->add_lang('posting');
 
 		//chat enabled
 		if (!$this->config['mchat_enable'])
@@ -114,6 +115,9 @@ class render_helper
 		$mchat_smilies = ($this->config['allow_smilies'] && $this->auth->acl_get('u_mchat_smilies')) ? true : false;
 		$mchat_urls = ($this->config['allow_post_links'] && $this->auth->acl_get('u_mchat_urls')) ? true : false;
 		$mchat_ip = ($this->auth->acl_get('u_mchat_ip')) ? true : false;
+		$mchat_pm = ($this->auth->acl_get('u_mchat_pm')) ? true : false;
+		$mchat_like = ($this->auth->acl_get('u_mchat_like')) ? true : false;
+		$mchat_quote = ($this->auth->acl_get('u_mchat_quote')) ? true : false;
 		$mchat_add_mess	= ($this->auth->acl_get('u_mchat_use')) ? true : false;
 		$mchat_view	= ($this->auth->acl_get('u_mchat_view')) ? true : false;
 		$mchat_no_flood	= ($this->auth->acl_get('u_mchat_flood_ignore')) ? true : false;
@@ -254,11 +258,11 @@ class render_helper
 
 					meta_refresh(3, $mchat_redirect);
 					// Return for: \$this->helper->error(error_text, error_type);
-					return array(
-						'error'			=> true,
-						'error_type'	=> E_USER_NOTICE,
-						'error_text'	=> $this->user->lang['MCHAT_CLEANED'].'<br /><br />'.sprintf($this->user->lang['RETURN_PAGE'], '<a href="'.$mchat_redirect.'">', '</a>'),
-					);
+				//	return array(
+				//		'error'			=> true,
+				//		'error_type'	=> E_USER_NOTICE,
+				//		'error_text'	=> $this->user->lang['MCHAT_CLEANED'].'<br /><br />'.sprintf($this->user->lang['RETURN_PAGE'], '<a href="'.$mchat_redirect.'">', '</a>'),
+				//	);
 				}
 				else
 				{
@@ -341,7 +345,7 @@ class render_helper
 							'MCHAT_ALLOW_DEL'		=> $mchat_del,
 							'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 							'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+							'U_USER_IDS'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'BOT_USER_ID' => $row['user_id'] != '1',
 							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'MCHAT_MESSAGE_EDIT'	=> $message_edit,
@@ -460,7 +464,7 @@ class render_helper
 						'MCHAT_ALLOW_DEL'		=> $mchat_del,
 						'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 						'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-						'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+						'U_USER_IDS'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 						'BOT_USER_ID' => $row['user_id'] != '1',
 						'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 						'MCHAT_MESSAGE_EDIT'	=> $message_edit,
@@ -770,7 +774,7 @@ class render_helper
 					'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 					'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 					'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-					'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+					'U_USER_IDS'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 					'BOT_USER_ID' => $row['user_id'] != '1',
 					'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 					'MCHAT_MESSAGE_ID'		=> $row['message_id'],
@@ -1003,7 +1007,7 @@ class render_helper
 							'MCHAT_ALLOW_DEL'		=> $mchat_del,
 							'MCHAT_USER_AVATAR'		=> $mchat_avatar,
 							'U_VIEWPROFILE'			=> ($row['user_id'] != ANONYMOUS) ? append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+							'U_USER_IDS'			=> ($row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id']) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'BOT_USER_ID' => $row['user_id'] != '1',
 							'U_USER_ID'			=> ($row['user_id'] != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $this->user->data['user_id'] != $row['user_id'] && $row['user_id'] != '1' && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->phpbb_root_path}ucp.{$this->phpEx}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 							'MCHAT_MESSAGE_EDIT'	=> $message_edit,
@@ -1101,6 +1105,9 @@ class render_helper
 			'MCHAT_RULES'			=> $mchat_rules,
 			'MCHAT_ALLOW_SMILES'	=> $mchat_smilies,
 			'MCHAT_ALLOW_IP'		=> $mchat_ip,
+			'MCHAT_ALLOW_PM'		=> $mchat_pm,
+			'MCHAT_ALLOW_LIKE'		=> $mchat_like,
+			'MCHAT_ALLOW_QUOTE'		=> $mchat_quote,
 			'MCHAT_NOMESSAGE_MODE'	=> $mchat_no_message,
 			'MCHAT_ALLOW_BBCODES'	=> ($mchat_allow_bbcode && $this->config['allow_bbcode']) ? true : false,
 			'MCHAT_MESSAGE_TOP'		=> $this->config['mchat_message_top'] ? true : false,

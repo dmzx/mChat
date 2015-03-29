@@ -40,7 +40,9 @@ $lang = array_merge($lang, array(
 
 	'MCHAT_TITLE'				=> 'Mini-Chat',
 	'MCHAT_ADD'					=> 'Send',
-	'MCHAT_IN'					=> 'In',
+	'MCHAT_IN'					=> 'in',
+	'MCHAT_IN_SECTION'			=> 'section',
+	'MCHAT_LIKES'				=> 'Likes this post',
 	'MCHAT_ANNOUNCEMENT'		=> 'Announcement',
 	'MCHAT_ARCHIVE'				=> 'Archive',
 	'MCHAT_ARCHIVE_PAGE'		=> 'Mini-Chat Archive',
@@ -124,17 +126,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Characters remaining: <span class="charsLeft error"><strong>%d</strong></span>',
 	'MCHAT_TOP_POSTERS'			=> 'Top Spammers',
 	'MCHAT_NEW_CHAT'			=> 'New Chat Message!',
-	'FONT_COLOR'				=> 'Font colour',
-	'FONT_COLOR_HIDE'			=> 'Hide font colour',
-	'FONT_HUGE'					=> 'Huge',
-	'FONT_LARGE'				=> 'Large',
-	'FONT_NORMAL'				=> 'Normal',
-	'FONT_SIZE'					=> 'Font size',
-	'FONT_SMALL'				=> 'Small',
-	'FONT_TINY'					=> 'Tiny',
 	'MCHAT_SEND_PM'			 => 'Send Private Message',
 	'MCHAT_PM'				  => '(PM)',
-	'MORE_SMILIES'			  => 'More Smilies',
 
 	//Custom edits
 	'REPLY_WITH_LIKE'	   =>'Like This Post',

@@ -62,7 +62,6 @@ class acp_mchat_module
 		$this->config = $config;
 		$this->config_text = $phpbb_container->get('config_text');
 		$this->db = $db;
-
 		$this->request = $request;
 		$this->template = $template;
 		$this->user = $user;
@@ -160,19 +159,19 @@ class acp_mchat_module
 				$config->set('mchat_enable', $request->variable('mchat_enable', 0));
 				// update setting in config table for allowing on index or not
 				$config->set('mchat_on_index', $request->variable('mchat_on_index', 0));
-				// update setting in config table to allow new posts to display or not
+				// update setting in config table to enable posts to display or not
 				$config->set('mchat_new_posts', $request->variable('mchat_new_posts', 0));
-				// update setting in config table to allow new posts to display or not
+				// update setting in config table to allow topic to display or not
 				$config->set('mchat_new_posts_topic', $request->variable('mchat_new_posts_topic', 0));
-				// update setting in config table to allow new replies to display or not
+				// update setting in config table to allow replies to display or not
 				$config->set('mchat_new_posts_reply', $request->variable('mchat_new_posts_reply', 0));
-				// update setting in config table to allow new edit posts to display or not
+				// update setting in config table to allow edit posts to display or not
 				$config->set('mchat_new_posts_edit', $request->variable('mchat_new_posts_edit', 0));
 				// update setting in config table to allow quoted posts to display or not
 				$config->set('mchat_new_posts_quote', $request->variable('mchat_new_posts_quote', 0));
 				// update setting in config table for stats on index
 				$config->set('mchat_stats_index', $request->variable('mchat_stats_index', 0));
-				// update setting in config table for message om top
+				// update setting in config table for message on top
 				$config->set('mchat_message_top', $request->variable('mchat_message_top', 0));
 
 				// and an entry into the log table
@@ -206,9 +205,7 @@ class acp_mchat_module
 		$mchat_new_posts_reply = isset($config['mchat_new_posts_reply']) ? $config['mchat_new_posts_reply'] : 0;
 		$mchat_new_posts_edit = isset($config['mchat_new_posts_edit']) ? $config['mchat_new_posts_edit'] : 0;
 		$mchat_new_posts_quote = isset($config['mchat_new_posts_quote']) ? $config['mchat_new_posts_quote'] : 0;
-
 		$mchat_stats_index = isset($config['mchat_stats_index']) ? $config['mchat_stats_index'] : 0;
-
 		$mchat_message_top = isset($config['mchat_message_top']) ? $config['mchat_message_top'] : 0;
 
 		$dateformat_options = '';
@@ -263,12 +260,9 @@ class acp_mchat_module
 			'MCHAT_NEW_POSTS_REPLY'				=> ($mchat_new_posts_reply) ? true : false,
 			'MCHAT_NEW_POSTS_EDIT'				=> ($mchat_new_posts_edit) ? true : false,
 			'MCHAT_NEW_POSTS_QUOTE'				=> ($mchat_new_posts_quote) ? true : false,
-
 			'MCHAT_PAUSE_ON_INPUT'			=> !empty($mchat_row['pause_on_input']) ? $mchat_row['pause_on_input'] : $mchat_config['pause_on_input'],
-
 			'L_MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> sprintf($user->lang['MCHAT_BBCODES_DISALLOWED_EXPLAIN'], '<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=bbcodes', true, $user->session_id) . '">', '</a>'),
 			'L_MCHAT_TIMEOUT_EXPLAIN'		=> sprintf($user->lang['MCHAT_USER_TIMEOUT_EXPLAIN'],'<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=board&amp;mode=load', true, $user->session_id) . '">', '</a>', $config['session_length']),
-
 			'S_MCHAT_DATEFORMAT_OPTIONS'	=> $dateformat_options,
 			'S_CUSTOM_DATEFORMAT'			=> $s_custom,
 
