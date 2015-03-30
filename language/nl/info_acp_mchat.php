@@ -115,10 +115,10 @@ $lang = array_merge($lang, array(
 	'MCHAT_STATS'					=> 'Wie is aan het chatten',
 	'MCHAT_STATS_INDEX'				=> 'Statistieken op de Index pagina',
 	'MCHAT_STATS_INDEX_EXPLAIN'		=> 'Laat zien wie aan het chatten is in de statistieken sectie op het forum',
-	'MCHAT_MESSAGE_TOP'				=> 'Keep message on Bottom / Top',
-	'MCHAT_MESSAGE_TOP_EXPLAIN'		=> 'This will post the message bottom or top in the chat message area.',
-	'MCHAT_BOTTOM'					=> 'Bottom',
-	'MCHAT_TOP'						=> 'Top',
+'MCHAT_MESSAGE_TOP'					=> 'Toon berichten boven of beneden in mChat',
+	'MCHAT_MESSAGE_TOP_EXPLAIN'		=> 'Dit zal het geplaatste bericht boven of beneden laten zien in mChat.',
+	'MCHAT_BOTTOM'					=> 'Beneden',
+	'MCHAT_TOP'						=> 'Boven',
 	'MCHAT_MESSAGES'				=> 'Berichten instellingen',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Pauze op eventuele inactiviteit van mChat',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Stel je ja in, dan wordt mChat niet automatisch vernieuwd, todat een gebruiker een bericht plaatst in mChat',
@@ -163,6 +163,9 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_BBCODE'		=> 'Je kunt de bbcode in mChat gebruiken',
 	'ACL_U_MCHAT_SMILIES'		=> 'Je kunt de smilies in mChat gebruiken',
 	'ACL_U_MCHAT_URLS'			=> 'Je kunt urls posten in mChat',
+	'ACL_U_MCHAT_LIKE'			=> 'Je kunt de vindt ik leuk knop gebruiken in mChat',
+	'ACL_U_MCHAT_PM'			=> 'Je kunt de berichten knop gebruiken in mChat',
+	'ACL_U_MCHAT_QUOTE'			=> 'Je kunt de citeer berichten knop gebruiken in mChat',
 
 	// Admin perms
 	'ACL_A_MCHAT'				=> array('lang' => 'Kan mChat instellingen beheren', 'cat' => 'permissions'), // Using a phpBB category here
