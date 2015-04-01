@@ -41,7 +41,12 @@ class render_helper
 	protected $phpbb_root_path;
 	protected $phpEx;
 	protected $table_prefix;
-
+	/**
+	* The database tables
+	*
+	* @var string
+	*/
+	protected $mchat_table;
 	/**
 	 * Constructor
 	 *
@@ -58,7 +63,7 @@ class render_helper
 	 * @param									$phpEx
 	 * @param									$table_prefix
 	 */
-	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, $phpbb_root_path, $phpEx, $table_prefix)
+	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, $phpbb_root_path, $phpEx, $table_prefix, $mchat_table)
 	{
 		$this->functions_mchat = $functions_mchat;
 		$this->config = $config;
@@ -72,6 +77,7 @@ class render_helper
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->phpEx = $phpEx;
 		$this->table_prefix = $table_prefix;
+		$this->mchat_table = $mchat_table;
 	}
 
 	/**
@@ -253,7 +259,7 @@ class render_helper
 				if(confirm_box(true))
 				{
 					// Run cleaner
-					$sql = 'TRUNCATE TABLE ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE;
+					$sql = 'TRUNCATE TABLE ' . $this->mchat_table;
 					$this->db->sql_query($sql);
 
 					meta_refresh(3, $mchat_redirect);
@@ -293,7 +299,7 @@ class render_helper
 				if ($this->config['mchat_enable'] && $mchat_read_archive && $mchat_view)
 				{
 					// how many chats do we have?
-					$sql = 'SELECT COUNT(message_id) AS messages FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE;
+					$sql = 'SELECT COUNT(message_id) AS messages FROM ' . $this->mchat_table;
 					$result = $this->db->sql_query($sql);
 					$mchat_total_messages = $this->db->sql_fetchfield('messages');
 					$this->db->sql_freeresult($result);
@@ -308,7 +314,7 @@ class render_helper
 					$sql_where = $this->user->data['user_mchat_topics'] ? '' : 'WHERE m.forum_id = 0';
 					// Message row
 					$sql = 'SELECT m.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm
-						FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' m
+						FROM ' . $this->mchat_table . ' m
 							LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
 						' . $sql_where . '
 						ORDER BY m.message_id DESC';
@@ -370,7 +376,7 @@ class render_helper
 				}
 
 				// Run query again to get the total message rows...
-				$sql = 'SELECT COUNT(message_id) AS mess_id FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE;
+				$sql = 'SELECT COUNT(message_id) AS mess_id FROM ' . $this->mchat_table;
 				$result = $this->db->sql_query($sql);
 				$mchat_total_message = $this->db->sql_fetchfield('mess_id');
 				$this->db->sql_freeresult($result);
@@ -411,7 +417,7 @@ class render_helper
 				$mchat_message_last_id = request_var('message_last_id', 0);
 				$sql_and = $this->user->data['user_mchat_topics'] ? '' : 'AND m.forum_id = 0';
 				$sql = 'SELECT m.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm
-					FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' m, ' . USERS_TABLE . ' u
+					FROM ' . $this->mchat_table . ' m, ' . USERS_TABLE . ' u
 					WHERE m.user_id = u.user_id
 					AND m.message_id > ' . (int) $mchat_message_last_id . '
 					' . $sql_and . '
@@ -561,7 +567,7 @@ class render_helper
 				if (!$mchat_no_flood && $this->config_mchat['flood_time'])
 				{
 					$mchat_flood_current_time = time();
-					$sql = 'SELECT message_time FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . '
+					$sql = 'SELECT message_time FROM ' . $this->mchat_table . '
 						WHERE user_id = ' . (int) $this->user->data['user_id'] . '
 						ORDER BY message_time DESC';
 					$result = $this->db->sql_query_limit($sql, 1);
@@ -623,7 +629,7 @@ class render_helper
 					'bbcode_options'	=> $options,
 					'message_time'		=> time()
 				);
-				$sql = 'INSERT INTO ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
+				$sql = 'INSERT INTO ' . $this->mchat_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 				$this->db->sql_query($sql);
 
 				// reset the config settings
@@ -667,7 +673,7 @@ class render_helper
 
 				// check for the correct user
 				$sql = 'SELECT *
-					FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . '
+					FROM ' . $this->mchat_table . '
 					WHERE message_id = ' . (int) $message_id;
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
@@ -746,13 +752,13 @@ class render_helper
 					'bbcode_options'	=> $options
 				);
 
-				$sql = 'UPDATE ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary).'
+				$sql = 'UPDATE ' . $this->mchat_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary).'
 					WHERE message_id = ' . (int) $message_id;
 				$this->db->sql_query($sql);
 
 				// Message edited...now read it
 				$sql = 'SELECT m.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm
-					FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' m, ' . USERS_TABLE . ' u
+					FROM ' . $this->mchat_table . ' m, ' . USERS_TABLE . ' u
 					WHERE m.user_id = u.user_id
 						AND m.message_id = ' . (int) $message_id . '
 					ORDER BY m.message_id DESC';
@@ -821,7 +827,7 @@ class render_helper
 				}
 				// check for the correct user
 				$sql = 'SELECT m.*, u.username, u.user_colour
-					FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' m
+					FROM ' . $this->mchat_table . ' m
 					LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
 					WHERE m.message_id = ' . (int) $message_id;
 				$result = $this->db->sql_query($sql);
@@ -839,7 +845,7 @@ class render_helper
 				}
 
 				// Run delete!
-				$sql = 'DELETE FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . '
+				$sql = 'DELETE FROM ' . $this->mchat_table . '
 					WHERE message_id = ' . (int) $message_id;
 				$this->db->sql_query($sql);
 				//adds a log
@@ -954,7 +960,7 @@ class render_helper
 					$sql_where = $this->user->data['user_mchat_topics'] ? '' : 'WHERE m.forum_id = 0';
 					// Message row
 					$sql = 'SELECT m.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm
-						FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' m
+						FROM ' . $this->mchat_table . ' m
 							LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
 						' . $sql_where . '
 						ORDER BY message_id DESC';
