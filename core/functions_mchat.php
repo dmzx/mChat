@@ -51,14 +51,14 @@ class functions_mchat
 	 * @param \phpbb\cache\service				$cache
 	 * @param									$table_prefix
 	 */
-	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $table_prefix)
+	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $table_prefix)
 	{
 		$this->template = $template;
 		$this->user = $user;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->cache = $cache;
-
+		$this->phpbb_log = $log;
 		$this->table_prefix = $table_prefix;
 	}
 
@@ -293,7 +293,8 @@ class functions_mchat
 			WHERE message_id < ' . (int) $delete_id;
 			$this->db->sql_query($sql);
 
-			add_log('admin', 'LOG_MCHAT_TABLE_PRUNED');
+			$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED');
+
 		}
 		// free up some memory...variable(s) are no longer needed.
 		unset($mchat_total_messages);

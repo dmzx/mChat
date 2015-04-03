@@ -12,6 +12,7 @@ services:
             - @config
             - @controller.helper
             - @template
+            - @log
             - @user
             - @auth
             - @dbal.conn
@@ -26,6 +27,7 @@ services:
             - @template
             - @user
             - @auth
+            - @log
             - @dbal.conn
             - @cache
             - %core.table_prefix%

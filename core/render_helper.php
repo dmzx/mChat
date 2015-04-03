@@ -58,7 +58,7 @@ class render_helper
 	 * @param									$phpEx
 	 * @param									$table_prefix
 	 */
-	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, $phpbb_root_path, $phpEx, $table_prefix)
+	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\log\log_interface $log, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, $phpbb_root_path, $phpEx, $table_prefix)
 	{
 		$this->functions_mchat = $functions_mchat;
 		$this->config = $config;
@@ -71,6 +71,7 @@ class render_helper
 		$this->request = $request;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->phpEx = $phpEx;
+		$this->phpbb_log = $log;
 		$this->table_prefix = $table_prefix;
 	}
 
@@ -91,12 +92,7 @@ class render_helper
 		//chat enabled
 		if (!$this->config['mchat_enable'])
 		{
-			// Return for: $this->helper->error(error_text, error_type);
-			return array(
-				'error'			=> true,
-				'error_type'	=> E_USER_NOTICE,
-				'error_text'	=> $this->user->lang['MCHAT_ENABLE'],
-			);
+		   trigger_error($user->lang['MCHAT_ENABLE'], E_USER_NOTICE);
 		}
 
 		//  avatars
@@ -129,7 +125,7 @@ class render_helper
 
 		// needed variables
 		// Request options.
-		$mchat_mode	= request_var('mode', '');
+		$mchat_mode	= $this->request->variable('mode', '');
 		$mchat_read_mode = $mchat_archive_mode = $mchat_custom_page = $mchat_no_message = false;
 		// set redirect if on index or custom page
 		$on_page = $include_on_index ? 'index' : 'mchat';
@@ -181,12 +177,7 @@ class render_helper
 				else
 				{
 					// Show no rules
-					// Return for: \$this->helper->error(error_text, error_type);
-					return array(
-						'error'			=> true,
-						'error_type'	=> E_USER_NOTICE,
-						'error_text'	=> 'NO_MCHAT_RULES',
-					);
+					trigger_error('MCHAT_NO_RULES', E_USER_NOTICE);
 				}
 
 				break;
@@ -202,7 +193,7 @@ class render_helper
 						include($this->phpbb_root_path . 'includes/functions_user.' . $this->phpEx);
 					}
 
-					$this->user_ip = request_var('ip', '');
+					$this->user_ip = $this->request->variable('ip', '');
 
 					$this->template->assign_var('WHOIS', user_ipwhois($this->user_ip));
 
@@ -216,12 +207,7 @@ class render_helper
 				else
 				{
 					// Show not authorized
-					// Return for: \$this->helper->error(error_text, error_type);
-					return array(
-						'error'			=> true,
-						'error_type'	=> E_USER_NOTICE,
-						'error_text'	=> 'NO_AUTH_OPERATION',
-					);
+					trigger_error('NO_AUTH_OPERATION', E_USER_NOTICE);
 				}
 				break;
 			// Clean function...
@@ -238,16 +224,11 @@ class render_helper
 					else if (!$mchat_founder)
 					{
 						// Show not authorized
-						// Return for: \$this->helper->error(error_text, error_type);
-						return array(
-							'error'			=> true,
-							'error_type'	=> E_USER_NOTICE,
-							'error_text'	=> 'NO_AUTH_OPERATION',
-						);
+						trigger_error('NO_AUTH_OPERATION', E_USER_NOTICE);
 					}
 				}
 
-				$mchat_redirect = request_var('redirect', '');
+				$mchat_redirect = $this->request->variable('redirect', '');
 				$mchat_redirect = ($mchat_redirect == 'index') ? append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") : $this->helper->route('dmzx_mchat_controller', array('#mChat'));
 
 				if(confirm_box(true))
@@ -257,19 +238,14 @@ class render_helper
 					$this->db->sql_query($sql);
 
 					meta_refresh(3, $mchat_redirect);
-					// Return for: \$this->helper->error(error_text, error_type);
-				//	return array(
-				//		'error'			=> true,
-				//		'error_type'	=> E_USER_NOTICE,
-				//		'error_text'	=> $this->user->lang['MCHAT_CLEANED'].'<br /><br />'.sprintf($this->user->lang['RETURN_PAGE'], '<a href="'.$mchat_redirect.'">', '</a>'),
-				//	);
+					trigger_error($this->user->lang['MCHAT_CLEANED']. '<br /><br />' . sprintf($this->user->lang['RETURN_PAGE'], '<a href="' . $mchat_redirect . '">', '</a>'));
 				}
 				else
 				{
 					// Display confirm box
 					confirm_box(false, $this->user->lang['MCHAT_DELALLMESS']);
 				}
-				add_log('admin', 'LOG_MCHAT_TABLE_PRUNED');
+				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED');
 				redirect($mchat_redirect);
 				break;
 
@@ -282,12 +258,7 @@ class render_helper
 					$mchat_redirect = append_sid("{$this->phpbb_root_path}index.{$this->phpEx}");
 					// Redirect to previous page
 					meta_refresh(3, $mchat_redirect);
-					// Return for: \$this->helper->error(error_text, error_type);
-					return array(
-						'error'			=> true,
-						'error_type'	=> E_USER_NOTICE,
-						'error_text'	=> $this->user->lang['MCHAT_NOACCESS_ARCHIVE'].'<br /><br />'.sprintf($this->user->lang['RETURN_PAGE'], '<a href="' . $mchat_redirect . '">', '</a>'),
-					);
+					trigger_error($this->user->lang['MCHAT_NOACCESS_ARCHIVE']. '<br /><br />' . sprintf($this->user->lang['RETURN_PAGE'], '<a href="' . $mchat_redirect . '">', '</a>'));
 				}
 
 				if ($this->config['mchat_enable'] && $mchat_read_archive && $mchat_view)
@@ -304,7 +275,7 @@ class render_helper
 					}
 
 					// Reguest...
-					$mchat_archive_start = request_var('start', 0);
+					$mchat_archive_start = $this->request->variable('start', 0);
 					$sql_where = $this->user->data['user_mchat_topics'] ? '' : 'WHERE m.forum_id = 0';
 					// Message row
 					$sql = 'SELECT m.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm
@@ -408,7 +379,7 @@ class render_helper
 					$this->functions_mchat->mchat_sessions($mchat_session_time, true);
 				}
 				// Request
-				$mchat_message_last_id = request_var('message_last_id', 0);
+				$mchat_message_last_id = $this->request->variable('message_last_id', 0);
 				$sql_and = $this->user->data['user_mchat_topics'] ? '' : 'AND m.forum_id = 0';
 				$sql = 'SELECT m.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm
 					FROM ' . $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE . ' m, ' . USERS_TABLE . ' u
@@ -540,7 +511,7 @@ class render_helper
 				}
 
 				// Reguest...
-				$message = utf8_ucfirst(utf8_normalize_nfc(request_var('message', '', true)));
+				$message = utf8_ucfirst(utf8_normalize_nfc($this->request->variable('message', '', true)));
 
 				// must have something other than bbcode in the message
 				if (empty($mchatregex))
@@ -656,7 +627,7 @@ class render_helper
 			// Edit function...
 			case 'edit':
 
-				$message_id = request_var('message_id', 0);
+				$message_id = $this->request->variable('message_id', 0);
 
 				// If mChat disabled and not edit
 				if (!$this->config['mchat_enable'] || !$message_id)
@@ -682,7 +653,7 @@ class render_helper
 					throw new \phpbb\exception\http_exception(403, 'MCHAT_ERROR_FORBIDDEN');
 				}
 				// Reguest...
-				$message = request_var('message', '', true);
+				$message = $this->request->variable('message', '', true);
 
 				// must have something other than bbcode in the message
 				if (empty($mchatregex))
@@ -800,8 +771,9 @@ class render_helper
 					unset($old_cfg['max_post_smilies']);
 				}
 				//adds a log
-				$message_author = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']);
-				add_log('admin', 'LOG_EDITED_MCHAT', $message_author);
+			//	$message_author = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']);
+			//	add_log('admin', 'LOG_EDITED_MCHAT', $message_author);
+				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_EDITED_MCHAT', false, array($row['username']));
 				// insert user into the mChat sessions table
 				$this->functions_mchat->mchat_sessions($mchat_session_time, true);
 				// If read mode request set true
@@ -812,7 +784,7 @@ class render_helper
 			// Delete function...
 			case 'delete':
 
-				$message_id = request_var('message_id', 0);
+				$message_id = $this->request->variable('message_id', 0);
 				// If mChat disabled
 				if (!$this->config['mchat_enable'] || !$message_id)
 				{
@@ -843,8 +815,9 @@ class render_helper
 					WHERE message_id = ' . (int) $message_id;
 				$this->db->sql_query($sql);
 				//adds a log
-				$message_author = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']);
-				add_log('admin', 'LOG_DELETED_MCHAT', $message_author);
+			//	$message_author = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']);
+			//	add_log('admin', 'LOG_DELETED_MCHAT', $message_author);
+				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_DELETED_MCHAT', false, array($row['username']));
 				// insert user into the mChat sessions table
 				$this->functions_mchat->mchat_sessions($mchat_session_time, true);
 
@@ -878,23 +851,13 @@ class render_helper
 						$mchat_redirect = append_sid("{$this->phpbb_root_path}index.{$this->phpEx}");
 						// Redirect to previous page
 						meta_refresh(3, $mchat_redirect);
-						// Return for: \$this->helper->error(error_text, error_type);
-						return array(
-							'error'			=> true,
-							'error_type'	=> E_USER_NOTICE,
-							'error_text'	=> $this->user->lang['MCHAT_NO_CUSTOM_PAGE'].'<br /><br />'.sprintf($this->user->lang['RETURN_PAGE'], '<a href="' . $mchat_redirect . '">', '</a>'),
-						);
+						trigger_error($this->user->lang['MCHAT_NO_CUSTOM_PAGE']. '<br /><br />' . sprintf($this->user->lang['RETURN_PAGE'], '<a href="' . $mchat_redirect . '">', '</a>'));
 					}
 
 					// user has permissions to view the custom chat?
 					if (!$mchat_view && $mchat_custom_page)
 					{
-						// Return for: \$this->helper->error(error_text, error_type);
-						return array(
-							'error'			=> true,
-							'error_type'	=> E_USER_NOTICE,
-							'error_text'	=> $this->user->lang['NOT_AUTHORISED'],
-						);
+					  trigger_error($user->lang['NOT_AUTHORISED'], E_USER_NOTICE);
 					}
 
 					// if whois true

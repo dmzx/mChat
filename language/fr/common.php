@@ -70,6 +70,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MINUTES'				=> 'minutes ',
 	'MCHAT_MESS_LONG'			=> 'Votre message est trop long.\nLimité à %s caractères',
 	'MCHAT_NO_CUSTOM_PAGE'		=> 'La page personnalisée du mChat n’est pas activée en ce moment!',
+	'MCHAT_NO_RULES'			=> 'The mChat rules page is not activated at this time!',
 	'MCHAT_NOACCESS'			=> 'Vous n’avez pas les permissions pour poster dans le mini-chat.',
 	'MCHAT_NOACCESS_ARCHIVE'	=> 'Vous n’avez pas les permissions pour voir les archives.',
 	'MCHAT_NOJAVASCRIPT'		=> 'Votre navigateur ne supporte pas JavaScript ou JavaScript est désactivé.',

@@ -55,7 +55,7 @@ class acp_mchat_module
 
 	public function main($id, $mode)
 	{
-		global $config, $db, $cache, $request, $template, $user, $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix;
+		global $config, $db, $cache, $request, $template, $user, $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix, $phpbb_log;
 		global $phpbb_container;
 
 		$this->functions_mchat = $phpbb_container->get('dmzx.mchat.functions_mchat');
@@ -175,7 +175,7 @@ class acp_mchat_module
 				$config->set('mchat_message_top', $request->variable('mchat_message_top', 0));
 
 				// and an entry into the log table
-				add_log('admin', 'LOG_MCHAT_CONFIG_UPDATE');
+				$phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_CONFIG_UPDATE');
 
 				// purge the cache
 				$this->cache->destroy('_mchat_config');
