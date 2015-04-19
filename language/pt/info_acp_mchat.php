@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
 *
 * @package phpBB Extension - mChat
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 
 	// UMIL stuff
-	'ACP_MCHAT_CONFIG'				=> 'Configuración',
+	'ACP_MCHAT_CONFIG'				=> 'Configuração',
 	'ACP_CAT_MCHAT'					=> 'mChat',
 	'ACP_MCHAT_TITLE'				=> 'Mini-Chat',
 	'ACP_MCHAT_TITLE_EXPLAIN'		=> 'Um mini chat (aka “Caja de texto”) para o teu forum',
