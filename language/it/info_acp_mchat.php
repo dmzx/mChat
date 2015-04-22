@@ -47,7 +47,7 @@ $lang = array_merge($lang, array(
 
 	// ACP entries
 	'ACP_MCHAT_RULES'				=> 'Regole',
-	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Inserisci le regole per questo forum.  Ogni regola su una nuova linea.<br />Limite a 255 caratteri.<br /><strong>Questo messaggio può essere tradotto.</strong> (è necessario modificare il file mchat_lang.php e leggere le istruzioni).',
+	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Inserisci le regole per questo forum.	Ogni regola su una nuova linea.<br />Limite a 255 caratteri.<br /><strong>Questo messaggio può essere tradotto.</strong> (è necessario modificare il file mchat_lang.php e leggere le istruzioni).',
 	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>Aggiornamento Configurazioni mChat </strong>',
 	'MCHAT_CONFIG_SAVED'			=> 'Mini Chat configurazioni salvate',
 	'MCHAT_TITLE'					=> 'Mini-Chat',
@@ -77,7 +77,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ARCHIVE_LIMIT'			=> 'Archivio limite',
 	'MCHAT_ARCHIVE_LIMIT_EXPLAIN'	=> 'Il numero massimo di messaggi da visualizzare per pagina nella pagina di archivio.<br /> <em>Recommandato da 25 a 50</em>.',
 	'MCHAT_FLOOD_TIME'				=> 'Tempo',
-	'MCHAT_FLOOD_TIME_EXPLAIN'		=> 'Il numero di secondi che un utente deve attendere prima di inviare un altro messaggio in chat.<br /><em>Recommandato da  5 a 30, imposta 0 per disabilitare</em>.',
+	'MCHAT_FLOOD_TIME_EXPLAIN'		=> 'Il numero di secondi che un utente deve attendere prima di inviare un altro messaggio in chat.<br /><em>Recommandato da	5 a 30, imposta 0 per disabilitare</em>.',
 	'MCHAT_MAX_MESSAGE_LENGTH'			=> 'Lunghezza massima messaggi',
 	'MCHAT_MAX_MESSAGE_LENGTH_EXPLAIN'	=> 'Il numero massimo di caratteri consentiti per messaggio inviato.<br /><em>Recommandato da 100 a 500, imposta 0 per disabilitare</em>.',
 	'MCHAT_CUSTOM_PAGE'				=> 'Pagina personalizzata',
@@ -94,7 +94,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_BBCODES_DISALLOWED'		=> 'Disabilita bbcodes',
 	'MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> 'Qui è possibile inserire i BBCodes che <strong>not</strong> saranno usati nei messaggi.<br />Separare i bbcodes con una barra verticale, ad esempio: <br />b|i|u|code|list|list=|flash|quote e/o a %scustom bbcode tag name%s',
 	'MCHAT_STATIC_MESSAGE'			=> 'Messaggi Statici',
-	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Qui è possibile definire un messaggio statico da visualizzare agli utenti della chat.  HTML codice è permesso.<br />Svuotare per disattivare la visualizzazione.  Limite di 255 caratteri.<br /><strong>Questo messaggio può essere tradotto.</strong>  (modificando il file mchat_lang.php leggere le istruzioni).',
+	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Qui è possibile definire un messaggio statico da visualizzare agli utenti della chat.	HTML codice è permesso.<br />Svuotare per disattivare la visualizzazione.	Limite di 255 caratteri.<br /><strong>Questo messaggio può essere tradotto.</strong>	(modificando il file mchat_lang.php leggere le istruzioni).',
 	'MCHAT_USER_TIMEOUT'			=> 'Timeout utente',
 	'MCHAT_USER_TIMEOUT_EXPLAIN'	=> 'Impostare la quantità di tempo, in secondi, fino una sessione utenti nella chat termina. Impostare a 0 per nessun timeout.<br /><em>Limite di %sforum config impostazioni a sessions%s che è attualmente impostato %s secondi</em>',
 	'MCHAT_OVERRIDE_SMILIE_LIMIT'	=> 'Limite smile',

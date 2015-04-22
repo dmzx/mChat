@@ -12,12 +12,12 @@
 */
 if (!defined('IN_PHPBB'))
 {
-  exit;
+	exit;
 }
 
 if (empty($lang) || !is_array($lang))
 {
-  $lang = array();
+	$lang = array();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -122,14 +122,14 @@ $lang = array_merge($lang, array(
 	//Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'La table du mini-chat a été délestée',
 	'ACP_USER_MCHAT'			=> 'Paramètres du mini-chat',
-	'LOG_DELETED_MCHAT'	  => '<strong>Les messages de mchat ont été supprimés</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'	  => '<strong>Les messages de mchat ont été édités</strong><br />» %1$s',
-	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Caractères restants: <span class="charsLeft error"><strong>%d</strong></span>',
+	'LOG_DELETED_MCHAT'		=> '<strong>Les messages de mchat ont été supprimés</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'		=> '<strong>Les messages de mchat ont été édités</strong><br />» %1$s',
+	'MCHAT_MESSAGE_LNGTH_EXPLAIN'	=> 'Caractères restants: <span class="charsLeft error"><strong>%d</strong></span>',
 	'MCHAT_TOP_POSTERS'			=> 'Top Spammers',
 	'MCHAT_NEW_CHAT'			=> 'Nouveau Message Dans Mchat!',
 	'MCHAT_SEND_PM'			 => 'Envoyer un message privé',
-	'MCHAT_PM'				  => '(MP)',
+	'MCHAT_PM'					=> '(MP)',
 
 	//Custom edits
-	'REPLY_WITH_LIKE'	   =>'Like This Post',
+	'REPLY_WITH_LIKE'		=>'Like This Post',
 ));

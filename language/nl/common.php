@@ -12,12 +12,12 @@
 */
 if (!defined('IN_PHPBB'))
 {
-  exit;
+	exit;
 }
 
 if (empty($lang) || !is_array($lang))
 {
-  $lang = array();
+	$lang = array();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -122,14 +122,14 @@ $lang = array_merge($lang, array(
 	//Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'mChat tabel is ingekort',
 	'ACP_USER_MCHAT'			=> 'mChat Instellingen',
-	'LOG_DELETED_MCHAT'	  => '<strong>Verwijder mChat berichten</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'	  => '<strong>Bewerk mChat berichten</strong><br />» %1$s',
-	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Overgebleven karakters: <span class="charsLeft error"><strong>%d</strong></span>',
+	'LOG_DELETED_MCHAT'		=> '<strong>Verwijder mChat berichten</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'		=> '<strong>Bewerk mChat berichten</strong><br />» %1$s',
+	'MCHAT_MESSAGE_LNGTH_EXPLAIN'	=> 'Overgebleven karakters: <span class="charsLeft error"><strong>%d</strong></span>',
 	'MCHAT_TOP_POSTERS'			=> 'Top Spammers',
 	'MCHAT_NEW_CHAT'			=> 'Nieuw Chat bericht!',
 	'MCHAT_SEND_PM'			 => 'Stuur prive bericht',
-	'MCHAT_PM'				  => '(PM)',
+	'MCHAT_PM'					=> '(PM)',
 
 	//Custom edits
-	'REPLY_WITH_LIKE'	   =>'Vindt dit bericht leuk',
+	'REPLY_WITH_LIKE'		=>'Vindt dit bericht leuk',
 ));

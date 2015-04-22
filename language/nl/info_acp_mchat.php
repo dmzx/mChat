@@ -47,7 +47,7 @@ $lang = array_merge($lang, array(
 
 	// ACP entries
 	'ACP_MCHAT_RULES'				=> 'Regels',
-	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Verander hier de regels van het forum.  Elke regel op een nieuwe lijn.<br />Je kunt maximaal 255 karakters gebruiken.<br /><strong>Deze boodschap kan worden vertaald..</strong> (Je moet de mchat_lang.php file aanpassen en lees de instructies).',
+	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Verander hier de regels van het forum.	Elke regel op een nieuwe lijn.<br />Je kunt maximaal 255 karakters gebruiken.<br /><strong>Deze boodschap kan worden vertaald..</strong> (Je moet de mchat_lang.php file aanpassen en lees de instructies).',
 	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>Update mChat configuratie </strong>',
 	'MCHAT_CONFIG_SAVED'			=> 'Mini Chat configuratie is bijgewerkt',
 	'MCHAT_TITLE'					=> 'Mini-Chat',
@@ -94,7 +94,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_BBCODES_DISALLOWED'		=> 'Niet toegestane bbcodes',
 	'MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> 'Hier kun je de bbcodes plaatsen, die <strong>niet</strong>zijn toegstaan<strong>not</strong> om te gebruiken in een bericht.<br />Aparte BBCodes met een verticale balk , bijvoorbeeld: <br />b|i|u|code|list|list=|flash|quote and/or a %scustom bbcode tag name%s',
 	'MCHAT_STATIC_MESSAGE'			=> 'Statisch bericht',
-	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Hier kan je een statisch bericht definieren, welke getoond wordt aan de gebruikers van de mChat.<br />Stel 0 in om de vertoning uit te schakelen.  Je bent gelimiteerd tot 255 karakters.<br /><strong>Deze boodschap kan worden vertaald..</strong> (Je moet de mchat_lang.php file aanpassen en lees de instructies).',
+	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Hier kan je een statisch bericht definieren, welke getoond wordt aan de gebruikers van de mChat.<br />Stel 0 in om de vertoning uit te schakelen.	Je bent gelimiteerd tot 255 karakters.<br /><strong>Deze boodschap kan worden vertaald..</strong> (Je moet de mchat_lang.php file aanpassen en lees de instructies).',
 	'MCHAT_USER_TIMEOUT'			=> 'Gebruiker timeout',
 	'MCHAT_USER_TIMEOUT_EXPLAIN'	=> 'Stel hier de seconden in, wanneer de sessie van een gebruiker eindigd. Stel 0 om de timeout uit te schakelen.<br /><em>Je bent gelimiteerd tot de %sforum instellingen voor de chat sessie, welke momenteel is ingesteld op %s seconden</em>',
 	'MCHAT_OVERRIDE_SMILIE_LIMIT'	=> 'Aantal smilie limiet',
@@ -125,7 +125,7 @@ $lang = array_merge($lang, array(
 
 	// error reporting
 	'MCHAT_NEEDS_UPDATING'	=> 'De mChat extensie moet worden bijgewerkt. Neem contact op met de forum beheerder om de mChat bij te laten werken.',
-	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geïnstalleerd.  Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
+	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geïnstalleerd.	Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
 	'WARNING'	=> 'Waarschuwing',
 	'TOO_LONG_DATE'		=> 'De datum weergave die je hebt ingegeven is te lang.',
 	'TOO_SHORT_DATE'	=> 'De datum weergave die je hebt ingegeven is te kort.',

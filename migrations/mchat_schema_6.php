@@ -28,7 +28,7 @@ class mchat_schema_6 extends \phpbb\db\migration\migration
 				'module_langname'	=> 'ACP_USER_MCHAT',
 				'module_mode'		=> 'mchat',
 				'module_auth'		=> 'acl_a_user',
-			   ),
+				),
 			),
 			// First, lets add a new category named UCP_CAT_MCHAT
 			array('ucp', false, 'UCP_CAT_MCHAT'),

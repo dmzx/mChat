@@ -59,7 +59,7 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.viewonline_overwrite_location'				  => 'add_page_viewonline',
+			'core.viewonline_overwrite_location'					=> 'add_page_viewonline',
 			'core.user_setup'					=> 'load_language_on_setup',
 			'core.page_header'					=> 'add_page_header_link',
 			'core.index_modify_page_title'		=> 'display_mchat_on_index',
@@ -71,11 +71,11 @@ class listener implements EventSubscriberInterface
 	{
 	global $user, $phpbb_container, $phpEx;
 
-	   if (strrpos($event['row']['session_page'], 'app.' . $phpEx . '/chat') === 0)
-	   {
+		if (strrpos($event['row']['session_page'], 'app.' . $phpEx . '/chat') === 0)
+		{
 		$event['location'] = $user->lang('MCHAT_TITLE');
 		$event['location_url'] = $phpbb_container->get('controller.helper')->route('dmzx_mchat_controller');
-	   }
+		}
 	}
 
 	public function load_language_on_setup($event)
@@ -125,9 +125,9 @@ class listener implements EventSubscriberInterface
 	public function posting_modify_submit_post_after($event)
 	{
 		// only trigger if mode is post
-	   $mchat_forums_allowed = array();
-	   if ($event['mode'] == 'post' || $event['mode'] == 'reply' || $event['mode'] == 'quote'|| $event['mode'] == 'edit' && (isset($this->config['mchat_enable']) && $this->config['mchat_enable']) && (isset($this->config['mchat_new_posts']) && $this->config['mchat_new_posts']))
-	  {
+		$mchat_forums_allowed = array();
+		if ($event['mode'] == 'post' || $event['mode'] == 'reply' || $event['mode'] == 'quote'|| $event['mode'] == 'edit' && (isset($this->config['mchat_enable']) && $this->config['mchat_enable']) && (isset($this->config['mchat_new_posts']) && $this->config['mchat_new_posts']))
+		{
 
 			 if ($event['mode'] == 'post' && (isset($this->config['mchat_new_posts_topic']) && $this->config['mchat_new_posts_topic']))
 			 {
@@ -150,26 +150,26 @@ class listener implements EventSubscriberInterface
 				return;
 			 }
 
-	  // Data...
-	  $message = utf8_normalize_nfc($mchat_new_data . ': [url=' . generate_board_url() . '/viewtopic.' . $this->phpEx . '?p=' . $event['data']['post_id'] . '#p' . $event['data']['post_id'] . ']' . $event['post_data']['post_subject'] . '[/url] '. $this->user->lang['MCHAT_IN'] .' [url=' . generate_board_url() . '/viewforum.' . $this->phpEx . '?f=' . $event['forum_id'] . ']' . $event['post_data']['forum_name']  . ' [/url] ' . $this->user->lang['MCHAT_IN_SECTION']);
+		// Data...
+		$message = utf8_normalize_nfc($mchat_new_data . ': [url=' . generate_board_url() . '/viewtopic.' . $this->phpEx . '?p=' . $event['data']['post_id'] . '#p' . $event['data']['post_id'] . ']' . $event['post_data']['post_subject'] . '[/url] '. $this->user->lang['MCHAT_IN'] .' [url=' . generate_board_url() . '/viewforum.' . $this->phpEx . '?f=' . $event['forum_id'] . ']' . $event['post_data']['forum_name']	. ' [/url] ' . $this->user->lang['MCHAT_IN_SECTION']);
 
-	  $uid = $bitfield = $options = ''; // will be modified by generate_text_for_storage
-	  generate_text_for_storage($message, $uid, $bitfield, $options, true, false, false);
-	  $sql_ary = array(
+		$uid = $bitfield = $options = ''; // will be modified by generate_text_for_storage
+		generate_text_for_storage($message, $uid, $bitfield, $options, true, false, false);
+		$sql_ary = array(
 		 'forum_id'		 => $event['forum_id'],
 		 'post_id'		 => $event['post_id'],
 			'user_id'		 => $this->user->data['user_id'],
 			'user_ip'		 => $this->user->data['session_ip'],
 			'message'		 => $message,
-			'bbcode_bitfield'   => $bitfield,
-			'bbcode_uid'	   => $uid,
+			'bbcode_bitfield'	=> $bitfield,
+			'bbcode_uid'		=> $uid,
 			'bbcode_options'	=> $options,
-			'message_time'	   => time()
-		  );
-		  $sql = 'INSERT INTO ' .  $this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE  . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
-		  $this->db->sql_query($sql);
-   }
+			'message_time'		=> time()
+			);
+			$sql = 'INSERT INTO ' .	$this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE	. ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
+			$this->db->sql_query($sql);
+	}
 
-  }
+	}
 
 }

@@ -12,12 +12,12 @@
 */
 if (!defined('IN_PHPBB'))
 {
-  exit;
+	exit;
 }
 
 if (empty($lang) || !is_array($lang))
 {
-  $lang = array();
+	$lang = array();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -78,7 +78,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NOMESSAGEINPUT'		=> 'Du hast keine Nachricht eingegeben',
 	'MCHAT_NOSMILE'				=> 'Keine Smilies gefunden',
 	'MCHAT_NOTINSTALLED_USER'	=> 'Der mChat ist nicht installiert. Bitte kontaktiere den Boardgründer.',
-	'MCHAT_NOT_INSTALLED'		=> 'Die mChat Datenbankeinträge fehlen.<br />Führe bitte den  %sInstaller%s aus, um die Datenbankänderungen für mChat durchzuführen.',
+	'MCHAT_NOT_INSTALLED'		=> 'Die mChat Datenbankeinträge fehlen.<br />Führe bitte den	%sInstaller%s aus, um die Datenbankänderungen für mChat durchzuführen.',
 	'MCHAT_OK'					=> 'OK',
 	'MCHAT_PAUSE'				=> 'Pausiert',
 	'MCHAT_LOAD'				=> 'Wird geladen',
@@ -122,14 +122,14 @@ $lang = array_merge($lang, array(
 	//Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'mChat Tabelle löschen',
 	'ACP_USER_MCHAT'			=> 'mChat Einstellung',
-	'LOG_DELETED_MCHAT'	  => '<strong>Lösche mChat Nachricht</strong><br />» %1$en',
-	'LOG_EDITED_MCHAT'	  => '<strong>Editiere mChat Nachricht</strong><br />» %1$en',
-	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Zeichen übrig: <span class="charsLeft error"><strong>%d</strong></span>',
+	'LOG_DELETED_MCHAT'		=> '<strong>Lösche mChat Nachricht</strong><br />» %1$en',
+	'LOG_EDITED_MCHAT'		=> '<strong>Editiere mChat Nachricht</strong><br />» %1$en',
+	'MCHAT_MESSAGE_LNGTH_EXPLAIN'	=> 'Zeichen übrig: <span class="charsLeft error"><strong>%d</strong></span>',
 	'MCHAT_TOP_POSTERS'			=> 'Top Poster',
 	'MCHAT_NEW_CHAT'			=> 'Neue mChat Nachricht!',
 	'MCHAT_SEND_PM'			 => 'Sende private Nachricht',
-	'MCHAT_PM'				  => '(PN)',
+	'MCHAT_PM'					=> '(PN)',
 
 	//Custom edits
-	'REPLY_WITH_LIKE'	   =>'mir gefällt dieser Beitrag',
+	'REPLY_WITH_LIKE'		=>'mir gefällt dieser Beitrag',
 ));

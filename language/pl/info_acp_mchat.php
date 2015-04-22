@@ -47,7 +47,7 @@ $lang = array_merge($lang, array(
 
 	// ACP entries
 	'ACP_MCHAT_RULES'				=> 'Regulamin',
-	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Tutaj wprowadź regulamin mChat.  Każdy podpunkt w oddzielnej lini.<br />Limit znaków wynosi 255.<br />',
+	'ACP_MCHAT_RULES_EXPLAIN'		=> 'Tutaj wprowadź regulamin mChat.	Każdy podpunkt w oddzielnej lini.<br />Limit znaków wynosi 255.<br />',
 	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>Aktualizuj konfigurację mChat</strong>',
 	'MCHAT_CONFIG_SAVED'			=> 'Zaktualizowano konfigurację mChat',
 	'MCHAT_TITLE'					=> 'Mini-Chat',
@@ -94,7 +94,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_BBCODES_DISALLOWED'		=> 'Niedozwolone bbcodes',
 	'MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> 'Tutaj umieść bbcodes których nie będzie można używać w wiadomościach.<br />Oddziel bbcodes pionową kreską, na przykład: <br />b|i|u|code|list|list=|flash|quote i/lub %wybierz z tych%s',
 	'MCHAT_STATIC_MESSAGE'			=> 'Ogłoszenie',
-	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Tutaj możesz umieścić ogłoszenie które wyświetli się osobą korzystającym z mChat.  kod HTML jest dozwolony.<br />Zostaw puste aby wyłączyć wyświetlanie.  Limit wynosi max 255 znaków.<br /></strong>',
+	'MCHAT_STATIC_MESSAGE_EXPLAIN'	=> 'Tutaj możesz umieścić ogłoszenie które wyświetli się osobą korzystającym z mChat.	kod HTML jest dozwolony.<br />Zostaw puste aby wyłączyć wyświetlanie.	Limit wynosi max 255 znaków.<br /></strong>',
 	'MCHAT_USER_TIMEOUT'			=> 'Limit czasu dla użytkownika',
 	'MCHAT_USER_TIMEOUT_EXPLAIN'	=> 'Ustaw czas w sekundach do zakończenia sesji użytkownika. Ustaw 0 aby wyłączyć.<br /><em>Limit znajdziesz %stutaj%s aktualnie jest ustawione na %s sekund</em>',
 	'MCHAT_OVERRIDE_SMILIE_LIMIT'	=> 'Limit emotikon',
@@ -124,8 +124,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Zaznacz TAK aby nie auto-aktualizować mChatu gdy użytkownik pisze wiadomość',
 
 	// error reporting
-	'MCHAT_NEEDS_UPDATING'	=> 'Rozszerzenie mChat musi zostać zaktualizowane.  Proszę skontaktuj się z administratorem.',
-	'MCHAT_WRONG_VERSION'	=> 'Zainstalowano złą wersję rozszerzenia.  Proszę uruchom %instalator%s aby zainstalować nową wersję rozszerzenia.',
+	'MCHAT_NEEDS_UPDATING'	=> 'Rozszerzenie mChat musi zostać zaktualizowane.	Proszę skontaktuj się z administratorem.',
+	'MCHAT_WRONG_VERSION'	=> 'Zainstalowano złą wersję rozszerzenia.	Proszę uruchom %instalator%s aby zainstalować nową wersję rozszerzenia.',
 	'WARNING'	=> 'Warning',
 	'TOO_LONG_DATE'		=> 'Format day który wpisałeś jest za długi.',
 	'TOO_SHORT_DATE'	=> 'Format day który wpisałeś jest za krótki.',

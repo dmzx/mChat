@@ -92,10 +92,10 @@ class render_helper
 		//chat enabled
 		if (!$this->config['mchat_enable'])
 		{
-		   trigger_error($user->lang['MCHAT_ENABLE'], E_USER_NOTICE);
+			trigger_error($user->lang['MCHAT_ENABLE'], E_USER_NOTICE);
 		}
 
-		//  avatars
+		//	avatars
 		if (!function_exists('get_user_avatar'))
 		{
 			include($this->phpbb_root_path . 'includes/functions_display.' . $this->phpEx);
@@ -133,7 +133,7 @@ class render_helper
 		// grab fools..uhmmm, foes the user has
 		$foes_array = array();
 		$sql = 'SELECT * FROM ' . ZEBRA_TABLE . '
-			WHERE user_id = ' . $this->user->data['user_id'] . '  AND foe = 1';
+			WHERE user_id = ' . $this->user->data['user_id'] . '	AND foe = 1';
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -355,7 +355,7 @@ class render_helper
 				//add to navlinks
 				$this->template->assign_block_vars('navlinks', array(
 					'FORUM_NAME'		 => $this->user->lang['MCHAT_ARCHIVE_PAGE'],
-					'U_VIEW_FORUM'	  => $this->helper->route('dmzx_mchat_controller', array('mode' => 'archive')),
+					'U_VIEW_FORUM'		=> $this->helper->route('dmzx_mchat_controller', array('mode' => 'archive')),
 				));
 				// If archive mode request set true
 				$mchat_archive_mode = true;
@@ -857,7 +857,7 @@ class render_helper
 					// user has permissions to view the custom chat?
 					if (!$mchat_view && $mchat_custom_page)
 					{
-					  trigger_error($user->lang['NOT_AUTHORISED'], E_USER_NOTICE);
+						trigger_error($user->lang['NOT_AUTHORISED'], E_USER_NOTICE);
 					}
 
 					// if whois true
@@ -906,7 +906,7 @@ class render_helper
 					}
 					$this->template->assign_block_vars('navlinks', array(
 						'FORUM_NAME'		 => $this->user->lang['MCHAT_TITLE'],
-						'U_VIEW_FORUM'	  => $this->helper->route('dmzx_mchat_controller'),
+						'U_VIEW_FORUM'		=> $this->helper->route('dmzx_mchat_controller'),
 					));
 				}
 
@@ -1086,7 +1086,7 @@ class render_helper
 			'L_MCHAT_COPYRIGHT'		=> $copyright,
 			'MCHAT_WHOIS'			=> $this->config_mchat['whois'],
 			'MCHAT_MESSAGE_LNGTH'	=> $this->config_mchat['max_message_lngth'],
-			'L_MCHAT_MESSAGE_LNGTH_EXPLAIN'   => (intval($this->config_mchat['max_message_lngth'])) ? sprintf($this->user->lang['MCHAT_MESSAGE_LNGTH_EXPLAIN'], intval($this->config_mchat['max_message_lngth'])) : '',
+			'L_MCHAT_MESSAGE_LNGTH_EXPLAIN'	=> (intval($this->config_mchat['max_message_lngth'])) ? sprintf($this->user->lang['MCHAT_MESSAGE_LNGTH_EXPLAIN'], intval($this->config_mchat['max_message_lngth'])) : '',
 			'MCHAT_MESS_LONG'		=> sprintf($this->user->lang['MCHAT_MESS_LONG'], $this->config_mchat['max_message_lngth']),
 			'MCHAT_USER_TIMEOUT'	=> $this->config_mchat['timeout'] ? 1000 * $this->config_mchat['timeout'] : false,
 			'MCHAT_WHOIS_REFRESH'	=> 1000 * $this->config_mchat['whois_refresh'],
