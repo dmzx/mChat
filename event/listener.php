@@ -40,8 +40,14 @@ class listener implements EventSubscriberInterface
 
 	/** @var \phpbb\controller\helper */
 	protected $controller_helper;
+	/**
+	* The database tables
+	*
+	* @var string
+	*/
+	protected $mchat_table;
 
-	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $phpEx, $table_prefix)
+	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $root_path, $phpEx, $table_prefix,$mchat_table)
 	{
 		$this->render_helper = $render_helper;
 		$this->auth = $auth;
@@ -53,6 +59,7 @@ class listener implements EventSubscriberInterface
 		$this->root_path = $root_path;
 		$this->phpEx = $phpEx;
 		$this->table_prefix = $table_prefix;
+		$this->mchat_table = $mchat_table;
 
 	}
 
@@ -156,8 +163,8 @@ class listener implements EventSubscriberInterface
 		$uid = $bitfield = $options = ''; // will be modified by generate_text_for_storage
 		generate_text_for_storage($message, $uid, $bitfield, $options, true, false, false);
 		$sql_ary = array(
-		 'forum_id'		 => $event['forum_id'],
-		 'post_id'		 => $event['post_id'],
+			'forum_id'		 => $event['forum_id'],
+			'post_id'		 => $event['post_id'],
 			'user_id'		 => $this->user->data['user_id'],
 			'user_ip'		 => $this->user->data['session_ip'],
 			'message'		 => $message,
@@ -166,9 +173,9 @@ class listener implements EventSubscriberInterface
 			'bbcode_options'	=> $options,
 			'message_time'		=> time()
 			);
-			$sql = 'INSERT INTO ' .	$this->table_prefix . \dmzx\mchat\core\functions_mchat::MCHAT_TABLE	. ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
+			$sql = 'INSERT INTO ' .	$this->mchat_table	. ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 			$this->db->sql_query($sql);
-	}
+		}
 
 	}
 

@@ -1,4 +1,25 @@
+imports:
+    - { resource: tables.yml }
+
 services:
+    dmzx.mchat.admin.controller:
+        class: dmzx\mchat\controller\admin_controller
+        arguments:
+            - @dmzx.mchat.functions_mchat
+            - @config
+            - @controller.helper
+            - @template
+            - @log
+            - @user
+            - @service_container
+            - @auth
+            - @dbal.conn
+            - @cache
+            - @request
+            - %core.root_path%
+            - %core.php_ext%
+            - %core.table_prefix%
+            - %dmzx.mchat.table.mchat_config%
     dmzx.mchat.controller:
         class: dmzx\mchat\controller\mchat
         arguments:
@@ -17,10 +38,12 @@ services:
             - @auth
             - @dbal.conn
             - @cache
+            - @pagination
             - @request
             - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%
+            - %dmzx.mchat.table.mchat%
     dmzx.mchat.functions_mchat:
         class: dmzx\mchat\core\functions_mchat
         arguments:
@@ -31,6 +54,9 @@ services:
             - @dbal.conn
             - @cache
             - %core.table_prefix%
+            - %dmzx.mchat.table.mchat%
+            - %dmzx.mchat.table.mchat_config%
+            - %dmzx.mchat.table.mchat_sessions%
     dmzx.mchat.listener:
         class: dmzx\mchat\event\listener
         arguments:
@@ -44,5 +70,6 @@ services:
             - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%
+            - %dmzx.mchat.table.mchat%
         tags:
             - { name: event.listener }
