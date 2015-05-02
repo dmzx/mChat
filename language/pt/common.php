@@ -12,20 +12,12 @@
 */
 if (!defined('IN_PHPBB'))
 {
-<<<<<<< HEAD
 	exit;
-=======
-  exit;
->>>>>>> origin/master
 }
 
 if (empty($lang) || !is_array($lang))
 {
-<<<<<<< HEAD
 	$lang = array();
-=======
-  $lang = array();
->>>>>>> origin/master
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -85,11 +77,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NOMESSAGE'			=> 'Não há mensagens',
 	'MCHAT_NOMESSAGEINPUT'		=> 'Você deve digitar uma mensagem',
 	'MCHAT_NOSMILE'				=> 'Nenhum emoticons encontrados',
-<<<<<<< HEAD
 	'MCHAT_NOTINSTALLED_USER'	=> 'mChat não esta instalado.	Por favor, avise o fundador do fórum.',
-=======
-	'MCHAT_NOTINSTALLED_USER'	=> 'mChat não esta instalado.  Por favor, avise o fundador do fórum.',
->>>>>>> origin/master
 	'MCHAT_NOT_INSTALLED'		=> 'Faltam entradas na base de dados do mChat .<br />Por favor, corra o %sinstalador%s para criar mudanças de modificação na base de dados.',
 	'MCHAT_OK'					=> 'OK',
 	'MCHAT_PAUSE'				=> 'Pausado',
@@ -134,7 +122,6 @@ $lang = array_merge($lang, array(
 	//Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'A tabela do mChat foi apagada',
 	'ACP_USER_MCHAT'			=> 'Ajustes do mChat',
-<<<<<<< HEAD
 	'LOG_DELETED_MCHAT'				=> '<strong>Mensagem do mChat apagado</strong><br />» %1$s',
 	'LOG_EDITED_MCHAT'				=> '<strong>Mensagem do mChat editado</strong><br />» %1$s',
 	'MCHAT_MESSAGE_LNGTH_EXPLAIN'	=> 'Caracteres restantes: <span class="charsLeft error"><strong>%d</strong></span>',
@@ -145,16 +132,4 @@ $lang = array_merge($lang, array(
 
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Eu gosto desta mensagem',
-=======
-	'LOG_DELETED_MCHAT'	  		=> '<strong>Mensagem do mChat apagado</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'	  		=> '<strong>Mensagem do mChat editado</strong><br />» %1$s',
-	'MCHAT_MESSAGE_LNGTH_EXPLAIN'   => 'Caracteres restantes: <span class="charsLeft error"><strong>%d</strong></span>',
-	'MCHAT_TOP_POSTERS'			=> 'Top Spammers',
-	'MCHAT_NEW_CHAT'			=> 'Nova mensagem no Chat!',
-	'MCHAT_SEND_PM'			 	=> 'Enviar mensagem privado',
-	'MCHAT_PM'				  	=> '(MP)',
-
-	//Custom edits
-	'REPLY_WITH_LIKE'	   =>'Eu gosto desta mensagem',
->>>>>>> origin/master
 ));
