@@ -100,7 +100,7 @@ class render_helper
 		//chat enabled
 		if (!$this->config['mchat_enable'])
 		{
-			trigger_error($user->lang['MCHAT_ENABLE'], E_USER_NOTICE);
+			trigger_error($this->user->lang['MCHAT_ENABLE'], E_USER_NOTICE);
 		}
 
 		//	avatars
