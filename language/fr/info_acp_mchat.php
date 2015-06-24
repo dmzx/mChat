@@ -124,9 +124,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Si activée, le mini-chat ne sera pas mis à jour automatiquement lorsque l’utilisateur rédige un message dans la zone de saisie.',
 
 	// error reporting
-	'MCHAT_NEEDS_UPDATING'	=> 'Le MOD mChat a besoin d’être mis à jour. Le fondateur du forum doit visiter cette section pour commencer l’installation.',
-	'MCHAT_WRONG_VERSION'	=> 'La mauvaise version du MOD est installée. Démarrez l’%sinstallation%s pour une nouvelle version du MOD.',
-	'WARNING'	=> 'Attention',
 	'TOO_LONG_DATE'		=> 'Le format de la date saisi est trop long.',
 	'TOO_SHORT_DATE'	=> 'Le format de la date saisi est trop court.',
 	'TOO_SMALL_REFRESH'	=> 'La valeur de l’actualisation est trop petite.',
@@ -168,6 +165,6 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_URLS'			=> 'Peut poster des url’s sur mChat',
 
 	// Admin perms
-	'ACL_A_MCHAT'				=> array('lang' => 'Peut gérer les paramètres de mChat', 'cat' => 'permissions'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> 'Peut gérer les paramètres de mChat',
 
 ));

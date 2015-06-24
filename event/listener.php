@@ -60,7 +60,6 @@ class listener implements EventSubscriberInterface
 		$this->phpEx = $phpEx;
 		$this->table_prefix = $table_prefix;
 		$this->mchat_table = $mchat_table;
-
 	}
 
 	static public function getSubscribedEvents()
@@ -178,5 +177,4 @@ class listener implements EventSubscriberInterface
 		}
 
 	}
-
 }

@@ -18,12 +18,14 @@ class mchat_schema_3 extends \phpbb\db\migration\migration
 			'\dmzx\mchat\migrations\mchat_schema_2',
 		);
 	}
+
 	public function update_data()
 	{
 		return array(
 			array('custom', array(array($this, 'insert_sample_data'))),
 		);
 	}
+
 	public function insert_sample_data()
 	{
 		global $user;

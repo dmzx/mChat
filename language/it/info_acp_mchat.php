@@ -124,9 +124,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Se impostato Sì, allora la chat non verrà aggiornata automaticamente se un utente inserisce un messaggio in area di immissione',
 
 	// error reporting
-	'MCHAT_NEEDS_UPDATING'	=> 'Questa estensione mChat necessita di un aggiornamento. Si prega di visitare il fondatore per eseguire il programma di installazione.',
-	'MCHAT_WRONG_VERSION'	=> 'È installata una versione errata di questa estensione. Eseguire il %sinstaller%s per la nuova versione.',
-	'WARNING'	=> 'Attenzione',
 	'TOO_LONG_DATE'		=> 'Il formato della data immessa è troppo lunga.',
 	'TOO_SHORT_DATE'	=> 'Il formato della data immessa è troppo corta.',
 	'TOO_SMALL_REFRESH'	=> 'Il valore di aggiornamento è troppo piccolo.',
@@ -165,6 +162,6 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_URLS'			=> 'Puoi postare url in mChat',
 
 	// Admin perms
-	'ACL_A_MCHAT'				=> array('lang' => 'Puoi modificare impostazioni mChat', 'cat' => 'permessi'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> 'Puoi modificare impostazioni mChat',
 
 ));

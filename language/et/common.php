@@ -28,8 +28,7 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-// Adding new category
-$lang['permission_cat']['mchat'] = 'mChat';
+
 // Adding the permissions
 $lang = array_merge($lang, array(
 	'MCHAT_TITLE'				=> 'Mini Jututuba',
@@ -100,6 +99,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_REPLY'			=> 'Tegi uue vastuse',
 	'MCHAT_NEW_QUOTE'			=> 'Vastas tsiteeringuga',
 	'MCHAT_NEW_EDIT'			=> 'Tegi muudatuse',
+
 	// UCP
 	'UCP_PROFILE_MCHAT'	=> 'mChat eelistused',
 	'DISPLAY_MCHAT' 	=> 'Näita mChat esilehel',
@@ -113,6 +113,7 @@ $lang = array_merge($lang, array(
 	'TEXT_AREA'			=> 'Teksti ala',
 	'UCP_CAT_MCHAT'		=> 'mChat',
 	'UCP_MCHAT_CONFIG'	=> 'mChat',
+
 	//Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'mChat tabel on kärbitud',
 	'ACP_USER_MCHAT'			=> 'mChat seaded',
@@ -123,7 +124,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_CHAT'			=> 'Uus sõnum jututoas!',
 	'MCHAT_SEND_PM'			 => 'Saada privaatsõnum',
 	'MCHAT_PM'					=> '(PS)',
+
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Asjalik postitus',
 	));
-

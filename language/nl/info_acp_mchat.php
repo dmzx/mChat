@@ -124,9 +124,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Stel je ja in, dan wordt mChat niet automatisch vernieuwd, todat een gebruiker een bericht plaatst in mChat',
 
 	// error reporting
-	'MCHAT_NEEDS_UPDATING'	=> 'De mChat extensie moet worden bijgewerkt. Neem contact op met de forum beheerder om de mChat bij te laten werken.',
-	'MCHAT_WRONG_VERSION'	=> 'De verkeerde versie van de extensie is geïnstalleerd.	Gebruik a.u.b. de %sinstaller%s van de nieuwe versie voor eventuele wijzigingen.',
-	'WARNING'	=> 'Waarschuwing',
 	'TOO_LONG_DATE'		=> 'De datum weergave die je hebt ingegeven is te lang.',
 	'TOO_SHORT_DATE'	=> 'De datum weergave die je hebt ingegeven is te kort.',
 	'TOO_SMALL_REFRESH'	=> 'De waarde voor het vernieuwen van de pagina is te klein.',
@@ -168,6 +165,6 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_QUOTE'			=> 'Je kunt de citeer berichten knop gebruiken in mChat',
 
 	// Admin perms
-	'ACL_A_MCHAT'				=> array('lang' => 'Kan mChat instellingen beheren', 'cat' => 'permissions'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> 'Kan mChat instellingen beheren',
 
 ));

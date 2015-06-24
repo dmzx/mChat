@@ -39,7 +39,9 @@ class render_helper
 	protected $request;
 
 	protected $phpbb_root_path;
+
 	protected $phpEx;
+
 	protected $table_prefix;
 	/**
 	* The database tables
@@ -94,7 +96,6 @@ class render_helper
 		$include_on_index = ($only_for_index === true);
 
 		// Add lang file
-		//$this->user->add_lang(array('mods/mchat_lang', 'viewtopic', 'posting'));
 		$this->user->add_lang('posting');
 
 		//chat enabled
@@ -826,9 +827,8 @@ class render_helper
 				$sql = 'DELETE FROM ' . $this->mchat_table . '
 					WHERE message_id = ' . (int) $message_id;
 				$this->db->sql_query($sql);
+
 				//adds a log
-			//	$message_author = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']);
-			//	add_log('admin', 'LOG_DELETED_MCHAT', $message_author);
 				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_DELETED_MCHAT', false, array($row['username']));
 				// insert user into the mChat sessions table
 				$this->functions_mchat->mchat_sessions($mchat_session_time, true);

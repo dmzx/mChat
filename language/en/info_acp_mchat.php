@@ -124,9 +124,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'If set Yes, then the chat will not autoupdate upon a user entering a message in the input area',
 
 	// error reporting
-	'MCHAT_NEEDS_UPDATING'	=> 'The mChat extension needs updating.	Please have a forum founder visit this section to run the installer.',
-	'MCHAT_WRONG_VERSION'	=> 'The wrong version of the extension is installed.	Please run the %sinstaller%s for the new version of the modification.',
-	'WARNING'	=> 'Warning',
 	'TOO_LONG_DATE'		=> 'The date format you entered is too long.',
 	'TOO_SHORT_DATE'	=> 'The date format you entered is too short.',
 	'TOO_SMALL_REFRESH'	=> 'The refresh value is too small.',
@@ -152,22 +149,22 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_TIMEOUT'	=> 'The user timeout value is too small.',
 	'TOO_LARGE_TIMEOUT'	=> 'The user timeout value is too large.',
 
-		// User perms
-	'ACL_U_MCHAT_USE'			=> 'Can use mChat mchat',
-	'ACL_U_MCHAT_VIEW'			=> 'Can view mChat mchat',
-	'ACL_U_MCHAT_EDIT'			=> 'Can edit mChat messages mchat',
-	'ACL_U_MCHAT_DELETE'		=> 'Can delete mChat messages mchat',
-	'ACL_U_MCHAT_IP'			=> 'Can use view mChat IP addresses mchat',
-	'ACL_U_MCHAT_PM'			=> 'Can use private message in mchat',
-	'ACL_U_MCHAT_LIKE'			=> 'Can use like message in mchat',
-	'ACL_U_MCHAT_QUOTE'			=> 'Can use quote message in mchat',
-	'ACL_U_MCHAT_FLOOD_IGNORE'	=> 'Can ignore mChat flood mchat',
-	'ACL_U_MCHAT_ARCHIVE'		=> 'Can view the Archive mchat',
-	'ACL_U_MCHAT_BBCODE'		=> 'Can use bbcode in mChat mchat',
-	'ACL_U_MCHAT_SMILIES'		=> 'Can use smilies in mChat mchat',
-	'ACL_U_MCHAT_URLS'			=> 'Can post urls in mChat mchat',
+	// User perms
+	'ACL_U_MCHAT_USE'			=> 'Can use mChat',
+	'ACL_U_MCHAT_VIEW'			=> 'Can view mChat',
+	'ACL_U_MCHAT_EDIT'			=> 'Can edit mChat messages',
+	'ACL_U_MCHAT_DELETE'		=> 'Can delete mChat messages',
+	'ACL_U_MCHAT_IP'			=> 'Can use view mChat IP addresses',
+	'ACL_U_MCHAT_PM'			=> 'Can use private message in mChat',
+	'ACL_U_MCHAT_LIKE'			=> 'Can use like message in mChat',
+	'ACL_U_MCHAT_QUOTE'			=> 'Can use quote message in mChat',
+	'ACL_U_MCHAT_FLOOD_IGNORE'	=> 'Can ignore mChat flood mChat',
+	'ACL_U_MCHAT_ARCHIVE'		=> 'Can view the Archive mChat',
+	'ACL_U_MCHAT_BBCODE'		=> 'Can use bbcode in mChat',
+	'ACL_U_MCHAT_SMILIES'		=> 'Can use smilies in mChat',
+	'ACL_U_MCHAT_URLS'			=> 'Can post urls in mChat',
 
 	// Admin perms
-	'ACL_A_MCHAT'				=> array('lang' => 'Can manage mChat settings', 'cat' => 'permissions'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> 'Can manage mChat settings',
 
 ));

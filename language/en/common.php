@@ -32,9 +32,6 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-// Adding new category
-$lang['permission_cat']['mchat'] = 'mChat';
-
 // Adding the permissions
 $lang = array_merge($lang, array(
 
@@ -106,6 +103,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_REPLY'			=> 'Made A New Reply',
 	'MCHAT_NEW_QUOTE'			=> 'Replied with a Quote',
 	'MCHAT_NEW_EDIT'			=> 'Made A Edit',
+
 	// UCP
 	'UCP_PROFILE_MCHAT'	=> 'mChat Preferences',
 	'DISPLAY_MCHAT' 	=> 'Display mChat on Index',
@@ -119,6 +117,7 @@ $lang = array_merge($lang, array(
 	'TEXT_AREA'			=> 'Text area',
 	'UCP_CAT_MCHAT'		=> 'mChat',
 	'UCP_MCHAT_CONFIG'	=> 'mChat',
+
 	//Preferences
 	'LOG_MCHAT_TABLE_PRUNED'	=> 'mChat Table was pruned',
 	'ACP_USER_MCHAT'			=> 'mChat Settings',

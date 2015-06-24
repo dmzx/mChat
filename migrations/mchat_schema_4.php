@@ -18,6 +18,7 @@ class mchat_schema_4 extends \phpbb\db\migration\migration
 			'\dmzx\mchat\migrations\mchat_schema_3',
 		);
 	}
+
 	public function update_schema()
 	{
 		return array(
@@ -29,6 +30,22 @@ class mchat_schema_4 extends \phpbb\db\migration\migration
 					'user_mchat_topics' => array('BOOL', '1'),
 					'user_mchat_avatars' => array('BOOL', '1'),
 					'user_mchat_input_area' => array('BOOL', '1'),
+				),
+			),
+		);
+	}
+
+	public function revert_schema()
+	{
+		return array(
+			'drop_columns' => array(
+				$this->table_prefix . 'users'	=> array(
+					'user_mchat_index',
+					'user_mchat_sound',
+					'user_mchat_stats_index',
+					'user_mchat_topics',
+					'user_mchat_avatars',
+					'user_mchat_input_area',
 				),
 			),
 		);

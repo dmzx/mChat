@@ -18,6 +18,7 @@ class mchat_schema_5 extends \phpbb\db\migration\migration
 			'\dmzx\mchat\migrations\mchat_schema_4',
 		);
 	}
+
 	public function update_schema()
 	{
 		return array(
@@ -33,6 +34,7 @@ class mchat_schema_5 extends \phpbb\db\migration\migration
 			),
 		);
 	}
+
 	public function revert_schema()
 	{
 		return array(
@@ -41,5 +43,4 @@ class mchat_schema_5 extends \phpbb\db\migration\migration
 			),
 		);
 	}
-
 }

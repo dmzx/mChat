@@ -260,24 +260,24 @@ class admin_controller
 	protected function set_options()
 	{
 
-				//update setting in config table for mod enabled or not
-				$this->config->set('mchat_enable', $this->request->variable('mchat_enable', 0));
-				// update setting in config table for allowing on index or not
-				$this->config->set('mchat_on_index', $this->request->variable('mchat_on_index', 0));
-				// update setting in config table to enable posts to display or not
-				$this->config->set('mchat_new_posts', $this->request->variable('mchat_new_posts', 0));
-				// update setting in config table to allow topic to display or not
-				$this->config->set('mchat_new_posts_topic', $this->request->variable('mchat_new_posts_topic', 0));
-				// update setting in config table to allow replies to display or not
-				$this->config->set('mchat_new_posts_reply', $this->request->variable('mchat_new_posts_reply', 0));
-				// update setting in config table to allow edit posts to display or not
-				$this->config->set('mchat_new_posts_edit', $this->request->variable('mchat_new_posts_edit', 0));
-				// update setting in config table to allow quoted posts to display or not
-				$this->config->set('mchat_new_posts_quote', $this->request->variable('mchat_new_posts_quote', 0));
-				// update setting in config table for stats on index
-				$this->config->set('mchat_stats_index', $this->request->variable('mchat_stats_index', 0));
-				// update setting in config table for message on top
-				$this->config->set('mchat_message_top', $this->request->variable('mchat_message_top', 0));
+		//update setting in config table for mod enabled or not
+		$this->config->set('mchat_enable', $this->request->variable('mchat_enable', 0));
+		// update setting in config table for allowing on index or not
+		$this->config->set('mchat_on_index', $this->request->variable('mchat_on_index', 0));
+		// update setting in config table to enable posts to display or not
+		$this->config->set('mchat_new_posts', $this->request->variable('mchat_new_posts', 0));
+		// update setting in config table to allow topic to display or not
+		$this->config->set('mchat_new_posts_topic', $this->request->variable('mchat_new_posts_topic', 0));
+		// update setting in config table to allow replies to display or not
+		$this->config->set('mchat_new_posts_reply', $this->request->variable('mchat_new_posts_reply', 0));
+		// update setting in config table to allow edit posts to display or not
+		$this->config->set('mchat_new_posts_edit', $this->request->variable('mchat_new_posts_edit', 0));
+		// update setting in config table to allow quoted posts to display or not
+		$this->config->set('mchat_new_posts_quote', $this->request->variable('mchat_new_posts_quote', 0));
+		// update setting in config table for stats on index
+		$this->config->set('mchat_stats_index', $this->request->variable('mchat_stats_index', 0));
+		// update setting in config table for message on top
+		$this->config->set('mchat_message_top', $this->request->variable('mchat_message_top', 0));
 
 	}
 	/**

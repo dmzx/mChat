@@ -117,10 +117,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGES'				=> 'Sõnumi seaded',
 	'MCHAT_PAUSE_ON_INPUT'			=> 'Sõnumi sisestamisel paus',
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Valik jah määrab, kas jututoa sõnumeid värskendatakse ajal, mil kasutaja sisestab uut sõnumit tekstiväljal',
+
 	// error reporting => Vigade teavitus
-	'MCHAT_NEEDS_UPDATING'	=> 'mChat laiendus vajab uuendamist. Palun võtta ühendust foorumi administraatoriga, et ta käivitaks uuenduse.',
-	'MCHAT_WRONG_VERSION'	=> 'Vale versioon laiendusest on paigaldatud. Palun käivita %sinstaller%s, et paigaldada uus laienduse versioon.',
-	'WARNING'	=> 'Hoiatus',
 	'TOO_LONG_DATE'		=> 'Kuupäeva formaat mille oled sisestanud on liiga pikk.',
 	'TOO_SHORT_DATE'	=> 'Kuupäeva formaat mille oled sisestanud on liiga lühike.',
 	'TOO_SMALL_REFRESH'	=> 'Värskendamise väärtus on liiga väike.',
@@ -145,7 +143,8 @@ $lang = array_merge($lang, array(
 	'TOO_LONG_STATIC_MESSAGE'	=> 'Staatiline sõnum on liiga pikk.',
 	'TOO_SMALL_TIMEOUT'	=> 'Kasutaja sessiooni aeg on liiga väike.',
 	'TOO_LARGE_TIMEOUT'	=> 'Kasutaja sessiooni aeg on liiga suur.',
-		// User perms => Kasutaja õigused
+
+	// User perms => Kasutaja õigused
 	'ACL_U_MCHAT_USE'			=> 'Saab kasutada mChat jututuba',
 	'ACL_U_MCHAT_VIEW'			=> 'Saab vaadata mChat jututuba',
 	'ACL_U_MCHAT_EDIT'			=> 'Saab muuta mChat jututoas sõnumeid',
@@ -159,6 +158,8 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_BBCODE'		=> 'Saab kasutada BBkoode mChat jututoas',
 	'ACL_U_MCHAT_SMILIES'		=> 'Saab kasutada emotikone mChat jututoas',
 	'ACL_U_MCHAT_URLS'			=> 'Saab postitada URL\'e mChat jututoas',
+
 	// Admin perms => Administraatori õigused
-	'ACL_A_MCHAT'				=> array('lang' => 'Saab hallata mChat seadeid', 'cat' => 'permissions'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> 'Saab hallata mChat seadeid',
+
 ));

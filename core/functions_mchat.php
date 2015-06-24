@@ -70,7 +70,7 @@ class functions_mchat
 	 */
 	function mchat_cache()
 	{
-		// Grab the config entries in teh ACP...and cache em :P
+		// Grab the config entries in the ACP...and cache em :P
 		if (($config_mchat = $this->cache->get('_mchat_config')) === false)
 		{
 			$sql = 'SELECT * FROM ' . $this->mchat_config_table;
@@ -95,7 +95,7 @@ class functions_mchat
 	{
 		$sql = 'UPDATE ' . $this->mchat_table . '
 		SET user_id = ' . ANONYMOUS . '
-	WHERE user_id = ' . (int) $user_id;
+		WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;

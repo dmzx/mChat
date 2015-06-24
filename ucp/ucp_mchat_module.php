@@ -21,8 +21,6 @@ class ucp_mchat_module
 
 		$this->functions_mchat = $phpbb_container->get('dmzx.mchat.functions_mchat');
 
-	//	$user->add_lang('mods/mchat_lang');
-
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$error = $data = array();
 
@@ -107,6 +105,4 @@ class ucp_mchat_module
 		$this->tpl_name = 'ucp_mchat';
 		$this->page_title = 'UCP_PROFILE_MCHAT';
 	}
-//	$this->page_title = 'UCP_PROFILE_MCHAT';
-
 }

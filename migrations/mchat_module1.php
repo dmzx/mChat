@@ -24,6 +24,4 @@ class mchat_module1 extends \phpbb\db\migration\migration
 			))),
 		);
 	}
-}
-
-		
+}	

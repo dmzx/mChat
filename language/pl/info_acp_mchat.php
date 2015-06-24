@@ -124,9 +124,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE_ON_INPUT_EXPLAIN'	=> 'Zaznacz TAK aby nie auto-aktualizować mChatu gdy użytkownik pisze wiadomość',
 
 	// error reporting
-	'MCHAT_NEEDS_UPDATING'	=> 'Rozszerzenie mChat musi zostać zaktualizowane.	Proszę skontaktuj się z administratorem.',
-	'MCHAT_WRONG_VERSION'	=> 'Zainstalowano złą wersję rozszerzenia.	Proszę uruchom %instalator%s aby zainstalować nową wersję rozszerzenia.',
-	'WARNING'	=> 'Warning',
 	'TOO_LONG_DATE'		=> 'Format day który wpisałeś jest za długi.',
 	'TOO_SHORT_DATE'	=> 'Format day który wpisałeś jest za krótki.',
 	'TOO_SMALL_REFRESH'	=> 'Ustawiona wartość odświeżania jest za mała.',
@@ -165,6 +162,6 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_URLS'			=> 'Może wprowadzać adresy url mChat',
 
 	// Admin perms
-	'ACL_A_MCHAT'				=> array('lang' => 'Może zarządzać ustawieniami Mchat', 'cat' => 'permissions'), // Using a phpBB category here
+	'ACL_A_MCHAT'				=> 'Może zarządzać ustawieniami Mchat',
 
 ));

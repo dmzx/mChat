@@ -40,6 +40,7 @@ class mchat_schema_2 extends \phpbb\db\migration\migration
 			),
 		);
 	}
+
 	public function revert_schema()
 	{
 		return array(
@@ -48,5 +49,4 @@ class mchat_schema_2 extends \phpbb\db\migration\migration
 			),
 		);
 	}
-
 }
