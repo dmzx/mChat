@@ -27,6 +27,9 @@ class functions_mchat
 	/** @var \phpbb\cache\service */
 	protected $cache;
 
+	/** @var \phpbb\event\dispatcher_interface */
+	protected $dispatcher;
+
 	protected $table_prefix;
 
  	/**
@@ -50,13 +53,14 @@ class functions_mchat
 	 * @param \phpbb\cache\service				$cache
 	 * @param									$table_prefix
 	 */
-	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $table_prefix, $mchat_table, $mchat_config_table, $mchat_sessions_table)
+	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $dispatcher, $table_prefix, $mchat_table, $mchat_config_table, $mchat_sessions_table)
 	{
 		$this->template = $template;
 		$this->user = $user;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->cache = $cache;
+		$this->dispatcher = $dispatcher;
 		$this->phpbb_log = $log;
 		$this->table_prefix = $table_prefix;
 		$this->mchat_table = $mchat_table;
@@ -73,7 +77,8 @@ class functions_mchat
 		// Grab the config entries in the ACP...and cache em :P
 		if (($config_mchat = $this->cache->get('_mchat_config')) === false)
 		{
-			$sql = 'SELECT * FROM ' . $this->mchat_config_table;
+			$sql = 'SELECT *
+				FROM ' . $this->mchat_config_table;
 			$result = $this->db->sql_query($sql);
 			$config_mchat = array();
 			while ($row = $this->db->sql_fetchrow($result))
@@ -94,8 +99,8 @@ class functions_mchat
 	function mchat_user_fix($user_id)
 	{
 		$sql = 'UPDATE ' . $this->mchat_table . '
-		SET user_id = ' . ANONYMOUS . '
-		WHERE user_id = ' . (int) $user_id;
+			SET user_id = ' . ANONYMOUS . '
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -144,7 +149,8 @@ class functions_mchat
 	{
 		$check_time = time() - (int) $session_time;
 
-		$sql = 'DELETE FROM ' . $this->mchat_sessions_table . ' WHERE user_lastupdate < ' . $check_time;
+		$sql = 'DELETE FROM ' . $this->mchat_sessions_table . '
+			WHERE user_lastupdate < ' . $check_time;
 		$this->db->sql_query($sql);
 
 		// add the user into the sessions upon first visit
@@ -157,10 +163,10 @@ class functions_mchat
 		$mchat_user_list = '';
 
 		$sql = 'SELECT m.user_id, u.username, u.user_type, u.user_allow_viewonline, u.user_colour
-		FROM ' . $this->mchat_sessions_table . ' m
-		LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
-		WHERE m.user_lastupdate > ' . $check_time . '
-		ORDER BY u.username ASC';
+			FROM ' . $this->mchat_sessions_table . ' m
+			LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
+			WHERE m.user_lastupdate > ' . $check_time . '
+			ORDER BY u.username ASC';
 		$result = $this->db->sql_query($sql);
 		$can_view_hidden = $this->auth->acl_get('u_viewonline');
 		while ($row = $this->db->sql_fetchrow($result))
@@ -214,7 +220,9 @@ class functions_mchat
 		// insert user into the mChat sessions table
 		if ($this->user->data['user_type'] == USER_FOUNDER || $this->user->data['user_type'] == USER_NORMAL)
 		{
-			$sql = 'SELECT * FROM ' . $this->mchat_sessions_table . ' WHERE user_id =' . (int) $this->user->data['user_id'];
+			$sql = 'SELECT *
+				FROM ' . $this->mchat_sessions_table . '
+				WHERE user_id =' . (int) $this->user->data['user_id'];
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
@@ -251,7 +259,8 @@ class functions_mchat
 			return;
 		}
 
-		$sql = 'DELETE FROM ' . $this->mchat_table . ' WHERE post_id = ' . (int) $post_id;
+		$sql = 'DELETE FROM ' . $this->mchat_table . '
+			WHERE post_id = ' . (int) $post_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -265,7 +274,8 @@ class functions_mchat
 	function mchat_prune($mchat_prune_amount)
 	{
 		// Run query to get the total message rows...
-		$sql = 'SELECT COUNT(message_id) AS total_messages FROM ' . $this->mchat_table;
+		$sql = 'SELECT COUNT(message_id) AS total_messages
+			FROM ' . $this->mchat_table;
 		$result = $this->db->sql_query($sql);
 		$mchat_total_messages = (int) $this->db->sql_fetchfield('total_messages');
 		$this->db->sql_freeresult($result);
@@ -281,7 +291,9 @@ class functions_mchat
 		if ($prune)
 		{
 
-			$result = $this->db->sql_query_limit('SELECT * FROM '. $this->mchat_table . ' ORDER BY message_id ASC', 1);
+			$result = $this->db->sql_query_limit('SELECT *
+				FROM '. $this->mchat_table . '
+				ORDER BY message_id ASC', 1);
 			$row = $this->db->sql_fetchrow($result);
 			$first_id = (int) $row['message_id'];
 
@@ -292,7 +304,7 @@ class functions_mchat
 
 			// let's go delete them...if the message id is less than the delete id
 			$sql = 'DELETE FROM ' . $this->mchat_table . '
-			WHERE message_id < ' . (int) $delete_id;
+				WHERE message_id < ' . (int) $delete_id;
 			$this->db->sql_query($sql);
 
 			$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED');
@@ -340,9 +352,9 @@ class functions_mchat
 		$num_predefined_bbcodes = 22;
 
 		$sql = 'SELECT bbcode_id, bbcode_tag, bbcode_helpline
-		FROM ' . BBCODES_TABLE . '
-		WHERE display_on_posting = 1
-		ORDER BY bbcode_tag';
+			FROM ' . BBCODES_TABLE . '
+			WHERE display_on_posting = 1
+			ORDER BY bbcode_tag';
 		$result = $this->db->sql_query($sql);
 
 		$i = 0;
@@ -374,4 +386,16 @@ class functions_mchat
 		}
 		$this->db->sql_freeresult($result);
 	}
+
+	function functions_mchat_aft()
+	{
+		/**
+		* Event functions_mchat_aft
+		*
+		* @event dmzx.mchat.core.functions_mchat_aft
+		* @since 0.1.2
+		*/
+		$this->dispatcher->trigger_event('dmzx.mchat.core.functions_mchat_aft');
+	}
+
 }

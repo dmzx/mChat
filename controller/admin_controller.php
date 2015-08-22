@@ -94,17 +94,17 @@ class admin_controller
 			'date'				=> $this->request->variable('mchat_date', '', true),
 			'whois'				=> $this->request->variable('mchat_whois', 0),
 			'whois_refresh'		=> $this->request->variable('mchat_whois_refresh', 0),
-			'bbcode_disallowed'	=> utf8_normalize_nfc($this->request->variable('mchat_bbcode_disallowed', '', true)),
+			'bbcode_disallowed'	=> $this->request->variable('mchat_bbcode_disallowed', '', true),
 			'prune_enable'		=> $this->request->variable('mchat_prune_enable', 0),
 			'prune_num'			=> $this->request->variable('mchat_prune_num', 0),
 			'index_height'		=> $this->request->variable('mchat_index_height', 0),
 			'custom_height'		=> $this->request->variable('mchat_custom_height', 0),
-			'static_message'	=> utf8_normalize_nfc($this->request->variable('mchat_static_message', '', true)),
+			'static_message'	=> $this->request->variable('mchat_static_message', '', true),
 			'override_min_post_chars'	=> $this->request->variable('mchat_override_min_post_chars', 0),
 			'override_smilie_limit'	=> $this->request->variable('mchat_override_smilie_limit', 0),
 			'timeout'			=> $this->request->variable('mchat_timeout', 0),
 			'pause_on_input'	=> $this->request->variable('mchat_pause_on_input', 0),
-			'rules'				=> utf8_normalize_nfc($this->request->variable('mchat_rules', '', true)),
+			'rules'				=> $this->request->variable('mchat_rules', '', true),
 			'avatars'			=> $this->request->variable('mchat_avatars', 0),
 		);
 
@@ -169,7 +169,8 @@ class admin_controller
 		}
 
 		// let's get it on
-		$sql = 'SELECT * FROM ' . $this->mchat_config_table;
+		$sql = 'SELECT *
+			FROM ' . $this->mchat_config_table;
 		$result = $this->db->sql_query($sql);
 		$mchat_config = array();
 		while ($row = $this->db->sql_fetchrow($result))

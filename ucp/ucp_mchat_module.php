@@ -29,12 +29,12 @@ class ucp_mchat_module
 			case 'configuration':
 
 				$data = array(
-					'user_mchat_index'		=> $request->variable('user_mchat_index', (bool) $user->data['user_mchat_index']),
-					'user_mchat_sound'		=> $request->variable('user_mchat_sound', (bool) $user->data['user_mchat_sound']),
+					'user_mchat_index'			=> $request->variable('user_mchat_index', (bool) $user->data['user_mchat_index']),
+					'user_mchat_sound'			=> $request->variable('user_mchat_sound', (bool) $user->data['user_mchat_sound']),
 					'user_mchat_stats_index'	=> $request->variable('user_mchat_stats_index', (bool) $user->data['user_mchat_stats_index']),
-					'user_mchat_topics'		=> $request->variable('user_mchat_topics', (bool) $user->data['user_mchat_topics']),
-					'user_mchat_avatars'	=> $request->variable('user_mchat_avatars', (bool) $user->data['user_mchat_avatars']),
-					'user_mchat_input_area'	=> $request->variable('user_mchat_input_area', (bool) $user->data['user_mchat_input_area']),
+					'user_mchat_topics'			=> $request->variable('user_mchat_topics', (bool) $user->data['user_mchat_topics']),
+					'user_mchat_avatars'		=> $request->variable('user_mchat_avatars', (bool) $user->data['user_mchat_avatars']),
+					'user_mchat_input_area'		=> $request->variable('user_mchat_input_area', (bool) $user->data['user_mchat_input_area']),
 				);
 
 				add_form_key('ucp_mchat');
@@ -49,10 +49,10 @@ class ucp_mchat_module
 					if (!sizeof($error))
 					{
 						$sql_ary = array(
-							'user_mchat_index'	=> $data['user_mchat_index'],
-							'user_mchat_sound'	=> $data['user_mchat_sound'],
+							'user_mchat_index'		=> $data['user_mchat_index'],
+							'user_mchat_sound'		=> $data['user_mchat_sound'],
 							'user_mchat_stats_index'	=> $data['user_mchat_stats_index'],
-							'user_mchat_topics'	=> $data['user_mchat_topics'],
+							'user_mchat_topics'		=> $data['user_mchat_topics'],
 							'user_mchat_avatars'	=> $data['user_mchat_avatars'],
 							'user_mchat_input_area'	=> $data['user_mchat_input_area'],
 						);

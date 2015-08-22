@@ -182,6 +182,7 @@
 				<input type="button" class="button2" onclick="mChat.toggle('BBCodes');" value="{L_MCHAT_BBCODES}" />
 				<!-- ENDIF -->
 				<!-- ENDIF -->
+				<!-- EVENT dmzx_mchat_buttons_mid -->
 				<!-- IF MCHAT_READ_ARCHIVE_BUTTON -->
 				<input type="button" class="button2" onclick="window.location.href = '{MCHAT_ARCHIVE_URL}';" value="{L_MCHAT_ARCHIVE}" />
 				<!-- ENDIF -->
@@ -192,6 +193,7 @@
 				<!-- IF MCHAT_RULES -->
 				<input type="button" class="button2" onclick="popup('{U_MCHAT_RULES}', 450, 275); return false;" value="{L_MCHAT_HELP}" />
 				<!-- ENDIF -->
+				<!-- EVENT dmzx_mchat_buttons_after -->
 				<!-- IF MCHAT_ALLOW_BBCODES -->
 					<!-- INCLUDE mchat_bbcodes.html -->
 				<!-- ENDIF -->

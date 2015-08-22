@@ -9,13 +9,13 @@
 
 namespace dmzx\mchat\migrations;
 
-class mchat_schema_3 extends \phpbb\db\migration\migration
+class mchat_schema_sample_data extends \phpbb\db\migration\migration
 {
 
 	static public function depends_on()
 	{
 		return array(
-			'\dmzx\mchat\migrations\mchat_schema_2',
+			'\dmzx\mchat\migrations\mchat_schema',
 		);
 	}
 

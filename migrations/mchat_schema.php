@@ -11,6 +11,7 @@ namespace dmzx\mchat\migrations;
 
 class mchat_schema extends \phpbb\db\migration\migration
 {
+	var $ext_version = '0.1.2';
 
 	public function update_data()
 	{
@@ -25,7 +26,7 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('config.add', array('mchat_new_posts_quote', false)),
 			array('config.add', array('mchat_message_top', true)),
 			array('config.add', array('mchat_stats_index', false)),
-			array('config.add', array('mchat_version','0.1.1')),
+			array('config.add', array('mchat_version', $this->ext_version)),
 
 			// Add permissions
 			array('permission.add', array('u_mchat_use')),
@@ -78,6 +79,42 @@ class mchat_schema extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> 'config_name',
 				),
+
+				$this->table_prefix . 'mchat'	=> array(
+					'COLUMNS'	=> array(
+						'message_id'		=> array('UINT', NULL, 'auto_increment'),
+						'user_id'			=> array('UINT', 0),
+						'user_ip'			=> array('VCHAR:40', ''),
+						'message'			=> array('MTEXT_UNI', ''),
+						'bbcode_bitfield'	=> array('VCHAR', ''),
+						'bbcode_uid'		=> array('VCHAR:8', ''),
+						'bbcode_options'	=> array('BOOL', '7'),
+						'message_time'		=> array('INT:11', 0),
+						'forum_id'			=> array('UINT', 0),
+						'post_id'			=> array('UINT', 0),
+					),
+					'PRIMARY_KEY'	=> 'message_id',
+				),
+
+				$this->table_prefix . 'mchat_sessions'	=> array(
+					'COLUMNS'	=> array(
+						'user_id'			=> array('UINT', 0),
+						'user_lastupdate'	=> array('TIMESTAMP', 0),
+						'user_ip'			=> array('VCHAR:40', ''),
+					),
+					'PRIMARY_KEY'	=> 'user_id',
+				),
+			),
+
+			'add_columns'	=> array(
+				$this->table_prefix . 'users' => array(
+					'user_mchat_index' 		=> array('BOOL', '1'),
+					'user_mchat_sound' 		=> array('BOOL', '1'),
+					'user_mchat_stats_index' => array('BOOL', '1'),
+					'user_mchat_topics' 	=> array('BOOL', '1'),
+					'user_mchat_avatars' 	=> array('BOOL', '1'),
+					'user_mchat_input_area' => array('BOOL', '1'),
+				),
 			),
 		);
 	}
@@ -86,7 +123,20 @@ class mchat_schema extends \phpbb\db\migration\migration
 	{
 		return array(
 			'drop_tables'	=> array(
+				$this->table_prefix . 'mchat',
+				$this->table_prefix . 'mchat_sessions',
 				$this->table_prefix . 'mchat_config',
+			),
+
+			'drop_columns' => array(
+				$this->table_prefix . 'users'	=> array(
+					'user_mchat_index',
+					'user_mchat_sound',
+					'user_mchat_stats_index',
+					'user_mchat_topics',
+					'user_mchat_avatars',
+					'user_mchat_input_area',
+				),
 			),
 		);
 	}

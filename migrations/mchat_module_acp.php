@@ -9,7 +9,7 @@
 
 namespace dmzx\mchat\migrations;
 
-class mchat_module extends \phpbb\db\migration\migration
+class mchat_module_acp extends \phpbb\db\migration\migration
 {
 
 	public function update_data()

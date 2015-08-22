@@ -40,6 +40,7 @@ services:
             - @cache
             - @pagination
             - @request
+            - @dispatcher
             - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%
@@ -53,6 +54,7 @@ services:
             - @log
             - @dbal.conn
             - @cache
+            - @service_container
             - %core.table_prefix%
             - %dmzx.mchat.table.mchat%
             - %dmzx.mchat.table.mchat_config%
@@ -67,6 +69,7 @@ services:
             - @template
             - @user
             - @dbal.conn
+            - @service_container
             - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%

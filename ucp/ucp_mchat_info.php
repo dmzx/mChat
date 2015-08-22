@@ -13,10 +13,12 @@ class ucp_mchat_info
 {
 	function module()
 	{
+		global $config;
+
 		return array(
 			'filename'	=> '\dmzx\mchat\ucp\ucp_mchat_module',
 			'title'		=> 'UCP_MCHAT_CONFIG',
-			'version'	=> '1.3.8',
+			'version'	=> $config['mchat_version'],
 			'modes'		=> array(
 				'configuration'	=> array(
 					'title' => 'UCP_MCHAT_CONFIG',
