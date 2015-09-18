@@ -27,9 +27,6 @@ class functions_mchat
 	/** @var \phpbb\cache\service */
 	protected $cache;
 
-	/** @var \phpbb\event\dispatcher_interface */
-	protected $dispatcher;
-
 	protected $table_prefix;
 
  	/**
@@ -53,14 +50,13 @@ class functions_mchat
 	 * @param \phpbb\cache\service				$cache
 	 * @param									$table_prefix
 	 */
-	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $dispatcher, $table_prefix, $mchat_table, $mchat_config_table, $mchat_sessions_table)
+	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $table_prefix, $mchat_table, $mchat_config_table, $mchat_sessions_table)
 	{
 		$this->template = $template;
 		$this->user = $user;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->cache = $cache;
-		$this->dispatcher = $dispatcher;
 		$this->phpbb_log = $log;
 		$this->table_prefix = $table_prefix;
 		$this->mchat_table = $mchat_table;
@@ -386,16 +382,4 @@ class functions_mchat
 		}
 		$this->db->sql_freeresult($result);
 	}
-
-	function functions_mchat_aft()
-	{
-		/**
-		* Event functions_mchat_aft
-		*
-		* @event dmzx.mchat.core.functions_mchat_aft
-		* @since 0.1.2
-		*/
-		$this->dispatcher->trigger_event('dmzx.mchat.core.functions_mchat_aft');
-	}
-
 }

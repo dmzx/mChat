@@ -54,7 +54,6 @@ services:
             - @log
             - @dbal.conn
             - @cache
-            - @service_container
             - %core.table_prefix%
             - %dmzx.mchat.table.mchat%
             - %dmzx.mchat.table.mchat_config%

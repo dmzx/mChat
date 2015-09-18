@@ -11,7 +11,7 @@ namespace dmzx\mchat\migrations;
 
 class mchat_schema extends \phpbb\db\migration\migration
 {
-	var $ext_version = '0.1.3';
+	var $ext_version = '0.1.4';
 
 	public function update_data()
 	{
