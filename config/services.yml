@@ -7,15 +7,13 @@ services:
         arguments:
             - @dmzx.mchat.functions_mchat
             - @config
-            - @controller.helper
             - @template
-            - @log
             - @user
             - @service_container
-            - @auth
             - @dbal.conn
             - @cache
             - @request
+            - @ext.manager
             - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%
@@ -69,7 +67,6 @@ services:
             - @user
             - @dbal.conn
             - @service_container
-            - %core.root_path%
             - %core.php_ext%
             - %core.table_prefix%
             - %dmzx.mchat.table.mchat%

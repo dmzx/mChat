@@ -11,7 +11,6 @@ namespace dmzx\mchat\core;
 
 class functions_mchat
 {
-
 	/** @var \phpbb\template\template */
 	protected $template;
 
@@ -21,12 +20,16 @@ class functions_mchat
 	/** @var \phpbb\auth\auth */
 	protected $auth;
 
+	/** @var \phpbb\log\log */
+	protected $log;
+
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
 	/** @var \phpbb\cache\service */
 	protected $cache;
 
+	/** @var string */
 	protected $table_prefix;
 
  	/**
@@ -41,26 +44,32 @@ class functions_mchat
 	protected $mchat_sessions_table;
 
 	/**
-	 * Constructor
-	 *
-	 * @param \phpbb\template\template			$template
-	 * @param \phpbb\user						$user
-	 * @param \phpbb\auth\auth					$auth
-	 * @param \phpbb\db\driver\driver_interface	$db
-	 * @param \phpbb\cache\service				$cache
-	 * @param									$table_prefix
-	 */
+	* Constructor
+	*
+	* @param \phpbb\template\template			$template
+	* @param \phpbb\user						$user
+	* @param \phpbb\auth\auth					$auth
+	* @param \phpbb\log\log_interface			$log
+	* @param \phpbb\db\driver\driver_interface	$db
+	* @param \phpbb\cache\service				$cache
+	* @param									$table_prefix
+	* @param									$mchat_table
+	* @param									$mchat_config_table
+	* @param									$mchat_sessions_table
+	*
+	*/
+
 	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, $table_prefix, $mchat_table, $mchat_config_table, $mchat_sessions_table)
 	{
-		$this->template = $template;
-		$this->user = $user;
-		$this->auth = $auth;
-		$this->db = $db;
-		$this->cache = $cache;
-		$this->phpbb_log = $log;
-		$this->table_prefix = $table_prefix;
-		$this->mchat_table = $mchat_table;
-		$this->mchat_config_table = $mchat_config_table;
+		$this->template 			= $template;
+		$this->user 				= $user;
+		$this->auth 				= $auth;
+		$this->phpbb_log 			= $log;
+		$this->db 					= $db;
+		$this->cache 				= $cache;
+		$this->table_prefix 		= $table_prefix;
+		$this->mchat_table 			= $mchat_table;
+		$this->mchat_config_table 	= $mchat_config_table;
 		$this->mchat_sessions_table = $mchat_sessions_table;
 	}
 

@@ -22,6 +22,9 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\config\config */
 	protected $config;
 
+	/** @var \phpbb\controller\helper */
+	protected $controller_helper;
+
 	/** @var \phpbb\template\template */
 	protected $template;
 
@@ -34,15 +37,12 @@ class listener implements EventSubscriberInterface
 	/** @var ContainerInterface */
 	protected $phpbb_container;
 
-	protected $phpbb_root_path;
-
+	/** @var string */
 	protected $phpEx;
 
 	/** @var string */
 	protected $table_prefix;
 
-	/** @var \phpbb\controller\helper */
-	protected $controller_helper;
 	/**
 	* The database tables
 	*
@@ -50,20 +50,36 @@ class listener implements EventSubscriberInterface
 	*/
 	protected $mchat_table;
 
-	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $phpbb_container, $root_path, $phpEx, $table_prefix,$mchat_table)
+	/**
+	* Constructor
+	*
+	* @param \dmzx\mchat\core\render_helper		$render_helper
+	* @param \phpbb\auth\auth					$auth
+	* @param \phpbb\config\config				$config
+	* @param \phpbb\controller\helper			$controller_helper
+	* @param \phpbb\template\template			$template
+	* @param \phpbb\user						$user
+	* @param \phpbb\db\driver\driver_interface	$db
+	* @param ContainerInterface					$phpbb_container
+	* @param									$phpEx
+	* @param									$table_prefix
+	* @param									$mchat_table
+	*
+	*/
+
+	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $phpbb_container, $phpEx, $table_prefix,$mchat_table)
 	{
-		$this->render_helper = $render_helper;
-		$this->auth = $auth;
-		$this->config = $config;
-		$this->template = $template;
-		$this->controller_helper = $controller_helper;
-		$this->user = $user;
-		$this->db = $db;
-		$this->phpbb_container = $phpbb_container;
-		$this->root_path = $root_path;
-		$this->phpEx = $phpEx;
-		$this->table_prefix = $table_prefix;
-		$this->mchat_table = $mchat_table;
+		$this->render_helper 		= $render_helper;
+		$this->auth 				= $auth;
+		$this->config 				= $config;
+		$this->template 			= $template;
+		$this->controller_helper 	= $controller_helper;
+		$this->user 				= $user;
+		$this->db 					= $db;
+		$this->phpbb_container 		= $phpbb_container;
+		$this->phpEx 				= $phpEx;
+		$this->table_prefix 		= $table_prefix;
+		$this->mchat_table 			= $mchat_table;
 	}
 
 	static public function getSubscribedEvents()
@@ -177,6 +193,5 @@ class listener implements EventSubscriberInterface
 			$sql = 'INSERT INTO ' .	$this->mchat_table	. ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 			$this->db->sql_query($sql);
 		}
-
 	}
 }

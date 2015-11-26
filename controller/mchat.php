@@ -23,15 +23,17 @@ class mchat
 	/**
 	* Constructor
 	*
-	 * @param \dmzx\mchat\core\render_helper	$render_helper
-	 * @param \phpbb\controller\helper			$helper
-	 * @param \phpbb\request\request			$request
+	* @param \dmzx\mchat\core\render_helper		$render_helper
+	* @param \phpbb\controller\helper			$helper
+	* @param \phpbb\request\request				$request
+	*
 	*/
+
 	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\controller\helper $helper, \phpbb\request\request $request)
 	{
-		$this->render_helper = $render_helper;
-		$this->helper = $helper;
-		$this->request = $request;
+		$this->render_helper 	= $render_helper;
+		$this->helper 			= $helper;
+		$this->request 			= $request;
 	}
 
 	/**

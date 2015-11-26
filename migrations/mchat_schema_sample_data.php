@@ -11,7 +11,6 @@ namespace dmzx\mchat\migrations;
 
 class mchat_schema_sample_data extends \phpbb\db\migration\migration
 {
-
 	static public function depends_on()
 	{
 		return array(

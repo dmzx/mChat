@@ -23,6 +23,9 @@ class render_helper
 	/** @var \phpbb\template\template */
 	protected $template;
 
+	/** @var \phpbb\log\log_interface */
+	protected $log;
+
 	/** @var \phpbb\user */
 	protected $user;
 
@@ -41,11 +44,15 @@ class render_helper
 	/** @var \phpbb\event\dispatcher_interface */
 	protected $dispatcher;
 
+	/** @var string phpBB root path */
 	protected $phpbb_root_path;
 
+	/** @var string */
 	protected $phpEx;
 
+	/** @var string */
 	protected $table_prefix;
+
 	/**
 	* The database tables
 	*
@@ -54,39 +61,44 @@ class render_helper
 	protected $mchat_table;
 
 	/**
-	 * Constructor
-	 *
-	 * @param \dmzx\mchat\core\functions_mchat	$functions_mchat
-	 * @param \phpbb\config\config				$config
-	 * @param \phpbb\controller\helper			$helper
-	 * @param \phpbb\template\template			$template
-	 * @param \phpbb\user						$user
-	 * @param \phpbb\auth\auth					$auth
-	 * @param \phpbb\db\driver\driver_interface	$db
-	 * @param \phpbb\cache\service				$cache
-	 * @param \phpbb\request\request			$request
-	 * @param									$phpbb_root_path
-	 * @param									$phpEx
-	 * @param									$table_prefix
-	 */
+	* Constructor
+	*
+	* @param \dmzx\mchat\core\functions_mchat	$functions_mchat
+	* @param \phpbb\config\config				$config
+	* @param \phpbb\controller\helper			$helper
+	* @param \phpbb\template\template			$template
+	* @param \phpbb\log\log_interface			$log
+	* @param \phpbb\user						$user
+	* @param \phpbb\auth\auth					$auth
+	* @param \phpbb\db\driver\driver_interface	$db
+	* @param \phpbb\cache\service				$cache
+	* @param \phpbb\request\request				$request
+	* @param \phpbb\event\dispatcher_interface 	$dispatcher
+	* @param									$phpbb_root_path
+	* @param									$phpEx
+	* @param									$table_prefix
+	* @param									$mchat_table
+	*
+	*/
+
 	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\log\log_interface $log, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\pagination $pagination, \phpbb\request\request $request, \phpbb\event\dispatcher_interface $dispatcher, $phpbb_root_path, $phpEx, $table_prefix, $mchat_table)
 	{
-		$this->functions_mchat = $functions_mchat;
-		$this->config = $config;
-		$this->helper = $helper;
-		$this->template = $template;
-		$this->user = $user;
-		$this->auth = $auth;
-		$this->db = $db;
-		$this->cache = $cache;
-		$this->pagination = $pagination;
-		$this->request = $request;
-		$this->dispatcher = $dispatcher;
-		$this->phpbb_root_path = $phpbb_root_path;
-		$this->phpEx = $phpEx;
-		$this->phpbb_log = $log;
-		$this->table_prefix = $table_prefix;
-		$this->mchat_table = $mchat_table;
+		$this->functions_mchat 	= $functions_mchat;
+		$this->config 			= $config;
+		$this->helper 			= $helper;
+		$this->template 		= $template;
+		$this->phpbb_log 		= $log;
+		$this->user 			= $user;
+		$this->auth 			= $auth;
+		$this->db 				= $db;
+		$this->cache 			= $cache;
+		$this->pagination 		= $pagination;
+		$this->request 			= $request;
+		$this->dispatcher 		= $dispatcher;
+		$this->phpbb_root_path 	= $phpbb_root_path;
+		$this->phpEx 			= $phpEx;
+		$this->table_prefix 	= $table_prefix;
+		$this->mchat_table 		= $mchat_table;
 	}
 
 	/**
@@ -105,7 +117,10 @@ class render_helper
 		//chat enabled
 		if (!$this->config['mchat_enable'])
 		{
-			trigger_error($this->user->lang['MCHAT_ENABLE'], E_USER_NOTICE);
+			$this->template->assign_vars(array(
+				'L_MCHAT_DISABLE'	=> $this->user->lang['MCHAT_ENABLE'],
+				'S_MCHAT_MESSAGE'	=> (!$this->config['mchat_enable']) ? true : false,
+			));
 		}
 
 		//	avatars

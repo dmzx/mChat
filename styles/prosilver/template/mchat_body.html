@@ -36,7 +36,7 @@
 <!-- ENDIF -->
 <!-- IF not MCHAT_READ_MODE -->
 <div class="forabg">
-	<div class="inner"><span class="corners-top"><span><a name="mChat"></a></span></span>
+	<div class="inner"><a name="mChat"></a>
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="icon">
@@ -153,14 +153,14 @@
 			<div id="mChatmain" <!-- IF MCHAT_CUSTOM_PAGE -->class="mChatRowLimitCustom" style="height: {MCHAT_CUSTOM_HEIGHT}px;"<!-- ELSE -->class="mChatRowLimit" style="height: {MCHAT_INDEX_HEIGHT}px;"<!-- ENDIF -->>
 			<!-- ENDIF -->
 			<div id="mChatData">
-	<!-- ENDIF -->
+			<!-- ENDIF -->
 			<!-- IF S_MCHAT_AVATARS -->
 				<!-- INCLUDE mchat_avatars.html -->
 			<!-- ELSE -->
 				<!-- INCLUDE mchat_no_avatars.html -->
 			<!-- ENDIF -->
-		<!-- IF not MCHAT_READ_MODE -->
-					<!-- IF MCHAT_NOMESSAGE_MODE --><div id="mChatNoMessage">{L_MCHAT_NOMESSAGE}</div><!-- ENDIF -->
+			<!-- IF not MCHAT_READ_MODE -->
+			<!-- IF MCHAT_NOMESSAGE_MODE --><div id="mChatNoMessage">{L_MCHAT_NOMESSAGE}</div><!-- ENDIF -->
 			</div>
 			<!-- IF not MCHAT_ARCHIVE_MODE -->
 			</div>
@@ -227,7 +227,7 @@
 	<!-- ENDIF -->
 	<!-- IF not MCHAT_READ_MODE -->
 		</div>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 	<!-- ENDIF -->
 <!-- IF MCHAT_ARCHIVE_MODE -->

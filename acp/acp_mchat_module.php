@@ -11,7 +11,6 @@ namespace dmzx\mchat\acp;
 
 class acp_mchat_module
 {
-
 	public $u_action;
 
 	public function main($id, $mode)
@@ -42,6 +41,5 @@ class acp_mchat_module
 
 		// Make the $u_action url available in the admin controller
 		$admin_controller->set_page_url($this->u_action);
-
 	}
 }
