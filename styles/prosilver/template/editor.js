@@ -47,8 +47,7 @@ function initInsertions()
 	if (is_ie && typeof(baseHeight) != 'number')
 	{
 				/* === mChat focus fix Start === */
-				var mChatFocus = window.mChatFocusFix || false;
-				if(!mChatFocus)
+				if(!mChat.focusFix)
 				{
 					textarea.focus();
 				}
