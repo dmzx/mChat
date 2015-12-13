@@ -427,9 +427,9 @@ class render_helper
 				$rows = $this->db->sql_fetchrowset($result);
 				$this->db->sql_freeresult($result);
 				// Reverse the array wanting messages appear in reverse
-				if($this->config['mchat_message_top'])
+				if(!$this->config['mchat_message_top'])
 				{
-				$rows = array_reverse($rows);
+					$rows = array_reverse($rows);
 				}
 
 				foreach($rows as $row)
@@ -984,9 +984,9 @@ class render_helper
 					$rows = $this->db->sql_fetchrowset($result);
 					$this->db->sql_freeresult($result);
 
-					if($this->config['mchat_message_top'])
+					if(!$this->config['mchat_message_top'])
 					{
-					$rows = array_reverse($rows, true);
+						$rows = array_reverse($rows, true);
 					}
 
 					foreach($rows as $row)
