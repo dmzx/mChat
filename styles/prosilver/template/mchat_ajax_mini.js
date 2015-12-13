@@ -8,7 +8,7 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 **/
-var $jQ=jQuery.noConflict(true);
+var $jQ=jQuery;
 var hasFocus = true;
 $jQ(function(){
 	if(!mChatArchiveMode){
