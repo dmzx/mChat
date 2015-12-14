@@ -8,7 +8,7 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 **/
-var $jQ=jQuery.noConflict(true);
+var $jQ=jQuery;
 var hasFocus = true;
 $jQ(function(){
 	if(!mChatArchiveMode){
@@ -92,6 +92,7 @@ $jQ(function(){
 			$jQ('#mChatUserList').show()
 		 }
 		}
+		$jQ.browser = {msie: navigator.userAgent.match(/MSIE ([0-9]+)\./) || navigator.userAgent.match(/Trident\/7.0; rv 11.0/)};
 });
 var mChat={
 	key:function(e){
@@ -154,7 +155,7 @@ var mChat={
 		if ($jQ.cookie('mChatNoSound') == 'yes') {
 		return
 	 }
-		if (false || $.browser.msie) {
+		if ($jQ.browser.msie) {
 		$('#mChatSound').html('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" height="0" width="0" type="application/x-shockwave-flash"><param name="movie" value="' + file + '"></object>');
 	 } else {
 		$('#mChatSound').html('<embed src="' + file + '" width="0" height="0" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>');
