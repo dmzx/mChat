@@ -543,7 +543,9 @@ class render_helper
 				{
 					// Forbidden (for jQ AJAX request)
 					if ($this->request->is_ajax())
+					{
 						throw new \phpbb\exception\http_exception(403, 'MCHAT_ERROR_FORBIDDEN');
+					}
 				}
 
 				// Reguest...
