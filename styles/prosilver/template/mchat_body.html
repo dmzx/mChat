@@ -5,12 +5,8 @@
 <!-- INCLUDEJS editor.js -->
 <!-- INCLUDEJS jquery.titlealert.min.js -->
 <!-- INCLUDEJS jquery_cookie_mini.js -->
-<!-- IF MCHAT_MESSAGE_TOP	-->
-<!-- INCLUDEJS mchat_ajax_mini_top.js -->
-<!-- ELSE -->
-<!-- INCLUDEJS mchat_ajax_mini.js -->
-<!-- ENDIF -->
 <!-- INCLUDEJS jquery.maxlength.min.js -->
+<!-- INCLUDEJS mchat.min.js -->
 
 <!-- IF MCHAT_ARCHIVE_MODE -->
 <!--**
@@ -50,64 +46,38 @@
 			<script type="text/javascript">
 			// <![CDATA[
 			// Define mChat setting
-			var mChatNoMessage = '{MCHAT_NOMESSAGE_MODE}';
-			var mChatFile = '{MCHAT_FILE_NAME}';
-			var mChatForumRoot = '{ROOT_PATH}';
-			var mChatCustomPage = '{MCHAT_CUSTOM_PAGE}';
-			<!-- IF not MCHAT_ARCHIVE_MODE -->
-			var mChatPause = '{MCHAT_PAUSE_ON_INPUT}';
-			var mChatRefresh = '{MCHAT_REFRESH_JS}';
-			<!-- ELSE -->
-			var mChatPause = false;
-			var mChatRefresh = false;
-			<!-- ENDIF -->
-			<!-- IF MCHAT_USER_TIMEOUT -->
-			var mChatUserTimeout = '{MCHAT_USER_TIMEOUT}';
-			<!-- ELSE -->
-			var mChatUserTimeout = false;
-			<!-- ENDIF -->
-			var mChatNewMessageAlert = '{LA_MCHAT_NEW_CHAT}';
-			var mChatNoMessageInput = '{LA_MCHAT_NOMESSAGEINPUT}';
-			var mChatNoMessage = '{LA_MCHAT_NOMESSAGE}';
-			var mChatEditInfo = '{LA_MCHAT_EDITINFO}';
-			var mChatNoAccess = '{LA_MCHAT_NOACCESS}';
-			var mChatFlood = '{LA_MCHAT_FLOOD}';
-			var mChatDelConfirm = '{LA_MCHAT_DELCONFIRM}';
-			var mChatReset = '{LA_MCHAT_RESET_QUESTION}';
-			var mChatRefreshing = '{LA_MCHAT_REFRESHING}';
-			var mChatSessOut = '{LA_MCHAT_SESSION_OUT}';
-			var mChatSessEnds = '{LA_MCHAT_SESSION_ENDS}';
-			var mChatRefreshYes = '{MCHAT_REFRESH_YES}';
-			var mChatRefreshNo = '{LA_MCHAT_REFRESH_NO}';
-			var mChatMssgLngthLong = '{MCHAT_MESS_LONG}';
-			var mChatLikes = '{LA_MCHAT_LIKES}';
-			<!-- IF MCHAT_MESSAGE_LNGTH -->
-			var mChatMssgLngth = '{MCHAT_MESSAGE_LNGTH}';
-			<!-- ELSE -->
-			var mChatMssgLngth = false;
-			<!-- ENDIF -->
-			<!-- IF S_MCHAT_SOUND_YES -->
-			var mChatSound = true;
-			<!-- ELSE -->
-			var mChatSound = false;
-			<!-- ENDIF -->
-			<!-- IF MCHAT_WHOIS -->
-			var mChatWhois = true;
-			var mChatWhoisRefresh = '{MCHAT_WHOIS_REFRESH}';
-			<!-- ELSE -->
-			var mChatWhois = false;
-			var mChatWhoisRefresh = false;
-			<!-- ENDIF -->
-			<!-- IF MCHAT_ARCHIVE_MODE -->
-			var mChatArchiveMode = true;
-			<!-- ELSE -->
-			var mChatArchiveMode = false;
-			var form_name = 'postform';
-			var text_name = 'message';
-			var mChatFocusFix = true;
-			<!-- ENDIF -->
-			function insert_quote(user,text)
-			{
+			window.mChat = {
+				messageTop		: <!-- IF MCHAT_MESSAGE_TOP -->true<!-- ELSE -->false<!-- ENDIF -->,
+				noMessage		: '{MCHAT_NOMESSAGE_MODE}',
+				file			: '{MCHAT_FILE_NAME}',
+				forumRoot		: '{ROOT_PATH}',
+				customPage		: '{MCHAT_CUSTOM_PAGE}',
+				pause			: <!-- IF not MCHAT_ARCHIVE_MODE -->'{MCHAT_PAUSE_ON_INPUT}'<!-- ELSE -->false<!-- ENDIF -->,
+				refreshTime		: <!-- IF not MCHAT_ARCHIVE_MODE -->'{MCHAT_REFRESH_JS}'<!-- ELSE -->false<!-- ENDIF -->,
+				userTimeout		: <!-- IF MCHAT_USER_TIMEOUT -->'{MCHAT_USER_TIMEOUT}'<!-- ELSE -->false<!-- ENDIF -->,
+				newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
+				noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
+				noMessages		: '{LA_MCHAT_NOMESSAGE}',
+				editInfo		: '{LA_MCHAT_EDITINFO}',
+				noAccess		: '{LA_MCHAT_NOACCESS}',
+				flood			: '{LA_MCHAT_FLOOD}',
+				delConfirm		: '{LA_MCHAT_DELCONFIRM}',
+				reset			: '{LA_MCHAT_RESET_QUESTION}',
+				refreshing		: '{LA_MCHAT_REFRESHING}',
+				sessOut			: '{LA_MCHAT_SESSION_OUT}',
+				sessEnds		: '{LA_MCHAT_SESSION_ENDS}',
+				refreshYes		: '{MCHAT_REFRESH_YES}',
+				refreshNo		: '{LA_MCHAT_REFRESH_NO}',
+				mssgLngthLong	: '{MCHAT_MESS_LONG}',
+				likes			: '{LA_MCHAT_LIKES}',
+				mssgLngth		: <!-- IF MCHAT_MESSAGE_LNGTH -->'{MCHAT_MESSAGE_LNGTH}'<!-- ELSE -->false<!-- ENDIF -->,
+				playSound		: <!-- IF S_MCHAT_SOUND_YES -->true<!-- ELSE -->false<!-- ENDIF -->,
+				whois			: <!-- IF MCHAT_WHOIS -->true<!-- ELSE -->false<!-- ENDIF -->,
+				whoisRefresh	: <!-- IF MCHAT_WHOIS -->'{MCHAT_WHOIS_REFRESH}'<!-- ELSE -->false<!-- ENDIF -->,
+				focusFix		: <!-- IF MCHAT_ARCHIVE_MODE -->false<!-- ELSE -->true<!-- ENDIF -->,
+				archiveMode		: <!-- IF MCHAT_ARCHIVE_MODE -->true<!-- ELSE -->false<!-- ENDIF -->
+			};
+			function insert_quote(user, text) {
 				var quote = decodeURIComponent(text.replace(/\+/g, " "));
 				quote = quote.replace(/&lt;/g, "<");
 				quote = quote.replace(/&gt;/g, ">");
@@ -122,12 +92,10 @@
 				username = username.replace(/&#46;/g, '.');
 				username = username.replace(/&amp;/g, '&');
 				username = username.replace(/&quot;/g, '"');
-				document.getElementById('mChatMessage').value += '[quote="' + username + '"]' + ' ' + quote + '[/quote]';
+				document.getElementById('mChatMessage').value += '[quote="' + username + '"]' + quote + '[/quote]';
 				document.getElementById('mChatMessage').focus();
 			}
-
-			function insert_like(user,text)
-			{
+			function insert_like(user, text) {
 				var quote = decodeURIComponent(text.replace(/\+/g, " "));
 				quote = quote.replace(/&lt;/g, "<");
 				quote = quote.replace(/&gt;/g, ">");
@@ -142,7 +110,7 @@
 				username = username.replace(/&#46;/g, '.');
 				username = username.replace(/&amp;/g, '&');
 				username = username.replace(/&quot;/g, '"');
-				document.getElementById('mChatMessage').value += '' + mChatLikes + '[quote="' + username + '"]' + ' ' + quote + '[/quote]';
+				document.getElementById('mChatMessage').value += '' + mChat.likes + '[quote="' + username + '"]' + quote + '[/quote]';
 				document.getElementById('mChatMessage').focus();
 			}
 			// ]]>
