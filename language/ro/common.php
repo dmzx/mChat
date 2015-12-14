@@ -135,4 +135,4 @@ $lang = array_merge($lang, array(
 
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Îmi place mesajul',
-	));
+));

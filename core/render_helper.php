@@ -618,13 +618,6 @@ class render_helper
 						$message = preg_replace($bbcode_replace, '', $message);
 					}
 				}
-				/**
-				* Event render_helper_add
-				*
-				* @event dmzx.mchat.core.render_helper_add
-				* @since 0.1.2
-				*/
-				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_add');
 
 				$sql_ary = array(
 					'forum_id' 			=> 0,
