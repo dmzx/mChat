@@ -32,7 +32,7 @@ class functions_mchat
 	/** @var string */
 	protected $table_prefix;
 
- 	/**
+	/**
 	* The database tables
 	*
 	* @var string

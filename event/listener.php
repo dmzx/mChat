@@ -67,7 +67,7 @@ class listener implements EventSubscriberInterface
 	*
 	*/
 
-	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $phpbb_container, $phpEx, $table_prefix,$mchat_table)
+	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $phpbb_container, $phpEx, $table_prefix, $mchat_table)
 	{
 		$this->render_helper 		= $render_helper;
 		$this->auth 				= $auth;
@@ -153,26 +153,26 @@ class listener implements EventSubscriberInterface
 		if ($event['mode'] == 'post' || $event['mode'] == 'reply' || $event['mode'] == 'quote'|| $event['mode'] == 'edit' && (isset($this->config['mchat_enable']) && $this->config['mchat_enable']) && (isset($this->config['mchat_new_posts']) && $this->config['mchat_new_posts']))
 		{
 
-			 if ($event['mode'] == 'post' && (isset($this->config['mchat_new_posts_topic']) && $this->config['mchat_new_posts_topic']))
-			 {
+			if ($event['mode'] == 'post' && (isset($this->config['mchat_new_posts_topic']) && $this->config['mchat_new_posts_topic']))
+			{
 				$mchat_new_data = $this->user->lang['MCHAT_NEW_TOPIC'];
-			 }
-			 else if ($event['mode'] == 'quote' && (isset($this->config['mchat_new_posts_quote']) && $this->config['mchat_new_posts_quote']))
-			 {
+			}
+			else if ($event['mode'] == 'quote' && (isset($this->config['mchat_new_posts_quote']) && $this->config['mchat_new_posts_quote']))
+			{
 				$mchat_new_data = $this->user->lang['MCHAT_NEW_QUOTE'];
-			 }
-			 else if ($event['mode'] == 'edit' && (isset($this->config['mchat_new_posts_edit']) && $this->config['mchat_new_posts_edit']))
-			 {
+			}
+			else if ($event['mode'] == 'edit' && (isset($this->config['mchat_new_posts_edit']) && $this->config['mchat_new_posts_edit']))
+			{
 				$mchat_new_data = $this->user->lang['MCHAT_NEW_EDIT'];
-			 }
-			 else if ($event['mode'] == 'reply' && (isset($this->config['mchat_new_posts_reply']) && $this->config['mchat_new_posts_reply']))
-			 {
+			}
+			else if ($event['mode'] == 'reply' && (isset($this->config['mchat_new_posts_reply']) && $this->config['mchat_new_posts_reply']))
+			{
 				$mchat_new_data = $this->user->lang['MCHAT_NEW_REPLY'];
-			 }
-			 else
-			 {
+			}
+			else
+			{
 				return;
-			 }
+			}
 
 			// Data...
 			$message = utf8_normalize_nfc($mchat_new_data . ': [url=' . generate_board_url() . '/viewtopic.' . $this->phpEx . '?p=' . $event['data']['post_id'] . '#p' . $event['data']['post_id'] . ']' . $event['post_data']['post_subject'] . '[/url] '. $this->user->lang['MCHAT_IN'] .' [url=' . generate_board_url() . '/viewforum.' . $this->phpEx . '?f=' . $event['forum_id'] . ']' . $event['post_data']['forum_name']	. ' [/url] ' . $this->user->lang['MCHAT_IN_SECTION']);

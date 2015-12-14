@@ -542,7 +542,7 @@ class render_helper
 				if (!$this->config['mchat_enable'] || !$mchat_add_mess || !check_form_key('mchat_posting', -1))
 				{
 					// Forbidden (for jQ AJAX request)
-					if ($this->request->is_ajax()) // FOR DEBUG
+					if ($this->request->is_ajax())
 						throw new \phpbb\exception\http_exception(403, 'MCHAT_ERROR_FORBIDDEN');
 				}
 
@@ -814,14 +814,6 @@ class render_helper
 				// If read mode request set true
 				$mchat_read_mode = true;
 
-				/**
-				* Event render_helper_edit
-				*
-				* @event dmzx.mchat.core.render_helper_edit
-				* @since 0.1.4
-				*/
-				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_edit');
-
 				break;
 
 			// Delete function...
@@ -852,14 +844,6 @@ class render_helper
 					// Forbidden (for jQ AJAX request)
 					throw new \phpbb\exception\http_exception(403, 'MCHAT_ERROR_FORBIDDEN');
 				}
-
-				/**
-				* Event render_helper_delete
-				*
-				* @event dmzx.mchat.core.render_helper_delete
-				* @since 0.1.4
-				*/
-				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_delete');
 
 				// Run delete!
 				$sql = 'DELETE FROM ' . $this->mchat_table . '

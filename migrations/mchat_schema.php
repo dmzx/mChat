@@ -82,7 +82,7 @@ class mchat_schema extends \phpbb\db\migration\migration
 
 				$this->table_prefix . 'mchat'	=> array(
 					'COLUMNS'	=> array(
-						'message_id'		=> array('UINT', NULL, 'auto_increment'),
+						'message_id'		=> array('UINT', null, 'auto_increment'),
 						'user_id'			=> array('UINT', 0),
 						'user_ip'			=> array('VCHAR:40', ''),
 						'message'			=> array('MTEXT_UNI', ''),
