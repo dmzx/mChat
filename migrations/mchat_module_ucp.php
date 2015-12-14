@@ -23,4 +23,4 @@ class mchat_module_ucp extends \phpbb\db\migration\migration
 			))),
 		);
 	}
-}	
+}
