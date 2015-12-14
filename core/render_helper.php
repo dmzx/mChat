@@ -427,9 +427,9 @@ class render_helper
 				$rows = $this->db->sql_fetchrowset($result);
 				$this->db->sql_freeresult($result);
 				// Reverse the array wanting messages appear in reverse
-				if($this->config['mchat_message_top'])
+				if(!$this->config['mchat_message_top'])
 				{
-				$rows = array_reverse($rows);
+					$rows = array_reverse($rows);
 				}
 
 				foreach($rows as $row)
@@ -618,13 +618,6 @@ class render_helper
 						$message = preg_replace($bbcode_replace, '', $message);
 					}
 				}
-				/**
-				* Event render_helper_add
-				*
-				* @event dmzx.mchat.core.render_helper_add
-				* @since 0.1.2
-				*/
-				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_add');
 
 				$sql_ary = array(
 					'forum_id' 			=> 0,
@@ -984,9 +977,9 @@ class render_helper
 					$rows = $this->db->sql_fetchrowset($result);
 					$this->db->sql_freeresult($result);
 
-					if($this->config['mchat_message_top'])
+					if(!$this->config['mchat_message_top'])
 					{
-					$rows = array_reverse($rows, true);
+						$rows = array_reverse($rows, true);
 					}
 
 					foreach($rows as $row)

@@ -1,5 +1,7 @@
 # phpBB mChat Extension
 
+[![Build Status](https://travis-ci.org/dmzx/mChat-Extension.svg?branch=master)](https://travis-ci.org/dmzx/mChat-Extension)
+
 ## Install
 
 1. Download the latest release.
