@@ -145,7 +145,7 @@ jQuery(function($) {
 					mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
 				}
 				$("#mChatOkIMG").show();
-				$("#mChatLoadIMG, #mChatErrorIMG, #mChatPauseIMG").hide();
+				$("#mChatLoadIMG,#mChatErrorIMG,#mChatPauseIMG").hide();
 				$("#mChatRefreshText").html(mChat.refreshYes);
 				$("#mChatMessage").val("").focus();
 			} else {
@@ -350,7 +350,7 @@ jQuery(function($) {
 				},
 				dataType: "html",
 				beforeSend: function() {
-					$("#mChatOkIMG, #mChatErrorIMG, #mChatPauseIMG").hide();
+					$("#mChatOkIMG,#mChatErrorIMG,#mChatPauseIMG").hide();
 					$("#mChatLoadIMG").show();
 				},
 				success: function(html) {
@@ -369,13 +369,13 @@ jQuery(function($) {
 						mChat.notice();
 					}
 					setTimeout(function() {
-						$("#mChatLoadIMG, #mChatErrorIMG, #mChatPauseIMG").hide();
+						$("#mChatLoadIMG,#mChatErrorIMG,#mChatPauseIMG").hide();
 						$("#mChatOkIMG").show();
 						$("#mChatRefreshText").html(mChat.refreshYes);
 					}, 500);
 				},
 				error: function() {
-					$("#mChatLoadIMG, #mChatOkIMG, #mChatPauseIMG, #mChatRefreshTextNo, #mChatPauseIMG,").hide();
+					$("#mChatLoadIMG,#mChatOkIMG,#mChatPauseIMG,#mChatRefreshTextNo").hide();
 					$("#mChatErrorIMG").show();
 					mChat.sound(mChat.forumRoot + "ext/dmzx/mchat/sounds/error.swf");
 				},
