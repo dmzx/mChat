@@ -31,7 +31,7 @@ jQuery(function($) {
 			}, 1000, "swing");
 		}
 		if (mChat.pause) {
-			$("#mChatMessage").bind("keypress", function() {
+			$("#mChatMessage").on("keypress", function() {
 				clearInterval(mChat.interval);
 				$("#mChatLoadIMG,#mChatOkIMG,#mChatErrorIMG").hide();
 				$("#mChatRefreshText").html(mChat.refreshNo).addClass("mchat-alert");
@@ -90,7 +90,7 @@ jQuery(function($) {
 						}
 					};
 				testSubject.insertAfter(input);
-				$(this).bind("keypress blur change submit focus", check);
+				$(this).on("keypress blur change submit focus", check);
 			});
 			return this;
 		};
@@ -181,7 +181,7 @@ jQuery(function($) {
 				return false;
 			}
 			var messChars = $("#mChatMessage").val().replace(/ /g, "");
-			if (messChars.length > mChat.mssgLngth && mChat.mssgLngth) {
+			if (mChat.mssgLngth && messChars.length > mChat.mssgLngth) {
 				alert(mChat.mssgLngthLong);
 				return;
 			}
@@ -225,7 +225,7 @@ jQuery(function($) {
 			});
 		},
 		edit: function(id) {
-			var message = $("#edit" + id).val();
+			var message = $("#mess" + id).data("edit");
 			apprise(mChat.editInfo, {
 				"textarea": message,
 				"animate": true,
@@ -433,6 +433,16 @@ jQuery(function($) {
 			$("#mChatPauseIMG").show();
 			$("#mChatRefreshText").html(mChat.refreshNo).addClass("mchat-alert");
 			$("#mChatSessMess").html(mChat.sessOut).addClass("mchat-alert");
+		},
+		entityDecode: function(text) {
+			var s = decodeURIComponent(text.replace(/\+/g, " "));
+			s = s.replace(/&lt;/g, "<");
+			s = s.replace(/&gt;/g, ">");
+			s = s.replace(/&#58;/g, ':');
+			s = s.replace(/&#46;/g, '.');
+			s = s.replace(/&amp;/g, '&');
+			s = s.replace(/&quot;/g, '"');
+			return s;
 		}
 	});
 
@@ -463,6 +473,43 @@ jQuery(function($) {
 
 	$("#mChatUseSound").change(function() {
 		$.cookie("mChatNoSound", $(this).is(":checked") ? null : "yes");
+	});
+
+	$("#mChatmain").on("click", "span.mChatInsertMention", function() {
+		var $msg = $(this).closest('.mChatHover');
+		var username = mChat.entityDecode($msg.data("username"));
+		var usercolor = $msg.data("usercolor");
+		if (usercolor) {
+			username = "[b][color=" + usercolor + "]" + username + "[/color][/b]";
+		} else if (mChat.allowBBCodes) {
+			username = "[b]" + username + "[/b]";
+		}
+		insert_text("@ " + username + ", ");
+	});
+
+	$("#mChatData").on("click", "img.mChatInsertQuote", function() {
+		var $msg = $(this).closest('.mChatHover');
+		var username = mChat.entityDecode($msg.data("username"));
+		var id = $msg.data("id");
+		var quote = mChat.entityDecode($("#mess" + id).data("edit"));
+		insert_text('[quote="' + username + '"]' + quote + '[/quote]');
+	});
+
+	$("#mChatData").on("click", "img.mChatInsertLike", function() {
+		var $msg = $(this).closest('.mChatHover');
+		var username = mChat.entityDecode($msg.data("username"));
+		var quote = mChat.entityDecode($msg.data("edit"));
+		insert_text(mChat.likes + '[quote="' + username + '"]' + quote + "[/quote]");
+	});
+
+	$("#mChatData").on("click", "img.mChatEdit", function() {
+		var $msg = $(this).closest('.mChatHover');
+		mChat.edit($msg.data("id"));
+	});
+
+	$("#mChatData").on("click", "img.mChatDelete", function() {
+		var $msg = $(this).closest('.mChatHover');
+		mChat.del($msg.data("id"));
 	});
 
 	// Apprise 1.5 by Daniel Raftery
@@ -567,14 +614,14 @@ jQuery(function($) {
 		if (!n) {
 			n = false;
 		}
-		$(".aTextbox").bind("keydown blur", function() {
+		$(".aTextbox").on("keydown blur", function() {
 			n = $(this).val();
 		});
 		var o = $(".aEdit").val();
 		if (!o) {
 			o = false;
 		}
-		$(".aEdit").bind("keydown blur", function() {
+		$(".aEdit").on("keydown blur", function() {
 			o = $(this).val();
 		});
 		$(".aButtons > button").click(function() {

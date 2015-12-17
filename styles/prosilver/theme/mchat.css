@@ -135,6 +135,18 @@ img.mChatImage{
 	vertical-align: middle;
 }
 
+div.mChatMessageHeader {
+	float: left;
+}
+
+div.mChatMessageIcons {
+	float: right;
+}
+
+img.mChatImage, span.mChatInsertMention {
+	cursor: pointer;
+}
+
 img.mChatImageLoad {
 	vertical-align: middle;
 	cursor: wait;
