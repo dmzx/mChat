@@ -127,7 +127,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_TOP_POSTERS'			=> 'Utente più attivo in Chat',
 	'MCHAT_NEW_CHAT'			=> 'Nuovo messaggio nella Chat!',
 	'MCHAT_SEND_PM'			 => 'Invia messaggio privato',
-	'MCHAT_PM'					=> '(MP)',
 
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Mi Piace il messaggio ',
