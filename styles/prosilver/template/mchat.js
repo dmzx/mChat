@@ -224,7 +224,8 @@ jQuery(function($) {
 				}
 			});
 		},
-		edit: function(id) {
+		edit: function() {
+			var id = $(this).closest('.mChatHover').data("id");
 			var message = $("#mess" + id).data("edit");
 			apprise(mChat.editInfo, {
 				"textarea": message,
@@ -281,7 +282,8 @@ jQuery(function($) {
 				}
 			});
 		},
-		del: function(id) {
+		del: function() {
+			var id = $(this).closest('.mChatHover').data("id");
 			apprise(mChat.delConfirm, {
 				"position": 200,
 				"animate": true,
@@ -434,6 +436,30 @@ jQuery(function($) {
 			$("#mChatRefreshText").html(mChat.refreshNo).addClass("mchat-alert");
 			$("#mChatSessMess").html(mChat.sessOut).addClass("mchat-alert");
 		},
+		insertMention: function() {
+			var $msg = $(this).closest('.mChatHover');
+			var username = mChat.entityDecode($msg.data("username"));
+			var usercolor = $msg.data("usercolor");
+			if (usercolor) {
+				username = "[b][color=" + usercolor + "]" + username + "[/color][/b]";
+			} else if (mChat.allowBBCodes) {
+				username = "[b]" + username + "[/b]";
+			}
+			insert_text("@ " + username + ", ");
+		},
+		insertQuote: function() {
+			var $msg = $(this).closest('.mChatHover');
+			var username = mChat.entityDecode($msg.data("username"));
+			var id = $msg.data("id");
+			var quote = mChat.entityDecode($("#mess" + id).data("edit"));
+			insert_text('[quote="' + username + '"]' + quote + '[/quote]');
+		},
+		insertLike: function() {
+			var $msg = $(this).closest('.mChatHover');
+			var username = mChat.entityDecode($msg.data("username"));
+			var quote = mChat.entityDecode($msg.data("edit"));
+			insert_text(mChat.likes + '[quote="' + username + '"]' + quote + "[/quote]");
+		},
 		entityDecode: function(text) {
 			var s = decodeURIComponent(text.replace(/\+/g, " "));
 			s = s.replace(/&lt;/g, "<");
@@ -475,42 +501,12 @@ jQuery(function($) {
 		$.cookie("mChatNoSound", $(this).is(":checked") ? null : "yes");
 	});
 
-	$("#mChatmain").on("click", "span.mChatInsertMention", function() {
-		var $msg = $(this).closest('.mChatHover');
-		var username = mChat.entityDecode($msg.data("username"));
-		var usercolor = $msg.data("usercolor");
-		if (usercolor) {
-			username = "[b][color=" + usercolor + "]" + username + "[/color][/b]";
-		} else if (mChat.allowBBCodes) {
-			username = "[b]" + username + "[/b]";
-		}
-		insert_text("@ " + username + ", ");
-	});
-
-	$("#mChatData").on("click", "img.mChatInsertQuote", function() {
-		var $msg = $(this).closest('.mChatHover');
-		var username = mChat.entityDecode($msg.data("username"));
-		var id = $msg.data("id");
-		var quote = mChat.entityDecode($("#mess" + id).data("edit"));
-		insert_text('[quote="' + username + '"]' + quote + '[/quote]');
-	});
-
-	$("#mChatData").on("click", "img.mChatInsertLike", function() {
-		var $msg = $(this).closest('.mChatHover');
-		var username = mChat.entityDecode($msg.data("username"));
-		var quote = mChat.entityDecode($msg.data("edit"));
-		insert_text(mChat.likes + '[quote="' + username + '"]' + quote + "[/quote]");
-	});
-
-	$("#mChatData").on("click", "img.mChatEdit", function() {
-		var $msg = $(this).closest('.mChatHover');
-		mChat.edit($msg.data("id"));
-	});
-
-	$("#mChatData").on("click", "img.mChatDelete", function() {
-		var $msg = $(this).closest('.mChatHover');
-		mChat.del($msg.data("id"));
-	});
+	$("#mChatData")
+		.on("click", "span.mChatInsertMention", mChat.insertMention)
+		.on("click", "img.mChatInsertQuote", mChat.insertQuote)
+		.on("click", "img.mChatInsertLike", mChat.insertLike)
+		.on("click", "img.mChatEdit", mChat.edit)
+		.on("click", "img.mChatDelete", mChat.del);
 
 	// Apprise 1.5 by Daniel Raftery
 	// http://thrivingkings.com/apprise
