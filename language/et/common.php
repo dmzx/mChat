@@ -126,7 +126,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_TOP_POSTERS'			=> 'Rämpspostitajate TOP',
 	'MCHAT_NEW_CHAT'			=> 'Uus sõnum jututoas!',
 	'MCHAT_SEND_PM'			 => 'Saada privaatsõnum',
-	'MCHAT_PM'					=> '(PS)',
 
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Asjalik postitus',

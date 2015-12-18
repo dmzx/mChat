@@ -131,7 +131,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_TOP_POSTERS'			=> 'Top Spameri',
 	'MCHAT_NEW_CHAT'			=> 'Mesaj nou!',
 	'MCHAT_SEND_PM'			 => 'Trimite mesaj privat',
-	'MCHAT_PM'					=> '(MP)',
 
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Îmi place mesajul',
