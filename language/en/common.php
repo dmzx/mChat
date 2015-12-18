@@ -127,7 +127,6 @@ $lang = array_merge($lang, array(
 	'MCHAT_TOP_POSTERS'			=> 'Top Spammers',
 	'MCHAT_NEW_CHAT'			=> 'New Chat Message!',
 	'MCHAT_SEND_PM'			 => 'Send Private Message',
-	'MCHAT_PM'					=> '(PM)',
 
 	//Custom edits
 	'REPLY_WITH_LIKE'		=>'Like This Post',
