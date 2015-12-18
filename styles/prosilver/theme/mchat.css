@@ -6,39 +6,25 @@
  *
  */
 
-/* mChat
------------- */
 div.mChatBG1 {
-   background: -webkit-linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   background: -o-linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   background: -moz-linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   background: linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   border: 1px solid #999999;
-   -webkit-border-radius: 6px;
-   -o-border-radius: 6px;
-   -moz-border-radius: 6px;
-   border-radius: 6px;
-   padding: 5px;
-   color: #333333;
-   margin-right: 1px;
-   overflow: hidden;
+	background: linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
+	border: 1px solid #999999;
+	border-radius: 6px;
+	padding: 5px;
+	color: #333333;
+	margin-right: 1px;
+	overflow: hidden;
 }
 
 div.mChatBG2 {
-   background: -webkit-linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   background: -o-linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   background: -moz-linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   background: linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
-   border: 1px solid #999999;
-   -webkit-border-radius: 6px;
-   -o-border-radius: 6px;
-   -moz-border-radius: 6px;
-   border-radius: 6px;
-   padding: 5px;
-   color: #444444;
-   margin-right: 1px;
-   text-align: left;
-   overflow: hidden;
+	background: linear-gradient(#B6BFC4, #FFFFFF, #FFFFFF, #B6BFC4);
+	border: 1px solid #999999;
+	border-radius: 6px;
+	padding: 5px;
+	color: #444444;
+	margin-right: 1px;
+	text-align: left;
+	overflow: hidden;
 }
 div.mChatRowLimit {
 	overflow: auto;
@@ -109,7 +95,7 @@ input.mChatColor {
 	width: 100%;
 	text-align: center;
 	background-color: #DEE3E7;
-	border-style: none;	
+	border-style: none;
 }
 
 div.mChatMessage {
@@ -120,18 +106,19 @@ div.mChatMessage {
 }
 
 div.mChatMessage li {
-   margin-left: 30px;
+	margin-left: 30px;
 }
 
 div.mChatMessage blockquote {
-   margin: 2px 0;
+	margin: 2px 0;
 }
 
 a.mChatScriptLink {
-	text-decoration:none;
+	text-decoration: none;
 }
 
-img.mChatImage{
+img.mChatImage {
+	margin-top: -4px;
 	vertical-align: middle;
 }
 
@@ -159,8 +146,8 @@ img.mChatImageOk {
 }
 
 img.mChatImageHideImg {
-	vertical-align: middle; 
-	cursor: help; 
+	vertical-align: middle;
+	cursor: help;
 	display: none;
 }
 
@@ -189,115 +176,9 @@ div.avatarMessage {
 	margin-left: 50px;
 	width: 90%;
 	margin-right: 5px;
-}	
-
-.appriseOverlay
-	{
-	position:fixed;
-	top:0;
-	left:0;
-	background:rgba(0, 0, 0, 0.3);
-	display:none;
-	}
-.appriseOuter
-	{
-	background:#dcdee2;
-	border:1px solid #fff;
-	box-shadow:0px 3px 7px #333;
-	-moz-box-shadow:0px 3px 7px #333;
-	-webkit-box-shadow:0px 3px 7px #333;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
-	-khtml-border-radius:4px;
-	position:absolute;
-	z-index:99999999;
-	min-width:200px;
-	min-height:50px;
-	max-width:75%;
-	position:fixed;
-	display:none;
-	}
-.appriseInner
-	{
-	padding:20px;
-	color:#333;
-	text-shadow:0px 1px 0px #fff;
-	font-weight: bold;
-	}
-.appriseInner button
-	{
-	border:1px solid #666666;
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-	-khtml-border-radius:3px;
-	background: -moz-linear-gradient(100% 100% 90deg, #eee, #d5d5d5);
-  	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#d5d5d5));
-  	background: -webkit-linear-gradient(#eee, #d5d5d5);
-    background: -o-linear-gradient(#eee, #d5d5d5);
-	color:#000000;
-	font-size:12px;
-	font-weight:bold;
-	padding:4px 10px;
-	margin:0 3px;
-	text-shadow:0px 1px 0px #fff;
-	cursor:pointer;
-	box-shadow:0px 1px 2px #ccc;
-	-moz-box-shadow:0px 1px 2px #ccc;
-	-webkit-box-shadow:0px 1px 2px #ccc;
-	}
-.appriseInner button:hover
-	{
-	color:#d85054;
-	}
-.aButtons, .aInput
-	{
-	margin:20px 10px 0px 10px;
-	text-align:center;
-	}
-.aTextbox
-	{
-	border:1px solid #aaa;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
-	-khtml-border-radius:4px;
-	box-shadow:0px 1px 0px #fff;
-	-moz-box-shadow:0px 1px 0px #fff;
-	-webkit-box-shadow:0px 1px 0px #fff;
-	width:180px;
-	font-size:12px;
-	font-weight:bold;
-	padding:5px 10px;
-	}
-.no-rgba  .appriseOverlay{
-	opacity: .30; 
-	filter: alpha(opacity = 30) !important; 
-	background: #000; 
-	zoom: 1;
-}
-.no-borderradius .appriseOuter{
-	border:1px solid #888;
-}
-.appriseOverlay {
-    background-color:#222222;
-    border:medium none;
-    cursor:wait;
-    height:100%;
-    left:0;
-    margin:0;
-    padding:0;
-    position:fixed;
-    top:0;
-    width:100%;
-    z-index:1000;
-    filter:alpha(opacity=70);
-    opacity:0.70; 
 }
 
-/* Change buttons height
------------- */
-.mChatImage {
-    margin-top: -4px;
+#mChatConfirm textarea {
+	width: 100%;
+	height: 100px;
 }
