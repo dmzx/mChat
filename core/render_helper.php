@@ -1129,7 +1129,7 @@ class render_helper
 			'MCHAT_MESSAGE_LNGTH'	=> $this->config_mchat['max_message_lngth'],
 			'L_MCHAT_MESSAGE_LNGTH_EXPLAIN'	=> (intval($this->config_mchat['max_message_lngth'])) ? sprintf($this->user->lang['MCHAT_MESSAGE_LNGTH_EXPLAIN'], intval($this->config_mchat['max_message_lngth'])) : '',
 			'MCHAT_MESS_LONG'		=> sprintf($this->user->lang['MCHAT_MESS_LONG'], $this->config_mchat['max_message_lngth']),
-			'MCHAT_USER_TIMEOUT'	=> $this->config_mchat['timeout'] ? 1000 * $this->config_mchat['timeout'] : false,
+			'MCHAT_USER_TIMEOUT'	=> 1000 * $this->config_mchat['timeout'],
 			'MCHAT_WHOIS_REFRESH'	=> 1000 * $this->config_mchat['whois_refresh'],
 			'MCHAT_PAUSE_ON_INPUT'	=> $this->config_mchat['pause_on_input'] ? true : false,
 			'L_MCHAT_ONLINE_EXPLAIN'	=> $this->functions_mchat->mchat_session_time($mchat_session_time),

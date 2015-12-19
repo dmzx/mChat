@@ -49,11 +49,11 @@
 				messageTop		: <!-- IF MCHAT_MESSAGE_TOP -->true<!-- ELSE -->false<!-- ENDIF -->,
 				noMessage		: '{MCHAT_NOMESSAGE_MODE}',
 				file			: '{MCHAT_FILE_NAME}',
-				forumRoot		: '{ROOT_PATH}',
-				customPage		: '{MCHAT_CUSTOM_PAGE}',
-				pause			: <!-- IF not MCHAT_ARCHIVE_MODE -->'{MCHAT_PAUSE_ON_INPUT}'<!-- ELSE -->false<!-- ENDIF -->,
-				refreshTime		: <!-- IF not MCHAT_ARCHIVE_MODE -->'{MCHAT_REFRESH_JS}'<!-- ELSE -->false<!-- ENDIF -->,
-				userTimeout		: <!-- IF MCHAT_USER_TIMEOUT -->'{MCHAT_USER_TIMEOUT}'<!-- ELSE -->false<!-- ENDIF -->,
+				extUrl			: '{EXT_URL}',
+				customPage		: <!-- IF MCHAT_CUSTOM_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
+				pause			: <!-- IF MCHAT_PAUSE_ON_INPUT -->true<!-- ELSE -->false<!-- ENDIF -->,
+				refreshTime		: {MCHAT_REFRESH_JS},
+				userTimeout		: {MCHAT_USER_TIMEOUT},
 				newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
 				noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
 				noMessages		: '{LA_MCHAT_NOMESSAGE}',
@@ -69,10 +69,10 @@
 				refreshNo		: '{LA_MCHAT_REFRESH_NO}',
 				mssgLngthLong	: '{MCHAT_MESS_LONG}',
 				likes			: '{LA_MCHAT_LIKES}',
-				mssgLngth		: <!-- IF MCHAT_MESSAGE_LNGTH -->'{MCHAT_MESSAGE_LNGTH}'<!-- ELSE -->false<!-- ENDIF -->,
+				mssgLngth		: {MCHAT_MESSAGE_LNGTH},
 				playSound		: <!-- IF S_MCHAT_SOUND_YES -->true<!-- ELSE -->false<!-- ENDIF -->,
 				whois			: <!-- IF MCHAT_WHOIS -->true<!-- ELSE -->false<!-- ENDIF -->,
-				whoisRefresh	: <!-- IF MCHAT_WHOIS -->'{MCHAT_WHOIS_REFRESH}'<!-- ELSE -->false<!-- ENDIF -->,
+				whoisRefresh	: {MCHAT_WHOIS_REFRESH},
 				focusFix		: <!-- IF MCHAT_ARCHIVE_MODE -->false<!-- ELSE -->true<!-- ENDIF -->,
 				archiveMode		: <!-- IF MCHAT_ARCHIVE_MODE -->true<!-- ELSE -->false<!-- ENDIF -->
 			};
@@ -83,6 +83,15 @@
 			<div id="mChatmain" <!-- IF MCHAT_CUSTOM_PAGE -->class="mChatRowLimitCustom" style="height: {MCHAT_CUSTOM_HEIGHT}px;"<!-- ELSE -->class="mChatRowLimit" style="height: {MCHAT_INDEX_HEIGHT}px;"<!-- ENDIF -->>
 			<!-- ENDIF -->
 			<div id="mChatData">
+			<div id="mChatConfirm" class="hidden">
+				<h3>{L_CONFIRM}</h3>
+				<p></p>
+				<textarea></textarea>
+				<fieldset class="submit-buttons">
+					<input type="button" name="confirm" value="{L_MCHAT_OK}" class="button2" />&nbsp;
+					<input type="button" name="cancel" value="{L_CANCEL}" class="button2" />
+				</fieldset>
+			</div>
 			<!-- ENDIF -->
 			<!-- INCLUDE mchat_messages.html -->
 			<!-- IF not MCHAT_READ_MODE -->
@@ -135,10 +144,10 @@
 				<!-- ENDIF -->
 				<!-- EVENT dmzx_mchat_body_smiley_after -->
 				<div style="padding: 3px;">
-					<img src="{ROOT_PATH}ext/dmzx/mchat/styles/prosilver/theme/images/load.gif" alt="{L_MCHAT_LOAD}" title="{L_MCHAT_LOAD}" id="mChatLoadIMG" class="mChatImageLoad" />
-					<img src="{ROOT_PATH}ext/dmzx/mchat/styles/prosilver/theme/images/ok.gif" alt="{L_MCHAT_OK}" title="{L_MCHAT_OK}" id="mChatOkIMG" class="mChatImageOk" />
-					<img src="{ROOT_PATH}ext/dmzx/mchat/styles/prosilver/theme/images/error.gif" alt="{L_MCHAT_ERROR}" title="{L_MCHAT_ERROR}" id="mChatErrorIMG" class="mChatImageHideImg" />
-					<img src="{ROOT_PATH}ext/dmzx/mchat/styles/prosilver/theme/images/paused.gif" alt="{L_MCHAT_PAUSE}" title="{L_MCHAT_PAUSE}" id="mChatPauseIMG" class="mChatImageHideImg" />
+					<img src="{EXT_URL}styles/prosilver/theme/images/load.gif" alt="{L_MCHAT_LOAD}" title="{L_MCHAT_LOAD}" id="mChatLoadIMG" class="mChatImageLoad" />
+					<img src="{EXT_URL}styles/prosilver/theme/images/ok.gif" alt="{L_MCHAT_OK}" title="{L_MCHAT_OK}" id="mChatOkIMG" class="mChatImageOk" />
+					<img src="{EXT_URL}styles/prosilver/theme/images/error.gif" alt="{L_MCHAT_ERROR}" title="{L_MCHAT_ERROR}" id="mChatErrorIMG" class="mChatImageHideImg" />
+					<img src="{EXT_URL}styles/prosilver/theme/images/paused.gif" alt="{L_MCHAT_PAUSE}" title="{L_MCHAT_PAUSE}" id="mChatPauseIMG" class="mChatImageHideImg" />
 					<span id="mChatRefreshText">{MCHAT_REFRESH_YES}</span><!-- IF MCHAT_USER_TIMEOUT --> &bull; <span id="mChatSessMess">&nbsp;</span><!-- ENDIF --> &bull; <label for="mChatUseSound">{L_MCHAT_USESOUND} <input type="checkbox" id="mChatUseSound" <!-- IF S_MCHAT_SOUND_YES -->checked="checked"<!-- ENDIF --> /></label>
 				 {L_MCHAT_COPYRIGHT}
 				</div>

@@ -30,7 +30,7 @@ jQuery(function($) {
 				scrollTop: $("#mChatmain")[0].scrollHeight
 			}, 1000, "swing");
 		}
-		if (mChat.pause) {
+		if (!mChat.archiveMode && mChat.pause) {
 			$("#mChatMessage").on("keypress", function() {
 				clearInterval(mChat.interval);
 				$("#mChatLoadIMG,#mChatOkIMG,#mChatErrorIMG").hide();
@@ -141,7 +141,7 @@ jQuery(function($) {
 			var answer = confirm(mChat.reset);
 			if (answer) {
 				$("#mChatRefreshText").removeClass("mchat-alert");
-				if (mChat.pause) {
+				if (!mChat.archiveMode && mChat.pause) {
 					mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
 				}
 				$("#mChatOkIMG").show();
@@ -156,6 +156,7 @@ jQuery(function($) {
 			if ($.cookie("mChatNoSound") == "yes") {
 				return;
 			}
+			file = mChat.extUrl + "sounds/" + file + ".swf";
 			if (navigator.userAgent.match(/MSIE ([0-9]+)\./) || navigator.userAgent.match(/Trident\/7.0; rv 11.0/)) {
 				$("#mChatSound").html('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" height="0" width="0" type="application/x-shockwave-flash"><param name="movie" value="' + file + '"></object>');
 			} else {
@@ -216,7 +217,7 @@ jQuery(function($) {
 					$("#submit_button").removeAttr("disabled");
 					mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
 					if (mChat.userTimeout) {
-						mChat.sessionTime = mChat.userTimeout ? mChat.userTimeout / 1000 : false;
+						mChat.sessionTime = mChat.userTimeout / 1000;
 						mChat.counter = setInterval(mChat.countDown, 1000);
 						mChat.activeInterval = setInterval(mChat.active, mChat.userTimeout);
 					}
@@ -225,108 +226,96 @@ jQuery(function($) {
 			});
 		},
 		edit: function() {
-			var id = $(this).closest('.mChatHover').data("id");
-			var message = $("#mess" + id).data("edit");
-			apprise(mChat.editInfo, {
-				"textarea": message,
-				"animate": true,
-				"position": 200,
-				"confirm": true
-			}, function(r) {
-				if (r) {
-					$.ajax({
-						url: mChat.file,
-						timeout: 10000,
-						type: "POST",
-						data: {
-							mode: "edit",
-							message_id: id,
-							message: r
-						},
-						dataType: "text",
-						beforeSend: function() {
-							clearInterval(mChat.interval);
-							if (mChat.userTimeout) {
-								clearInterval(mChat.activeInterval);
-								clearInterval(mChat.counter);
-								$("#mChatSessTimer").html(mChat.refreshing);
-							}
-						},
-						success: function(html) {
-							$("#mess" + id).fadeOut("slow", function() {
-								$(this).replaceWith(html);
-								$("#mess" + id).css("display", "none").fadeIn("slow");
-							});
-						},
-						error: function(resp) {
-							if (resp.status == 403) {
-								alert(mChat.noAccess);
-							} else if (resp.status == 501) {
-								alert(mChat.noMessageInput);
-							}
-						},
-						complete: function() {
-							mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
-							if (mChat.userTimeout) {
-								mChat.sessionTime = mChat.userTimeout ? mChat.userTimeout / 1000 : false;
-								mChat.counter = setInterval(mChat.countDown, 1000);
-								mChat.activeInterval = setInterval(mChat.active, mChat.userTimeout);
-							}
-							if (!mChat.archiveMode && !mChat.messageTop) {
-								setTimeout(function() {
-									$("#mChatmain").animate({scrollTop: $("#mChatmain")[0].scrollHeight}, 1000, "swing");
-								}, 1500);
-							}
+			var id = $(this).closest(".mChatHover").data("id");
+			var $message = mChat.confirmContainer.find("textarea").show().val($("#mess" + id).data("edit"));
+			mChat.confirmContainer.find("p").text(mChat.editInfo);
+			phpbb.confirm(mChat.confirmContainer, function() {
+				$.ajax({
+					url: mChat.file,
+					timeout: 10000,
+					type: "POST",
+					data: {
+						mode: "edit",
+						message_id: id,
+						message: $message.val()
+					},
+					dataType: "text",
+					beforeSend: function() {
+						clearInterval(mChat.interval);
+						if (mChat.userTimeout) {
+							clearInterval(mChat.activeInterval);
+							clearInterval(mChat.counter);
+							$("#mChatSessTimer").html(mChat.refreshing);
 						}
-					});
-				}
+					},
+					success: function(html) {
+						$("#mess" + id).fadeOut("slow", function() {
+							$(this).replaceWith(html);
+							$("#mess" + id).css("display", "none").fadeIn("slow");
+						});
+					},
+					error: function(resp) {
+						if (resp.status == 403) {
+							alert(mChat.noAccess);
+						} else if (resp.status == 501) {
+							alert(mChat.noMessageInput);
+						}
+					},
+					complete: function() {
+						mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
+						if (mChat.userTimeout) {
+							mChat.sessionTime = mChat.userTimeout ? mChat.userTimeout / 1000 : false;
+							mChat.counter = setInterval(mChat.countDown, 1000);
+							mChat.activeInterval = setInterval(mChat.active, mChat.userTimeout);
+						}
+						if (!mChat.archiveMode && !mChat.messageTop) {
+							setTimeout(function() {
+								$("#mChatmain").animate({scrollTop: $("#mChatmain")[0].scrollHeight}, 1000, "swing");
+							}, 1500);
+						}
+					}
+				});
 			});
 		},
 		del: function() {
-			var id = $(this).closest('.mChatHover').data("id");
-			apprise(mChat.delConfirm, {
-				"position": 200,
-				"animate": true,
-				"confirm": true
-			}, function(del) {
-				if (del) {
-					$.ajax({
-						url: mChat.file,
-						timeout: 10000,
-						type: "POST",
-						data: {
-							mode: "delete",
-							message_id: id
-						},
-						beforeSend: function() {
-							clearInterval(mChat.interval);
-							if (mChat.userTimeout) {
-								clearInterval(mChat.activeInterval);
-								clearInterval(mChat.counter);
-								$("#mChatSessTimer").html(mChat.refreshing);
-							}
-						},
-						success: function() {
-							$("#mess" + id).fadeOut("slow", function() {
-								$(this).remove();
-							});
-							mChat.sound(mChat.forumRoot + "ext/dmzx/mchat/sounds/del.swf");
-						},
-						error: function() {
-							alert(mChat.noAccess);
-						},
-						complete: function() {
-							mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
-							if (mChat.userTimeout) {
-								mChat.sessionTime = mChat.userTimeout ? mChat.userTimeout / 1000 : false;
-								mChat.counter = setInterval(mChat.countDown, 1000);
-								mChat.activeInterval = setInterval(mChat.active, mChat.userTimeout);
-							}
+			var id = $(this).closest(".mChatHover").data("id");
+			mChat.confirmContainer.find("textarea").hide();
+			mChat.confirmContainer.find("p").text(mChat.delConfirm);
+			phpbb.confirm(mChat.confirmContainer, function() {
+				$.ajax({
+					url: mChat.file,
+					timeout: 10000,
+					type: "POST",
+					data: {
+						mode: "delete",
+						message_id: id
+					},
+					beforeSend: function() {
+						clearInterval(mChat.interval);
+						if (mChat.userTimeout) {
+							clearInterval(mChat.activeInterval);
+							clearInterval(mChat.counter);
+							$("#mChatSessTimer").html(mChat.refreshing);
 						}
-					});
-				} else {
-					return false;
-				}
+					},
+					success: function() {
+						$("#mess" + id).fadeOut("slow", function() {
+							$(this).remove();
+						});
+						mChat.sound("del");
+					},
+					error: function() {
+						alert(mChat.noAccess);
+					},
+					complete: function() {
+						mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
+						if (mChat.userTimeout) {
+							mChat.sessionTime = mChat.userTimeout ? mChat.userTimeout / 1000 : false;
+							mChat.counter = setInterval(mChat.countDown, 1000);
+							mChat.activeInterval = setInterval(mChat.active, mChat.userTimeout);
+						}
+					}
+				});
 			});
 		},
 		refresh: function() {
@@ -367,7 +356,7 @@ jQuery(function($) {
 						}
 						$html.fadeIn("slow");
 						$("#mChatmain").stop().animate({scrollTop: mChat.messageTop ? 0 : $("#mChatmain")[0].scrollHeight}, 2000);
-						mChat.sound(mChat.forumRoot + "ext/dmzx/mchat/sounds/add.swf");
+						mChat.sound("add");
 						mChat.notice();
 					}
 					setTimeout(function() {
@@ -379,7 +368,7 @@ jQuery(function($) {
 				error: function() {
 					$("#mChatLoadIMG,#mChatOkIMG,#mChatPauseIMG,#mChatRefreshTextNo").hide();
 					$("#mChatErrorIMG").show();
-					mChat.sound(mChat.forumRoot + "ext/dmzx/mchat/sounds/error.swf");
+					mChat.sound("error");
 				},
 				complete: function() {
 					if (!$("#mChatData").children(firstLastSelector).length) {
@@ -389,9 +378,6 @@ jQuery(function($) {
 			});
 		},
 		stats: function() {
-			if (!mChat.whois) {
-				return;
-			}
 			$.ajax({
 				url: mChat.file,
 				timeout: 10000,
@@ -417,7 +403,7 @@ jQuery(function($) {
 					}
 				},
 				error: function() {
-					mChat.sound(mChat.forumRoot + "ext/dmzx/mchat/sounds/error.swf");
+					mChat.sound("error");
 				},
 				complete: function() {
 					if ($("#mChatUserList").length && ($.cookie("mChatShowUserList") == "yes" || mChat.customPage)) {
@@ -437,7 +423,7 @@ jQuery(function($) {
 			$("#mChatSessMess").html(mChat.sessOut).addClass("mchat-alert");
 		},
 		insertMention: function() {
-			var $msg = $(this).closest('.mChatHover');
+			var $msg = $(this).closest(".mChatHover");
 			var username = mChat.entityDecode($msg.data("username"));
 			var usercolor = $msg.data("usercolor");
 			if (usercolor) {
@@ -448,14 +434,14 @@ jQuery(function($) {
 			insert_text("@ " + username + ", ");
 		},
 		insertQuote: function() {
-			var $msg = $(this).closest('.mChatHover');
+			var $msg = $(this).closest(".mChatHover");
 			var username = mChat.entityDecode($msg.data("username"));
 			var id = $msg.data("id");
 			var quote = mChat.entityDecode($("#mess" + id).data("edit"));
 			insert_text('[quote="' + username + '"]' + quote + '[/quote]');
 		},
 		insertLike: function() {
-			var $msg = $(this).closest('.mChatHover');
+			var $msg = $(this).closest(".mChatHover");
 			var username = mChat.entityDecode($msg.data("username"));
 			var quote = mChat.entityDecode($msg.data("edit"));
 			insert_text(mChat.likes + '[quote="' + username + '"]' + quote + "[/quote]");
@@ -464,21 +450,25 @@ jQuery(function($) {
 			var s = decodeURIComponent(text.replace(/\+/g, " "));
 			s = s.replace(/&lt;/g, "<");
 			s = s.replace(/&gt;/g, ">");
-			s = s.replace(/&#58;/g, ':');
-			s = s.replace(/&#46;/g, '.');
-			s = s.replace(/&amp;/g, '&');
+			s = s.replace(/&#58;/g, ":");
+			s = s.replace(/&#46;/g, ".");
+			s = s.replace(/&amp;/g, "&");
 			s = s.replace(/&quot;/g, '"');
 			return s;
 		}
 	});
 
 	mChat.interval = setInterval(mChat.refresh, mChat.refreshTime);
-	mChat.statsInterval = setInterval(mChat.stats, mChat.whoisRefresh);
 	mChat.activeInterval = setInterval(mChat.active, mChat.userTimeout);
 	mChat.sessionTime = mChat.userTimeout ? mChat.userTimeout / 1000 : false;
+	mChat.confirmContainer = $("#mChatConfirm").detach().show();
 
 	if (mChat.userTimeout) {
 		mChat.counter = setInterval(mChat.countDown, 1000);
+	}
+
+	if (mChat.whois) {
+		mChat.statsInterval = setInterval(mChat.stats, mChat.whoisRefresh);
 	}
 
 	if ($.cookie("mChatShowSmiles") == "yes" && $("#mChatSmiles").css("display", "none")) {
@@ -507,143 +497,4 @@ jQuery(function($) {
 		.on("click", "img.mChatInsertLike", mChat.insertLike)
 		.on("click", "img.mChatEdit", mChat.edit)
 		.on("click", "img.mChatDelete", mChat.del);
-
-	// Apprise 1.5 by Daniel Raftery
-	// http://thrivingkings.com/apprise
-	//
-	// Button text added by Adam Bezulski
-	//
-	// Cached jQuery variables, position center added by Josiah Ruddell
-	function apprise(a, b, c) {
-		a = '<span style="font-weight:bold; font-size:1.2em;">' + a + "</span>";
-		var d = {
-			confirm: false,
-			verify: false,
-			input: false,
-			textarea: false,
-			animate: false,
-			textOk: "Ok",
-			textCancel: "Cancel",
-			textYes: "Yes",
-			textNo: "No",
-			position: "center"
-		};
-		if (b) {
-			for (var e in d) {
-				if (typeof b[e] == "undefined") b[e] = d[e];
-			}
-		}
-		var f = $(document).height(),
-			g = $(document).width(),
-			h = $('<div class="appriseOuter"></div>'),
-			i = $('<div class="appriseOverlay" id="aOverlay"></div>'),
-			j = $('<div class="appriseInner"></div>'),
-			k = $('<div class="aButtons"></div>'),
-			l = 300;
-		i.css({
-			height: f,
-			width: g
-		}).appendTo("body").fadeIn(100, function() {
-			$(this).css("filter", "alpha(opacity=70)");
-		});
-		h.prependTo("body");
-		j.append(a).appendTo(h);
-		if (b) {
-			if (b.input) {
-				if (typeof b.input == "string") {
-					j.append('<div class="aInput"><input type="text" class="aTextbox" t="aTextbox" value="' + b.input + '" /></div>');
-				} else {
-					j.append('<div class="aInput"><input type="text" class="aTextbox" t="aTextbox" /></div>');
-				}
-				$(".aTextbox").focus();
-			}
-			if (typeof b.textarea == "string") {
-				j.append('<div class="aInput"><textarea name="message" class="aEdit" style="height: 9em;" rows="5" cols="180">' + b.textarea + "</textarea></div>");
-				$(".aEdit").focus();
-			}
-		}
-		j.append(k);
-		if (b) {
-			if (b.confirm || b.input) {
-				k.append('<button value="ok">' + b.textOk + "</button>");
-				k.append('<button value="cancel">' + b.textCancel + "</button>");
-			} else if (b.verify) {
-				k.append('<button value="ok">' + b.textYes + "</button>");
-				k.append('<button value="cancel">' + b.textNo + "</button>");
-			} else {
-				k.append('<button value="ok">' + b.textOk + "</button>");
-			}
-		} else {
-			k.append('<button value="ok">Ok</button>');
-		}
-		h.css("left", ($(window).width() - $(".appriseOuter").width()) / 2 + $(window).scrollLeft() + "px");
-		if (b) {
-			if (b.position && b.position === "center") {
-				l = (f - h.height()) / 2;
-			}
-			if (b.animate) {
-				var m = b.animate;
-				if (isNaN(m)) {
-					m = 400;
-				}
-				h.css("top", "-200px").show().animate({
-					top: l
-				}, m);
-			} else {
-				h.css("top", l).fadeIn(200);
-			}
-		} else {
-			h.css("top", l).fadeIn(200);
-		}
-		$(document).keydown(function(a) {
-			if (i.is(":visible")) {
-				if (a.shiftKey && a.keyCode == 13) {
-					$(".aEdit").append("<br />");
-				} else if (a.keyCode == 13) {
-					$('.aButtons > button[value="ok"]').click();
-				} else if (a.keyCode == 27) {
-					$('.aButtons > button[value="cancel"]').click();
-				}
-			}
-		});
-		var n = $(".aTextbox").val();
-		if (!n) {
-			n = false;
-		}
-		$(".aTextbox").on("keydown blur", function() {
-			n = $(this).val();
-		});
-		var o = $(".aEdit").val();
-		if (!o) {
-			o = false;
-		}
-		$(".aEdit").on("keydown blur", function() {
-			o = $(this).val();
-		});
-		$(".aButtons > button").click(function() {
-			i.remove();
-			h.remove();
-			if (c) {
-				$(this).text("");
-				var a = $(this).attr("value");
-				if (a == "ok") {
-					if (b) {
-						if (b.input) {
-							c(n);
-						} else if (b.textarea) {
-							c(o);
-						} else {
-							c(true);
-						}
-					} else {
-						c(true);
-					}
-					$("#mChatMessage").focus();
-				} else if (a == "cancel") {
-					c(false);
-					$("#mChatMessage").focus();
-				}
-			}
-		});
-	}
 });
