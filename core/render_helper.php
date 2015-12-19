@@ -49,7 +49,7 @@ class render_helper
 
 	/** @var string */
 	protected $mchat_table;
-	
+
 	public $initialized = false;
 
 	/**
@@ -144,7 +144,7 @@ class render_helper
 		$result = $this->db->sql_query($sql);
 		$rows = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
-		
+
 		$foes_array = array();
 		foreach ($rows as $row)
 		{
@@ -222,7 +222,7 @@ class render_helper
 					// Show not authorized
 					trigger_error('NO_AUTH_OPERATION', E_USER_NOTICE);
 				}
-				
+
 				$mchat_redirect = $this->request->variable('redirect', '');
 				$mchat_redirect = ($mchat_redirect == 'index') ? append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") : $this->helper->route('dmzx_mchat_controller', array('#mChat'));
 
@@ -245,7 +245,6 @@ class render_helper
 				redirect($mchat_redirect);
 
 				break;
-
 
 			case 'archive':
 				if (!$mchat_read_archive || !$mchat_view)
@@ -1084,7 +1083,7 @@ class render_helper
 			'lang_title'	=> $this->user->lang['MCHAT_TITLE'],
 		);
 	}
-	
+
 	public function get_disallowed_bbcodes()
 	{
 		return $this->functions_mchat->get_disallowed_bbcodes();

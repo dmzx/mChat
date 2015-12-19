@@ -71,7 +71,7 @@ class functions_mchat
 	{
 		// Grab the config entries in the ACP...and cache em :P
 		$config_mchat = $this->cache->get('_mchat_config');
-	
+
 		if ($config_mchat === false)
 		{
 			$sql = 'SELECT *
@@ -79,7 +79,7 @@ class functions_mchat
 			$result = $this->db->sql_query($sql);
 			$rows = $this->db->sql_fetchrowset($result);
 			$this->db->sql_freeresult($result);
-			
+
 			$config_mchat = array();
 			foreach ($rows as $row)
 			{
@@ -108,7 +108,7 @@ class functions_mchat
 			$chat_timeout = $chat_timeout - ($hours * 3600);
 			$chat_session .= $hours > 1 ? ($hours . '&nbsp;' . $this->user->lang['MCHAT_HOURS']) : ($hours . '&nbsp;' . $this->user->lang['MCHAT_HOUR']);
 		}
-		
+
 		$minutes = floor($chat_timeout / 60);
 		if ($minutes)
 		{
@@ -116,14 +116,14 @@ class functions_mchat
 			$chat_timeout = $chat_timeout - ($minutes * 60);
 			$chat_session .= $minutes;
 		}
-		
+
 		$seconds = ceil($chat_timeout);
 		if ($seconds)
 		{
 			$seconds = $seconds > 1 ? ($seconds . '&nbsp;' . $this->user->lang['MCHAT_SECONDS']) : ($seconds . '&nbsp;' . $this->user->lang['MCHAT_SECOND']);
 			$chat_session .= $seconds;
 		}
-		
+
 		return sprintf($this->user->lang['MCHAT_ONLINE_EXPLAIN'], $chat_session);
 	}
 
@@ -155,7 +155,7 @@ class functions_mchat
 		$result = $this->db->sql_query($sql);
 		$rows = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
-		
+
 		$can_view_hidden = $this->auth->acl_get('u_viewonline');
 		foreach ($rows as $row)
 		{
@@ -170,14 +170,14 @@ class functions_mchat
 					$row['username'] = '<em>' . $row['username'] . '</em>';
 				}
 			}
-			
+
 			$mchat_user_count++;
 			$mchat_user_online_link = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang['GUEST']);
 			$mchat_user_list .= ($mchat_user_list != '') ? $this->user->lang['COMMA_SEPARATOR'] . $mchat_user_online_link : $mchat_user_online_link;
 		}
 
 		$refresh_message = $this->mchat_session_time($session_time);
-		
+
 		if (!$mchat_user_count)
 		{
 			return array(
@@ -217,7 +217,7 @@ class functions_mchat
 			$this->db->sql_freeresult($result);
 
 			$sql_ary = array('user_lastupdate' => time());
-			
+
 			if ($row)
 			{
 				$sql = 'UPDATE ' . $this->mchat_sessions_table . '
@@ -229,7 +229,7 @@ class functions_mchat
 				$sql_ary['user_id'] = $this->user->data['user_id'];
 				$sql = 'INSERT INTO ' . $this->mchat_sessions_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 			}
-			
+
 			$this->db->sql_query($sql);
 		}
 	}
@@ -262,7 +262,7 @@ class functions_mchat
 		$result = $this->db->sql_query($sql);
 		$mchat_total_messages = (int) $this->db->sql_fetchfield('messages');
 		$this->db->sql_freeresult($result);
-		
+
 		if ($mchat_total_messages <= $mchat_prune_amount)
 		{
 			return;
@@ -291,7 +291,7 @@ class functions_mchat
 	{
 		$default_bbcodes = array('B', 'I', 'U', 'QUOTE', 'CODE', 'LIST', 'IMG', 'URL', 'SIZE', 'COLOR', 'EMAIL', 'FLASH');
 		$disallowed_bbcode_array = $this->get_disallowed_bbcodes();
-		
+
 		// Let's remove the default bbcodes
 		if (!empty($disallowed_bbcode_array))
 		{
@@ -310,7 +310,7 @@ class functions_mchat
 		// From /includes/functions_display.php
 		display_custom_bbcodes();
 	}
-	
+
 	public function get_disallowed_bbcodes()
 	{
 		$config_mchat = $this->mchat_cache();
@@ -318,7 +318,7 @@ class functions_mchat
 		$disallowed_bbcode_array = explode('|', $disallowed_bbcode);
 		return $disallowed_bbcode_array;
 	}
-	
+
 	function mchat_avatar($row)
 	{
 		return phpbb_get_user_avatar(array(
