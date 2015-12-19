@@ -20,11 +20,11 @@ class admin_controller
 	/** @var \phpbb\template\template */
 	protected $template;
 
+	/** @var \phpbb\log\log_interface */
+	protected $log;
+
 	/** @var \phpbb\user */
 	protected $user;
-
-	/** @var ContainerInterface */
-	protected $container;
 
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
@@ -45,20 +45,10 @@ class admin_controller
 	protected $phpEx;
 
 	/** @var string */
-	protected $table_prefix;
+	protected $mchat_config_table;
 
 	/** @var string */
 	public $u_action;
-
-	/**
-	* The database table
-	*
-	* @var string
-	*/
-	protected $mchat_config_table;
-
-	/** @var \phpbb\config\db_text */
-	protected $config_text;
 
 	/**
 	* Constructor
@@ -66,36 +56,30 @@ class admin_controller
 	* @param \dmzx\mchat\core\functions_mchat	$functions_mchat
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\template\template			$template
+	* @param \phpbb\log\log_interface			$log
 	* @param \phpbb\user						$user
-	* @param ContainerInterface					$container
 	* @param \phpbb\db\driver\driver_interface	$db
 	* @param \phpbb\cache\service				$cache
 	* @param \phpbb\request\request				$request
 	* @param \phpbb\extension\manager 			$phpbb_extension_manager
-	* @param									$phpbb_root_path
-	* @param									$phpEx
-	* @param									$table_prefix
-	* @param									$mchat_config_table
-	* @param \phpbb\config\db_text				$config_text
-	*
+	* @param string								$phpbb_root_path
+	* @param string								$phpEx
+	* @param string								$mchat_config_table
 	*/
-
-	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, $container, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\extension\manager $phpbb_extension_manager, $phpbb_root_path, $phpEx, $table_prefix, $mchat_config_table)
+	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\template\template $template, \phpbb\log\log_interface $log, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\extension\manager $phpbb_extension_manager, $phpbb_root_path, $phpEx, $mchat_config_table)
 	{
-		$this->functions_mchat 			= $container->get('dmzx.mchat.functions_mchat');
+		$this->functions_mchat 			= $functions_mchat;
 		$this->config 					= $config;
 		$this->template 				= $template;
+		$this->log 						= $log;
 		$this->user 					= $user;
-		$this->container 				= $container;
 		$this->db 						= $db;
 		$this->cache 					= $cache;
 		$this->request 					= $request;
 		$this->phpbb_extension_manager 	= $phpbb_extension_manager;
 		$this->phpbb_root_path 			= $phpbb_root_path;
 		$this->php_ext 					= $phpEx;
-		$this->table_prefix 			= $container->getParameter('core.table_prefix');
 		$this->mchat_config_table 		= $mchat_config_table;
-		$this->config_text 				= $container->get('config_text');
 	}
 
 	/**
@@ -181,8 +165,7 @@ class admin_controller
 			$this->set_options();
 
 				// and an entry into the log table
-				$log = $this->container->get('log');
-				$log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_CONFIG_UPDATE');
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_CONFIG_UPDATE');
 
 				// purge the cache
 				$this->cache->destroy('_mchat_config');

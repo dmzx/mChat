@@ -11,24 +11,22 @@ namespace dmzx\mchat\controller;
 
 class mchat
 {
-	/** @var \dmzx\mchat\core\render_helper */
+	/** @var \dmzx\mchat\core\render_helper*/
 	protected $render_helper;
 
-	/** @var \phpbb\controller\helper */
+	/** @var \phpbb\controller\helper*/
 	protected $helper;
 
-	/** @var \phpbb\request\request */
+	/** @var \phpbb\request\request*/
 	protected $request;
 
 	/**
 	* Constructor
 	*
-	* @param \dmzx\mchat\core\render_helper		$render_helper
+	* @param \dmzx\mchat\core\render_helper	$render_helper
 	* @param \phpbb\controller\helper			$helper
-	* @param \phpbb\request\request				$request
-	*
+	* @param \phpbb\request\request			$request
 	*/
-
 	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\controller\helper $helper, \phpbb\request\request $request)
 	{
 		$this->render_helper 	= $render_helper;
@@ -43,7 +41,7 @@ class mchat
 	*/
 	public function handle()
 	{
-		$ret = $this->render_helper->render_data_for_page();
+		$ret = $this->render_helper->render_data_for_page(false);
 
 		// If this was an ajax request, we just create an json_response and return that. It's not ours to handle here.
 		if ($this->request->is_ajax() && is_array($ret) && isset($ret['json']) && $ret['json'] === true)

@@ -8,15 +8,14 @@ services:
             - @dmzx.mchat.functions_mchat
             - @config
             - @template
+            - @log
             - @user
-            - @service_container
             - @dbal.conn
             - @cache
             - @request
             - @ext.manager
             - %core.root_path%
             - %core.php_ext%
-            - %core.table_prefix%
             - %dmzx.mchat.table.mchat_config%
     dmzx.mchat.controller:
         class: dmzx\mchat\controller\mchat
@@ -35,13 +34,11 @@ services:
             - @user
             - @auth
             - @dbal.conn
-            - @cache
             - @pagination
             - @request
             - @dispatcher
             - %core.root_path%
             - %core.php_ext%
-            - %core.table_prefix%
             - %dmzx.mchat.table.mchat%
     dmzx.mchat.functions_mchat:
         class: dmzx\mchat\core\functions_mchat
@@ -52,7 +49,6 @@ services:
             - @log
             - @dbal.conn
             - @cache
-            - %core.table_prefix%
             - %dmzx.mchat.table.mchat%
             - %dmzx.mchat.table.mchat_config%
             - %dmzx.mchat.table.mchat_sessions%
@@ -66,9 +62,7 @@ services:
             - @template
             - @user
             - @dbal.conn
-            - @service_container
             - %core.php_ext%
-            - %core.table_prefix%
             - %dmzx.mchat.table.mchat%
         tags:
             - { name: event.listener }

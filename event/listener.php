@@ -34,40 +34,27 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
-	/** @var ContainerInterface */
-	protected $phpbb_container;
-
 	/** @var string */
 	protected $phpEx;
 
 	/** @var string */
-	protected $table_prefix;
-
-	/**
-	* The database tables
-	*
-	* @var string
-	*/
 	protected $mchat_table;
 
 	/**
 	* Constructor
 	*
-	* @param \dmzx\mchat\core\render_helper		$render_helper
+	* @param \dmzx\mchat\core\render_helper	$render_helper
 	* @param \phpbb\auth\auth					$auth
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper			$controller_helper
 	* @param \phpbb\template\template			$template
 	* @param \phpbb\user						$user
 	* @param \phpbb\db\driver\driver_interface	$db
-	* @param ContainerInterface					$phpbb_container
-	* @param									$phpEx
-	* @param									$table_prefix
-	* @param									$mchat_table
+	* @param string							$phpEx
+	* @param string							$mchat_table
 	*
 	*/
-
-	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $phpbb_container, $phpEx, $table_prefix, $mchat_table)
+	public function __construct(\dmzx\mchat\core\render_helper $render_helper, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $controller_helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, $phpEx, $mchat_table)
 	{
 		$this->render_helper 		= $render_helper;
 		$this->auth 				= $auth;
@@ -76,21 +63,20 @@ class listener implements EventSubscriberInterface
 		$this->controller_helper 	= $controller_helper;
 		$this->user 				= $user;
 		$this->db 					= $db;
-		$this->phpbb_container 		= $phpbb_container;
 		$this->phpEx 				= $phpEx;
-		$this->table_prefix 		= $table_prefix;
 		$this->mchat_table 			= $mchat_table;
 	}
 
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.viewonline_overwrite_location' 	=> 'add_page_viewonline',
-			'core.user_setup'					 	=> 'load_language_on_setup',
-			'core.page_header'					 	=> 'add_page_header_link',
-			'core.index_modify_page_title'		 	=> 'display_mchat_on_index',
-			'core.posting_modify_submit_post_after'	=> 'posting_modify_submit_post_after',
-			'core.permissions'						=> 'permissions',
+			'core.viewonline_overwrite_location' 		=> 'add_page_viewonline',
+			'core.user_setup'					 		=> 'load_language_on_setup',
+			'core.page_header'					 		=> 'add_page_header_link',
+			'core.index_modify_page_title'		 		=> 'display_mchat_on_index',
+			'core.posting_modify_submit_post_after'		=> 'posting_modify_submit_post_after',
+			'core.permissions'							=> 'permissions',
+			'core.display_custom_bbcodes_modify_sql'	=> 'display_custom_bbcodes_modify_sql',
 		);
 	}
 
@@ -99,7 +85,7 @@ class listener implements EventSubscriberInterface
 		if (strrpos($event['row']['session_page'], 'app.' . $this->phpEx . '/chat') === 0)
 		{
 			$event['location'] = $this->user->lang('MCHAT_TITLE');
-			$event['location_url'] = $this->phpbb_container->get('controller.helper')->route('dmzx_mchat_controller');
+			$event['location_url'] = $this->controller_helper->route('dmzx_mchat_controller');
 		}
 	}
 
@@ -189,7 +175,7 @@ class listener implements EventSubscriberInterface
 				'bbcode_bitfield'	=> $bitfield,
 				'bbcode_uid'		=> $uid,
 				'bbcode_options'	=> $options,
-				'message_time'		=> time()
+				'message_time'		=> time(),
 			);
 			$sql = 'INSERT INTO ' .	$this->mchat_table	. ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 			$this->db->sql_query($sql);
@@ -198,8 +184,7 @@ class listener implements EventSubscriberInterface
 
 	public function permissions($event)
 	{
-		$permissions = $event['permissions'];
-		$permissions += array(
+		$event['permissions'] = array_merge($event['permissions'], array(
 			'u_mchat_use'		=> array(
 				'lang'		=> 'ACL_U_MCHAT_USE',
 				'cat'		=> 'mChat'
@@ -256,9 +241,27 @@ class listener implements EventSubscriberInterface
 				'lang'		=> 'ACL_A_MCHAT',
 				'cat'		=> 'mChat'
 			),
-		);
-		$event['permissions'] = $permissions;
-		$categories['mChat'] = 'ACP_CAT_MCHAT';
-		$event['categories'] = array_merge($event['categories'], $categories);
+		));
+
+		$event['categories'] = array_merge($event['categories'], array(
+			'mChat'	=> 'ACP_CAT_MCHAT',
+		));
+	}
+
+	public function display_custom_bbcodes_modify_sql($event)
+	{
+		// Prevent disallowed BBCodes from being added to the template only if we're rendering for mChat
+		if ($this->render_helper->initialized)
+		{
+			$disallowed_bbcode_array = $this->render_helper->get_disallowed_bbcodes();
+
+			if (!empty($disallowed_bbcode_array))
+			{
+				$disallowed_bbcode_array = array_map('strtoupper', $disallowed_bbcode_array);
+				$sql_ary = $event['sql_ary'];
+				$sql_ary['WHERE'] .= " AND UPPER(b.bbcode_tag) NOT IN ('" . implode("','", $disallowed_bbcode_array) . "')";
+				$event['sql_ary'] = $sql_ary;
+			}
+		}
 	}
 }
