@@ -193,11 +193,11 @@
 		<dl>
 			<dt><label for="mchat_date">{L_MCHAT_DATE_FORMAT}{L_COLON}</label><br /><span>{L_MCHAT_DATE_FORMAT_EXPLAIN}</span></dt>
 			<dd>
-				<select name="mchat_dateoptions" id="mchat_dateoptions" onchange="if (this.value == 'custom') { document.getElementById('mchat_date').value = mchat_default_dateformat; } else { document.getElementById('mchat_date').value = this.value; }">
+				<select name="mchat_dateoptions" id="mchat_dateoptions" onchange="if(this.value=='custom'){phpbb.toggleDisplay('custom_date',1);}else{phpbb.toggleDisplay('custom_date',-1);} if (this.value == 'custom') { document.getElementById('dateformat').value = default_dateformat; } else { document.getElementById('dateformat').value = this.value; }">
 					{S_MCHAT_DATEFORMAT_OPTIONS}
 				</select>
 			</dd>
-			<dd id="custom_date" style="display:none;"><input type="text" name="mchat_date" id="mchat_date" value="{MCHAT_DATE}" maxlength="30" class="inputbox narrow" style="margin-top: 3px;" /></dd>
+			<dd><div id="custom_date"<!-- IF not S_CUSTOM_DATEFORMAT --> style="display:none;"<!-- ENDIF -->><input type="text" name="mchat_date" id="mchat_date" value="{MCHAT_DATE}" maxlength="30" /></div></dd>
 		</dl>
 		<dl>
 			<dt><label for="mchat_bbcode_disallowed">{L_MCHAT_BBCODES_DISALLOWED}{L_COLON}</label><br />

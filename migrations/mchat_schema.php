@@ -11,7 +11,7 @@ namespace dmzx\mchat\migrations;
 
 class mchat_schema extends \phpbb\db\migration\migration
 {
-	var $ext_version = '0.1.9';
+	var $ext_version = '0.2.0';
 
 	public function update_data()
 	{
@@ -29,20 +29,20 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('config.add', array('mchat_version', $this->ext_version)),
 
 			// Add permissions
-			array('permission.add', array('u_mchat_use')),
-			array('permission.add', array('u_mchat_view')),
-			array('permission.add', array('u_mchat_edit')),
-			array('permission.add', array('u_mchat_delete')),
-			array('permission.add', array('u_mchat_ip')),
-			array('permission.add', array('u_mchat_pm')),
-			array('permission.add', array('u_mchat_like')),
-			array('permission.add', array('u_mchat_quote')),
-			array('permission.add', array('u_mchat_flood_ignore')),
-			array('permission.add', array('u_mchat_archive')),
-			array('permission.add', array('u_mchat_bbcode')),
-			array('permission.add', array('u_mchat_smilies')),
-			array('permission.add', array('u_mchat_urls')),
-			array('permission.add', array('a_mchat')),
+			array('permission.add', array('u_mchat_use', true)),
+			array('permission.add', array('u_mchat_view', true)),
+			array('permission.add', array('u_mchat_edit', true)),
+			array('permission.add', array('u_mchat_delete', true)),
+			array('permission.add', array('u_mchat_ip', true)),
+			array('permission.add', array('u_mchat_pm', true)),
+			array('permission.add', array('u_mchat_like', true)),
+			array('permission.add', array('u_mchat_quote', true)),
+			array('permission.add', array('u_mchat_flood_ignore', true)),
+			array('permission.add', array('u_mchat_archive', true)),
+			array('permission.add', array('u_mchat_bbcode', true)),
+			array('permission.add', array('u_mchat_smilies', true)),
+			array('permission.add', array('u_mchat_urls', true)),
+			array('permission.add', array('a_mchat', true)),
 
 			// Set permissions
 			array('permission.permission_set', array('ADMINISTRATORS', 'u_mchat_use', 'group')),
@@ -61,6 +61,9 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('permission.permission_set', array('ADMINISTRATORS', 'a_mchat', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_use', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_view', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_mchat_pm', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_mchat_like', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_mchat_quote', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_archive', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_bbcode', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_smilies', 'group')),
