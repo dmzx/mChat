@@ -177,7 +177,7 @@
 	<!-- ENDIF -->
 </div>
 <!-- ENDIF -->
-<!-- IF MCHAT_CUSTOM_PAGE and MCHAT_WHOIS -->
+<!-- IF not S_MCHAT_DISABLED and MCHAT_CUSTOM_PAGE and MCHAT_WHOIS -->
 <h3>{L_WHO_IS_CHATTING}</h3>
 	<div class="mChatStats" id="mChatStats"><!-- IF MCHAT_USERS_LIST --><a href="#" onclick="mChat.toggle('UserList'); return false;">{MCHAT_USERS_COUNT}</a><!-- ELSE -->{MCHAT_USERS_COUNT}<!-- ENDIF -->&nbsp;{L_MCHAT_ONLINE_EXPLAIN}<br /><span id="mChatUserList">{MCHAT_USERS_LIST}</span></div>
 	<div class="mChatRefresh"><span id="mChatRefresh">{L_MCHAT_WHOIS_REFRESH_EXPLAIN}</span><span id="mChatRefreshN" style="display: none;">{L_MCHAT_REFRESHING}</span>
