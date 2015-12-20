@@ -558,7 +558,7 @@ class render_helper
 					);
 					$message = preg_replace($bbcode_replace, '', $message);
 				}
-				
+
 				/**
 				* Event render_helper_add
 				*
@@ -759,7 +759,7 @@ class render_helper
 
 				$this->functions_mchat->mchat_sessions($mchat_session_time, true);
 				$mchat_read_mode = true;
-				
+
 				/**
 				* Event render_helper_edit
 				*
@@ -797,7 +797,7 @@ class render_helper
 					// Forbidden (for jQ AJAX request)
 					throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
 				}
-				
+
 				/**
 				* Event render_helper_delete
 				*
