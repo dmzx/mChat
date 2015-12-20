@@ -558,13 +558,21 @@ class render_helper
 					);
 					$message = preg_replace($bbcode_replace, '', $message);
 				}
+				
+				/**
+				* Event render_helper_add
+				*
+				* @event dmzx.mchat.core.render_helper_add
+				* @since 0.1.2
+				*/
+				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_add');
 
 				$sql_ary = array(
 					'forum_id' 			=> 0,
 					'post_id'			=> 0,
 					'user_id'			=> $this->user->data['user_id'],
 					'user_ip'			=> $this->user->data['session_ip'],
-					'message' 			=> str_replace('\'', '&rsquo;', $message),
+					'message' 			=> str_replace('\'', '&#39;', $message),
 					'bbcode_bitfield'	=> $bitfield,
 					'bbcode_uid'		=> $uid,
 					'bbcode_options'	=> $options,
@@ -685,7 +693,7 @@ class render_helper
 				}
 
 				$sql_ary = array(
-					'message'			=> str_replace('\'', '&rsquo;', $message),
+					'message'			=> str_replace('\'', '&#39;', $message),
 					'bbcode_bitfield'	=> $bitfield,
 					'bbcode_uid'		=> $uid,
 					'bbcode_options'	=> $options,
@@ -751,6 +759,14 @@ class render_helper
 
 				$this->functions_mchat->mchat_sessions($mchat_session_time, true);
 				$mchat_read_mode = true;
+				
+				/**
+				* Event render_helper_edit
+				*
+				* @event dmzx.mchat.core.render_helper_edit
+				* @since 0.1.4
+				*/
+				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_edit');
 
 				break;
 
@@ -781,6 +797,14 @@ class render_helper
 					// Forbidden (for jQ AJAX request)
 					throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
 				}
+				
+				/**
+				* Event render_helper_delete
+				*
+				* @event dmzx.mchat.core.render_helper_delete
+				* @since 0.1.4
+				*/
+				$this->dispatcher->trigger_event('dmzx.mchat.core.render_helper_delete');
 
 				// Run delete
 				$sql = 'DELETE FROM ' . $this->mchat_table . '
@@ -930,7 +954,7 @@ class render_helper
 						}
 
 						$row['username'] = mb_ereg_replace("'", "&#146;", $row['username']);
-						$message = str_replace('\'', '&rsquo;', $row['message']);
+						$message = str_replace('\'', '&#39;', $row['message']);
 
 						$this->template->assign_block_vars('mchatrow', array(
 							'MCHAT_ALLOW_BAN'		=> $mchat_ban,
