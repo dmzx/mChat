@@ -193,7 +193,7 @@
 		<dl>
 			<dt><label for="mchat_date">{L_MCHAT_DATE_FORMAT}{L_COLON}</label><br /><span>{L_MCHAT_DATE_FORMAT_EXPLAIN}</span></dt>
 			<dd>
-				<select name="mchat_dateoptions" id="mchat_dateoptions" onchange="if(this.value=='custom'){phpbb.toggleDisplay('custom_date',1);}else{phpbb.toggleDisplay('custom_date',-1);} if (this.value == 'custom') { document.getElementById('dateformat').value = default_dateformat; } else { document.getElementById('dateformat').value = this.value; }">
+				<select name="mchat_dateoptions" id="mchat_dateoptions" onchange="if(this.value=='custom'){phpbb.toggleDisplay('custom_date',1);}else{phpbb.toggleDisplay('custom_date',-1);} if (this.value == 'custom') { document.getElementById('mchat_date').value = default_dateformat; } else { document.getElementById('mchat_date').value = this.value; }">
 					{S_MCHAT_DATEFORMAT_OPTIONS}
 				</select>
 			</dd>
