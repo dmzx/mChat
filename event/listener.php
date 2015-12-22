@@ -168,7 +168,7 @@ class listener implements EventSubscriberInterface
 			generate_text_for_storage($message, $uid, $bitfield, $options, true, false, false);
 			$sql_ary = array(
 				'forum_id'		 	=> $event['forum_id'],
-				'post_id'		 	=> $event['post_id'],
+				'post_id'		 	=> $event['data']['post_id'],
 				'user_id'		 	=> $this->user->data['user_id'],
 				'user_ip'		 	=> $this->user->data['session_ip'],
 				'message'		 	=> $message,
