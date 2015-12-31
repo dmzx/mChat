@@ -127,7 +127,18 @@ class listener implements EventSubscriberInterface
 
 		if ($mchat_on_index && $mchat_view)
 		{
-			$this->template->assign_var('S_MCHAT_ON_INDEX', true);
+			$sql = 'SELECT style_name
+				FROM ' . STYLES_TABLE . '
+				WHERE style_id = ' . $this->user->data['user_style'];
+			$result = $this->db->sql_query($sql);
+			$row = $this->db->sql_fetchrow($result);
+
+			$this->template->assign_vars(array(
+				'S_MCHAT_ON_INDEX' => true,
+				'S_IS_NOT_PBTECH_STYLE' =>  $row['style_name'] != "PBTech" ? TRUE : FALSE,
+			));
+
+			$this->db->sql_freeresult($result);
 
 			$this->render_helper->render_data_for_page(true);
 		}
