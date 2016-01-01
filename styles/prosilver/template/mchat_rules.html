@@ -1,20 +1,9 @@
-<!--**
-*
-* @package phpBB Extension - mChat
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/-->
 <!-- INCLUDE simple_header.html -->
+
 <h2>{L_MCHAT_HELP}</h2>
 <div class="rules">
 	<div class="inner"><span class="corners-top"><span></span></span>
-	<!-- IF MCHAT_RULES and not .rule -->
-	{MCHAT_RULES}
-	<!-- ENDIF -->
-	<!-- BEGIN rule -->
-	{rule.MCHAT_RULE}<!-- IF !rule.S_LAST_ROW --><br /><!-- ENDIF -->
-	<!-- END rule -->
+		{MCHAT_RULES}
 	<span class="corners-bottom"><span></span></span></div>
 </div>
 <a	href="#" onclick="window.close(); return false;">{L_CLOSE_WINDOW}</a>

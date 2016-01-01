@@ -9,9 +9,17 @@
 
 namespace dmzx\mchat\migrations;
 
-class mchat_schema extends \phpbb\db\migration\migration
+class install_mchat extends \phpbb\db\migration\migration
 {
-	var $ext_version = '0.2.0';
+	public function effectively_installed()
+	{
+		return isset($this->config['mchat_version']) && version_compare($this->config['mchat_version'], '0.3.2', '>=');
+	}
+
+	static public function depends_on()
+	{
+		return array('\phpbb\db\migration\data\v31x\v311');
+	}
 
 	public function update_data()
 	{
@@ -26,7 +34,7 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('config.add', array('mchat_new_posts_quote', false)),
 			array('config.add', array('mchat_message_top', true)),
 			array('config.add', array('mchat_stats_index', false)),
-			array('config.add', array('mchat_version', $this->ext_version)),
+			array('config.add', array('mchat_version', '0.3.2')),
 
 			// Add permissions
 			array('permission.add', array('u_mchat_use', true)),
@@ -68,6 +76,78 @@ class mchat_schema extends \phpbb\db\migration\migration
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_bbcode', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_smilies', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_urls', 'group')),
+
+			// Add ACP module
+			array('module.add', array(
+				'acp',
+				'ACP_CAT_DOT_MODS',
+				'ACP_CAT_MCHAT'
+			)),
+
+			array('module.add', array(
+				'acp',
+				'ACP_CAT_MCHAT',
+				array(
+					'module_basename'	=> '\dmzx\mchat\acp\acp_mchat_module',
+					'modes'				=> array('configuration'),
+					'module_auth'		=> 'a_mchat',
+				),
+			)),
+
+			// Add ACP module
+			array('module.add', array(
+				'acp',
+				'ACP_CAT_USERS',
+				array(
+					'module_basename'	=> 'users',
+					'module_enabled'	=> 1,
+					'module_display'	=> 0,
+					'module_langname'	=> 'ACP_USER_MCHAT',
+					'module_mode'		=> 'mchat',
+					'module_auth'		=> 'acl_a_user',
+					),
+				),
+
+				// First, lets add a new category named UCP_CAT_MCHAT
+				array(
+					'ucp',
+					false,
+					'UCP_CAT_MCHAT'
+				),
+
+				// next let's add our module
+				array(
+					'ucp',
+					'UCP_CAT_MCHAT',
+					array(
+						'module_basename'	=> 'mchat',
+						'modes'				=> array('configuration'),
+						'module_auth'		=> 'u_mchat_use',
+					),
+				),
+			),
+
+			// Add UCP module
+			array('module.add', array(
+				'ucp',
+				false,
+				'UCP_MCHAT_CONFIG'
+			)),
+
+			array('module.add', array(
+				'ucp',
+				'UCP_MCHAT_CONFIG',
+				array(
+					'module_basename'	=> '\dmzx\mchat\ucp\ucp_mchat_module',
+					'modes'				=> array('configuration'),
+					'auth'				=> 'acl_u_mchat_use',
+				),
+			)),
+
+			// Insert sample data
+			array('custom', array(
+				array(&$this, 'insert_sample_data')
+			)),
 		);
 	}
 
@@ -142,5 +222,109 @@ class mchat_schema extends \phpbb\db\migration\migration
 				),
 			),
 		);
+	}
+
+	public function insert_sample_data()
+	{
+		if ($this->db_tools->sql_table_exists($this->table_prefix . 'mchat_config'))
+		{
+			$sql_ary = array(
+				array(
+					'config_name' 	=> 'refresh',
+					'config_value'	=> '10',
+				),
+				array(
+					'config_name' 	=> 'message_limit',
+					'config_value'	=> '10',
+				),
+				array(
+					'config_name' 	=> 'archive_limit',
+					'config_value'	=> '25',
+				),
+				array(
+					'config_name' 	=> 'flood_time',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name' 	=> 'max_message_lngth',
+					'config_value'	=> '500',
+				),
+				array(
+					'config_name' 	=> 'custom_page',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'date',
+					'config_value'	=> 'D M d, Y g:i a',
+				),
+				array(
+					'config_name' 	=> 'whois',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'bbcode_disallowed',
+					'config_value'	=> '',
+				),
+				array(
+					'config_name' 	=> 'prune_enable',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name' 	=> 'prune_num',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name' 	=> 'location',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'whois_refresh',
+					'config_value'	=> '30',
+				),
+				array(
+					'config_name' 	=> 'static_message',
+					'config_value'	=> '',
+				),
+				array(
+					'config_name' 	=> 'index_height',
+					'config_value'	=> '250',
+				),
+				array(
+					'config_name' 	=> 'custom_height',
+					'config_value'	=> '350',
+				),
+				array(
+					'config_name' 	=> 'override_min_post_chars',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name' 	=> 'timeout',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name'	=> 'override_smilie_limit',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name' 	=> 'pause_on_input',
+					'config_value'	=> '0',
+				),
+				array(
+					'config_name' 	=> 'rules',
+					'config_value'	=> '',
+				),
+				array(
+					'config_name' 	=> 'avatars',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'message_num',
+					'config_value'	=> '10',
+				),
+			);
+
+			// Insert sample data
+			$this->db->sql_multi_insert($this->table_prefix . 'mchat_config', $sql_ary);
+		}
 	}
 }

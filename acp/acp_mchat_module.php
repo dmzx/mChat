@@ -27,7 +27,7 @@ class acp_mchat_module
 			$action = 'add';
 		}
 
-		// Add the wpm ACP lang file
+		// Add the ACP lang file
 		$user->add_lang_ext('dmzx/mchat', 'info_acp_mchat');
 
 		// Load the display settings handle in the admin controller
