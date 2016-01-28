@@ -57,7 +57,6 @@
 	background-color: #E9F0F5 !important;
 }
 
-
 #mchat-static, #mchat-stats, #mchat-whois, .mchat-refresh {
 	padding-left: 5px;
 	text-align: left;
@@ -129,12 +128,6 @@
 	vertical-align: middle;
 	cursor: help;
 	display: none;
-}
-
-#mchat-sound {
-	position: absolute;
-	left: -1000px;
-	top: -1000px;
 }
 
 #mchat-status {

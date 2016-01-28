@@ -50,7 +50,6 @@ before_install:
   - sudo cp phpbb-ext-acme-demo/phpunit.xml.dist ./
   - sudo cp phpbb-ext-acme-demo/travis/prepare-phpbb.sh travis
   - sudo rm -rf phpbb-ext-acme-demo
-  - composer self-update
 
 install:
   - composer install --no-interaction --prefer-source

@@ -43,12 +43,6 @@
 	<fieldset>
 		<legend>{L_MCHAT_MAIN}</legend>
 		<dl>
-			<dt><label for="mchat_enable">{L_MCHAT_ENABLE}{L_COLON}</label><br />
-			<span>{L_MCHAT_ENABLE_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="mchat_enable" value="1"<!-- IF MCHAT_ENABLE --> id="mchat_enable" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="mchat_enable" value="0"<!-- IF not MCHAT_ENABLE --> id="mchat_enable" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
-		</dl>
-		<dl>
 			<dt><label for="mchat_message_top">{L_MCHAT_MESSAGE_TOP}{L_COLON}</label><br />
 			<span>{L_MCHAT_MESSAGE_TOP_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_message_top" value="1"<!-- IF MCHAT_MESSAGE_TOP --> id="mchat_message_top" checked="checked"<!-- ENDIF --> /> {L_MCHAT_TOP}</label>
@@ -133,10 +127,10 @@
 			<dd><input type="text" name="mchat_custom_height" id="mchat_custom_height" size="10" maxlength="4" value="{MCHAT_CUSTOM_HEIGHT}" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_prune_enable">{L_MCHAT_PRUNE}{L_COLON}</label><br />
+			<dt><label for="mchat_prune">{L_MCHAT_PRUNE}{L_COLON}</label><br />
 			<span>{L_MCHAT_PRUNE_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="mchat_prune_enable" value="1"<!-- IF MCHAT_PRUNE --> id="mchat_prune_enable" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="mchat_prune_enable" value="0"<!-- IF not MCHAT_PRUNE --> id="mchat_prune_enable" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+			<dd><label><input type="radio" class="radio" name="mchat_prune" value="1"<!-- IF MCHAT_PRUNE --> id="mchat_prune" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+			<label><input type="radio" class="radio" name="mchat_prune" value="0"<!-- IF not MCHAT_PRUNE --> id="mchat_prune" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 		</dl>
 		<dl>
 			<dt><label for="mchat_prune_num">{L_MCHAT_PRUNE_NUM}{L_COLON}</label><br />
@@ -162,6 +156,12 @@
 			<dd><input type="text" name="mchat_archive_limit" id="mchat_archive_limit" size="10" value="{MCHAT_ARCHIVE_LIMIT}" /></dd>
 		</dl>
 		<dl>
+			<dt><label for="mchat_live_updates">{L_MCHAT_LIVE_UPDATES}{L_COLON}</label><br />
+			<span>{L_MCHAT_LIVE_UPDATES_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="mchat_live_updates" value="1"<!-- IF MCHAT_LIVE_UPDATES --> id="mchat_live_updates" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+			<label><input type="radio" class="radio" name="mchat_live_updates" value="0"<!-- IF not MCHAT_LIVE_UPDATES --> id="mchat_live_updates" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+		<dl>
 			<dt><label for="mchat_avatars">{L_MCHAT_AVATARS}{L_COLON}</label><br />
 			<span>{L_MCHAT_AVATARS_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_avatars" value="1"<!-- IF MCHAT_AVATARS --> id="mchat_avatars" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
@@ -184,6 +184,11 @@
 			<span>{L_MCHAT_OVERRIDE_SMILIE_LIMIT_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_override_smilie_limit" value="1"<!-- IF MCHAT_OVERRIDE_SMILIE_LIMIT --> id="mchat_override_smilie_limit" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 			<label><input type="radio" class="radio" name="mchat_override_smilie_limit" value="0"<!-- IF not MCHAT_OVERRIDE_SMILIE_LIMIT --> id="mchat_override_smilie_limit" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="mchat_edit_delete_limit">{L_MCHAT_EDIT_DELETE_LIMIT}{L_COLON}</label><br />
+			<span>{L_MCHAT_EDIT_DELETE_LIMIT_EXPLAIN}</span></dt>
+			<dd><input type="text" name="mchat_edit_delete_limit" id="mchat_edit_delete_limit" size="10" value="{MCHAT_EDIT_DELETE_LIMIT}" /></dd>
 		</dl>
 		<dl>
 			<dt><label for="mchat_max_message_lngth">{L_MCHAT_MAX_MESSAGE_LENGTH}{L_COLON}</label><br />

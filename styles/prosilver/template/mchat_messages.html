@@ -1,5 +1,5 @@
 <!-- BEGIN mchatrow -->
-<div class="mchat-message <!-- IF S_MCHAT_AVATARS -->mchat-message-avatar <!-- ENDIF -->mchat-bg-<!-- IF mchatrow.S_ROW_COUNT is even -->1<!-- ELSE -->2<!-- ENDIF -->" data-id="{mchatrow.MCHAT_MESSAGE_ID}" data-username="{mchatrow.MCHAT_USERNAME}"<!-- IF mchatrow.MCHAT_USERNAME_COLOR --> data-usercolor="{mchatrow.MCHAT_USERNAME_COLOR}"<!-- ENDIF --> data-edit="{mchatrow.MCHAT_MESSAGE_EDIT}">
+<div id="mchat-message-{mchatrow.MCHAT_MESSAGE_ID}" class="mchat-message <!-- IF S_MCHAT_AVATARS -->mchat-message-avatar <!-- ENDIF -->mchat-bg-<!-- IF mchatrow.S_ROW_COUNT is even -->1<!-- ELSE -->2<!-- ENDIF -->" data-id="{mchatrow.MCHAT_MESSAGE_ID}" data-username="{mchatrow.MCHAT_USERNAME}"<!-- IF mchatrow.MCHAT_USERNAME_COLOR --> data-usercolor="{mchatrow.MCHAT_USERNAME_COLOR}"<!-- ENDIF --> data-message="{mchatrow.MCHAT_MESSAGE_EDIT}" data-message-time="{mchatrow.MCHAT_MESSAGE_TIME}" data-edit-time="{mchatrow.MCHAT_EDIT_TIME}"<!-- IF MCHAT_EDIT_DELETE_LIMIT and not MCHAT_EDIT_DELETE_IGNORE and (mchatrow.MCHAT_ALLOW_EDIT or mchatrow.MCHAT_ALLOW_DEL) --> data-edit-delete-limit="1"<!-- ENDIF -->>
 	<!-- IF S_MCHAT_AVATARS -->
 	<div class="mchat-avatar">
 		<!-- IF mchatrow.U_VIEWPROFILE --><a href="{mchatrow.U_VIEWPROFILE}" title="{L_READ_PROFILE}"><!-- ENDIF -->
@@ -8,13 +8,13 @@
 	</div>
 	<!-- ENDIF -->
 	<div class="mchat-message-header">
-		<!-- IF not MCHAT_ARCHIVE_MODE --><span class="mchat-mention" data-mchat-action="mention" title="{L_MCHAT_RESPOND}" <!-- IF mchatrow.MCHAT_USERNAME_COLOR --> style="color:{mchatrow.MCHAT_USERNAME_COLOR}"<!-- ENDIF -->><strong>&#64;</strong></span><!-- ENDIF -->
+		<!-- IF not MCHAT_ARCHIVE_PAGE --><span class="mchat-mention" data-mchat-action="mention" title="{L_MCHAT_RESPOND}" <!-- IF mchatrow.MCHAT_USERNAME_COLOR --> style="color:{mchatrow.MCHAT_USERNAME_COLOR}"<!-- ENDIF -->><strong>&#64;</strong></span><!-- ENDIF -->
 		{mchatrow.MCHAT_USERNAME_FULL} - {mchatrow.MCHAT_TIME}
 	</div>
 	<div class="mchat-message-icons">
 		<!-- IF MCHAT_ALLOW_PM and mchatrow.MCHAT_PM and mchatrow.U_VIEWPROFILE --><a href="{mchatrow.MCHAT_PM}" title="{L_MCHAT_SEND_PM}"><img src="{EXT_URL}styles/prosilver/theme/images/message.gif" alt="{L_MCHAT_SEND_PM}" title="{L_MCHAT_SEND_PM}" /></a><!-- ENDIF -->
-		<!-- IF MCHAT_ALLOW_LIKE and not MCHAT_ARCHIVE_MODE and not mchatrow.MCHAT_IS_POSTER --><img src="{EXT_URL}styles/prosilver/theme/images/like.png" alt="{L_REPLY_WITH_LIKE}" title="{L_REPLY_WITH_LIKE}" data-mchat-action="like" /></a><!-- ENDIF -->
-		<!-- IF MCHAT_ALLOW_QUOTE and not MCHAT_ARCHIVE_MODE and not mchatrow.MCHAT_IS_POSTER --><img src="{EXT_URL}styles/prosilver/theme/images/quota.png" alt="{L_REPLY_WITH_QUOTE}" title="{L_REPLY_WITH_QUOTE}" data-mchat-action="quote" /><!-- ENDIF -->
+		<!-- IF MCHAT_ALLOW_LIKE and not MCHAT_ARCHIVE_PAGE and not mchatrow.MCHAT_IS_POSTER --><img src="{EXT_URL}styles/prosilver/theme/images/like.png" alt="{L_REPLY_WITH_LIKE}" title="{L_REPLY_WITH_LIKE}" data-mchat-action="like" /></a><!-- ENDIF -->
+		<!-- IF MCHAT_ALLOW_QUOTE and not MCHAT_ARCHIVE_PAGE and not mchatrow.MCHAT_IS_POSTER --><img src="{EXT_URL}styles/prosilver/theme/images/quota.png" alt="{L_REPLY_WITH_QUOTE}" title="{L_REPLY_WITH_QUOTE}" data-mchat-action="quote" /><!-- ENDIF -->
 		<!-- IF MCHAT_ALLOW_IP --><a href="{mchatrow.MCHAT_U_IP}" onclick="popup(this.href, 750, 500); return false;"><img src="{EXT_URL}styles/prosilver/theme/images/ip.gif" alt="{L_MCHAT_IP} {mchatrow.MCHAT_USER_IP}" title="{L_MCHAT_IP} {mchatrow.MCHAT_USER_IP}" /></a><!-- ENDIF -->
 		<!-- IF mchatrow.MCHAT_ALLOW_BAN --><a href="{mchatrow.MCHAT_U_BAN}"><img src="{EXT_URL}styles/prosilver/theme/images/ban.gif" alt="{L_MCHAT_PERMISSIONS}" title="{L_MCHAT_PERMISSIONS}" /></a><!-- ENDIF -->
 		<!-- IF mchatrow.MCHAT_ALLOW_EDIT --><img src="{EXT_URL}styles/prosilver/theme/images/edit.gif" alt="{L_MCHAT_EDIT}" title="{L_MCHAT_EDIT}" data-mchat-action="edit" /><!-- ENDIF -->

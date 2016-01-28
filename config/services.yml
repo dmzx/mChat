@@ -5,63 +5,53 @@ services:
     dmzx.mchat.admin.controller:
         class: dmzx\mchat\controller\admin_controller
         arguments:
-            - '@dmzx.mchat.functions_mchat'
             - '@config'
             - '@template'
             - '@log'
             - '@user'
-            - '@dbal.conn'
             - '@cache'
             - '@request'
             - '@ext.manager'
             - '%core.root_path%'
             - '%core.php_ext%'
-            - '%dmzx.mchat.table.mchat_config%'
-    dmzx.mchat.controller:
-        class: dmzx\mchat\controller\mchat
+    dmzx.mchat.main.controller:
+        class: dmzx\mchat\controller\main_controller
         arguments:
-            - '@dmzx.mchat.render_helper'
+            - '@dmzx.mchat.core'
             - '@request'
-    dmzx.mchat.render_helper:
-        class: dmzx\mchat\core\render_helper
+    dmzx.mchat.core:
+        class: dmzx\mchat\core\mchat
         arguments:
             - '@dmzx.mchat.functions_mchat'
             - '@config'
             - '@controller.helper'
             - '@template'
-            - '@log'
             - '@user'
             - '@auth'
-            - '@dbal.conn'
             - '@pagination'
             - '@request'
             - '@dispatcher'
             - '%core.root_path%'
             - '%core.php_ext%'
-            - '%dmzx.mchat.table.mchat%'
     dmzx.mchat.functions_mchat:
         class: dmzx\mchat\core\functions_mchat
         arguments:
             - '@config'
-            - '@template'
             - '@user'
             - '@auth'
             - '@log'
             - '@dbal.conn'
-            - '@cache'
+            - '@cache.driver'
             - '%core.root_path%'
             - '%core.php_ext%'
             - '%dmzx.mchat.table.mchat%'
-            - '%dmzx.mchat.table.mchat_config%'
             - '%dmzx.mchat.table.mchat_sessions%'
     dmzx.mchat.listener:
         class: dmzx\mchat\event\listener
         arguments:
             - '@dmzx.mchat.functions_mchat'
-            - '@dmzx.mchat.render_helper'
-            - '@auth'
+            - '@dmzx.mchat.core'
             - '@controller.helper'
-            - '@template'
             - '@user'
             - '%core.php_ext%'
         tags:

@@ -25,16 +25,40 @@ class install_mchat extends \phpbb\db\migration\migration
 	{
 		return array(
 			// Add configs
-			array('config.add', array('mchat_enable', true)),
-			array('config.add', array('mchat_on_index', true)),
-			array('config.add', array('mchat_new_posts', false)),
-			array('config.add', array('mchat_new_posts_topic', false)),
-			array('config.add', array('mchat_new_posts_reply', false)),
-			array('config.add', array('mchat_new_posts_edit', false)),
-			array('config.add', array('mchat_new_posts_quote', false)),
-			array('config.add', array('mchat_message_top', true)),
-			array('config.add', array('mchat_stats_index', false)),
 			array('config.add', array('mchat_version', '0.3.2')),
+			array('config.add', array('mchat_archive_limit', 25)),
+			array('config.add', array('mchat_avatars', 1)),
+			array('config.add', array('mchat_bbcode_disallowed', '')),
+			array('config.add', array('mchat_custom_height', 350)),
+			array('config.add', array('mchat_custom_page', 1)),
+			array('config.add', array('mchat_date', 'D M d, Y g:i a')),
+			array('config.add', array('mchat_edit_delete_limit', 0)),
+			array('config.add', array('mchat_flood_time', 0)),
+			array('config.add', array('mchat_index_height', 250)),
+			array('config.add', array('mchat_live_updates', 1)),
+			array('config.add', array('mchat_location', 0)),
+			array('config.add', array('mchat_max_message_lngth', 500)),
+			array('config.add', array('mchat_message_limit', 10)),
+			array('config.add', array('mchat_message_num', 10)),
+			array('config.add', array('mchat_message_top', 1)),
+			array('config.add', array('mchat_new_posts', 0)),
+			array('config.add', array('mchat_new_posts_edit', 0)),
+			array('config.add', array('mchat_new_posts_quote', 0)),
+			array('config.add', array('mchat_new_posts_reply', 0)),
+			array('config.add', array('mchat_new_posts_topic', 0)),
+			array('config.add', array('mchat_on_index', 1)),
+			array('config.add', array('mchat_override_min_post_chars', 0)),
+			array('config.add', array('mchat_override_smilie_limit', 0)),
+			array('config.add', array('mchat_pause_on_input', 0)),
+			array('config.add', array('mchat_prune', 0)),
+			array('config.add', array('mchat_prune_num', 0)),
+			array('config.add', array('mchat_refresh', 10)),
+			array('config.add', array('mchat_rules', '')),
+			array('config.add', array('mchat_static_message', '')),
+			array('config.add', array('mchat_stats_index', 0)),
+			array('config.add', array('mchat_timeout', 0)),
+			array('config.add', array('mchat_whois', 1)),
+			array('config.add', array('mchat_whois_refresh', 60)),
 
 			// Add permissions
 			array('permission.add', array('u_mchat_use', true)),
@@ -88,9 +112,9 @@ class install_mchat extends \phpbb\db\migration\migration
 				'acp',
 				'ACP_CAT_MCHAT',
 				array(
-					'module_basename'	=> '\dmzx\mchat\acp\acp_mchat_module',
-					'modes'				=> array('configuration'),
-					'module_auth'		=> 'a_mchat',
+					'module_basename'			=> '\dmzx\mchat\acp\acp_mchat_module',
+					'modes'						=> array('configuration'),
+					'module_auth'				=> 'a_mchat',
 				),
 			)),
 
@@ -99,12 +123,12 @@ class install_mchat extends \phpbb\db\migration\migration
 				'acp',
 				'ACP_CAT_USERS',
 				array(
-					'module_basename'	=> 'users',
-					'module_enabled'	=> 1,
-					'module_display'	=> 0,
-					'module_langname'	=> 'ACP_USER_MCHAT',
-					'module_mode'		=> 'mchat',
-					'module_auth'		=> 'acl_a_user',
+					'module_basename'			=> 'users',
+					'module_enabled'			=> 1,
+					'module_display'			=> 0,
+					'module_langname'			=> 'ACP_USER_MCHAT',
+					'module_mode'				=> 'mchat',
+					'module_auth'				=> 'acl_a_user',
 					),
 				),
 
@@ -120,9 +144,9 @@ class install_mchat extends \phpbb\db\migration\migration
 					'ucp',
 					'UCP_CAT_MCHAT',
 					array(
-						'module_basename'	=> 'mchat',
-						'modes'				=> array('configuration'),
-						'module_auth'		=> 'u_mchat_use',
+						'module_basename'		=> 'mchat',
+						'modes'					=> array('configuration'),
+						'module_auth'			=> 'u_mchat_use',
 					),
 				),
 			),
@@ -138,15 +162,10 @@ class install_mchat extends \phpbb\db\migration\migration
 				'ucp',
 				'UCP_MCHAT_CONFIG',
 				array(
-					'module_basename'	=> '\dmzx\mchat\ucp\ucp_mchat_module',
-					'modes'				=> array('configuration'),
-					'auth'				=> 'acl_u_mchat_use',
+					'module_basename'			=> '\dmzx\mchat\ucp\ucp_mchat_module',
+					'modes'						=> array('configuration'),
+					'auth'						=> 'acl_u_mchat_use',
 				),
-			)),
-
-			// Insert sample data
-			array('custom', array(
-				array(&$this, 'insert_sample_data')
 			)),
 		);
 	}
@@ -155,35 +174,28 @@ class install_mchat extends \phpbb\db\migration\migration
 	{
 		return array(
 			'add_tables'	=> array(
-				$this->table_prefix . 'mchat_config'	=> array(
-					'COLUMNS'	=> array(
-						'config_name'		=> array('VCHAR', ''),
-						'config_value'		=> array('VCHAR', ''),
-					),
-					'PRIMARY_KEY'	=> 'config_name',
-				),
-
 				$this->table_prefix . 'mchat'	=> array(
-					'COLUMNS'	=> array(
-						'message_id'		=> array('UINT', null, 'auto_increment'),
-						'user_id'			=> array('UINT', 0),
-						'user_ip'			=> array('VCHAR:40', ''),
-						'message'			=> array('MTEXT_UNI', ''),
-						'bbcode_bitfield'	=> array('VCHAR', ''),
-						'bbcode_uid'		=> array('VCHAR:8', ''),
-						'bbcode_options'	=> array('BOOL', '7'),
-						'message_time'		=> array('INT:11', 0),
-						'forum_id'			=> array('UINT', 0),
-						'post_id'			=> array('UINT', 0),
+					'COLUMNS'		=> array(
+						'message_id'			=> array('UINT', null, 'auto_increment'),
+						'user_id'				=> array('UINT', 0),
+						'user_ip'				=> array('VCHAR:40', ''),
+						'message'				=> array('MTEXT_UNI', ''),
+						'bbcode_bitfield'		=> array('VCHAR', ''),
+						'bbcode_uid'			=> array('VCHAR:8', ''),
+						'bbcode_options'		=> array('BOOL', '7'),
+						'message_time'			=> array('INT:11', 0),
+						'edit_time'				=> array('INT:11', 0),
+						'forum_id'				=> array('UINT', 0),
+						'post_id'				=> array('UINT', 0),
 					),
 					'PRIMARY_KEY'	=> 'message_id',
 				),
 
 				$this->table_prefix . 'mchat_sessions'	=> array(
-					'COLUMNS'	=> array(
-						'user_id'			=> array('UINT', 0),
-						'user_lastupdate'	=> array('TIMESTAMP', 0),
-						'user_ip'			=> array('VCHAR:40', ''),
+					'COLUMNS'		=> array(
+						'user_id'				=> array('UINT', 0),
+						'user_lastupdate'		=> array('TIMESTAMP', 0),
+						'user_ip'				=> array('VCHAR:40', ''),
 					),
 					'PRIMARY_KEY'	=> 'user_id',
 				),
@@ -191,12 +203,12 @@ class install_mchat extends \phpbb\db\migration\migration
 
 			'add_columns'	=> array(
 				$this->table_prefix . 'users' => array(
-					'user_mchat_index' 		=> array('BOOL', '1'),
-					'user_mchat_sound' 		=> array('BOOL', '1'),
-					'user_mchat_stats_index' => array('BOOL', '1'),
-					'user_mchat_topics' 	=> array('BOOL', '1'),
-					'user_mchat_avatars' 	=> array('BOOL', '1'),
-					'user_mchat_input_area' => array('BOOL', '1'),
+					'user_mchat_index' 			=> array('BOOL', '1'),
+					'user_mchat_sound' 			=> array('BOOL', '1'),
+					'user_mchat_stats_index'	=> array('BOOL', '1'),
+					'user_mchat_topics' 		=> array('BOOL', '1'),
+					'user_mchat_avatars' 		=> array('BOOL', '1'),
+					'user_mchat_input_area'		=> array('BOOL', '1'),
 				),
 			),
 		);
@@ -208,11 +220,10 @@ class install_mchat extends \phpbb\db\migration\migration
 			'drop_tables'	=> array(
 				$this->table_prefix . 'mchat',
 				$this->table_prefix . 'mchat_sessions',
-				$this->table_prefix . 'mchat_config',
 			),
 
-			'drop_columns' => array(
-				$this->table_prefix . 'users'	=> array(
+			'drop_columns'	=> array(
+				$this->table_prefix . 'users' => array(
 					'user_mchat_index',
 					'user_mchat_sound',
 					'user_mchat_stats_index',
@@ -222,109 +233,5 @@ class install_mchat extends \phpbb\db\migration\migration
 				),
 			),
 		);
-	}
-
-	public function insert_sample_data()
-	{
-		if ($this->db_tools->sql_table_exists($this->table_prefix . 'mchat_config'))
-		{
-			$sql_ary = array(
-				array(
-					'config_name' 	=> 'refresh',
-					'config_value'	=> '10',
-				),
-				array(
-					'config_name' 	=> 'message_limit',
-					'config_value'	=> '10',
-				),
-				array(
-					'config_name' 	=> 'archive_limit',
-					'config_value'	=> '25',
-				),
-				array(
-					'config_name' 	=> 'flood_time',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name' 	=> 'max_message_lngth',
-					'config_value'	=> '500',
-				),
-				array(
-					'config_name' 	=> 'custom_page',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'date',
-					'config_value'	=> 'D M d, Y g:i a',
-				),
-				array(
-					'config_name' 	=> 'whois',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'bbcode_disallowed',
-					'config_value'	=> '',
-				),
-				array(
-					'config_name' 	=> 'prune_enable',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name' 	=> 'prune_num',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name' 	=> 'location',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'whois_refresh',
-					'config_value'	=> '30',
-				),
-				array(
-					'config_name' 	=> 'static_message',
-					'config_value'	=> '',
-				),
-				array(
-					'config_name' 	=> 'index_height',
-					'config_value'	=> '250',
-				),
-				array(
-					'config_name' 	=> 'custom_height',
-					'config_value'	=> '350',
-				),
-				array(
-					'config_name' 	=> 'override_min_post_chars',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name' 	=> 'timeout',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name'	=> 'override_smilie_limit',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name' 	=> 'pause_on_input',
-					'config_value'	=> '0',
-				),
-				array(
-					'config_name' 	=> 'rules',
-					'config_value'	=> '',
-				),
-				array(
-					'config_name' 	=> 'avatars',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'message_num',
-					'config_value'	=> '10',
-				),
-			);
-
-			// Insert sample data
-			$this->db->sql_multi_insert($this->table_prefix . 'mchat_config', $sql_ary);
-		}
 	}
 }

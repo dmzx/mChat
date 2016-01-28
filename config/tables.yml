@@ -1,4 +1,3 @@
 parameters:
     dmzx.mchat.table.mchat: %core.table_prefix%mchat
-    dmzx.mchat.table.mchat_config: %core.table_prefix%mchat_config
     dmzx.mchat.table.mchat_sessions: %core.table_prefix%mchat_sessions
