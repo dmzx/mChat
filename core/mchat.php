@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @package phpBB Extension - mChat
@@ -48,20 +49,20 @@ class mchat
 	protected $is_mchat_rendered = false;
 
 	/**
-	* Constructor
-	*
-	* @param \dmzx\mchat\core\functions_mchat	$functions_mchat
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\controller\helper			$helper
-	* @param \phpbb\template\template			$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\auth\auth					$auth
-	* @param \phpbb\pagination					$pagination
-	* @param \phpbb\request\request				$request
-	* @param \phpbb\event\dispatcher_interface	$dispatcher
-	* @param string								$root_path
-	* @param string								$php_ext
-	*/
+	 * Constructor
+	 *
+	 * @param \dmzx\mchat\core\functions_mchat $functions_mchat
+	 * @param \phpbb\config\config $config
+	 * @param \phpbb\controller\helper $helper
+	 * @param \phpbb\template\template $template
+	 * @param \phpbb\user $user
+	 * @param \phpbb\auth\auth $auth
+	 * @param \phpbb\pagination $pagination
+	 * @param \phpbb\request\request $request
+	 * @param \phpbb\event\dispatcher_interface $dispatcher
+	 * @param string $root_path
+	 * @param string $php_ext
+	 */
 	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\request\request $request, \phpbb\event\dispatcher_interface $dispatcher, $root_path, $php_ext)
 	{
 		$this->functions_mchat		= $functions_mchat;
@@ -78,8 +79,8 @@ class mchat
 	}
 
 	/**
-	* Render mChat on the index page
-	*/
+	 * Render mChat on the index page
+	 */
 	public function page_index()
 	{
 		if (!$this->auth->acl_get('u_mchat_view'))
@@ -94,6 +95,7 @@ class mchat
 			return;
 		}
 
+		// TODO This might be redundant
 		// If mChat is used on the index by a user without an avatar, a default avatar is used.
 		// However, T_THEME_PATH points to ./../styles/... because the controller at /mchat is called, but we need it to be ./styles...
 		// Setting this value to true solves this.
@@ -111,8 +113,10 @@ class mchat
 	}
 
 	/**
-	* Render the mChat custom page
-	*/
+	 * Render the mChat custom page
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
 	public function page_custom()
 	{
 		if (!$this->auth->acl_get('u_mchat_view') || !$this->config['mchat_custom_page'])
@@ -142,8 +146,10 @@ class mchat
 	}
 
 	/**
-	* Render the mChat archive
-	*/
+	 * Render the mChat archive
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
 	public function page_archive()
 	{
 		if (!$this->auth->acl_get('u_mchat_view') || !$this->auth->acl_get('u_mchat_archive'))
@@ -173,10 +179,10 @@ class mchat
 	}
 
 	/**
-	* Controller for mChat IP WHOIS
-	*
-	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
-	*/
+	 * Controller for mChat IP WHOIS
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
+	 */
 	public function page_whois()
 	{
 		if (!$this->auth->acl_get('u_mchat_ip'))
@@ -195,10 +201,10 @@ class mchat
 	}
 
 	/**
-	* Controller for mChat Rules page
-	*
-	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
-	*/
+	 * Controller for mChat Rules page
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
 	public function page_rules()
 	{
 		if (empty($this->config['mchat_rules']) && empty($this->user->lang['MCHAT_RULES']))
@@ -218,8 +224,10 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * User submits a message
+	 *
+	 * @return array data sent to client as JSON
+	 */
 	public function action_add()
 	{
 		if (!$this->auth->acl_get('u_mchat_use') || !check_form_key('mchat', -1))
@@ -243,19 +251,21 @@ class mchat
 		$this->functions_mchat->mchat_action('add', $sql_ary);
 
 		/**
-		* Event render_helper_add
-		*
-		* @event dmzx.mchat.core.render_helper_add
-		* @since 0.1.2
-		*/
+		 * Event render_helper_add
+		 *
+		 * @event dmzx.mchat.core.render_helper_add
+		 * @since 0.1.2
+		 */
 		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_add');
 
-		return array('add' => true);
+		return $this->action_refresh();
 	}
 
 	/**
-	*
-	*/
+	 * User edits a message
+	 *
+	 * @return array data sent to client as JSON
+	 */
 	public function action_edit()
 	{
 		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
@@ -287,11 +297,11 @@ class mchat
 		$this->functions_mchat->mchat_action('edit', $sql_ary, $message_id, $author['username']);
 
 		/**
-		* Event render_helper_edit
-		*
-		* @event dmzx.mchat.core.render_helper_edit
-		* @since 0.1.4
-		*/
+		 * Event render_helper_edit
+		 *
+		 * @event dmzx.mchat.core.render_helper_edit
+		 * @since 0.1.4
+		 */
 		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_edit');
 
 		$sql_where = 'm.message_id = ' . (int) $message_id;
@@ -304,8 +314,10 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * User deletes a message
+	 *
+	 * @return array data sent to client as JSON
+	 */
 	public function action_del()
 	{
 		$message_id = $this->request->variable('message_id', 0);
@@ -323,11 +335,11 @@ class mchat
 		}
 
 		/**
-		* Event render_helper_delete
-		*
-		* @event dmzx.mchat.core.render_helper_delete
-		* @since 0.1.4
-		*/
+		 * Event render_helper_delete
+		 *
+		 * @event dmzx.mchat.core.render_helper_delete
+		 * @since 0.1.4
+		 */
 		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_delete');
 
 		$this->functions_mchat->mchat_action('del', null, $message_id, $author['username']);
@@ -336,8 +348,10 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * User purges all messagas
+	 *
+	 * @return array data sent to client as JSON
+	 */
 	public function action_clean()
 	{
 		if ($this->user->data['user_type'] != USER_FOUNDER || !check_form_key('mchat', -1))
@@ -351,8 +365,10 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * User checks for new messages
+	 *
+	 * @return array sent to client as JSON
+	 */
 	public function action_refresh()
 	{
 		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
@@ -400,7 +416,7 @@ class mchat
 		// Assign new messages
 		$this->assign_global_template_data();
 		$this->assign_messages($rows_refresh);
-		$response = array('refresh' => $this->render_template('mchat_messages.html'));
+		$response = array('refresh' => true, 'add' => $this->render_template('mchat_messages.html'));
 
 		// Assign edited messages
 		if (!empty($rows_edit))
@@ -427,8 +443,10 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * User requests who is chatting
+	 *
+	 * @return array data sent to client as JSON
+	 */
 	public function action_whois()
 	{
 		$this->assign_whois();
@@ -437,8 +455,8 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * Adds the template variables for the header link
+	 */
 	public function render_page_header_link()
 	{
 		$this->template->assign_vars(array(
@@ -449,8 +467,11 @@ class mchat
 	}
 
 	/**
-	*
-	*/
+	 * Appends a condition to the WHERE key of the SQL array to not fetch disallowed BBCodes from the database
+	 *
+	 * @param $sql_ary array
+	 * @return array
+	 */
 	public function remove_disallowed_bbcodes($sql_ary)
 	{
 		// Add disallowed BBCodes to the template only if we're rendering for mChat
@@ -463,12 +484,10 @@ class mchat
 	}
 
 	/**
-	* Method to render the page data
-	*
-	* @var page					The page we are rendering for, one of index|custom|archive
-	* @return null|array|string	If we are rendering for the index, null is returned. For modes that are only
-	*							called via AJAX, an array is returned, otherwise the rendered content is returned.
-	*/
+	 * Renders data for a page
+	 *
+	 * @param $page The page we are rendering for, one of index|custom|archive
+	 */
 	protected function render_page($page)
 	{
 		// Add lang file
@@ -552,8 +571,8 @@ class mchat
 	}
 
 	/**
-	* Assigns all message rows to the template
-	*/
+	 * Assigns all message rows to the template
+	 */
 	protected function assign_global_template_data()
 	{
 		$this->template->assign_vars(array(
@@ -564,15 +583,27 @@ class mchat
 			'MCHAT_EDIT_DELETE_LIMIT'		=> 1000 * $this->config['mchat_edit_delete_limit'],
 			'MCHAT_EDIT_DELETE_IGNORE'		=> $this->config['mchat_edit_delete_limit'] && $this->auth->acl_get('m_'),
 			'MCHAT_USER_TIMEOUT'			=> 1000 * $this->config['mchat_timeout'],
-			'S_MCHAT_AVATARS'				=> !empty($this->config['mchat_avatars']) && $this->user->optionget('viewavatars') && $this->user->data['user_mchat_avatars'],
+			'S_MCHAT_AVATARS'				=> $this->display_avatars(),
 			'EXT_URL'						=> generate_board_url() . '/ext/dmzx/mchat/',
 			'STYLE_PATH'					=> generate_board_url() . '/styles/' . $this->user->style['style_path'],
 		));
 	}
 
 	/**
-	* Assigns all message rows to the template
-	*/
+	 * Returns true if we need do display avatars in the messages, otherwise false
+	 *
+	 * @return bool
+	 */
+	protected function display_avatars()
+	{
+		return $this->config['mchat_avatars'] && $this->user->optionget('viewavatars') && $this->user->data['user_mchat_avatars'];
+	}
+
+	/**
+	 * Assigns all message rows to the template
+	 *
+	 * @param $rows array
+	 */
 	protected function assign_messages($rows)
 	{
 		if (empty($rows))
@@ -589,6 +620,22 @@ class mchat
 		$foes = $this->functions_mchat->mchat_foes();
 
 		$this->template->destroy_block_vars('mchatrow');
+
+		$user_avatars = array();
+
+		foreach ($rows as $i => $row)
+		{
+			if (!isset($user_avatars[$row['user_id']]))
+			{
+				$display_avatar = $this->display_avatars() && $row['user_avatar'];
+				$user_avatars[$row['user_id']] = !$display_avatar ? '' : phpbb_get_user_avatar(array(
+					'avatar'		=> $row['user_avatar'],
+					'avatar_type'	=> $row['user_avatar_type'],
+					'avatar_width'	=> $row['user_avatar_width'] > $row['user_avatar_height'] ? 40 : (40 / $row['user_avatar_height']) * $row['user_avatar_width'],
+					'avatar_height' => $row['user_avatar_height'] > $row['user_avatar_width'] ? 40 : (40 / $row['user_avatar_width']) * $row['user_avatar_height'],
+				));
+			}
+		}
 
 		foreach ($rows as $i => $row)
 		{
@@ -611,13 +658,6 @@ class mchat
 			$row['username'] = mb_ereg_replace("'", "&#146;", $row['username']);
 			$message = str_replace("'", '&rsquo;', $row['message']);
 
-			$user_avatar = !$row['user_avatar'] ? '' : phpbb_get_user_avatar(array(
-				'avatar'		=> $row['user_avatar'],
-				'avatar_type'	=> $row['user_avatar_type'],
-				'avatar_width'	=> $row['user_avatar_width'] > $row['user_avatar_height'] ? 40 : (40 / $row['user_avatar_height']) * $row['user_avatar_width'],
-				'avatar_height'	=> $row['user_avatar_height'] > $row['user_avatar_width'] ? 40 : (40 / $row['user_avatar_width']) * $row['user_avatar_height'],
-			));
-
 			$username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST'));
 
 			// Remove root path if we render messages for the index page
@@ -631,7 +671,7 @@ class mchat
 				'MCHAT_ALLOW_BAN'		=> $this->auth->acl_get('a_authusers'),
 				'MCHAT_ALLOW_EDIT'		=> $this->auth_message('u_mchat_edit', $row['user_id'], $row['message_time']),
 				'MCHAT_ALLOW_DEL'		=> $this->auth_message('u_mchat_delete', $row['user_id'], $row['message_time']),
-				'MCHAT_USER_AVATAR'		=> $user_avatar,
+				'MCHAT_USER_AVATAR'		=> $user_avatars[$row['user_id']],
 				'U_VIEWPROFILE'			=> $row['user_id'] != ANONYMOUS ? generate_board_url() . append_sid("/{$this->root_path}memberlist.{$this->php_ext}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
 				'MCHAT_IS_POSTER'		=> $row['user_id'] != ANONYMOUS && $this->user->data['user_id'] == $row['user_id'],
 				'MCHAT_PM'				=> $row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id'] && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? generate_board_url() . append_sid("/{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
@@ -652,8 +692,8 @@ class mchat
 	}
 
 	/**
-	* Assigns BBCodes and smilies to the template
-	*/
+	 * Assigns BBCodes and smilies to the template
+	 */
 	protected function assign_bbcodes_smilies()
 	{
 		// Display custom bbcodes
@@ -695,8 +735,8 @@ class mchat
 	}
 
 	/**
-	* Assigns whois and stats at the bottom of the index page
-	*/
+	 * Assigns whois and stats at the bottom of the index page
+	 */
 	protected function assign_whois()
 	{
 		if ($this->config['mchat_whois'] || $this->config['mchat_stats_index'] && $this->user->data['user_mchat_stats_index'])
@@ -712,8 +752,13 @@ class mchat
 	}
 
 	/**
-	* Checks whether an author has edit or delete permissions for a message
-	*/
+	 * Checks whether an author has edit or delete permissions for a message
+	 *
+	 * @param $permission string One of u_mchat_edit|u_mchat_delete
+	 * @param $author_id int The user id of the message
+	 * @param $message_time int The message created time
+	 * @return bool
+	 */
 	protected function auth_message($permission, $author_id, $message_time)
 	{
 		if (!$this->auth->acl_get($permission))
@@ -731,9 +776,13 @@ class mchat
 	}
 
 	/**
-	* Performs bound checks on the message and returns an array containing the message,
-	* BBCode options and additional data ready to be sent to the database
-	*/
+	 * Performs bound checks on the message and returns an array containing the message,
+	 * BBCode options and additional data ready to be sent to the database
+	 *
+	 * @param $message string
+	 * @param $merge_ary array
+	 * @return array
+	 */
 	protected function process_message($message, $merge_ary)
 	{
 		// Must have something other than bbcode in the message
@@ -809,9 +858,11 @@ class mchat
 	}
 
 	/**
-	* Renders a template file and returns it
-	* @return string
-	*/
+	 * Renders a template file and returns it
+	 *
+	 * @param $template_file string
+	 * @return string
+	 */
 	protected function render_template($template_file)
 	{
 		$this->template->set_filenames(array('body' => $template_file));

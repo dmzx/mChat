@@ -341,11 +341,6 @@ class functions_mchat
 	*/
 	public function mchat_insert_posting($mode, $data)
 	{
-		if (!$this->config['mchat_new_posts'])
-		{
-			return;
-		}
-
 		$mode_config = array(
 			'post'	=> $this->config['mchat_new_posts_topic'],
 			'quote'	=> $this->config['mchat_new_posts_quote'],
@@ -543,6 +538,19 @@ class functions_mchat
 				return;
 		}
 
-		$this->db->sql_query($sql);
+		$result = $this->db->sql_query($sql);
+
+		if ($result !== false)
+		{
+			switch ($action)
+			{
+				case 'add':
+					if ($this->db->sql_nextid() == 1)
+					{
+						$this->cache->destroy('sql', $this->mchat_table);
+					}
+					break;
+			}
+		}
 	}
 }

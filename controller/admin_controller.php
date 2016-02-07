@@ -93,7 +93,6 @@ class admin_controller
 			'mchat_message_limit'			=> array('default' => 10,				'validation' => array('num', false, 10, 30)),
 			'mchat_message_num'				=> array('default' => 10,				'validation' => array('num', false, 10, 50)),
 			'mchat_message_top'				=> array('default' => 1,				'validation' => array()),
-			'mchat_new_posts'				=> array('default' => 0,				'validation' => array()),
 			'mchat_new_posts_edit'			=> array('default' => 0,				'validation' => array()),
 			'mchat_new_posts_quote'			=> array('default' => 0,				'validation' => array()),
 			'mchat_new_posts_reply'			=> array('default' => 0,				'validation' => array()),
@@ -139,7 +138,16 @@ class admin_controller
 			}
 
 			// Replace "error" strings with their real, localised form
-			$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$this->user->lang('\\1'))) ? \$this->user->lang('\\1') : '\\1'", $error);
+			// The /e modifier is deprecated since PHP 5.5.0
+			//$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$this->user->lang('\\1'))) ? \$this->user->lang('\\1') : '\\1'", $error);
+			foreach ($error as $i => $err)
+			{
+				$lang = $this->user->lang($err);
+				if (!empty($lang))
+				{
+					$error[$i] = $lang;
+				}
+			}
 
 			if (empty($error))
 			{

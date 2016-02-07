@@ -4,7 +4,7 @@
 
 <!-- INCLUDEJS jquery.titlealert.min.js -->
 <!-- INCLUDEJS js.cookie-2.0.4.min.js -->
-<!-- INCLUDEJS mchat.min.js -->
+<!-- INCLUDEJS mchat.js -->
 
 <!-- IF MCHAT_ARCHIVE_PAGE and (.pagination or MCHAT_TOTAL_MESSAGES) -->
 <div class="action-bar top">
@@ -104,7 +104,7 @@
 				<!-- INCLUDE mchat_whois.html -->
 			<!-- ENDIF -->
 
-			<form id="postform" action="{MCHAT_FILE_NAME}" method="POST">
+			<form name="postform" id="mchat-form" action="{MCHAT_FILE_NAME}" method="POST">
 				{S_FORM_TOKEN}
 				<!-- IF not MCHAT_ARCHIVE_PAGE -->
 					<div class="mchat-panel">

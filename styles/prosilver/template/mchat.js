@@ -30,7 +30,7 @@ jQuery(function($) {
 			dataType: 'json',
 			data: data
 		}).success(function(json, status, xhr) {
-			if (json.hasOwnProperty(mode)) {
+			if (json[mode]) {
 				deferred.resolve(json, status, xhr);
 			} else {
 				deferred.reject(xhr, status, xhr.responseJSON ? 'session' : 'format');
@@ -72,7 +72,7 @@ jQuery(function($) {
 			}
 		},
 		sound: function(file) {
-			if (!Cookies.get('mchat_no_sound')) {
+			if (!mChat.pageIsUnloading && !Cookies.get('mchat_no_sound')) {
 				var audio = mChat.$$('sound-' + file).get(0);
 				audio.pause();
 				audio.currentTime = 0;
@@ -109,11 +109,8 @@ jQuery(function($) {
 			}
 			mChat.pauseSession();
 			mChat.$$('add').prop('disabled', true);
-			ajaxRequest('add', true, {
-				message: mChat.$$('input').val()
-			}).done(function(json) {
+			mChat.refresh(mChat.$$('input').val()).done(function() {
 				mChat.$$('input').val('');
-				mChat.refresh();
 			}).always(function() {
 				mChat.$$('input').focus();
 				mChat.$$('add').prop('disabled', false);
@@ -144,7 +141,7 @@ jQuery(function($) {
 			phpbb.confirm(mChat.$$('confirm'), function() {
 				ajaxRequest('del', true, {
 					message_id: $container.data('id')
-				}).done(function(json) {
+				}).done(function() {
 					mChat.sound('del');
 					$container.fadeOut('slow', function() {
 						$container.remove();
@@ -153,11 +150,14 @@ jQuery(function($) {
 				});
 			});
 		},
-		refresh: function() {
+		refresh: function(message) {
 			var $messages = mChat.$$('messages').children();
 			var data = {
 				message_last_id: $messages.filter(mChat.messageTop ? ':first' : ':last').data('id')
 			};
+			if (message) {
+				data.message = message;
+			}
 			if (mChat.liveUpdates) {
 				data.message_first_id = $messages.filter(mChat.messageTop ? ':last' : ':first').data('id');
 				data.message_edits = {};
@@ -172,8 +172,8 @@ jQuery(function($) {
 			}
 			mChat.$$('refresh-ok', 'refresh-error', 'refresh-paused').hide();
 			mChat.$$('refresh-load').show();
-			ajaxRequest('refresh', false, data).done(function(json) {
-				var $html = $(json.refresh);
+			return ajaxRequest(message ? 'add' : 'refresh', !!message, data).done(function(json) {
+				var $html = $(json.add);
 				if ($html.length) {
 					mChat.sound('add');
 					mChat.notice();
@@ -199,7 +199,7 @@ jQuery(function($) {
 						}
 					});
 				}
-				if (json.hasOwnProperty('edit')) {
+				if (json.edit) {
 					var isFirstEdit = true;
 					$.each(json.edit, function(id, content) {
 						var $container = $('#mchat-message-' + id);
@@ -214,7 +214,7 @@ jQuery(function($) {
 						}
 					});
 				}
-				if (json.hasOwnProperty('del')) {
+				if (json.del) {
 					var isFirstDelete = true;
 					$.each(json.del, function(i, id) {
 						var $container = $('#mchat-message-' + id);
@@ -263,6 +263,7 @@ jQuery(function($) {
 			mChat.$$('confirm').find('textarea').hide();
 			mChat.$$('confirm').find('p').text(mChat.cleanConfirm);
 			phpbb.confirm(mChat.$$('confirm'), function() {
+				mChat.pauseSession();
 				ajaxRequest('clean', true, {}).done(function() {
 					phpbb.alert('mChat', mChat.cleanDone);
 					setTimeout(function() {
@@ -376,7 +377,7 @@ jQuery(function($) {
 	mChat.$$('confirm').detach().show();
 
 	mChat.hiddenFields = {};
-	$('#' + form_name).find('input[type=hidden]').each(function() {
+	$('#mchat-form').find('input[type=hidden]').each(function() {
 		mChat.hiddenFields[this.name] = this.value;
 	});
 
@@ -444,6 +445,10 @@ jQuery(function($) {
 			e.preventDefault();
 		});
 
+		if (!mChat.$$('user-sound').prop('checked')) {
+			Cookies.set('mchat_no_sound', 'yes');
+		}
+
 		mChat.$$('user-sound').change(function() {
 			if (this.checked) {
 				Cookies.remove('mchat_no_sound');
@@ -452,7 +457,7 @@ jQuery(function($) {
 			}
 		});
 
-		$('#' + form_name).on('keypress', function(e) {
+		$('#mchat-form').on('keypress', function(e) {
 			if (e.which == 13) {
 				mChat.add();
 				e.preventDefault();
@@ -461,6 +466,10 @@ jQuery(function($) {
 
 		mChat.$$('input').autoGrowInput();
 	}
+
+	$(window).on('beforeunload', function() {
+		mChat.pageIsUnloading = true;
+	});
 
 	$('#phpbb').on('click', '[data-mchat-action]', function(e) {
 		var action = $(this).data('mchat-action');

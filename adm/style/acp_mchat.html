@@ -49,31 +49,25 @@
 			<label><input type="radio" class="radio" name="mchat_message_top" value="0"<!-- IF not MCHAT_MESSAGE_TOP --> id="mchat_message_top" checked="checked"<!-- ENDIF --> /> {L_MCHAT_BOTTOM}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_new_posts">{L_MCHAT_NEW_POSTS}{L_COLON}</label><br />
-			<span>{L_MCHAT_NEW_POSTS_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="mchat_new_posts" value="1"<!-- IF MCHAT_NEW_POSTS --> id="mchat_new_posts" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="mchat_new_posts" value="0"<!-- IF not MCHAT_NEW_POSTS --> id="mchat_new_posts" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
-		</dl>
-		<dl>
-			<dt><label for="mchat_new_posts">{L_MCHAT_NEW_POSTS_TOPIC}{L_COLON}</label><br />
+			<dt><label for="mchat_new_posts_topic">{L_MCHAT_NEW_POSTS_TOPIC}{L_COLON}</label><br />
 			<span>{L_MCHAT_NEW_POSTS_TOPIC_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_new_posts_topic" value="1"<!-- IF MCHAT_NEW_POSTS_TOPIC --> id="mchat_new_posts_topic" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 			<label><input type="radio" class="radio" name="mchat_new_posts_topic" value="0"<!-- IF not MCHAT_NEW_POSTS_TOPIC --> id="mchat_new_posts_topic" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_new_posts">{L_MCHAT_NEW_POSTS_REPLY}{L_COLON}</label><br />
+			<dt><label for="mchat_new_posts_reply">{L_MCHAT_NEW_POSTS_REPLY}{L_COLON}</label><br />
 			<span>{L_MCHAT_NEW_POSTS_REPLY_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_new_posts_reply" value="1"<!-- IF MCHAT_NEW_POSTS_REPLY --> id="mchat_new_posts_reply" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 			<label><input type="radio" class="radio" name="mchat_new_posts_reply" value="0"<!-- IF not MCHAT_NEW_POSTS_REPLY --> id="mchat_new_posts_reply" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_new_posts">{L_MCHAT_NEW_POSTS_EDIT}{L_COLON}</label><br />
+			<dt><label for="mchat_new_posts_edit">{L_MCHAT_NEW_POSTS_EDIT}{L_COLON}</label><br />
 			<span>{L_MCHAT_NEW_POSTS_EDIT_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_new_posts_edit" value="1"<!-- IF MCHAT_NEW_POSTS_EDIT --> id="mchat_new_posts_edit" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 			<label><input type="radio" class="radio" name="mchat_new_posts_edit" value="0"<!-- IF not MCHAT_NEW_POSTS_EDIT --> id="mchat_new_posts_edit" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_new_posts">{L_MCHAT_NEW_POSTS_QUOTE}{L_COLON}</label><br />
+			<dt><label for="mchat_new_posts_quote">{L_MCHAT_NEW_POSTS_QUOTE}{L_COLON}</label><br />
 			<span>{L_MCHAT_NEW_POSTS_QUOTE_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_new_posts_quote" value="1"<!-- IF MCHAT_NEW_POSTS_QUOTE --> id="mchat_new_posts_quote" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 			<label><input type="radio" class="radio" name="mchat_new_posts_quote" value="0"<!-- IF not MCHAT_NEW_POSTS_QUOTE --> id="mchat_new_posts_quote" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
@@ -105,9 +99,9 @@
 			<dd><input type="text" name="mchat_index_height" id="mchat_index_height" size="10" maxlength="4" value="{MCHAT_INDEX_HEIGHT}" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_index_height">{L_MCHAT_MESSAGE_NUM}{L_COLON}</label><br />
+			<dt><label for="mchat_message_num">{L_MCHAT_MESSAGE_NUM}{L_COLON}</label><br />
 			<span>{L_MCHAT_MESSAGE_NUM_EXPLAIN}</span></dt>
-			<dd><input type="text" name="mchat_message_num" size="10" maxlength="4" value="{MCHAT_MESSAGE_NUM}" /></dd>
+			<dd><input type="text" name="mchat_message_num" id="mchat_message_num" size="10" maxlength="4" value="{MCHAT_MESSAGE_NUM}" /></dd>
 		</dl>
 		<dl>
 			<dt><label for="mchat_location">{L_MCHAT_LOCATION}{L_COLON}</label><br />
@@ -196,7 +190,7 @@
 			<dd><input type="text" name="mchat_max_message_lngth" id="mchat_max_message_lngth" size="10" value="{MCHAT_MAX_MESSAGE_LNGTH}" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_date">{L_MCHAT_DATE_FORMAT}{L_COLON}</label><br /><span>{L_MCHAT_DATE_FORMAT_EXPLAIN}</span></dt>
+			<dt><label for="mchat_dateoptions">{L_MCHAT_DATE_FORMAT}{L_COLON}</label><br /><span>{L_MCHAT_DATE_FORMAT_EXPLAIN}</span></dt>
 			<dd>
 				<select name="mchat_dateoptions" id="mchat_dateoptions" onchange="if(this.value=='custom'){phpbb.toggleDisplay('custom_date',1);}else{phpbb.toggleDisplay('custom_date',-1);} if (this.value == 'custom') { document.getElementById('mchat_date').value = default_dateformat; } else { document.getElementById('mchat_date').value = this.value; }">
 					{S_MCHAT_DATEFORMAT_OPTIONS}
@@ -232,7 +226,7 @@
 		<dl>
 			<dt><label for="mchat_whois">{L_MCHAT_WHOIS_REFRESH}{L_COLON}</label><br />
 			<span>{L_MCHAT_WHOIS_REFRESH_EXPLAIN}</span></dt>
-			<dd><input type="text" name="mchat_whois_refresh" size="10" value="{MCHAT_WHOIS_REFRESH}" /></dd>
+			<dd><input type="text" name="mchat_whois_refresh" id="mchat_whois" size="10" value="{MCHAT_WHOIS_REFRESH}" /></dd>
 		</dl>
 
 	</fieldset>
