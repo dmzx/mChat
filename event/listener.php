@@ -51,8 +51,7 @@ class listener implements EventSubscriberInterface
 		return array(
 			'core.viewonline_overwrite_location'		=> 'add_page_viewonline',
 			'core.user_setup'							=> 'load_language_on_setup',
-			'core.page_header'							=> 'add_page_header_link',
-			'core.index_modify_page_title'				=> 'display_mchat_on_index',
+			'core.page_header'							=> 'display_mchat_on_index',
 			'core.posting_modify_submit_post_after'		=> 'posting_modify_submit_post_after',
 			'core.permissions'							=> 'permissions',
 			'core.display_custom_bbcodes_modify_sql'	=> 'display_custom_bbcodes_modify_sql',
@@ -105,7 +104,19 @@ class listener implements EventSubscriberInterface
 	 */
 	public function display_mchat_on_index($event)
 	{
+	$this->mchat->render_page_header_link();
+	if ($this->user->page['page'] == "index.php")
+		{
 		$this->mchat->page_index();
+		}
+	if ($this->user->page['page'] == "app.php")
+		{
+		$this->mchat->page_index();
+		}
+	if ($this->user->page['page'] == "portal")
+		{
+		$this->mchat->page_index();
+		}
 	}
 
 	/**

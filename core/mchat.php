@@ -90,11 +90,8 @@ class mchat
 
 		$this->assign_whois();
 
-		if (!$this->config['mchat_on_index'])
+		if ($this->config['mchat_on_index'])
 		{
-			return;
-		}
-
 		// TODO This might be redundant
 		// If mChat is used on the index by a user without an avatar, a default avatar is used.
 		// However, T_THEME_PATH points to ./../styles/... because the controller at /mchat is called, but we need it to be ./styles...
@@ -110,6 +107,25 @@ class mchat
 		$this->assign_bbcodes_smilies();
 
 		$this->render_page('index');
+		}
+		if ($this->config['mchat_on_portal'])
+		{
+		// TODO This might be redundant
+		// If mChat is used on the index by a user without an avatar, a default avatar is used.
+		// However, T_THEME_PATH points to ./../styles/... because the controller at /mchat is called, but we need it to be ./styles...
+		// Setting this value to true solves this.
+		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
+		{
+			define('PHPBB_USE_BOARD_URL_PATH', true);
+		}
+
+		global $root_path;
+		$root_path = './';
+
+		$this->assign_bbcodes_smilies();
+
+		$this->render_page('index');
+		}
 	}
 
 	/**
@@ -528,6 +544,8 @@ class mchat
 			'U_MORE_SMILIES'				=> generate_board_url() . append_sid("/{$this->root_path}/posting.{$this->php_ext}", 'mode=smilies'),
 			'U_MCHAT_RULES'					=> $this->helper->route('dmzx_mchat_page_controller', array('page' => 'rules')),
 			'S_MCHAT_ON_INDEX'				=> $this->config['mchat_on_index'] && !empty($this->user->data['user_mchat_index']),
+			'S_DISPLAY_MCHAT_PORTAL'		=> $this->config['mchat_on_portal'],
+			'U_MCHATLOC'					=> $this->user->page['page'],
 		));
 
 		$sql_where = $this->user->data['user_mchat_topics'] ? '' : 'm.forum_id = 0';
