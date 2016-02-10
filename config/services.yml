@@ -56,3 +56,10 @@ services:
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
+    dmzx.mchat.b3pmchat:
+        class: dmzx\mchat\b3pmchat
+        arguments:
+            - '@config'
+            - '@template'
+        tags:
+            - { name: board3.portal.module }

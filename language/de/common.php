@@ -123,4 +123,11 @@ $lang = array_merge($lang, array(
 
 	// Custom edits
 	'REPLY_WITH_LIKE'				=> 'mir gefällt dieser Beitrag',
+	
+	
+   // board3.de portal lang
+   'PORTAL_MCHAT_TITLE'         => 'mChat',
+   'PORTAL_MCHAT_TITLE_EXP'      => 'mChat Einstellungen fÃ¼r den Board3-Portal-Block',
+   'PORTAL_MCHAT'               => 'Anzeige im Portal',
+   'PORTAL_MCHAT_EXP'            => 'Verwenden Sie diese Einstellung zum Anzeigen des mChat im Portal.',
 ));

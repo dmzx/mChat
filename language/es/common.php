@@ -123,4 +123,11 @@ $lang = array_merge($lang, array(
 
 	// Custom edits
 	'REPLY_WITH_LIKE'				=> 'Me Gusta este mensaje',
+	
+	
+	// board3.de portal lang
+	'PORTAL_MCHAT_TITLE'				=> 'Mini-Chat',
+	'PORTAL_MCHAT_TITLE_EXP'				=> 'Mini-Chat Settings for board3 portal block',
+	'PORTAL_MCHAT'				=> 'Display on portal',
+	'PORTAL_MCHAT_EXP'				=> 'Use this setting to display Mini-Chat on portal.',
 ));

@@ -98,6 +98,7 @@ class admin_controller
 			'mchat_new_posts_reply'			=> array('default' => 0,				'validation' => array()),
 			'mchat_new_posts_topic'			=> array('default' => 0,				'validation' => array()),
 			'mchat_on_index'				=> array('default' => 1,				'validation' => array()),
+			'mchat_on_portal'				=> array('default' => 1,				'validation' => array()),
 			'mchat_override_min_post_chars'	=> array('default' => 0,				'validation' => array()),
 			'mchat_override_smilie_limit'	=> array('default' => 0,				'validation' => array()),
 			'mchat_pause_on_input'			=> array('default' => 0,				'validation' => array()),
