@@ -80,8 +80,6 @@ public function get_template_acp($module_id)
       return array(
          'title'   => 'PORTAL_MCHAT_TITLE',
          'vars'   => array(
-            'legend1'                     => 'THIS DOES NOTHING',
-				'board3_mchat_' . $module_id		=> array('lang' => 'To enable/disable Mchat portal block use Enable module: above',	'validate' => 'string', 'type' => 'radio:yes_no',	'explain' => true),
 				)
       );
    }

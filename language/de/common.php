@@ -125,9 +125,9 @@ $lang = array_merge($lang, array(
 	'REPLY_WITH_LIKE'				=> 'mir gefällt dieser Beitrag',
 	
 	
-	// board3.de portal lang
-	'PORTAL_MCHAT_TITLE'				=> 'Mini-Chat',
-	'PORTAL_MCHAT_TITLE_EXP'				=> 'Mini-Chat Settings for board3 portal block',
-	'PORTAL_MCHAT'				=> 'Display on portal',
-	'PORTAL_MCHAT_EXP'				=> 'Use this setting to display Mini-Chat on portal.',
+   // board3.de portal lang
+   'PORTAL_MCHAT_TITLE'         => 'mChat',
+   'PORTAL_MCHAT_TITLE_EXP'      => 'mChat Einstellungen fÃ¼r den Board3-Portal-Block',
+   'PORTAL_MCHAT'               => 'Anzeige im Portal',
+   'PORTAL_MCHAT_EXP'            => 'Verwenden Sie diese Einstellung zum Anzeigen des mChat im Portal.',
 ));

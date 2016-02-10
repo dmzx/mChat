@@ -168,7 +168,7 @@ $lang = array_merge($lang, array(
 	'ACL_A_MCHAT'							=> 'Kann mChat Einstellung managen',
 	
 	
-	//board3
-	'MCHAT_ON_PORTAL'						=> 'mChat On Portal',
-	'MCHAT_ON_PORTAL_EXPLAIN'				=> 'Allow the display of the mChat on the Board3 Portal page.',
+   //board3
+   'MCHAT_ON_PORTAL'                  => 'mChat im Portal',
+   'MCHAT_ON_PORTAL_EXPLAIN'            => 'ErmÃ¶glicht die Anzeige des MCHAT auf der Board3-Portalseite.',
 ));
