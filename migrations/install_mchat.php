@@ -1,11 +1,12 @@
 <?php
+
 /**
-*
-* @package phpBB Extension - mChat
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\mchat\migrations;
 
@@ -13,7 +14,7 @@ class install_mchat extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['mchat_version']) && version_compare($this->config['mchat_version'], '0.3.4', '>=');
+		return isset($this->config['mchat_version']) && version_compare($this->config['mchat_version'], '1.0.0-RC1', '>=');
 	}
 
 	static public function depends_on()
@@ -25,7 +26,7 @@ class install_mchat extends \phpbb\db\migration\migration
 	{
 		return array(
 			// Add configs
-			array('config.add', array('mchat_version', '0.3.4')),
+			array('config.add', array('mchat_version', '1.0.0-RC1')),
 			array('config.add', array('mchat_archive_limit', 25)),
 			array('config.add', array('mchat_avatars', 1)),
 			array('config.add', array('mchat_bbcode_disallowed', '')),

@@ -9,9 +9,10 @@ services:
             - '@template'
             - '@log'
             - '@user'
+            - '@dbal.conn'
             - '@cache'
             - '@request'
-            - '@ext.manager'
+            - '%dmzx.mchat.table.mchat%'
             - '%core.root_path%'
             - '%core.php_ext%'
     dmzx.mchat.main.controller:

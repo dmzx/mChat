@@ -10,4 +10,4 @@ dmzx_mchat_action_controller:
     path: /mchat-{action}
     defaults: { _controller: dmzx.mchat.main.controller:action }
     requirements:
-        action: 'add|edit|del|clean|refresh|whois'
+        action: 'add|edit|del|refresh|whois'

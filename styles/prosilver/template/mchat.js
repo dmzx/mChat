@@ -74,9 +74,11 @@ jQuery(function($) {
 		sound: function(file) {
 			if (!mChat.pageIsUnloading && !Cookies.get('mchat_no_sound')) {
 				var audio = mChat.$$('sound-' + file).get(0);
-				audio.pause();
-				audio.currentTime = 0;
-				audio.play();
+				if (audio.duration) {
+					audio.pause();
+					audio.currentTime = 0;
+					audio.play();
+				}
 			}
 		},
 		notice: function() {
@@ -103,7 +105,7 @@ jQuery(function($) {
 				return;
 			}
 			var messChars = mChat.$$('input').val().replace(/\s/g, '');
-			if (messChars.length > mChat.mssgLngth) {
+			if (mChat.mssgLngth && messChars.length > mChat.mssgLngth) {
 				alert(mChat.mssgLngthLong);
 				return;
 			}
@@ -257,19 +259,6 @@ jQuery(function($) {
 						mChat.$$('refresh').show();
 					}, 250);
 				}
-			});
-		},
-		clean: function() {
-			mChat.$$('confirm').find('textarea').hide();
-			mChat.$$('confirm').find('p').text(mChat.cleanConfirm);
-			phpbb.confirm(mChat.$$('confirm'), function() {
-				mChat.pauseSession();
-				ajaxRequest('clean', true, {}).done(function() {
-					phpbb.alert('mChat', mChat.cleanDone);
-					setTimeout(function() {
-						location.reload();
-					}, 2000);
-				});
 			});
 		},
 		timeLeft: function(sessionTime) {
@@ -457,12 +446,14 @@ jQuery(function($) {
 			}
 		});
 
-		$('#mchat-form').on('keypress', function(e) {
-			if (e.which == 13) {
-				mChat.add();
-				e.preventDefault();
-			}
-		});
+		if (mChat.$$('input').is('input')) {
+			$('#mchat-form').on('keypress', function(e) {
+				if (e.which == 13) {
+					mChat.add();
+					e.preventDefault();
+				}
+			});
+		}
 
 		mChat.$$('input').autoGrowInput();
 	}

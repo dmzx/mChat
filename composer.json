@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "mChat Extension for phpbb 3.1.x",
 	"homepage": "http://www.dmzx-web.net",
-	"version": "0.3.4",
+	"version": "1.0.0-RC1",
 	"time": "2015-03-10",
 	"keywords": ["phpbb", "extension", "mchat"],
 	"license": "GPL-2.0",
@@ -32,7 +32,7 @@
 		"phpbb/epv": "dev-master"
 	},
 	"extra": {
-		"display-name": "mChat Extension",
+		"display-name": "mChat Extension for phpBB 3.1",
 		"soft-require": {
 			"phpbb/phpbb": "3.1.*"
 			},

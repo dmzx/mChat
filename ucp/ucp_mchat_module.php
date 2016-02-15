@@ -1,11 +1,12 @@
 <?php
+
 /**
-*
-* @package phpBB Extension - mChat
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\mchat\ucp;
 
@@ -13,9 +14,8 @@ class ucp_mchat_module
 {
 	function main($id, $mode)
 	{
-		global $cache, $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx, $request;
+		global $config, $db, $user, $template, $request;
 
-		$submit = (isset($_POST['submit'])) ? true : false;
 		$error = $data = array();
 
 		switch ($mode)
@@ -33,7 +33,7 @@ class ucp_mchat_module
 
 				add_form_key('ucp_mchat');
 
-				if ($submit)
+				if ($request->is_set_post('submit'))
 				{
 					if (!check_form_key('ucp_mchat'))
 					{
@@ -42,25 +42,13 @@ class ucp_mchat_module
 
 					if (!sizeof($error))
 					{
-						$sql_ary = array(
-							'user_mchat_index'		=> $data['user_mchat_index'],
-							'user_mchat_sound'		=> $data['user_mchat_sound'],
-							'user_mchat_stats_index'	=> $data['user_mchat_stats_index'],
-							'user_mchat_topics'		=> $data['user_mchat_topics'],
-							'user_mchat_avatars'	=> $data['user_mchat_avatars'],
-							'user_mchat_input_area'	=> $data['user_mchat_input_area'],
-						);
-
-						if (sizeof($sql_ary))
-						{
-							$sql = 'UPDATE ' . USERS_TABLE . '
-								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-								WHERE user_id = ' . (int) $user->data['user_id'];
-							$db->sql_query($sql);
-						}
+						$sql = 'UPDATE ' . USERS_TABLE . '
+							SET ' . $db->sql_build_array('UPDATE', $data) . '
+							WHERE user_id = ' . (int) $user->data['user_id'];
+						$db->sql_query($sql);
 
 						meta_refresh(3, $this->u_action);
-						$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+						$message = $user->lang('PROFILE_UPDATED') . '<br /><br />' . sprintf($user->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 						trigger_error($message);
 					}
 
@@ -69,7 +57,7 @@ class ucp_mchat_module
 					//$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
 					foreach ($error as $i => $err)
 					{
-						$lang = $this->user->lang($err);
+						$lang = $user->lang($err);
 						if (!empty($lang))
 						{
 							$error[$i] = $lang;
@@ -78,7 +66,7 @@ class ucp_mchat_module
 				}
 
 				$template->assign_vars(array(
-					'ERROR'			=> (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'					=> sizeof($error) ? implode('<br />', $error) : '',
 
 					'S_DISPLAY_MCHAT'		=> $data['user_mchat_index'],
 					'S_SOUND_MCHAT'			=> $data['user_mchat_sound'],
@@ -92,12 +80,11 @@ class ucp_mchat_module
 					'S_MCHAT_AVATARS'		=> $config['mchat_avatars'],
 				));
 			break;
-
 		}
 
 		$template->assign_vars(array(
-			'L_TITLE'			=> $user->lang['UCP_PROFILE_MCHAT'],
-			'S_UCP_ACTION'		=> $this->u_action
+			'L_TITLE'		=> $user->lang('UCP_PROFILE_MCHAT'),
+			'S_UCP_ACTION'	=> $this->u_action,
 		));
 
 		// Set desired template

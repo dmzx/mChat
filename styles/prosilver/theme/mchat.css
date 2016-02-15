@@ -145,6 +145,7 @@
 
 .mchat-avatar {
 	float: left;
+    width: 40px;
 	padding-right: 5px;
 }
 

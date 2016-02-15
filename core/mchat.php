@@ -51,31 +51,31 @@ class mchat
 	/**
 	 * Constructor
 	 *
-	 * @param \dmzx\mchat\core\functions_mchat $functions_mchat
-	 * @param \phpbb\config\config $config
-	 * @param \phpbb\controller\helper $helper
-	 * @param \phpbb\template\template $template
-	 * @param \phpbb\user $user
-	 * @param \phpbb\auth\auth $auth
-	 * @param \phpbb\pagination $pagination
-	 * @param \phpbb\request\request $request
+	 * @param \dmzx\mchat\core\functions_mchat	$functions_mchat
+	 * @param \phpbb\config\config				$config
+	 * @param \phpbb\controller\helper			$helper
+	 * @param \phpbb\template\template			$template
+	 * @param \phpbb\user						$user
+	 * @param \phpbb\auth\auth					$auth
+	 * @param \phpbb\pagination					$pagination
+	 * @param \phpbb\request\request			$request
 	 * @param \phpbb\event\dispatcher_interface $dispatcher
-	 * @param string $root_path
-	 * @param string $php_ext
+	 * @param string							$root_path
+	 * @param string							$php_ext
 	 */
 	public function __construct(\dmzx\mchat\core\functions_mchat $functions_mchat, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\request\request $request, \phpbb\event\dispatcher_interface $dispatcher, $root_path, $php_ext)
 	{
-		$this->functions_mchat		= $functions_mchat;
-		$this->config				= $config;
-		$this->helper				= $helper;
-		$this->template				= $template;
-		$this->user					= $user;
-		$this->auth					= $auth;
-		$this->pagination			= $pagination;
-		$this->request				= $request;
-		$this->dispatcher			= $dispatcher;
-		$this->root_path			= $root_path;
-		$this->php_ext				= $php_ext;
+		$this->functions_mchat	= $functions_mchat;
+		$this->config			= $config;
+		$this->helper			= $helper;
+		$this->template			= $template;
+		$this->user				= $user;
+		$this->auth				= $auth;
+		$this->pagination		= $pagination;
+		$this->request			= $request;
+		$this->dispatcher		= $dispatcher;
+		$this->root_path		= $root_path;
+		$this->php_ext			= $php_ext;
 	}
 
 	/**
@@ -94,18 +94,6 @@ class mchat
 		{
 			return;
 		}
-
-		// TODO This might be redundant
-		// If mChat is used on the index by a user without an avatar, a default avatar is used.
-		// However, T_THEME_PATH points to ./../styles/... because the controller at /mchat is called, but we need it to be ./styles...
-		// Setting this value to true solves this.
-		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
-		{
-			define('PHPBB_USE_BOARD_URL_PATH', true);
-		}
-
-		global $root_path;
-		$root_path = './';
 
 		$this->assign_bbcodes_smilies();
 
@@ -207,20 +195,21 @@ class mchat
 	 */
 	public function page_rules()
 	{
-		if (empty($this->config['mchat_rules']) && empty($this->user->lang['MCHAT_RULES']))
+		if (empty($this->config['mchat_rules']) && !$this->user->lang('MCHAT_RULES_MESSAGE'))
 		{
 			throw new \phpbb\exception\http_exception(404, 'MCHAT_NO_RULES');
 		}
 
 		// If the rules are defined in the language file use them, else just use the entry in the database
-		$mchat_rules = isset($this->user->lang['MCHAT_RULES']) ? $this->user->lang('MCHAT_RULES') : $this->config['mchat_rules'];
+		$mchat_rules = $this->user->lang('MCHAT_RULES_MESSAGE');
+		$mchat_rules = !empty($mchat_rules) ? $mchat_rules : $this->config['mchat_rules'];
 		$mchat_rules = explode("\n", $mchat_rules);
-		$mchat_rules = array_map('utf8_htmlspecialchars', $mchat_rules);
+		$mchat_rules = array_map('htmlspecialchars_decode', $mchat_rules);
 		$mchat_rules = implode('<br />', $mchat_rules);
 
 		$this->template->assign_var('MCHAT_RULES', $mchat_rules);
 
-		return $this->helper->render('mchat_rules.html', $this->user->lang('MCHAT_HELP'));
+		return $this->helper->render('mchat_rules.html', $this->user->lang('MCHAT_RULES'));
 	}
 
 	/**
@@ -268,6 +257,7 @@ class mchat
 	 */
 	public function action_edit()
 	{
+		// Fix avatar path when editing archived messages
 		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
 		{
 			define('PHPBB_USE_BOARD_URL_PATH', true);
@@ -348,34 +338,12 @@ class mchat
 	}
 
 	/**
-	 * User purges all messagas
-	 *
-	 * @return array data sent to client as JSON
-	 */
-	public function action_clean()
-	{
-		if ($this->user->data['user_type'] != USER_FOUNDER || !check_form_key('mchat', -1))
-		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
-		}
-
-		$this->functions_mchat->mchat_action('clean');
-
-		return array('clean' => true);
-	}
-
-	/**
 	 * User checks for new messages
 	 *
 	 * @return array sent to client as JSON
 	 */
 	public function action_refresh()
 	{
-		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
-		{
-			define('PHPBB_USE_BOARD_URL_PATH', true);
-		}
-
 		$message_first_id = $this->request->variable('message_first_id', 0);
 		$message_last_id = $this->request->variable('message_last_id', 0);
 		$message_edits = $this->request->variable('message_edits', array(0));
@@ -469,7 +437,7 @@ class mchat
 	/**
 	 * Appends a condition to the WHERE key of the SQL array to not fetch disallowed BBCodes from the database
 	 *
-	 * @param $sql_ary array
+	 * @param array $sql_ary
 	 * @return array
 	 */
 	public function remove_disallowed_bbcodes($sql_ary)
@@ -486,7 +454,7 @@ class mchat
 	/**
 	 * Renders data for a page
 	 *
-	 * @param $page The page we are rendering for, one of index|custom|archive
+	 * @param string $page The page we are rendering for, one of index|custom|archive
 	 */
 	protected function render_page($page)
 	{
@@ -494,16 +462,14 @@ class mchat
 		$this->user->add_lang('posting');
 
 		// If the static message is defined in the language file use it, else the entry in the database is used
-		if (isset($this->user->lang['STATIC_MESSAGE']))
-		{
-			$this->config['mchat_static_message'] = $this->user->lang('STATIC_MESSAGE');
-		}
+		$lang_static_message = $this->user->lang('MCHAT_STATIC_MESSAGE');
+		$static_message = !empty($lang_static_message) ? $lang_static_message : $this->config['mchat_static_message'];
 
 		$this->template->assign_vars(array(
 			'MCHAT_FILE_NAME'				=> $this->helper->route('dmzx_mchat_controller'),
 			'MCHAT_REFRESH_JS'				=> 1000 * $this->config['mchat_refresh'],
 			'MCHAT_INPUT_TYPE'				=> $this->user->data['user_mchat_input_area'],
-			'MCHAT_RULES'					=> !empty($this->user->lang['MCHAT_RULES']) || !empty($this->config['mchat_rules']),
+			'MCHAT_RULES'					=> $this->user->lang('MCHAT_RULES_MESSAGE') || !empty($this->config['mchat_rules']),
 			'MCHAT_ALLOW_USE'				=> $this->auth->acl_get('u_mchat_use'),
 			'MCHAT_ALLOW_SMILES'			=> $this->config['allow_smilies'] && $this->auth->acl_get('u_mchat_smilies'),
 			'MCHAT_ALLOW_BBCODES'			=> $this->config['allow_bbcode'] && $this->auth->acl_get('u_mchat_bbcode'),
@@ -512,8 +478,7 @@ class mchat
 			'MCHAT_INDEX_HEIGHT'			=> $this->config['mchat_index_height'],
 			'MCHAT_CUSTOM_HEIGHT'			=> $this->config['mchat_custom_height'],
 			'MCHAT_READ_ARCHIVE_BUTTON'		=> $this->auth->acl_get('u_mchat_archive'),
-			'MCHAT_FOUNDER'					=> $this->user->data['user_type'] == USER_FOUNDER,
-			'MCHAT_STATIC_MESS'				=> !empty($this->config['mchat_static_message']) ? htmlspecialchars_decode($this->config['mchat_static_message']) : '',
+			'MCHAT_STATIC_MESS'				=> htmlspecialchars_decode($static_message),
 			'L_MCHAT_COPYRIGHT'				=> base64_decode('PGEgaHJlZj0iaHR0cDovL3JtY2dpcnI4My5vcmciPlJNY0dpcnI4MzwvYT4gJmNvcHk7IDxhIGhyZWY9Imh0dHA6Ly93d3cuZG16eC13ZWIubmV0IiB0aXRsZT0id3d3LmRtengtd2ViLm5ldCI+ZG16eDwvYT4='),
 			'MCHAT_MESSAGE_LNGTH'			=> $this->config['mchat_max_message_lngth'],
 			'MCHAT_MESS_LONG'				=> sprintf($this->user->lang('MCHAT_MESS_LONG'), $this->config['mchat_max_message_lngth']),
@@ -602,7 +567,7 @@ class mchat
 	/**
 	 * Assigns all message rows to the template
 	 *
-	 * @param $rows array
+	 * @param array $rows
 	 */
 	protected function assign_messages($rows)
 	{
@@ -631,8 +596,8 @@ class mchat
 				$user_avatars[$row['user_id']] = !$display_avatar ? '' : phpbb_get_user_avatar(array(
 					'avatar'		=> $row['user_avatar'],
 					'avatar_type'	=> $row['user_avatar_type'],
-					'avatar_width'	=> $row['user_avatar_width'] > $row['user_avatar_height'] ? 40 : (40 / $row['user_avatar_height']) * $row['user_avatar_width'],
-					'avatar_height' => $row['user_avatar_height'] > $row['user_avatar_width'] ? 40 : (40 / $row['user_avatar_width']) * $row['user_avatar_height'],
+					'avatar_width'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 40 : 0,
+					'avatar_height'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 0 : 40,
 				));
 			}
 		}
@@ -658,14 +623,6 @@ class mchat
 			$row['username'] = mb_ereg_replace("'", "&#146;", $row['username']);
 			$message = str_replace("'", '&rsquo;', $row['message']);
 
-			$username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST'));
-
-			// Remove root path if we render messages for the index page
-			if (strpos($this->user->data['session_page'], 'app.' . $this->php_ext) === false)
-			{
-				$username_full = str_replace('.' . $this->root_path, '', $username_full);
-			}
-
 			$this->template->assign_block_vars('mchatrow', array(
 				'S_ROW_COUNT'			=> $i,
 				'MCHAT_ALLOW_BAN'		=> $this->auth->acl_get('a_authusers'),
@@ -677,10 +634,10 @@ class mchat
 				'MCHAT_PM'				=> $row['user_id'] != ANONYMOUS && $this->user->data['user_id'] != $row['user_id'] && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? generate_board_url() . append_sid("/{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 				'MCHAT_MESSAGE_EDIT'	=> $message_edit,
 				'MCHAT_MESSAGE_ID'		=> $row['message_id'],
-				'MCHAT_USERNAME_FULL'	=> $username_full,
+				'MCHAT_USERNAME_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST')),
 				'MCHAT_USERNAME'		=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST')),
 				'MCHAT_USERNAME_COLOR'	=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST')),
-				'MCHAT_USER_IP'			=> $row['user_ip'],
+				'MCHAT_WHOIS_USER'		=> $this->user->lang('MCHAT_WHOIS_USER', $row['user_ip']),
 				'MCHAT_U_IP'			=> $this->helper->route('dmzx_mchat_page_controller', array('page' => 'whois', 'ip' => $row['user_ip'])),
 				'MCHAT_U_BAN'			=> generate_board_url() . append_sid("/{$this->root_path}adm/index.{$this->php_ext}" ,'i=permissions&amp;mode=setting_user_global&amp;user_id[0]=' . $row['user_id'], true, $this->user->session_id),
 				'MCHAT_MESSAGE'			=> censor_text(generate_text_for_display($row['message'], $row['bbcode_uid'], $row['bbcode_bitfield'], $row['bbcode_options'])),
@@ -754,9 +711,9 @@ class mchat
 	/**
 	 * Checks whether an author has edit or delete permissions for a message
 	 *
-	 * @param $permission string One of u_mchat_edit|u_mchat_delete
-	 * @param $author_id int The user id of the message
-	 * @param $message_time int The message created time
+	 * @param string $permission One of u_mchat_edit|u_mchat_delete
+	 * @param int $author_id The user id of the message
+	 * @param int $message_time The message created time
 	 * @return bool
 	 */
 	protected function auth_message($permission, $author_id, $message_time)
@@ -779,8 +736,8 @@ class mchat
 	 * Performs bound checks on the message and returns an array containing the message,
 	 * BBCode options and additional data ready to be sent to the database
 	 *
-	 * @param $message string
-	 * @param $merge_ary array
+	 * @param string $message
+	 * @param array $merge_ary
 	 * @return array
 	 */
 	protected function process_message($message, $merge_ary)
@@ -793,10 +750,13 @@ class mchat
 		}
 
 		// Must not exceed character limit, excluding whitespaces
-		$message_chars = preg_replace('#\s#m', '', $message);
-		if (utf8_strlen($message_chars) > $this->config['mchat_max_message_lngth'])
+		if ($this->config['mchat_max_message_lngth'])
 		{
-			throw new \phpbb\exception\http_exception(413, 'MCHAT_MESS_LONG', array($this->config['mchat_max_message_lngth']));
+			$message_chars = preg_replace('#\s#m', '', $message);
+			if (utf8_strlen($message_chars) > $this->config['mchat_max_message_lngth'])
+			{
+				throw new \phpbb\exception\http_exception(413, 'MCHAT_MESS_LONG', array($this->config['mchat_max_message_lngth']));
+			}
 		}
 
 		// We override the $this->config['min_post_chars'] entry?
@@ -860,7 +820,7 @@ class mchat
 	/**
 	 * Renders a template file and returns it
 	 *
-	 * @param $template_file string
+	 * @param string $template_file
 	 * @return string
 	 */
 	protected function render_template($template_file)

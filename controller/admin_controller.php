@@ -1,11 +1,12 @@
 <?php
+
 /**
-*
-* @package phpBB Extension - mChat
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\mchat\controller;
 
@@ -23,17 +24,20 @@ class admin_controller
 	/** @var \phpbb\user */
 	protected $user;
 
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
+
 	/** @var \phpbb\cache\service */
 	protected $cache;
 
 	/** @var \phpbb\request\request */
 	protected $request;
 
-	/** @var \phpbb\extension\manager */
-	protected $phpbb_extension_manager;
+	/** @var string */
+	protected $mchat_table;
 
 	/** @var string */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/** @var string */
 	protected $php_ext;
@@ -42,37 +46,36 @@ class admin_controller
 	public $u_action;
 
 	/**
-	* Constructor
-	*
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\template\template			$template
-	* @param \phpbb\log\log_interface			$log
-	* @param \phpbb\user						$user
-	* @param \phpbb\cache\service				$cache
-	* @param \phpbb\request\request				$request
-	* @param \phpbb\extension\manager			$phpbb_extension_manager
-	* @param string								$phpbb_root_path
-	* @param string								$php_ext
-	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\log\log_interface $log, \phpbb\user $user, \phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\extension\manager $phpbb_extension_manager, $phpbb_root_path, $php_ext)
+	 * Constructor
+	 *
+	 * @param \phpbb\config\config $config
+	 * @param \phpbb\template\template $template
+	 * @param \phpbb\log\log_interface $log
+	 * @param \phpbb\user $user
+	 * @param \phpbb\db\driver\driver_interface $db
+	 * @param \phpbb\cache\service $cache
+	 * @param \phpbb\request\request $request
+	 * @param $mchat_table
+	 * @param $root_path
+	 * @param $php_ext
+	 */
+	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\log\log_interface $log, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\cache\service $cache, \phpbb\request\request $request, $mchat_table, $root_path, $php_ext)
 	{
-		$this->config					= $config;
-		$this->template					= $template;
-		$this->log						= $log;
-		$this->user						= $user;
-		$this->cache					= $cache;
-		$this->request					= $request;
-		$this->phpbb_extension_manager	= $phpbb_extension_manager;
-		$this->phpbb_root_path			= $phpbb_root_path;
-		$this->php_ext					= $php_ext;
+		$this->config				= $config;
+		$this->template				= $template;
+		$this->log					= $log;
+		$this->user					= $user;
+		$this->db					= $db;
+		$this->cache				= $cache;
+		$this->request				= $request;
+		$this->mchat_table			= $mchat_table;
+		$this->root_path			= $root_path;
+		$this->php_ext				= $php_ext;
 	}
 
 	/**
-	* Display the options a user can configure for this extension
-	*
-	* @return null
-	* @access public
-	*/
+	 * Display the options a user can configure for this extension
+	 */
 	public function display_options()
 	{
 		add_form_key('acp_mchat');
@@ -112,11 +115,25 @@ class admin_controller
 			'mchat_whois_refresh'			=> array('default' => 60,				'validation' => array('num', false, 30, 300)),
 		);
 
-		if ($this->request->is_set_post('submit'))
+		if ($this->request->is_set_post('mchat_purge'))
+		{
+			$this->template->assign_var('MCHAT_PURGE', true);
+		}
+		else if ($this->request->is_set_post('mchat_purge_confirm'))
+		{
+			if (check_form_key('acp_mchat') && $this->user->data['user_type'] == USER_FOUNDER)
+			{
+				$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_table);
+				$this->cache->destroy('sql', $this->mchat_table);
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED');
+				trigger_error($this->user->lang('LOG_MCHAT_TABLE_PRUNED') . adm_back_link($this->u_action));
+			}
+		}
+		else if ($this->request->is_set_post('submit'))
 		{
 			if (!function_exists('validate_data'))
 			{
-				include($this->phpbb_root_path . 'includes/functions_user.' . $this->php_ext);
+				include($this->root_path . 'includes/functions_user.' . $this->php_ext);
 			}
 
 			$mchat_new_config = array();
@@ -190,70 +207,20 @@ class admin_controller
 		$this->template->assign_vars(array_merge($template_variables, array(
 			'MCHAT_ERROR'							=> !empty($error) ? implode('<br />', $error) : '',
 			'MCHAT_VERSION'							=> $this->config['mchat_version'],
-			'L_MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> sprintf($this->user->lang('MCHAT_BBCODES_DISALLOWED_EXPLAIN'), '<a href="' . append_sid("{$this->phpbb_root_path}adm/index.$this->php_ext", 'i=bbcodes', true, $this->user->session_id) . '">', '</a>'),
-			'L_MCHAT_TIMEOUT_EXPLAIN'				=> sprintf($this->user->lang('MCHAT_USER_TIMEOUT_EXPLAIN'),'<a href="' . append_sid("{$this->phpbb_root_path}adm/index.$this->php_ext", 'i=board&amp;mode=load', true, $this->user->session_id) . '">', '</a>', $this->config['session_length']),
+			'MCHAT_FOUNDER'							=> $this->user->data['user_type'] == USER_FOUNDER,
+			'L_MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> sprintf($this->user->lang('MCHAT_BBCODES_DISALLOWED_EXPLAIN'), '<a href="' . append_sid("{$this->root_path}adm/index.$this->php_ext", 'i=bbcodes', true, $this->user->session_id) . '">', '</a>'),
+			'L_MCHAT_TIMEOUT_EXPLAIN'				=> sprintf($this->user->lang('MCHAT_USER_TIMEOUT_EXPLAIN'),'<a href="' . append_sid("{$this->root_path}adm/index.$this->php_ext", 'i=board&amp;mode=load', true, $this->user->session_id) . '">', '</a>', $this->config['session_length']),
 			'S_MCHAT_DATEFORMAT_OPTIONS'			=> $dateformat_options,
 			'S_CUSTOM_DATEFORMAT'					=> $s_custom,
 			'U_ACTION'								=> $this->u_action,
 		)));
-
-		// Version check
-		$this->user->add_lang(array('install', 'acp/extensions', 'migrator'));
-		$ext_name = 'dmzx/mchat';
-		$md_manager = new \phpbb\extension\metadata_manager($ext_name, $this->config, $this->phpbb_extension_manager, $this->template, $this->user, $this->phpbb_root_path);
-		try
-		{
-			$this->metadata = $md_manager->get_metadata('all');
-		}
-		catch(\phpbb\extension\exception $e)
-		{
-			trigger_error($e, E_USER_WARNING);
-		}
-		$md_manager->output_template_data();
-		try
-		{
-			$updates_available = $this->version_check($md_manager, $this->request->variable('versioncheck_force', false));
-			$this->template->assign_vars(array(
-				'S_UP_TO_DATE'		=> empty($updates_available),
-				'S_VERSIONCHECK'	=> true,
-				'UP_TO_DATE_MSG'	=> $this->user->lang(empty($updates_available) ? 'UP_TO_DATE' : 'NOT_UP_TO_DATE', $md_manager->get_metadata('display-name')),
-			));
-			foreach ($updates_available as $branch => $version_data)
-			{
-				$this->template->assign_block_vars('updates_available', $version_data);
-			}
-		}
-		catch (\RuntimeException $e)
-		{
-			$this->template->assign_vars(array(
-				'S_VERSIONCHECK_STATUS'			=> $e->getCode(),
-				'VERSIONCHECK_FAIL_REASON'		=> $e->getMessage() !== $this->user->lang('VERSIONCHECK_FAIL') ? $e->getMessage() : '',
-			));
-		}
-	}
-
-	protected function version_check(\phpbb\extension\metadata_manager $md_manager, $force_update = false, $force_cache = false)
-	{
-		$meta = $md_manager->get_metadata('all');
-		if (!isset($meta['extra']['version-check']))
-		{
-			throw new \RuntimeException($this->user->lang('NO_VERSIONCHECK'), 1);
-		}
-		$version_check = $meta['extra']['version-check'];
-		$version_helper = new \phpbb\version_helper($this->cache, $this->config, new \phpbb\file_downloader(), $this->user);
-		$version_helper->set_current_version($meta['version']);
-		$version_helper->set_file_location($version_check['host'], $version_check['directory'], $version_check['filename']);
-		$version_helper->force_stability($this->config['extension_force_unstable'] ? 'unstable' : null);
-		return $updates = $version_helper->get_suggested_updates($force_update, $force_cache);
 	}
 
 	/**
-	* Set page url
-	*
-	* @param string $u_action Custom form action
-	* @return null
-	* @access public
-	*/
+	 * Set page url
+	 *
+	 * @param string $u_action Custom form action
+	 */
 	public function set_page_url($u_action)
 	{
 		$this->u_action = $u_action;

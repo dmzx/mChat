@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @package phpBB Extension - mChat
@@ -34,7 +35,7 @@ class main_controller
 	/**
 	* Controller for mChat
 	*
-	* @param $page The page to render, one of custom|archive|rules|whois
+	* @param string $page The page to render, one of custom|archive|rules|whois
 	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
 	public function page($page)
@@ -45,8 +46,8 @@ class main_controller
 	/**
 	* Controller for mChat actions called with Ajax requests
 	*
-	* @param $action The action to perform, one of add|edit|del|clean|refresh|whois
-	* @return A Symfony JsonResponse object
+	* @param string $action The action to perform, one of add|edit|del|refresh|whois
+	* @return \Symfony\Component\HttpFoundation\JsonResponse A Symfony JsonResponse object
 	*/
 	public function action($action)
 	{
