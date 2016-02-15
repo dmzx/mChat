@@ -47,7 +47,7 @@ class main_controller
 	* Controller for mChat actions called with Ajax requests
 	*
 	* @param string $action The action to perform, one of add|edit|del|refresh|whois
-	* @return \Symfony\Component\HttpFoundation\JsonResponse A Symfony JsonResponse object
+	* @return A Symfony JsonResponse object
 	*/
 	public function action($action)
 	{
