@@ -1,0 +1,21 @@
+/**
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
+ * @copyright (c) 2016 kasimi
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
+
+.icon-mchat > a:before {
+    content: '\f086';
+    font-family: 'FontAwesome';
+}
+
+.cp-mini {
+	background-color: #E5E4E3;
+}
+
+#mChat + .forabg .collapse-box a:before {
+  content: '';
+}

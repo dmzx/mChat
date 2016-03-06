@@ -1,0 +1,239 @@
+/**
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
+ * @copyright (c) 2016 kasimi
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
+
+#mChat {
+	position: absolute;
+	visibility: hidden;
+}
+
+#mChat + .inner li.header dd {
+    width: 0;
+}
+
+.icon-mchat {
+	background-image: url("./images/icon_mchat.png");
+}
+
+#mchat-body {
+	width: 100% !important;
+}
+
+#mchat-confirm textarea {
+	width: 100%;
+	height: 100px;
+}
+
+.mchat-row-limit {
+	overflow: auto;
+	width: 100%;
+}
+
+.mchat-message-wrapper {
+	overflow: hidden;
+}
+
+.mchat-message-header {
+	float: left;
+}
+
+.mchat-message-icons {
+	float: right;
+}
+
+.mchat-message {
+	padding: 5px;
+	overflow: hidden;
+}
+
+.mchat-avatar {
+	float: left;
+	width: 40px;
+	padding-right: 5px;
+}
+
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	.mchat-avatar {
+		display: none;
+	}
+}
+
+.mchat-avatar a {
+	unicode-bidi: normal;
+}
+
+.mchat-avatar img {
+	display: block;
+}
+
+.mchat-text {
+	clear: both;
+	padding: 0 5px 2px;
+	font-size: 1.1em;
+}
+
+.mchat-text li {
+	display: list-item !important;
+	list-style-type: inherit !important;
+	list-style-position: inside;
+}
+
+.mchat-text ul, .mchat-text ol {
+	list-style-position: inside;
+}
+
+.mchat-text ul {
+	list-style-type: disc;
+}
+
+.mchat-text ol {
+	list-style-type: decimal;
+}
+
+.mchat-text ul ul {
+	list-style-type: circle;
+}
+
+.mchat-text blockquote {
+	margin-bottom: 5px;
+}
+
+.mchat-text blockquote, .mchat-text .codebox, .mchat-text ul, .mchat-text ol {
+	margin-left: 1em;
+}
+
+.mchat-mention strong {
+	color: inherit !important;
+}
+
+.mchat-mention, .mchat-message-icons > * {
+	cursor: pointer;
+}
+
+#mchat-no-message {
+	font-size: 1.2em;
+}
+
+#mchat-panel {
+	text-align: center;
+	max-height: initial;
+	padding: 0 5px 5px 5px;
+	margin: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+#mchat-form {
+	clear: both;
+}
+
+#mchat-input {
+	cursor: text;
+	width: 50%;
+	font-size: 1.1em;
+	padding: 5px;
+	margin: 5px 20px;
+}
+
+#mchat-buttons {
+	padding-bottom: 5px;
+}
+
+#mchat-bbcodes {
+	padding: 0 5px;
+	display: none;
+}
+
+#mchat-bbcodes #format-buttons {
+	margin: 0;
+}
+
+#mchat-bbcodes #format-buttons input, #mchat-bbcodes #format-buttons select {
+	margin-bottom: 5px;
+}
+
+#mchat-bbcodes #colour_palette label {
+	display: none;
+}
+
+#mchat-bbcodes #colour_palette table {
+	margin: 0 auto 5px;
+}
+
+#mchat-smilies {
+	padding: 0;
+}
+
+#mchat-refresh-ok, #mchat-refresh-load, #mchat-refresh-error, #mchat-refresh-paused {
+	vertical-align: middle;
+}
+
+#mchat-refresh-ok, #mchat-refresh-load, #mchat-refresh-error {
+	display: none;
+}
+
+#mchat-refresh-load {
+	cursor: wait;
+}
+
+#mchat-refresh-ok, #mchat-refresh-error, #mchat-refresh-paused {
+	cursor: help;
+}
+
+#mchat-legend {
+	clear: both;
+}
+
+.mchat-static, #mchat-stats, #mchat-whois, #mchat-refresh, #mchat-legend {
+	padding: 5px 0;
+	text-align: left;
+	font-size: 1.1em;
+}
+
+.mchat-copyright {
+	position: relative;
+	top: 1px;
+	font-weight: bold;
+	font-size: 1.1em;
+	cursor: help;
+}
+
+#mchat-copyright-footer {
+	display: inline;
+}
+
+#mchat-copyright-footer li {
+   display: inline;
+}
+
+#mchat-copyright-footer li:first-child:before{
+	content: "";
+}
+
+#mchat-copyright-footer li:before{
+	content: "• ";
+}
+
+.mchat-static {
+	padding: 5px 5px 7px !important;
+}
+
+#mchat-colour {
+	display: none;
+}
+
+/* Compatibility with Advanced BBCode Box extension */
+
+#abbc3_buttons {
+	margin: 0 !important;
+	padding-bottom: 5px;
+}
+
+#abbc3_buttons .abbc3_buttons_row {
+	margin: 0 auto !important;
+}

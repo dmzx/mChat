@@ -1,0 +1,224 @@
+<!-- IF MCHAT_ARCHIVE_PAGE or MCHAT_CUSTOM_PAGE -->
+	<!-- INCLUDE overall_header.html -->
+<!-- ENDIF -->
+
+<!-- IF MCHAT_ARCHIVE_PAGE or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) -->
+	<!-- INCLUDEJS {T_ASSETS_PATH}/javascript/editor.js -->
+<!-- ENDIF -->
+<!-- INCLUDEJS javascript/jquery.auto-grow-input.js -->
+<!-- INCLUDEJS javascript/jquery.titlealert.min.js -->
+<!-- INCLUDEJS javascript/js.cookie-2.0.4.min.js -->
+<!-- INCLUDEJS javascript/mchat.js -->
+
+<!-- IF MCHAT_ARCHIVE_PAGE and (.pagination or MCHAT_TOTAL_MESSAGES) -->
+<div class="action-bar top">
+	<div class="pagination">
+		{MCHAT_TOTAL_MESSAGES}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+</div>
+<!-- ENDIF -->
+
+<!-- EVENT dmzx_mchat_body_before -->
+<div class="forabg">
+	<a id="mChat"></a>
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<!-- INCLUDE mchat_header.html -->
+			</li>
+		</ul>
+
+		<div id="mchat-body" class="postbody">
+			<script type="text/javascript">
+			// <![CDATA[
+			var form_name = 'postform';
+			var text_name = 'message';
+			var mChat = {
+				// General settings
+				actionUrls		: {
+					<!-- BEGIN mchaturl -->
+					{mchaturl.ACTION}: '{mchaturl.URL}'<!-- IF not mchaturl.IS_LAST -->,<!-- ENDIF -->
+					<!-- END mchaturl -->
+				},
+				extUrl			: '{EXT_URL}',
+				customPage		: <!-- IF MCHAT_CUSTOM_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
+				pause			: <!-- IF MCHAT_PAUSE_ON_INPUT -->true<!-- ELSE -->false<!-- ENDIF -->,
+				playSound		: <!-- IF S_MCHAT_SOUND_YES -->true<!-- ELSE -->false<!-- ENDIF -->,
+				archiveMode		: <!-- IF MCHAT_ARCHIVE_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
+				messageTop		: <!-- IF MCHAT_MESSAGE_TOP -->true<!-- ELSE -->false<!-- ENDIF -->,
+				allowBBCodes	: <!-- IF S_BBCODE_ALLOWED -->true<!-- ELSE -->false<!-- ENDIF -->,
+				liveUpdates		: <!-- IF MCHAT_LIVE_UPDATES -->true<!-- ELSE -->false<!-- ENDIF -->,
+				relativeTime	: <!-- IF MCHAT_RELATIVE_TIME -->true<!-- ELSE -->false<!-- ENDIF -->,
+
+				// Limits & timeouts
+				refreshTime		: {MCHAT_REFRESH_JS},
+				whoisRefresh	: {MCHAT_WHOIS_REFRESH},
+				userTimeout		: {MCHAT_USER_TIMEOUT},
+				mssgLngth		: {MCHAT_MESSAGE_LNGTH},
+				editDeleteLimit	: {MCHAT_EDIT_DELETE_LIMIT},
+				removeBBCodes	: '{S_DISALLOWED_BBCODES}',
+
+				// Language
+				minutesAgo		: {
+					<!-- BEGIN mchattime -->
+					{mchattime.KEY}: '{mchattime.LANG}'<!-- IF not mchattime.IS_LAST -->,<!-- ENDIF -->
+					<!-- END mchattime -->
+				},
+				newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
+				noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
+				noMessages		: '{LA_MCHAT_NOMESSAGE}',
+				editInfo		: '{LA_MCHAT_EDITINFO}',
+				noAccess		: '{LA_NO_AUTH_OPERATION}',
+				flood			: '{LA_MCHAT_FLOOD}',
+				delConfirm		: '{LA_MCHAT_DELCONFIRM}',
+				clearConfirm	: '{LA_MCHAT_RESET_QUESTION}',
+				sessOut			: '{LA_MCHAT_SESSION_OUT}',
+				sessEnds		: '{LA_MCHAT_SESSION_ENDS}',
+				refreshYes		: '{MCHAT_REFRESH_YES}',
+				refreshNo		: '{LA_MCHAT_REFRESH_NO}',
+				mssgLngthLong	: '{MCHAT_MESS_LONG}',
+				likes			: '{LA_MCHAT_LIKES}'
+			};
+			// ]]>
+			</script>
+
+			<audio id="mchat-sound-add" class="hidden" src="{EXT_URL}sounds/add.mp3" preload="auto"></audio>
+			<audio id="mchat-sound-edit" class="hidden" src="{EXT_URL}sounds/edit.mp3" preload="auto"></audio>
+			<audio id="mchat-sound-del" class="hidden" src="{EXT_URL}sounds/del.mp3" preload="auto"></audio>
+			<audio id="mchat-sound-error" class="hidden" src="{EXT_URL}sounds/error.mp3" preload="auto"></audio>
+
+			<div id="mchat-confirm" class="hidden">
+				<h3>{L_CONFIRM}</h3>
+				<p></p>
+				<textarea></textarea>
+				<fieldset class="submit-buttons">
+					<input type="button" name="confirm" value="{L_MCHAT_OK}" class="button2" />&nbsp;
+					<input type="button" name="cancel" value="{L_CANCEL}" class="button2" />
+				</fieldset>
+			</div>
+
+			<div id="mchat-main">
+				<!-- IF MCHAT_STATIC_MESS and not MCHAT_ARCHIVE_PAGE -->
+					<ul class="topiclist forums">
+						<li class="row mchat-static">{MCHAT_STATIC_MESS}</li>
+					</ul>
+				<!-- ENDIF -->
+
+				<!-- IF not .mchatrow -->
+					<ul id="mchat-no-messages" class="topiclist forums">
+						<li class="row mchat-static">{L_MCHAT_NOMESSAGE}</li>
+					</ul>
+				<!-- ENDIF -->
+
+				<ul id="mchat-messages" class="topiclist forums mchat-row-limit"<!-- IF not MCHAT_ARCHIVE_PAGE --> style="height:<!-- IF MCHAT_CUSTOM_PAGE -->{MCHAT_CUSTOM_HEIGHT}<!-- ELSE -->{MCHAT_INDEX_HEIGHT}<!-- ENDIF -->px"<!-- ENDIF -->>
+					<!-- INCLUDE mchat_messages.html -->
+				</ul>
+			</div>
+
+			<div id="mchat-panel" class="panel cp-mini">
+				<!-- IF not MCHAT_ARCHIVE_PAGE and not MCHAT_CUSTOM_PAGE and MCHAT_WHOIS_REFRESH -->
+					<!-- INCLUDE mchat_whois.html -->
+				<!-- ENDIF -->
+
+				<form id="mchat-form" name="postform" action="{U_MCHAT_CUSTOM_PAGE}" method="POST">
+					{S_FORM_TOKEN}
+					<!-- IF not MCHAT_ARCHIVE_PAGE -->
+						<noscript><div class="error">{L_MCHAT_NOJAVASCRIPT}</div></noscript>
+						<!-- IF MCHAT_ALLOW_USE -->
+							<!-- IF MCHAT_INPUT_TYPE -->
+								<input id="mchat-input" type="text" name="message" class="inputbox medium" />
+							<!-- ELSE -->
+								<textarea id="mchat-input" name="message" class="inputbox no-auto-resize" cols="32" rows="5"></textarea>
+							<!-- ENDIF -->
+						<!-- ENDIF -->
+						<!-- EVENT dmzx_mchat_buttons_before -->
+						<div id="mchat-buttons">
+							<!-- IF MCHAT_ALLOW_USE -->
+								<input id="mchat-add" type="button" class="button2" data-mchat-action="add" value="{L_MCHAT_ADD}" />
+								<!-- IF MCHAT_USER_TIMEOUT or MCHAT_PAUSE_ON_INPUT -->
+									<input id="mchat-clear" type="button" class="button2" data-mchat-action="clear" value="{L_RESET}" />
+								<!-- ENDIF -->
+								<!-- IF MCHAT_ALLOW_SMILES and .smiley -->
+									<input type="button" class="button2" data-mchat-toggle="smilies" value="{L_MCHAT_SMILES}" />
+								<!-- ENDIF -->
+								<!-- IF S_BBCODE_ALLOWED -->
+									<input type="button" class="button2" data-mchat-toggle="bbcodes" value="{L_MCHAT_BBCODES}" />
+								<!-- ENDIF -->
+								<!-- IF MCHAT_RULES -->
+									<input type="button" class="button2" onclick="popup('{U_MCHAT_RULES}', 450, 275); return false;" value="{L_MCHAT_RULES}" />
+								<!-- ENDIF -->
+							<!-- ENDIF -->
+							<!-- EVENT dmzx_mchat_buttons_mid -->
+							<!-- IF MCHAT_READ_ARCHIVE_BUTTON -->
+								<input type="button" class="button2" onclick="window.location.href = '{MCHAT_ARCHIVE_URL}';" value="{L_MCHAT_ARCHIVE}" />
+							<!-- ENDIF -->
+							<!-- EVENT dmzx_mchat_buttons_after -->
+						</div>
+						<!-- IF MCHAT_ALLOW_USE and S_BBCODE_ALLOWED -->
+							<div id="mchat-bbcodes">
+								<!-- INCLUDE posting_buttons.html -->
+							</div>
+						<!-- ENDIF -->
+						<!-- IF MCHAT_ALLOW_USE and MCHAT_ALLOW_SMILES and .smiley -->
+							<div id="mchat-smilies" class="hidden">
+								<!-- BEGIN smiley -->
+								<a href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
+								<!-- END smiley -->
+								<!-- IF S_SHOW_SMILEY_LINK -->
+									<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
+								<!-- ENDIF -->
+							</div>
+						<!-- ENDIF -->
+						<!-- EVENT dmzx_mchat_body_smiley_after -->
+						<div id="mchat-status">
+							<img src="{EXT_URL}styles/all/theme/images/load.gif" alt="{L_LOADING}" title="{L_LOADING}" id="mchat-refresh-load" />
+							<img src="{EXT_URL}styles/all/theme/images/ok.gif" alt="{L_MCHAT_OK}" title="{L_MCHAT_OK}" id="mchat-refresh-ok" />
+							<img src="{EXT_URL}styles/all/theme/images/paused.gif" alt="{L_MCHAT_PAUSE}" title="{L_MCHAT_PAUSE}" id="mchat-refresh-paused" />
+							<img src="{EXT_URL}styles/all/theme/images/error.gif" alt="{L_ERROR}" title="{L_ERROR}" id="mchat-refresh-error" />
+							<span id="mchat-refresh-text">{MCHAT_REFRESH_YES}</span>
+							<!-- IF MCHAT_USER_TIMEOUT --> &bull; <span id="mchat-session">{L_MCHAT_SESSION_ENDS} {MCHAT_USER_TIMEOUT_TIME}</span><!-- ENDIF --> &bull; <label for="mchat-user-sound">{L_MCHAT_USESOUND} <input type="checkbox" id="mchat-user-sound"<!-- IF S_MCHAT_SOUND_YES --> checked="checked"<!-- ENDIF --> /></label>
+							{L_MCHAT_COPYRIGHT}
+						</div>
+					<!-- ENDIF -->
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- IF MCHAT_ARCHIVE_PAGE -->
+<div class="action-bar bottom">
+	<div class="pagination">
+		{MCHAT_TOTAL_MESSAGES}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF MCHAT_CUSTOM_PAGE and MCHAT_WHOIS_REFRESH -->
+	<h3>{L_MCHAT_WHO_IS_CHATTING}</h3>
+	<!-- INCLUDE mchat_whois.html -->
+	<div id="mchat-refresh">
+		<span id="mchat-refresh-explain">{MCHAT_WHOIS_REFRESH_EXPLAIN}</span>
+		<span id="mchat-refresh-pending" class="hidden">{L_MCHAT_REFRESHING}</span>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF (MCHAT_CUSTOM_PAGE or MCHAT_ARCHIVE_PAGE) and LEGEND -->
+	<div id="mchat-legend">
+		<em>{L_LEGEND}{L_COLON} {LEGEND}</em>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF MCHAT_ARCHIVE_PAGE or MCHAT_CUSTOM_PAGE -->
+	<!-- INCLUDE overall_footer.html -->
+<!-- ENDIF -->

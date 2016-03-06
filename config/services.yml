@@ -1,9 +1,10 @@
 imports:
     - { resource: tables.yml }
+    - { resource: user_config_keys.yml }
 
 services:
-    dmzx.mchat.admin.controller:
-        class: dmzx\mchat\controller\admin_controller
+    dmzx.mchat.acp.controller:
+        class: dmzx\mchat\controller\acp_controller
         arguments:
             - '@config'
             - '@template'
@@ -13,17 +14,28 @@ services:
             - '@cache'
             - '@request'
             - '%dmzx.mchat.table.mchat%'
+            - '%dmzx.mchat.table.mchat_deleted_messages%'
             - '%core.root_path%'
             - '%core.php_ext%'
+    dmzx.mchat.ucp.controller:
+        class: dmzx\mchat\controller\ucp_controller
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@request'
+            - '%user_config_keys%'
     dmzx.mchat.main.controller:
         class: dmzx\mchat\controller\main_controller
         arguments:
+            - '@user'
             - '@dmzx.mchat.core'
             - '@request'
     dmzx.mchat.core:
         class: dmzx\mchat\core\mchat
         arguments:
-            - '@dmzx.mchat.functions_mchat'
+            - '@dmzx.mchat.functions'
             - '@config'
             - '@controller.helper'
             - '@template'
@@ -32,10 +44,11 @@ services:
             - '@pagination'
             - '@request'
             - '@dispatcher'
+            - '@ext.manager'
             - '%core.root_path%'
             - '%core.php_ext%'
-    dmzx.mchat.functions_mchat:
-        class: dmzx\mchat\core\functions_mchat
+    dmzx.mchat.functions:
+        class: dmzx\mchat\core\functions
         arguments:
             - '@config'
             - '@user'
@@ -46,11 +59,21 @@ services:
             - '%core.root_path%'
             - '%core.php_ext%'
             - '%dmzx.mchat.table.mchat%'
+            - '%dmzx.mchat.table.mchat_deleted_messages%'
             - '%dmzx.mchat.table.mchat_sessions%'
-    dmzx.mchat.listener:
-        class: dmzx\mchat\event\listener
+    dmzx.mchat.acp.listener:
+        class: dmzx\mchat\event\acp_listener
         arguments:
-            - '@dmzx.mchat.functions_mchat'
+            - '@template'
+            - '@request'
+            - '@user'
+            - '%user_config_keys%'
+        tags:
+            - { name: event.listener }
+    dmzx.mchat.main.listener:
+        class: dmzx\mchat\event\main_listener
+        arguments:
+            - '@dmzx.mchat.functions'
             - '@dmzx.mchat.core'
             - '@controller.helper'
             - '@user'

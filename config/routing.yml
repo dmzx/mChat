@@ -1,13 +1,16 @@
 dmzx_mchat_controller:
     path: /mchat
+    methods: [GET]
     defaults: { _controller: dmzx.mchat.main.controller:page, page: custom }
 dmzx_mchat_page_controller:
     path: /mchat/{page}
+    methods: [GET]
     defaults: { _controller: dmzx.mchat.main.controller:page }
     requirements:
-        action: 'archive|rules|whois'
+        page: 'archive|rules|whois'
 dmzx_mchat_action_controller:
-    path: /mchat-{action}
+    path: /mchat/action-{action}
+    methods: [POST]
     defaults: { _controller: dmzx.mchat.main.controller:action }
     requirements:
         action: 'add|edit|del|refresh|whois'

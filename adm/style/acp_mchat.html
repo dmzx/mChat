@@ -1,6 +1,8 @@
 <!-- INCLUDE overall_header.html -->
 
-<h1>{L_ACP_MCHAT_TITLE}</h1>{L_ACP_MCHAT_VERSION}{L_COLON} <em>{MCHAT_VERSION}</em>
+<h1>{L_MCHAT_TITLE}</h1>
+
+{L_MCHAT_VERSION}{L_COLON} <em>{MCHAT_VERSION}</em>
 
 <form id="acp_mchat" method="post" action="{U_ACTION}">
 	<!-- IF MCHAT_PURGE and MCHAT_FOUNDER -->
@@ -54,6 +56,11 @@
 				<dt><label for="mchat_message_limit">{L_MCHAT_MESSAGE_LIMIT}{L_COLON}</label><br />
 					<span>{L_MCHAT_MESSAGE_LIMIT_EXPLAIN}</span></dt>
 				<dd><input type="text" name="mchat_message_limit" id="mchat_message_limit" size="10" value="{MCHAT_MESSAGE_LIMIT}" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="mchat_navbar_link">{L_MCHAT_NAVBAR_LINK}{L_COLON}</label></dt>
+				<dd><label><input type="radio" class="radio" name="mchat_navbar_link" value="1"<!-- IF MCHAT_NAVBAR_LINK --> id="mchat_navbar_link" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="mchat_navbar_link" value="0"<!-- IF not MCHAT_NAVBAR_LINK --> id="mchat_navbar_link" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 			</dl>
 		</fieldset>
 		<fieldset>
@@ -109,6 +116,12 @@
 				<dd><div id="custom_date"<!-- IF not S_CUSTOM_DATEFORMAT --> style="display:none;"<!-- ENDIF -->><input type="text" name="mchat_date" id="mchat_date" value="{MCHAT_DATE}" maxlength="30" /></div></dd>
 			</dl>
 			<dl>
+				<dt><label for="mchat_relative_time">{L_MCHAT_RELATIVE_TIME}{L_COLON}</label><br />
+					<span>{L_MCHAT_RELATIVE_TIME_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="mchat_relative_time" value="1"<!-- IF MCHAT_RELATIVE_TIME --> id="mchat_relative_time" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="mchat_relative_time" value="0"<!-- IF not MCHAT_RELATIVE_TIME --> id="mchat_relative_time" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
 				<dt><label for="mchat_pause_on_input">{L_MCHAT_PAUSE_ON_INPUT}{L_COLON}</label><br />
 					<span>{L_MCHAT_PAUSE_ON_INPUT_EXPLAIN}</span></dt>
 				<dd><label><input type="radio" class="radio" name="mchat_pause_on_input" value="1"<!-- IF MCHAT_PAUSE_ON_INPUT --> id="mchat_pause_on_input" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
@@ -142,8 +155,8 @@
 				<dd><textarea name="mchat_bbcode_disallowed" id="mchat_bbcode_disallowed" rows="3" cols="40">{MCHAT_BBCODE_DISALLOWED}</textarea></dd>
 			</dl>
 			<dl>
-				<dt><label for="mchat_rules">{L_ACP_MCHAT_RULES}{L_COLON}</label><br />
-					<span>{L_ACP_MCHAT_RULES_EXPLAIN}</span></dt>
+				<dt><label for="mchat_rules">{L_MCHAT_RULES}{L_COLON}</label><br />
+					<span>{L_MCHAT_RULES_EXPLAIN}</span></dt>
 				<dd><textarea name="mchat_rules" id="mchat_rules" rows="5" cols="40">{MCHAT_RULES}</textarea></dd>
 			</dl>
 			<dl>
@@ -224,4 +237,5 @@
 		</p>
 	<!-- ENDIF -->
 </form>
+
 <!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,9 @@
+parameters:
+    user_config_keys:
+        - user_mchat_index
+        - user_mchat_sound
+        - user_mchat_stats_index
+        - user_mchat_topics
+        - user_mchat_avatars
+        - user_mchat_capital_letter
+        - user_mchat_input_area

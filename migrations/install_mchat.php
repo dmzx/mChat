@@ -3,7 +3,8 @@
 /**
  *
  * @package phpBB Extension - mChat
- * @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+ * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
+ * @copyright (c) 2016 kasimi
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -14,7 +15,7 @@ class install_mchat extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['mchat_version']) && version_compare($this->config['mchat_version'], '1.0.0-RC1', '>=');
+		return isset($this->config['mchat_version']) && version_compare($this->config['mchat_version'], '1.0.0-RC2', '>=');
 	}
 
 	static public function depends_on()
@@ -26,12 +27,13 @@ class install_mchat extends \phpbb\db\migration\migration
 	{
 		return array(
 			// Add configs
-			array('config.add', array('mchat_version', '1.0.0-RC1')),
+			array('config.add', array('mchat_version', '1.0.0-RC2')),
 			array('config.add', array('mchat_archive_limit', 25)),
 			array('config.add', array('mchat_avatars', 1)),
 			array('config.add', array('mchat_bbcode_disallowed', '')),
 			array('config.add', array('mchat_custom_height', 350)),
 			array('config.add', array('mchat_custom_page', 1)),
+			array('config.add', array('mchat_relative_time', 1)),
 			array('config.add', array('mchat_date', 'D M d, Y g:i a')),
 			array('config.add', array('mchat_edit_delete_limit', 0)),
 			array('config.add', array('mchat_flood_time', 0)),
@@ -41,6 +43,7 @@ class install_mchat extends \phpbb\db\migration\migration
 			array('config.add', array('mchat_max_message_lngth', 500)),
 			array('config.add', array('mchat_message_limit', 10)),
 			array('config.add', array('mchat_message_num', 10)),
+			array('config.add', array('mchat_navbar_link', 1)),
 			array('config.add', array('mchat_message_top', 1)),
 			array('config.add', array('mchat_new_posts_edit', 0)),
 			array('config.add', array('mchat_new_posts_quote', 0)),
@@ -101,63 +104,32 @@ class install_mchat extends \phpbb\db\migration\migration
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_smilies', 'group')),
 			array('permission.permission_set', array('REGISTERED', 'u_mchat_urls', 'group')),
 
-			// Add ACP module
+			// Add ACP extension category
 			array('module.add', array(
 				'acp',
 				'ACP_CAT_DOT_MODS',
 				'ACP_CAT_MCHAT'
 			)),
 
+			// Add ACP preferences module
 			array('module.add', array(
 				'acp',
 				'ACP_CAT_MCHAT',
 				array(
 					'module_basename'			=> '\dmzx\mchat\acp\acp_mchat_module',
 					'modes'						=> array('configuration'),
-					'module_auth'				=> 'a_mchat',
+					'module_auth'				=> 'acl_a_mchat',
 				),
 			)),
 
-			// Add ACP module
-			array('module.add', array(
-				'acp',
-				'ACP_CAT_USERS',
-				array(
-					'module_basename'			=> 'users',
-					'module_enabled'			=> 1,
-					'module_display'			=> 0,
-					'module_langname'			=> 'ACP_USER_MCHAT',
-					'module_mode'				=> 'mchat',
-					'module_auth'				=> 'acl_a_user',
-					),
-				),
-
-				// First, lets add a new category named UCP_CAT_MCHAT
-				array(
-					'ucp',
-					false,
-					'UCP_CAT_MCHAT'
-				),
-
-				// next let's add our module
-				array(
-					'ucp',
-					'UCP_CAT_MCHAT',
-					array(
-						'module_basename'		=> 'mchat',
-						'modes'					=> array('configuration'),
-						'module_auth'			=> 'u_mchat_use',
-					),
-				),
-			),
-
-			// Add UCP module
+			// Add UCP category
 			array('module.add', array(
 				'ucp',
 				false,
 				'UCP_MCHAT_CONFIG'
 			)),
 
+			// Add UCP preferences module
 			array('module.add', array(
 				'ucp',
 				'UCP_MCHAT_CONFIG',
@@ -191,6 +163,13 @@ class install_mchat extends \phpbb\db\migration\migration
 					'PRIMARY_KEY'	=> 'message_id',
 				),
 
+				$this->table_prefix . 'mchat_deleted_messages'	=> array(
+					'COLUMNS'		=> array(
+						'message_id'			=> array('UINT', null),
+					),
+					'PRIMARY_KEY'	=> 'message_id',
+				),
+
 				$this->table_prefix . 'mchat_sessions'	=> array(
 					'COLUMNS'		=> array(
 						'user_id'				=> array('UINT', 0),
@@ -208,6 +187,7 @@ class install_mchat extends \phpbb\db\migration\migration
 					'user_mchat_stats_index'	=> array('BOOL', '1'),
 					'user_mchat_topics' 		=> array('BOOL', '1'),
 					'user_mchat_avatars' 		=> array('BOOL', '1'),
+					'user_mchat_capital_letter'	=> array('BOOL', '1'),
 					'user_mchat_input_area'		=> array('BOOL', '1'),
 				),
 			),
@@ -219,6 +199,7 @@ class install_mchat extends \phpbb\db\migration\migration
 		return array(
 			'drop_tables'	=> array(
 				$this->table_prefix . 'mchat',
+				$this->table_prefix . 'mchat_deleted_messages',
 				$this->table_prefix . 'mchat_sessions',
 			),
 
