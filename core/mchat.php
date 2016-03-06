@@ -68,7 +68,7 @@ class mchat
 	 * @param string							$root_path
 	 * @param string							$php_ext
 	 */
-	public function __construct(\dmzx\mchat\core\functions $functions, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\request\request $request, \phpbb\event\dispatcher_interface $dispatcher,\phpbb\extension\manager $extension_manager, $root_path, $php_ext)
+	public function __construct(\dmzx\mchat\core\functions $functions, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\request\request $request, \phpbb\event\dispatcher_interface $dispatcher, \phpbb\extension\manager $extension_manager, $root_path, $php_ext)
 	{
 		$this->functions			= $functions;
 		$this->config				= $config;
