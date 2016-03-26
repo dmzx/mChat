@@ -1,0 +1,174 @@
+parameters:
+    # Global settings that only the administrator is allowed to modify.
+    # The values are stored in the phpbb_config table and can be
+    # accessed using the \phpbb\config\config $config class.
+    dmzx.mchat.config_global:
+        mchat_bbcode_disallowed:
+            default: ''
+            validation:
+                - 'string'
+                - false
+                - 0
+                - 255
+        mchat_custom_height:
+            default: 350
+            validation:
+                - 'num'
+                - false
+                - 50
+                - 1000
+        mchat_custom_page:
+            default: 1
+        mchat_edit_delete_limit:
+            default: 0
+        mchat_flood_time:
+            default: 0
+            validation:
+                - 'num'
+                - false
+                - 0
+                - 60
+        mchat_index_height:
+            default: 250
+            validation:
+                - 'num'
+                - false
+                - 50
+                - 1000
+        mchat_live_updates:
+            default: 1
+        mchat_max_message_lngth:
+            default: 500
+            validation:
+                - 'num'
+                - false
+                - 0
+                - 1000
+        mchat_message_num_archive:
+            default: 25
+            validation:
+                - 'num'
+                - false
+                - 10
+                - 100
+        mchat_message_num_custom:
+            default: 10
+            validation:
+                - 'num'
+                - false
+                - 5
+                - 50
+        mchat_message_num_index:
+            default: 10
+            validation:
+                - 'num'
+                - false
+                - 5
+                - 50
+        mchat_navbar_link:
+            default: 1
+        mchat_override_min_post_chars:
+            default: 0
+        mchat_override_smilie_limit:
+            default: 0
+        mchat_posts_edit:
+            default: 0
+        mchat_posts_quote:
+            default: 0
+        mchat_posts_reply:
+            default: 0
+        mchat_posts_topic:
+            default: 0
+        mchat_prune:
+            default: 0
+        mchat_prune_num:
+            default: 0
+        mchat_refresh:
+            default: 10
+            validation:
+                - 'num'
+                - false
+                - 5
+                - 60
+        mchat_rules:
+            default: ''
+            validation:
+                - 'string'
+                - false
+                - 0
+                - 255
+        mchat_static_message:
+            default: ''
+            validation:
+                - 'string'
+                - false
+                - 0
+                - 255
+        mchat_timeout:
+            default: 0
+            validation:
+                - 'num'
+                - false
+                - 0
+                - -1 # This value is replaced with $config['session_length'] in the \dmzx\mchat\core\settings class
+        mchat_whois:
+            default: 1
+        mchat_whois_refresh:
+            default: 60
+            validation:
+                - 'num'
+                - false
+                - 10
+                - 300
+
+    # User-specific settings for which the administrator can set default
+    # values as well as adjust permissions to allow users to customize them.
+    # For each setting a new column is added to the phpbb_users table.
+    dmzx.mchat.config_ucp:
+        mchat_avatars:
+            default: 1
+            type: 'BOOL'
+        mchat_capital_letter:
+            default: 1
+            type: 'BOOL'
+        mchat_character_count:
+            default: 1
+            type: 'BOOL'
+        mchat_date:
+            default: 'D M d, Y g:i a'
+            type: 'VCHAR:64'
+            validation:
+                - 'string'
+                - false
+                - 0
+                - 64
+        mchat_index:
+            default: 1
+            type: 'BOOL'
+        mchat_input_area:
+            default: 1
+            type: 'BOOL'
+        mchat_location:
+            default: 1
+            type: 'BOOL'
+        mchat_message_top:
+            default: 1
+            type: 'BOOL'
+        mchat_pause_on_input:
+            default: 0
+            type: 'BOOL'
+        mchat_posts:
+            default: 1
+            type: 'BOOL'
+        mchat_relative_time:
+            default: 1
+            type: 'BOOL'
+        mchat_sound:
+            default: 1
+            type: 'BOOL'
+        mchat_stats_index:
+            default: 0
+            type: 'BOOL'
+        mchat_whois_index:
+            default: 1
+            type: 'BOOL'

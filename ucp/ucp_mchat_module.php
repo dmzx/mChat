@@ -28,6 +28,6 @@ class ucp_mchat_module
 
 		// Get an instance of the UCP controller and display the options
 		$controller = $phpbb_container->get('dmzx.mchat.ucp.controller');
-		$controller->display_options($this->u_action);
+		$controller->$mode($this->u_action);
 	}
 }

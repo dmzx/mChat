@@ -1,0 +1,161 @@
+<!-- INCLUDE ucp_header.html -->
+
+<h2>{L_MCHAT_PREFERENCES}</h2>
+
+<form id="ucp" class="mchat-ucp" method="post" action="{S_UCP_ACTION}">
+	<div class="panel">
+		<div class="inner">
+
+			<!-- IF ERROR or MCHAT_AUTH_COUNT == 0 -->
+			<fieldset>
+				<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
+				<!-- IF MCHAT_AUTH_COUNT == 0 --><p class="error">{L_MCHAT_NO_SETTINGS}</p><!-- ENDIF -->
+			</fieldset>
+			<!-- ENDIF -->
+
+			<!-- IF MCHAT_AUTH_COUNT > 0 -->
+			<fieldset>
+				<!-- IF MCHAT_INDEX_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_index">{L_MCHAT_INDEX}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_index" value="1"<!-- IF MCHAT_INDEX --> id="user_mchat_index" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_index" value="0"<!-- IF not MCHAT_INDEX --> id="user_mchat_index" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_WHOIS_INDEX_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_whois_index">{L_MCHAT_WHOIS_INDEX}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_whois_index" value="1"<!-- IF MCHAT_WHOIS_INDEX --> id="user_mchat_whois_index" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_whois_index" value="0"<!-- IF not MCHAT_WHOIS_INDEX --> id="user_mchat_whois_index" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_STATS_INDEX_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_stats_index">{L_MCHAT_STATS_INDEX}{L_COLON}</label><br /><span>{L_MCHAT_STATS_INDEX_EXPLAIN}</span></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_stats_index" value="1"<!-- IF MCHAT_STATS_INDEX --> id="user_mchat_stats_index" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_stats_index" value="0"<!-- IF not MCHAT_STATS_INDEX --> id="user_mchat_stats_index" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_LOCATION_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_location">{L_MCHAT_LOCATION}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_location" value="1"<!-- IF MCHAT_LOCATION --> id="user_mchat_location" checked="checked"<!-- ENDIF --> /> {L_MCHAT_TOP}</label>
+						<label><input type="radio" name="user_mchat_location" value="0"<!-- IF not MCHAT_LOCATION --> id="user_mchat_location" checked="checked"<!-- ENDIF --> /> {L_MCHAT_BOTTOM}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<hr />
+				<!-- IF MCHAT_MESSAGE_TOP_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_message_top">{L_MCHAT_MESSAGE_TOP}{L_COLON}</label><br /><span>{L_MCHAT_MESSAGE_TOP_EXPLAIN}</span></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_message_top" value="1"<!-- IF MCHAT_MESSAGE_TOP --> id="user_mchat_message_top" checked="checked"<!-- ENDIF --> /> {L_MCHAT_TOP}</label>
+						<label><input type="radio" name="user_mchat_message_top" value="0"<!-- IF not MCHAT_MESSAGE_TOP --> id="user_mchat_message_top" checked="checked"<!-- ENDIF --> /> {L_MCHAT_BOTTOM}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_CAPITAL_LETTER_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_capital_letter">{L_MCHAT_CAPITAL_LETTER}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_capital_letter" value="1"<!-- IF MCHAT_CAPITAL_LETTER --> id="user_mchat_capital_letter" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_capital_letter" value="0"<!-- IF not MCHAT_CAPITAL_LETTER --> id="user_mchat_capital_letter" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_SOUND_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_sound">{L_MCHAT_SOUND}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_sound" value="1"<!-- IF MCHAT_SOUND --> id="user_mchat_sound" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_sound" value="0"<!-- IF not MCHAT_SOUND --> id="user_mchat_sound" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_AVATARS_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_avatars">{L_MCHAT_AVATARS}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_avatars" value="1"<!-- IF MCHAT_AVATARS --> id="user_mchat_avatars" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_avatars" value="0"<!-- IF not MCHAT_AVATARS --> id="user_mchat_avatars" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_INPUT_AREA_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_input_area">{L_MCHAT_CHAT_AREA}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_input_area" value="1"<!-- IF MCHAT_INPUT_AREA --> id="user_mchat_input_area" checked="checked"<!-- ENDIF --> /> {L_MCHAT_INPUT_AREA}</label>
+						<label><input type="radio" name="user_mchat_input_area" value="0"<!-- IF not MCHAT_INPUT_AREA --> id="user_mchat_input_area" checked="checked"<!-- ENDIF --> /> {L_MCHAT_TEXT_AREA}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_CHARACTER_COUNT_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_character_count">{L_MCHAT_CHARACTER_COUNT}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_character_count" value="1"<!-- IF MCHAT_CHARACTER_COUNT --> id="user_mchat_character_count" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_character_count" value="0"<!-- IF not MCHAT_CHARACTER_COUNT --> id="user_mchat_character_count" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_PAUSE_ON_INPUT_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_pause_on_input">{L_MCHAT_PAUSE_ON_INPUT}{L_COLON}</label><br /><span>{L_MCHAT_PAUSE_ON_INPUT_EXPLAIN}</span></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_pause_on_input" value="1"<!-- IF MCHAT_PAUSE_ON_INPUT --> id="user_mchat_pause_on_input" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_pause_on_input" value="0"<!-- IF not MCHAT_PAUSE_ON_INPUT --> id="user_mchat_pause_on_input" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_DATE_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_dateoptions">{L_MCHAT_DATE_FORMAT}{L_COLON}</label><br /><span>{L_MCHAT_DATE_FORMAT_EXPLAIN}</span></dt>
+					<dd>
+						<select name="user_mchat_dateoptions" id="user_mchat_dateoptions" onchange="phpbb.toggleDisplay('user_mchat_custom_date', this.value == 'custom' ? 1 : -1); document.getElementById('user_mchat_date').value = this.value == 'custom' ? '{A_MCHAT_DEFAULT_DATEFORMAT}' : this.value;">
+							{S_MCHAT_DATEFORMAT_OPTIONS}
+						</select>
+					</dd>
+					<dd><div id="user_mchat_custom_date"<!-- IF not S_MCHAT_CUSTOM_DATEFORMAT --> style="display:none;"<!-- ENDIF -->><input type="text" name="user_mchat_date" id="user_mchat_date" value="{MCHAT_DATE}" maxlength="64" /></div></dd>
+				</dl>
+				<!-- ENDIF -->
+				<!-- IF MCHAT_RELATIVE_TIME_AUTH -->
+				<dl>
+					<dt><label for="user_mchat_relative_time">{L_MCHAT_RELATIVE_TIME}{L_COLON}</label><br /><span>{L_MCHAT_RELATIVE_TIME_EXPLAIN}</span></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_relative_time" value="1"<!-- IF MCHAT_RELATIVE_TIME --> id="user_mchat_relative_time" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_relative_time" value="0"<!-- IF not MCHAT_RELATIVE_TIME --> id="user_mchat_relative_time" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+				<hr />
+				<!-- IF MCHAT_POSTS_AUTH and MCHAT_POSTS_ENABLED_LANG -->
+				<dl>
+					<dt><label for="user_mchat_posts">{MCHAT_POSTS_ENABLED_LANG}{L_COLON}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_posts" value="1"<!-- IF MCHAT_POSTS --> id="user_mchat_posts" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+						<label><input type="radio" name="user_mchat_posts" value="0"<!-- IF not MCHAT_POSTS --> id="user_mchat_posts" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+			</fieldset>
+			<!-- ENDIF -->
+		</div>
+	</div>
+	<!-- IF MCHAT_AUTH_COUNT > 0 -->
+	<fieldset class="submit-buttons">
+		{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp;
+		<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+		{S_FORM_TOKEN}
+	</fieldset>
+	<!-- ENDIF -->
+</form>
+
+<!-- INCLUDE ucp_footer.html -->

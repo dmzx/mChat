@@ -20,14 +20,14 @@ class acp_mchat_module
 		global $phpbb_container, $user;
 
 		// Add the ACP lang file
-		$user->add_lang_ext('dmzx/mchat', 'mchat_acp');
+		$user->add_lang_ext('dmzx/mchat', array('mchat_acp', 'mchat_ucp'));
 
 		// Set template
-		$this->tpl_name = 'acp_mchat';
-		$this->page_title = 'MCHAT_ACP_TITLE';
+		$this->tpl_name = 'acp_mchat_' . strtolower($mode);
+		$this->page_title = 'MCHAT_ACP_' . strtoupper($mode) . '_TITLE';
 
 		// Get an instance of the ACP controller and display the options
 		$controller = $phpbb_container->get('dmzx.mchat.acp.controller');
-		$controller->display_options($this->u_action);
+		$controller->$mode($this->u_action);
 	}
 }

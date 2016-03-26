@@ -15,9 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class main_listener implements EventSubscriberInterface
 {
-	/** @var \dmzx\mchat\core\functions */
-	protected $functions;
-
 	/** @var \dmzx\mchat\core\mchat */
 	protected $mchat;
 
@@ -31,17 +28,15 @@ class main_listener implements EventSubscriberInterface
 	protected $php_ext;
 
 	/**
-	* Constructor
-	*
-	* @param \dmzx\mchat\core\functions		$functions
-	* @param \dmzx\mchat\core\mchat			$mchat
-	* @param \phpbb\controller\helper		$helper
-	* @param \phpbb\user					$user
-	* @param string							$php_ext
-	*/
-	public function __construct(\dmzx\mchat\core\functions $functions, \dmzx\mchat\core\mchat $mchat, \phpbb\controller\helper $helper, \phpbb\user $user, $php_ext)
+	 * Constructor
+	 *
+	 * @param \dmzx\mchat\core\mchat	$mchat
+	 * @param \phpbb\controller\helper	$helper
+	 * @param \phpbb\user				$user
+	 * @param string					$php_ext
+	 */
+	public function __construct(\dmzx\mchat\core\mchat $mchat, \phpbb\controller\helper $helper, \phpbb\user $user, $php_ext)
 	{
-		$this->functions	= $functions;
 		$this->mchat		= $mchat;
 		$this->helper		= $helper;
 		$this->user			= $user;
@@ -113,7 +108,7 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function posting_modify_submit_post_after($event)
 	{
-		$this->functions->mchat_insert_posting($event['mode'], array(
+		$this->mchat->insert_posting($event['mode'], array(
 			'forum_id'		=> $event['forum_id'],
 			'forum_name'	=> $event['post_data']['forum_name'],
 			'post_id'		=> $event['data']['post_id'],

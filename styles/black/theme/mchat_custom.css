@@ -8,32 +8,32 @@
  */
 
 .icon-mchat {
-    position: relative;
+	position: relative;
 }
 
 .icon-mchat:after {
-    content: '\f086';
-    font-family: 'FontAwesome';
-    width: 18px;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    height: 14px;
-    margin-top: -7px;
-    font-size: 12px;
-    line-height: 14px;
-    vertical-align: baseline;
-    font-weight: normal;
-    font-style: normal;
-    text-transform: none;
-    text-indent: 0;
-    pointer-events: none;
+	content: '\f086';
+	font-family: 'FontAwesome';
+	width: 18px;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	height: 14px;
+	margin-top: -7px;
+	font-size: 12px;
+	line-height: 14px;
+	vertical-align: baseline;
+	font-weight: normal;
+	font-style: normal;
+	text-transform: none;
+	text-indent: 0;
+	pointer-events: none;
 }
 
 .navbar .nav-tabs .mchat .nav-link {
 	position: relative;
-    text-indent: 999px;
+	text-indent: 999px;
 	width: 15px;
 	padding: 0 8px;
 	overflow: hidden;
@@ -41,7 +41,7 @@
 
 .navbar .nav-tabs .mchat .nav-link:after {
 	content: '\f086';
-    font-family: 'FontAwesome';
+	font-family: 'FontAwesome';
 	position: absolute;
 	top: 50%;
 	margin-top: -7.5px;
@@ -51,31 +51,21 @@
 	font-weight: normal;
 	font-style: normal;
 	text-indent: 0;
-    text-align: center;
+	text-align: center;
 	font-size: 15px;
 	left:8px
 }
 
 .rtl .navbar .nav-tabs .mchat .nav-link {
-    padding-left: 12px;
+	padding-left: 12px;
 	padding-right: 30px;
 }
 
 .rtl .navbar .nav-tabs .mchat .nav-link:after {
-    left: auto;
+	left: auto;
 	right: 8px;
 }
 
-li.mchat-message {
-	padding: 5px !important;
-}
-
-li.mchat-message:first-child {
-	border-top-width: 1px !important;
-	padding-top: 5px !important;
-}
-
-li.mchat-message:last-child {
-	border-bottom-width: 1px !important;
-	padding-bottom: 5px !important;
+.mchat-button:before {
+	background-image: url("./images/message_icons.png");
 }

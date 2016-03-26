@@ -8,8 +8,8 @@
  */
 
 .icon-mchat > a:before {
-    content: '\f086';
-    font-family: 'FontAwesome';
+	content: '\f086';
+	font-family: 'FontAwesome';
 }
 
 #mChat + .forabg .collapse-box a {
@@ -19,4 +19,8 @@
 #mChat + .forabg .collapse-box a:before {
 	content: '';
 	margin-right: 0;
+}
+
+.mchat-button:before {
+	background-image: url("./images/message_icons.png");
 }

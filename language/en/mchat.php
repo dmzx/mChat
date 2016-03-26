@@ -46,7 +46,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_CHAT'				=> 'New chat message!',
 	'MCHAT_SEND_PM'					=> 'Send private message',
 	'MCHAT_LIKE'					=> 'Like this post',
-	'MCHAT_LIKES'					=> 'Likes this post',
+	'MCHAT_LIKES'					=> 'likes this post',
 	'MCHAT_FLOOD'					=> 'You can not post another message so soon after your last',
 	'MCHAT_FOE'						=> 'This message was made by <strong>%1$s</strong> who is currently on your ignore list.',
 	'MCHAT_RULES'					=> 'Rules',
@@ -67,17 +67,22 @@ $lang = array_merge($lang, array(
 	'MCHAT_REFRESH_YES'				=> 'Updates every <strong>%1$d</strong> seconds',
 	'MCHAT_RESPOND'					=> 'Respond to user',
 	'MCHAT_RESET_QUESTION'			=> 'Clear the input area?',
+	'MCHAT_SESSION_ENDS'			=> 'Chat session ends in %1$s',
 	'MCHAT_SESSION_OUT'				=> 'Chat session has expired',
-	'MCHAT_SESSION_ENDS'			=> 'Chat session ends in',
 	'MCHAT_SMILES'					=> 'Smilies',
 	'MCHAT_TOTALMESSAGES'			=> 'Total messages: <strong>%1$d</strong>',
-	'MCHAT_USESOUND'				=> 'Use sound',
+	'MCHAT_USESOUND'				=> 'Play sound',
 	'MCHAT_WHO_IS_REFRESH_EXPLAIN'	=> 'Refreshes every <strong>%1$d</strong> seconds',
 	'MCHAT_MINUTES_AGO'				=> array(
 		0 => 'just now',
 		1 => '%1$d minute ago',
 		2 => '%1$d minutes ago',
 	),
+
+	// These messages are formatted with JavaScript, hence {} and no $d
+	'MCHAT_CHARACTER_COUNT'			=> '<strong>{current}</strong> characters',
+	'MCHAT_CHARACTER_COUNT_LIMIT'	=> '<strong>{current}</strong> out of {max} characters',
+	'MCHAT_SESSION_ENDS_JS'			=> 'Chat session ends in {timeleft}',
 
 	// Custom translations for administrators
 	'MCHAT_RULES_MESSAGE'			=> '',

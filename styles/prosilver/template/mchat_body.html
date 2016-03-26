@@ -1,0 +1,107 @@
+<!-- IF MCHAT_IS_ARCHIVE_PAGE or MCHAT_IS_CUSTOM_PAGE -->
+	<!-- INCLUDE overall_header.html -->
+<!-- ENDIF -->
+
+<!-- IF MCHAT_IS_ARCHIVE_PAGE or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) -->
+	<!-- INCLUDEJS {T_ASSETS_PATH}/javascript/editor.js -->
+<!-- ENDIF -->
+<!-- INCLUDEJS javascript/jquery.auto-grow-input.js -->
+<!-- INCLUDEJS javascript/jquery.titlealert.min.js -->
+<!-- INCLUDEJS javascript/js.cookie-2.0.4.min.js -->
+<!-- INCLUDEJS javascript/mchat.js -->
+
+<!-- IF MCHAT_IS_ARCHIVE_PAGE and (.pagination or MCHAT_TOTAL_MESSAGES) -->
+<div class="action-bar bar-top">
+	<div class="pagination">
+		{MCHAT_TOTAL_MESSAGES}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+</div>
+<!-- ENDIF -->
+
+<!-- EVENT dmzx_mchat_body_before -->
+<div class="forabg">
+	<a id="mChat"></a>
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<!-- INCLUDE mchat_header.html -->
+			</li>
+		</ul>
+
+		<div id="mchat-body" class="postbody">
+			<!-- INCLUDE mchat_script_data.html -->
+
+			<!-- IF not MCHAT_SOUND_DISABLED -->
+				<audio id="mchat-sound-add" class="hidden" src="{EXT_URL}sounds/add.mp3" preload="auto"></audio>
+				<audio id="mchat-sound-edit" class="hidden" src="{EXT_URL}sounds/edit.mp3" preload="auto"></audio>
+				<audio id="mchat-sound-del" class="hidden" src="{EXT_URL}sounds/del.mp3" preload="auto"></audio>
+				<audio id="mchat-sound-error" class="hidden" src="{EXT_URL}sounds/error.mp3" preload="auto"></audio>
+			<!-- ENDIF -->
+
+			<div id="mchat-confirm" class="hidden">
+				<h3>{L_CONFIRM}</h3>
+				<p></p>
+				<textarea></textarea>
+				<fieldset class="submit-buttons">
+					<input type="button" name="confirm" value="{L_MCHAT_OK}" class="button2" />&nbsp;
+					<input type="button" name="cancel" value="{L_CANCEL}" class="button2" />
+				</fieldset>
+			</div>
+
+			<div id="mchat-main">
+				<!-- IF MCHAT_STATIC_MESS and not MCHAT_IS_ARCHIVE_PAGE -->
+					<ul class="topiclist forums">
+						<li class="row mchat-static">{MCHAT_STATIC_MESS}</li>
+					</ul>
+				<!-- ENDIF -->
+
+				<ul id="mchat-messages" class="topiclist forums"<!-- IF not MCHAT_IS_ARCHIVE_PAGE --> style="height:<!-- IF MCHAT_IS_CUSTOM_PAGE -->{MCHAT_CUSTOM_HEIGHT}<!-- ELSE -->{MCHAT_INDEX_HEIGHT}<!-- ENDIF -->px"<!-- ENDIF -->>
+					<!-- IF .mchatrow -->
+						<!-- INCLUDE mchat_messages.html -->
+					<!-- ELSE -->
+						<li class="row mchat-static mchat-no-messages">{L_MCHAT_NOMESSAGE}</li>
+					<!-- ENDIF -->
+				</ul>
+			</div>
+
+			<!-- INCLUDE mchat_panel.html -->
+		</div>
+	</div>
+</div>
+
+<!-- IF MCHAT_IS_ARCHIVE_PAGE -->
+<div class="action-bar bottom">
+	<div class="pagination">
+		{MCHAT_TOTAL_MESSAGES}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF MCHAT_IS_CUSTOM_PAGE and MCHAT_WHOIS_REFRESH -->
+	<h3>{L_MCHAT_WHO_IS_CHATTING}</h3>
+	<!-- INCLUDE mchat_whois.html -->
+	<div id="mchat-refresh">
+		<span id="mchat-refresh-explain">{MCHAT_WHOIS_REFRESH_EXPLAIN}</span>
+		<span id="mchat-refresh-pending" class="hidden">{L_MCHAT_REFRESHING}</span>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF (MCHAT_IS_CUSTOM_PAGE or MCHAT_IS_ARCHIVE_PAGE) and LEGEND -->
+	<div id="mchat-legend">
+		<em>{L_LEGEND}{L_COLON} {LEGEND}</em>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF MCHAT_IS_ARCHIVE_PAGE or MCHAT_IS_CUSTOM_PAGE -->
+	<!-- INCLUDE overall_footer.html -->
+<!-- ENDIF -->

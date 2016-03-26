@@ -1,0 +1,53 @@
+<script type="text/javascript">
+	// <![CDATA[
+	var form_name = 'postform';
+	var text_name = 'message';
+	var mChat = {
+		// General settings
+		actionUrls		: {
+			<!-- BEGIN mchaturl -->
+			{mchaturl.ACTION}: '{mchaturl.URL}'<!-- IF not mchaturl.IS_LAST -->,<!-- ENDIF -->
+			<!-- END mchaturl -->
+		},
+		customPage		: <!-- IF MCHAT_IS_CUSTOM_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
+		archivePage		: <!-- IF MCHAT_IS_ARCHIVE_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
+		pause			: <!-- IF MCHAT_PAUSE_ON_INPUT -->true<!-- ELSE -->false<!-- ENDIF -->,
+		playSound		: <!-- IF MCHAT_SOUND -->true<!-- ELSE -->false<!-- ENDIF -->,
+		messageTop		: <!-- IF MCHAT_MESSAGE_TOP -->true<!-- ELSE -->false<!-- ENDIF -->,
+		allowBBCodes	: <!-- IF S_BBCODE_ALLOWED -->true<!-- ELSE -->false<!-- ENDIF -->,
+		liveUpdates		: <!-- IF MCHAT_LIVE_UPDATES -->true<!-- ELSE -->false<!-- ENDIF -->,
+		relativeTime	: <!-- IF MCHAT_RELATIVE_TIME -->true<!-- ELSE -->false<!-- ENDIF -->,
+		showCharCount	: <!-- IF MCHAT_CHARACTER_COUNT -->true<!-- ELSE -->false<!-- ENDIF -->,
+
+		// Limits & timeouts
+		refreshTime		: {MCHAT_REFRESH_JS},
+		whoisRefresh	: {MCHAT_WHOIS_REFRESH},
+		userTimeout		: {MCHAT_USER_TIMEOUT},
+		mssgLngth		: {MCHAT_MESSAGE_LNGTH},
+		editDeleteLimit	: {MCHAT_EDIT_DELETE_LIMIT},
+		removeBBCodes	: '{MCHAT_DISALLOWED_BBCODES}',
+
+		// Language
+		minutesAgo		: {
+			<!-- BEGIN mchattime -->
+			{mchattime.KEY}: '{mchattime.LANG}'<!-- IF not mchattime.IS_LAST -->,<!-- ENDIF -->
+			<!-- END mchattime -->
+		},
+		newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
+		noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
+		noMessages		: '{LA_MCHAT_NOMESSAGE}',
+		editInfo		: '{LA_MCHAT_EDITINFO}',
+		noAccess		: '{LA_NO_AUTH_OPERATION}',
+		flood			: '{LA_MCHAT_FLOOD}',
+		delConfirm		: '{LA_MCHAT_DELCONFIRM}',
+		clearConfirm	: '{LA_MCHAT_RESET_QUESTION}',
+		sessOut			: '{LA_MCHAT_SESSION_OUT}',
+		sessEnds		: '{LA_MCHAT_SESSION_ENDS_JS}',
+		refreshYes		: '{MCHAT_REFRESH_YES}',
+		refreshNo		: '{LA_MCHAT_REFRESH_NO}',
+		charCount		: '<!-- IF MCHAT_MESSAGE_LNGTH -->{LA_MCHAT_CHARACTER_COUNT_LIMIT}<!-- ELSE -->{LA_MCHAT_CHARACTER_COUNT}<!-- ENDIF -->',
+		mssgLngthLong	: '{MCHAT_MESS_LONG}',
+		likes			: '{LA_MCHAT_LIKES}'
+	};
+// ]]>
+</script>

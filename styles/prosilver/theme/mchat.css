@@ -1,0 +1,326 @@
+/**
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
+ * @copyright (c) 2016 kasimi
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
+
+#mChat {
+	position: absolute;
+	visibility: hidden;
+}
+
+#mChat + .inner li.header dd {
+	width: 0;
+}
+
+.icon-mchat {
+	background-image: url("./images/icon_mchat.png");
+}
+
+.mchat-ucp fieldset hr:first-child, .mchat-ucp fieldset hr:last-child, .mchat-ucp fieldset hr + hr {
+	display: none;
+}
+
+#mchat-body {
+	width: 100% !important;
+}
+
+#mchat-confirm textarea {
+	width: 100%;
+	height: 100px;
+}
+
+#mchat-messages {
+	overflow: auto;
+	width: 100%;
+}
+
+.mchat-message-wrapper {
+	overflow: hidden;
+}
+
+.mchat-message-header {
+	float: left;
+}
+
+.mchat-message {
+	padding: 5px !important;
+	overflow: hidden;
+}
+
+.mchat-avatar {
+	float: left;
+	width: 40px;
+	padding-right: 5px;
+}
+
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+
+	.mchat-buttons > li {
+		padding: 0 8px !important;
+	}
+
+}
+
+.mchat-avatar a, .mchat-avatar img {
+	display: block;
+}
+
+.mchat-message .mchat-buttons li {
+	opacity: .3;
+}
+
+.mchat-message:hover .mchat-buttons li {
+	opacity: .6;
+}
+
+.mchat-message .mchat-buttons li:hover {
+	opacity: 1;
+}
+
+.mchat-buttons {
+	float: right;
+	list-style: none;
+	margin-top: 1px;
+}
+
+.mchat-message-wrapper .mchat-buttons > li {
+	float: left;
+	margin: 0 3px;
+}
+
+.mchat-button {
+	margin-left: 3px;
+}
+
+.mchat-button.fa {
+	font-size: 12pt;
+}
+
+.mchat-button span {
+	display: block;
+	height: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+}
+
+.mchat-icon:before {
+	content: '';
+	background-image: url("./images/message_icons.png");
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: right;
+}
+
+.mchat-icon-mention:before      { background-position: -2px -2px; }
+.mchat-icon-edit:before         { background-position: -22px -2px; }
+.mchat-icon-pm:before           { background-position: -42px -2px; }
+.mchat-icon-quote:before        { background-position: -62px -2px; }
+.mchat-icon-like:before         { background-position: -82px -2px; }
+.mchat-icon-delete:before       { background-position: -102px -2px; }
+.mchat-icon-permissions:before  { background-position: -122px -2px; }
+.mchat-icon-ip:before           { background-position: -142px -2px; }
+
+.mchat-text {
+	clear: both;
+	overflow: hidden;
+	padding: 0 5px 2px;
+	font-size: 1.2em;
+}
+
+.mchat-text li {
+	display: list-item !important;
+	list-style-type: inherit !important;
+	list-style-position: inside;
+}
+
+.mchat-text ul, .mchat-text ol {
+	list-style-position: inside;
+}
+
+.mchat-text ul {
+	list-style-type: disc;
+}
+
+.mchat-text ol {
+	list-style-type: decimal;
+}
+
+.mchat-text ul ul {
+	list-style-type: circle;
+}
+
+.mchat-text blockquote {
+	margin-bottom: 5px;
+}
+
+.mchat-text blockquote, .mchat-text .codebox, .mchat-text ul, .mchat-text ol {
+	margin-top: 5px;
+	margin-left: 1em;
+}
+
+.mchat-mention strong {
+	color: inherit !important;
+}
+
+.mchat-mention {
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+}
+
+#mchat-no-message {
+	font-size: 1.2em;
+}
+
+#mchat-character-count {
+	float: right;
+	visibility: hidden;
+	padding: 5px 0 0;
+}
+
+#mchat-panel {
+	text-align: center;
+	max-height: initial;
+	overflow-y: auto;
+	padding: 0 5px 5px 5px;
+	margin: 0;
+	border-radius: 0;
+}
+
+#mchat-form {
+	clear: both;
+}
+
+#mchat-input {
+	cursor: text;
+	width: 50%;
+	font-size: 1.1em;
+	padding: 5px 5px 4px;
+	margin: 5px 20px;
+}
+
+#mchat-buttons {
+	padding-bottom: 5px;
+}
+
+#mchat-bbcodes {
+	padding: 0 5px;
+	display: none;
+}
+
+#mchat-bbcodes #format-buttons {
+	margin: 0 0 5px;
+}
+
+#mchat-bbcodes #colour_palette label {
+	display: none;
+}
+
+#mchat-bbcodes #colour_palette table {
+	margin: 0 auto 5px;
+}
+
+#mchat-smilies {
+	padding: 0;
+}
+
+#mchat-status-icons {
+	position: relative;
+	display: inline-block;
+	vertical-align: text-top;
+}
+
+#mchat-status-icons i {
+	top: 0;
+	left: 0;
+	width: 16px;
+	height: 16px;
+	float: left;
+}
+
+#mchat-status-icons i.fa {
+	font-size: 12pt;
+}
+
+#mchat-status-error {
+	display: none;
+	cursor: help;
+}
+
+.mchat-status-error {
+	background-image: url("./images/error.gif");
+}
+
+#mchat-status-ok {
+	display: none;
+	cursor: help;
+}
+
+.mchat-status-ok {
+	background-image: url("./images/ok.gif");
+}
+
+#mchat-status-load {
+	display: none;
+	cursor: wait;
+}
+
+.mchat-status-load {
+	background-image: url("./images/load.gif");
+}
+
+#mchat-status-paused {
+	cursor: help;
+}
+
+.mchat-status-paused {
+	background-image: url("./images/paused.gif");
+}
+
+#mchat-legend {
+	clear: both;
+}
+
+.mchat-static, #mchat-stats, #mchat-whois, #mchat-refresh, #mchat-legend {
+	padding: 5px 0 0;
+	text-align: left;
+	font-size: 1.1em;
+}
+
+#mchat-panel > #mchat-whois {
+	float: left;
+}
+
+.mchat-copyright {
+	position: relative;
+	top: 1px;
+	font-weight: bold;
+	font-size: 1.1em;
+	cursor: help;
+}
+
+.mchat-static {
+	padding: 5px 5px 7px !important;
+}
+
+#mchat-colour {
+	display: none;
+}
+
+/* Compatibility with Advanced BBCode Box extension */
+
+#mchat-panel #abbc3_buttons {
+	margin: 0 !important;
+	padding-bottom: 5px;
+}
+
+#mchat-panel #abbc3_buttons .abbc3_buttons_row {
+	margin: 0 auto !important;
+}
