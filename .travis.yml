@@ -44,12 +44,6 @@ branches:
     - develop
     - /^develop-.*$/
 
-before_install:
-  - sudo mkdir travis
-  - git clone "https://github.com/nickvergessen/phpbb-ext-acme-demo.git"
-  - sudo cp phpbb-ext-acme-demo/phpunit.xml.dist ./
-  - sudo cp phpbb-ext-acme-demo/travis/prepare-phpbb.sh travis
-  - sudo rm -rf phpbb-ext-acme-demo
 
 install:
   - travis_retry composer install --dev --no-interaction --prefer-source
