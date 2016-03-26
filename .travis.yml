@@ -52,7 +52,7 @@ before_install:
   - sudo rm -rf phpbb-ext-acme-demo
 
 install:
-  - composer install --no-interaction --prefer-source
+  - travis_retry composer install --dev --no-interaction --prefer-source
   - travis/prepare-phpbb.sh $EXTNAME $PHPBB_BRANCH
   - cd ../../phpBB3
   - travis/prepare-extension.sh $EXTNAME $PHPBB_BRANCH
