@@ -40,7 +40,7 @@ $lang = array_merge($lang, array(
 	// Who is chatting
 	'MCHAT_WHO_IS_CHATTING'			=> 'Wer ist im Chat',
 	'MCHAT_ONLINE_USERS_TOTAL'		=> array(
-		0 => 'Kein Benutzer im Chat',
+		0 => 'Es ist kein Benutzer im Chat',
 		1 => 'Es ist <strong>%1$d</strong> Benutzer im Chat',
 		2 => 'Es sind <strong>%1$d</strong> Benutzer im Chat',
 	),
@@ -59,8 +59,8 @@ $lang = array_merge($lang, array(
 	),
 
 	// Post notification messages (%1$s is replaced with a link to the new/edited post, %2$s is replaced with a link to the forum)
-	'MCHAT_NEW_POST'				=> 'Erstellte einen neues Thema: %1$s in %2$s',
-	'MCHAT_NEW_REPLY'				=> 'Erstellte eine Antwort: %1$s in %2$s',
-	'MCHAT_NEW_QUOTE'				=> 'Antwortete mit einem Zitat: %1$s in %2$s',
-	'MCHAT_NEW_EDIT'				=> 'Editierte einen Beitrag: %1$s in %2$s',
+	'MCHAT_NEW_POST'				=> 'erstellte einen neuen Beitrag: %1$s in %2$s',
+	'MCHAT_NEW_REPLY'				=> 'erstellte eine Antwort: %1$s in %2$s',
+	'MCHAT_NEW_QUOTE'				=> 'antwortete mit einem Zitat: %1$s in %2$s',
+	'MCHAT_NEW_EDIT'				=> 'änderte einen Beitrag: %1$s in %2$s',
 ));

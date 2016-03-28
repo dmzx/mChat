@@ -48,5 +48,5 @@ $lang = array_merge($lang, array(
 	'LOG_MCHAT_TABLE_PRUNED'				=> '<strong>mChat Nachrichten bereinigt</strong><br />» %1$s',
 	'LOG_MCHAT_TABLE_PURGED'				=> '<strong>mChat Nachrichten gelöscht.</strong><br />» %1$s',
 	'LOG_DELETED_MCHAT'						=> '<strong>mChat Nachrichten gelöscht</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'						=> '<strong>mChat Nachricht editiert</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'						=> '<strong>mChat Nachricht geändert</strong><br />» %1$s',
 ));
