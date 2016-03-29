@@ -38,10 +38,10 @@ $lang = array_merge($lang, array(
 	// Module titles
 	'ACP_CAT_MCHAT'							=> 'mChat',
 	'ACP_CAT_MCHAT_USER_CONFIG'				=> 'mChat im UCP',
-	'ACP_MCHAT_GLOBALSETTINGS'				=> 'Globale Einstellungen',
-	'ACP_MCHAT_GLOBALUSERSETTINGS'			=> 'Globale Benutzer Einstellungen',
+	'ACP_MCHAT_GLOBALSETTINGS'				=> 'Allgemeine Einstellungen',
+	'ACP_MCHAT_GLOBALUSERSETTINGS'			=> 'Allgemeine Benutzer Einstellungen',
 
-	'MCHAT_ACP_USER_PREFS_EXPLAIN'			=> 'Unten sehen Sie alle mChat Einstellungen des ausgewählten Benutzers aufgelistet. Einstellungen, für die der ausgewählte Benutzer keine Berechtigung hat, sind deaktiviert. Diese Einstellungen können in den <em>Globalen Benutzereinstellungen</ em> des mChat Konfigurationsbereich geändert werden.',
+	'MCHAT_ACP_USER_PREFS_EXPLAIN'			=> 'Unten sehen Sie alle mChat Einstellungen des ausgewählten Benutzers aufgelistet. Einstellungen, für die der ausgewählte Benutzer keine Berechtigung hat, sind deaktiviert. Diese Einstellungen können in den <em>Allgemeine Benutzer Einstellungen</ em> des mChat Konfigurationsbereich geändert werden.',
 
 	// Log entries (%1$s is replaced with the user name who triggered the event)
 	'LOG_MCHAT_CONFIG_UPDATE'				=> '<strong>mChat Konfiguration aktualisiert</strong><br />» %1$s',

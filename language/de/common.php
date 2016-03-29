@@ -59,8 +59,8 @@ $lang = array_merge($lang, array(
 	),
 
 	// Post notification messages (%1$s is replaced with a link to the new/edited post, %2$s is replaced with a link to the forum)
-	'MCHAT_NEW_POST'				=> 'erstellte einen neuen Beitrag: %1$s in %2$s',
-	'MCHAT_NEW_REPLY'				=> 'erstellte eine Antwort: %1$s in %2$s',
-	'MCHAT_NEW_QUOTE'				=> 'antwortete mit einem Zitat: %1$s in %2$s',
-	'MCHAT_NEW_EDIT'				=> 'änderte einen Beitrag: %1$s in %2$s',
+	'MCHAT_NEW_POST'				=> 'Ein neuer Beitrag wurde erstellt: %1$s in %2$s',
+	'MCHAT_NEW_REPLY'				=> 'Eine neue Antwort wurde erstellt: %1$s in %2$s',
+	'MCHAT_NEW_QUOTE'				=> 'Es wurde mit einem Zitat geantwortet: %1$s in %2$s',
+	'MCHAT_NEW_EDIT'				=> 'Ein Beitrag wurde geändert: %1$s in %2$s',
 ));

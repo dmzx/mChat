@@ -60,10 +60,10 @@ $lang = array_merge($lang, array(
 	'MCHAT_BOTTOM'					=> 'Unten',
 	'MCHAT_TOP'						=> 'Oben',
 
-	'MCHAT_POSTS_TOPIC'				=> 'Zeige neue Beiträge',
-	'MCHAT_POSTS_REPLY'				=> 'Zeige neue Antworten',
-	'MCHAT_POSTS_EDIT'				=> 'Zeige editierte Beiträge',
-	'MCHAT_POSTS_QUOTE'				=> 'Zeige zitierte Beiträge',
+	'MCHAT_POSTS_TOPIC'				=> 'Anzeige von neuen Beiträgen',
+	'MCHAT_POSTS_REPLY'				=> 'Anzeige von neuen Antworten',
+	'MCHAT_POSTS_EDIT'				=> 'Anzeige von geänderten Beiträgen',
+	'MCHAT_POSTS_QUOTE'				=> 'Anzeige von zitierten Beiträgen',
 
 	'MCHAT_DATE_FORMAT'				=> 'Datumsformat',
 	'MCHAT_DATE_FORMAT_EXPLAIN'		=> 'Der benutzte Syntax ist identisch zur PHP <a href="http://www.php.net/date">date()</a> Funktion.',
