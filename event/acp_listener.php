@@ -154,7 +154,7 @@ class acp_listener implements EventSubscriberInterface
 	 */
 	public function acp_users_prefs_modify_template_data($event)
 	{
-		$this->user->add_lang_ext('dmzx/mchat', 'mchat_ucp');
+		$this->user->add_lang_ext('dmzx/mchat', array('mchat_acp', 'mchat_ucp'));
 
 		$user_id = $event['user_row']['user_id'];
 

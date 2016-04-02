@@ -49,6 +49,7 @@ services:
             - '@ext.manager'
             - '%core.root_path%'
             - '%core.php_ext%'
+            - '@?phpbb.collapsiblecategories.operator'
     dmzx.mchat.functions:
         class: dmzx\mchat\core\functions
         arguments:

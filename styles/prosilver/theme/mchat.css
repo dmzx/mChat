@@ -130,8 +130,12 @@
 .mchat-text {
 	clear: both;
 	overflow: hidden;
-	padding: 0 5px 2px;
+	padding: 2px 5px;
 	font-size: 1.2em;
+}
+
+.mchat-text strong {
+	font-weight: bold !important;
 }
 
 .mchat-text li {
@@ -323,4 +327,20 @@
 
 #mchat-panel #abbc3_buttons .abbc3_buttons_row {
 	margin: 0 auto !important;
+}
+
+/* Compatibility with Collapsible Categories extension */
+
+.mchat-category {
+	display: none;
+	height: 0;
+}
+
+.mchat-collapse {
+	display: none;
+	line-height: 0;
+}
+
+.hidden-category + .forabg #mchat-body .topiclist.forums {
+    display: block;
 }

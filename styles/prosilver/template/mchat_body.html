@@ -24,16 +24,29 @@
 <!-- ENDIF -->
 
 <!-- EVENT dmzx_mchat_body_before -->
+
+<!-- IF MCHAT_IS_COLLAPSIBLE -->
+	<a class="category<!-- IF S_MCHAT_HIDDEN --> hidden-category<!-- ENDIF --> mchat-category"></a>
+<!-- ENDIF -->
+
 <div class="forabg">
 	<a id="mChat"></a>
 	<div class="inner">
 		<ul class="topiclist">
 			<li class="header">
 				<!-- INCLUDE mchat_header.html -->
+				<!-- IF MCHAT_IS_COLLAPSIBLE -->
+					<a href="{U_MCHAT_COLLAPSE_URL}"
+						class="collapse-btn collapse-<!-- IF S_MCHAT_HIDDEN -->show<!-- ELSE -->hide<!-- ENDIF --> mchat-collapse"
+						data-hidden="{S_MCHAT_HIDDEN}"
+						data-ajax="phpbb_collapse"
+						data-overlay="true"
+						title="{L_MCHAT_COLLAPSE_TITLE}"></a>
+				<!-- ENDIF -->
 			</li>
 		</ul>
 
-		<div id="mchat-body" class="postbody">
+		<div id="mchat-body" class="postbody<!-- IF MCHAT_IS_COLLAPSIBLE --> collapsible<!-- ENDIF -->">
 			<!-- INCLUDE mchat_script_data.html -->
 
 			<!-- IF not MCHAT_SOUND_DISABLED -->
