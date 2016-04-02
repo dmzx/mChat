@@ -13,7 +13,7 @@
 			<noscript><div class="error">{L_MCHAT_NOJAVASCRIPT}</div></noscript>
 			<!-- IF MCHAT_ALLOW_USE -->
 				<!-- IF MCHAT_INPUT_AREA -->
-					<input id="mchat-input" type="text" name="message" class="inputbox medium" />
+					<input id="mchat-input" type="text" name="message" class="inputbox medium" autocomplete="off" />
 				<!-- ELSE -->
 					<textarea id="mchat-input" name="message" class="inputbox no-auto-resize" cols="32" rows="5"></textarea>
 				<!-- ENDIF -->
@@ -22,9 +22,6 @@
 			<div id="mchat-buttons">
 				<!-- IF MCHAT_ALLOW_USE -->
 					<input id="mchat-add" type="button" class="button2" data-mchat-action="add" value="{L_MCHAT_ADD}" />
-					<!-- IF MCHAT_USER_TIMEOUT or MCHAT_PAUSE_ON_INPUT -->
-						<input id="mchat-clear" type="button" class="button2" data-mchat-action="clear" value="{L_RESET}" />
-					<!-- ENDIF -->
 					<!-- IF MCHAT_ALLOW_SMILES and .smiley -->
 						<input type="button" class="button2" data-mchat-toggle="smilies" value="{L_MCHAT_SMILES}" />
 					<!-- ENDIF -->

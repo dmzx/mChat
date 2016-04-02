@@ -13,20 +13,12 @@ namespace dmzx\mchat\migrations;
 
 class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 {
-	/** @const string */
-	const MCHAT_VERSION = '2.0.0-RC3';
-
 	/** @var array */
 	protected $mchat_config = null;
 
 	static public function depends_on()
 	{
 		return array('\phpbb\db\migration\data\v31x\v317pl1');
-	}
-
-	public function effectively_installed()
-	{
-		return isset($this->config['mchat_version']) && version_compare($this->config['mchat_version'], self::MCHAT_VERSION, '>=');
 	}
 
 	protected function get_config()
@@ -62,7 +54,7 @@ class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 		}
 
 		return array_merge($update_data, array(
-			array('config.add', array('mchat_version', self::MCHAT_VERSION)),
+			array('config.add', array('mchat_version', '2.0.0-RC3')),
 
 			// Add user permissions
 			array('permission.add', array('u_mchat_use', true)),

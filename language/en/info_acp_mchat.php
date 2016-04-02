@@ -36,17 +36,15 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	// Module titles
-	'ACP_CAT_MCHAT'							=> 'mChat',
-	'ACP_CAT_MCHAT_USER_CONFIG'				=> 'mChat in UCP',
-	'ACP_MCHAT_GLOBALSETTINGS'				=> 'Global settings',
-	'ACP_MCHAT_GLOBALUSERSETTINGS'			=> 'Global user settings',
-
-	'MCHAT_ACP_USER_PREFS_EXPLAIN'			=> 'Below are listed all mChat preferences of the selected user. Settings for which the selected user does not have permission to customise are disabled. These settings can be changed in the <em>Global user settings</em> mChat configuration section.',
+	'ACP_CAT_MCHAT'					=> 'mChat',
+	'ACP_CAT_MCHAT_USER_CONFIG'		=> 'mChat in UCP',
+	'ACP_MCHAT_GLOBALSETTINGS'		=> 'Global settings',
+	'ACP_MCHAT_GLOBALUSERSETTINGS'	=> 'Global user settings',
 
 	// Log entries (%1$s is replaced with the user name who triggered the event)
-	'LOG_MCHAT_CONFIG_UPDATE'				=> '<strong>mChat configuration updated</strong><br />» %1$s',
-	'LOG_MCHAT_TABLE_PRUNED'				=> '<strong>mChat messages pruned</strong><br />» %1$s',
-	'LOG_MCHAT_TABLE_PURGED'				=> '<strong>mChat messages purged</strong><br />» %1$s',
-	'LOG_DELETED_MCHAT'						=> '<strong>mChat message deleted</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'						=> '<strong>mChat message edited</strong><br />» %1$s',
+	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>mChat configuration updated</strong><br />» %1$s',
+	'LOG_MCHAT_TABLE_PRUNED'		=> '<strong>mChat messages pruned</strong><br />» %1$s',
+	'LOG_MCHAT_TABLE_PURGED'		=> '<strong>mChat messages purged</strong><br />» %1$s',
+	'LOG_DELETED_MCHAT'				=> '<strong>mChat message deleted</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'				=> '<strong>mChat message edited</strong><br />» %1$s',
 ));

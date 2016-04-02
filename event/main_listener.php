@@ -55,6 +55,7 @@ class main_listener implements EventSubscriberInterface
 			'core.index_modify_page_title'				=> 'display_mchat_on_index',
 			'core.posting_modify_submit_post_after'		=> 'posting_modify_submit_post_after',
 			'core.display_custom_bbcodes_modify_sql'	=> 'display_custom_bbcodes_modify_sql',
+			'core.user_add_modify_data'					=> 'user_registration_set_default_values',
 		);
 	}
 
@@ -122,5 +123,13 @@ class main_listener implements EventSubscriberInterface
 	public function display_custom_bbcodes_modify_sql($event)
 	{
 		$event['sql_ary'] = $this->mchat->remove_disallowed_bbcodes($event['sql_ary']);
+	}
+
+	/**
+	 * @param object $event The event object
+	 */
+	public function user_registration_set_default_values($event)
+	{
+		$event['sql_ary'] = $this->mchat->set_user_default_values($event['sql_ary']);
 	}
 }

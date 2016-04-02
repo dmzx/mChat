@@ -94,17 +94,6 @@ jQuery(function($) {
 	};
 
 	$.extend(mChat, {
-		clear: function() {
-			if (mChat.cached('input').val() !== '') {
-				if (confirm(mChat.clearConfirm)) {
-					mChat.resetSession();
-					mChat.cached('input').val('').keyup().trigger('autogrow');
-				}
-				setTimeout(function() {
-					mChat.cached('input').focus();
-				}, 1);
-			}
-		},
 		sound: function(file) {
 			if (!mChat.pageIsUnloading && !Cookies.get('mchat_no_sound')) {
 				var audio = mChat.cached('sound-' + file).get(0);
@@ -189,6 +178,9 @@ jQuery(function($) {
 			});
 		},
 		refresh: function(message) {
+			if (mChat.isPaused && !message) {
+				return false;
+			}
 			var $messages = mChat.cached('messages').children();
 			var data = {
 				message_last_id: mChat.messageIds.length ? mChat.messageIds.max() : 0
@@ -371,9 +363,6 @@ jQuery(function($) {
 					clearInterval(mChat.whoisInterval);
 					mChat.whoisInterval = setInterval(mChat.whois, mChat.whoisRefresh);
 				}
-				if (mChat.pause) {
-					mChat.cached('input').one('keypress', mChat.endSession);
-				}
 				mChat.cached('status-ok').show();
 				mChat.cached('status-load', 'status-error', 'status-paused').hide();
 				mChat.cached('refresh-text').html(mChat.refreshYes);
@@ -395,6 +384,18 @@ jQuery(function($) {
 			mChat.cached('status-load', 'status-ok', 'status-error').hide();
 			mChat.cached('status-paused').show();
 			mChat.cached('refresh-text').html(mChat.refreshNo);
+		},
+		pauseStart: function() {
+			mChat.isPaused = true;
+			mChat.cached('refresh-text').html(mChat.refreshNo);
+			mChat.cached('status-load', 'status-ok', 'status-error').hide();
+			mChat.cached('status-paused').show();
+		},
+		pauseEnd: function() {
+			mChat.cached('refresh-text').html(mChat.refreshYes);
+			mChat.cached('status-load', 'status-error', 'status-paused').hide();
+			mChat.cached('status-ok').show();
+			mChat.isPaused = false;
 		},
 		mention: function() {
 			var $container = $(this).closest('.mchat-message');
@@ -455,9 +456,11 @@ jQuery(function($) {
 	}).get();
 
 	mChat.hiddenFields = {};
-	$('#mchat-form').find('input[type=hidden]').each(function() {
+	mChat.cached('form').find('input[type=hidden]').each(function() {
 		mChat.hiddenFields[this.name] = this.value;
 	});
+
+	mChat.isPaused = false;
 
 	if (!mChat.archivePage) {
 		mChat.resetSession();
@@ -492,10 +495,8 @@ jQuery(function($) {
 			}
 		});
 
-		mChat.startRelativeTimeUpdate(mChat.cached('messages'));
-
 		if (mChat.cached('input').is('input')) {
-			$('#mchat-form').keypress(function(e) {
+			mChat.cached('form').keypress(function(e) {
 				if (e.which == 13) {
 					mChat.add();
 					e.preventDefault();
@@ -504,8 +505,21 @@ jQuery(function($) {
 			});
 		}
 
+		if (mChat.pause) {
+			mChat.cached('form').keyup(function(e) {
+				if (mChat.refreshInterval !== false) {
+					var val = mChat.cached('input').val();
+					if (mChat.isPaused && val === '') {
+						mChat.pauseEnd();
+					} else if (!mChat.isPaused && val !== '') {
+						mChat.pauseStart();
+					}
+				}
+			});
+		}
+
 		if (mChat.showCharCount) {
-			$('#mchat-form').keyup(function(e) {
+			mChat.cached('form').keyup(function(e) {
 				var count = mChat.inputMessageLength();
 				var $elem = mChat.cached('character-count');
 				$elem.html(mChat.charCount.format({current: count, max: mChat.mssgLngth})).css('visibility', count > 0 ? 'visible' : 'hidden');
@@ -515,11 +529,15 @@ jQuery(function($) {
 			});
 		}
 
-		mChat.cached('input').autoGrowInput({
-			minWidth: mChat.cached('input').width(),
-			maxWidth: mChat.cached('form').width() - (mChat.cached('input').outerWidth(true) - mChat.cached('input').width())
+		mChat.cached('form').one('keypress', function() {
+			mChat.cached('input').autoGrowInput({
+				minWidth: mChat.cached('input').width(),
+				maxWidth: mChat.cached('form').width() - (mChat.cached('input').outerWidth(true) - mChat.cached('input').width())
+			});
 		});
 	}
+
+	mChat.startRelativeTimeUpdate(mChat.cached('messages'));
 
 	$(window).on('beforeunload', function() {
 		mChat.pageIsUnloading = true;

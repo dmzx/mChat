@@ -87,20 +87,13 @@ class acp_controller
 
 		$error = array();
 
-		if ($this->request->is_set_post('mchat_purge'))
+		if ($this->request->is_set_post('mchat_purge') && $this->request->variable('mchat_purge_confirm', false) && check_form_key('acp_mchat') && $this->user->data['user_type'] == USER_FOUNDER)
 		{
-			$this->template->assign_var('MCHAT_PURGE', true);
-		}
-		else if ($this->request->is_set_post('mchat_purge_confirm'))
-		{
-			if (check_form_key('acp_mchat') && $this->user->data['user_type'] == USER_FOUNDER)
-			{
-				$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_table);
-				$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_deleted_messages_table);
-				$this->cache->destroy('sql', $this->mchat_deleted_messages_table);
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PURGED', false, array($this->user->data['username']));
-				trigger_error($this->user->lang('MCHAT_PURGED') . adm_back_link($u_action));
-			}
+			$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_table);
+			$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_deleted_messages_table);
+			$this->cache->destroy('sql', $this->mchat_deleted_messages_table);
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PURGED', false, array($this->user->data['username']));
+			trigger_error($this->user->lang('MCHAT_PURGED') . adm_back_link($u_action));
 		}
 		else if ($this->request->is_set_post('submit'))
 		{
@@ -203,6 +196,18 @@ class acp_controller
 
 			if (!$error)
 			{
+				if ($this->request->variable('mchat_overwrite', 0) && $this->request->variable('mchat_overwrite_confirm', 0))
+				{
+					$mchat_new_user_config = array();
+					foreach ($mchat_new_config as $config_name => $config_value)
+					{
+						$mchat_new_user_config['user_' . $config_name] = $config_value;
+					}
+
+					$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $mchat_new_user_config);
+					$this->db->sql_query($sql);
+				}
+
 				// Set the options the user configured
 				foreach ($mchat_new_config as $config_name => $config_value)
 				{
