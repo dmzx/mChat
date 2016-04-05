@@ -281,12 +281,16 @@ class functions
 		}
 
 		$sql_array = array(
-			'SELECT'	=> 'm.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm',
+			'SELECT'	=> 'm.*, u.username, u.user_colour, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_pm, p.post_visibility',
 			'FROM'		=> array($this->mchat_table	=> 'm'),
 			'LEFT_JOIN'	=> array(
 				array(
 					'FROM'	=> array(USERS_TABLE => 'u'),
 					'ON'	=> 'm.user_id = u.user_id',
+				),
+				array(
+					'FROM'	=> array(POSTS_TABLE => 'p'),
+					'ON'	=> 'm.post_id = p.post_id',
 				)
 			),
 			'WHERE'		=> $sql_where,

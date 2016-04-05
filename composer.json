@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "mChat Extension",
 	"homepage": "http://www.dmzx-web.net",
-	"version": "2.0.0-RC4",
-	"time": "2016-03-31",
+	"version": "2.0.0-RC5",
+	"time": "2016-04-03",
 	"keywords": ["phpbb", "extension", "mchat"],
 	"license": "GPL-2.0",
 	"authors": [

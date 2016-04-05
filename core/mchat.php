@@ -678,6 +678,25 @@ class mchat
 	 */
 	protected function assign_messages($rows)
 	{
+		// Auth checks
+		foreach ($rows as $i => $row)
+		{
+			if ($row['forum_id'])
+			{
+				// No permission to read forum
+				if (!$this->auth->acl_get('f_read', $row['forum_id']))
+				{
+					unset($rows[$i]);
+				}
+
+				// Post is not approved and no approval permission
+				if ($row['post_visibility'] !== ITEM_APPROVED && !$this->auth->acl_get('m_approve', $row['forum_id']))
+				{
+					unset($rows[$i]);
+				}
+			}
+		}
+
 		if (!$rows)
 		{
 			return;
@@ -713,18 +732,7 @@ class mchat
 
 		foreach ($rows as $i => $row)
 		{
-			// Auth checks
-			if ($row['forum_id'] && !$this->auth->acl_get('f_read', $row['forum_id']))
-			{
-				continue;
-			}
-
 			$message_for_edit = generate_text_for_edit($row['message'], $row['bbcode_uid'], $row['bbcode_options']);
-
-			if (in_array($row['user_id'], $foes))
-			{
-				$row['message'] = $this->user->lang('MCHAT_FOE', get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST')));
-			}
 
 			$username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST'));
 
@@ -732,6 +740,11 @@ class mchat
 			if ($this->request->is_ajax())
 			{
 				$username_full = preg_replace('#(?<=href=")[\./]+?/(?=\w)#', $board_url, $username_full);
+			}
+
+			if (in_array($row['user_id'], $foes))
+			{
+				$row['message'] = $this->user->lang('MCHAT_FOE', $username_full);
 			}
 
 			$message_age = time() - $row['message_time'];
