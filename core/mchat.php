@@ -690,7 +690,7 @@ class mchat
 				}
 
 				// Post is not approved and no approval permission
-				if ($row['post_visibility'] !== ITEM_APPROVED && !$this->auth->acl_get('m_approve', $row['forum_id']))
+				if ($row['post_visibility'] != ITEM_APPROVED && !$this->auth->acl_get('m_approve', $row['forum_id']))
 				{
 					unset($rows[$i]);
 				}
