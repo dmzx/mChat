@@ -37,8 +37,10 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_USE'						=> 'Can use mChat',
 	'ACL_U_MCHAT_VIEW'						=> 'Can view mChat',
-	'ACL_U_MCHAT_EDIT'						=> 'Can edit messages',
-	'ACL_U_MCHAT_DELETE'					=> 'Can delete messages',
+	'ACL_U_MCHAT_EDIT'						=> 'Can edit own messages',
+	'ACL_U_MCHAT_DELETE'					=> 'Can delete own messages',
+	'ACL_U_MCHAT_MODERATOR_EDIT'			=> 'Can edit anyone’s messages',
+	'ACL_U_MCHAT_MODERATOR_DELETE'			=> 'Can delete anyone’s messages',
 	'ACL_U_MCHAT_IP'						=> 'Can view IP addresses',
 	'ACL_U_MCHAT_PM'						=> 'Can use private message',
 	'ACL_U_MCHAT_LIKE'						=> 'Can like messages',
@@ -47,7 +49,7 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_ARCHIVE'					=> 'Can view the archive',
 	'ACL_U_MCHAT_BBCODE'					=> 'Can use BBCodes',
 	'ACL_U_MCHAT_SMILIES'					=> 'Can use smilies',
-	'ACL_U_MCHAT_URLS'						=> 'Can post URLs',
+	'ACL_U_MCHAT_URLS'						=> 'Can post automatically parsed URLs',
 
 	'ACL_U_MCHAT_AVATARS'					=> 'Can customise <em>Display avatars</em>',
 	'ACL_U_MCHAT_CAPITAL_LETTER'			=> 'Can customise <em>Capital first letter</em>',

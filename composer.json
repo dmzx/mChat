@@ -1,13 +1,19 @@
 {
 	"name": "dmzx/mchat",
 	"type": "phpbb-extension",
-	"description": "mChat Extension",
-	"homepage": "http://www.dmzx-web.net",
-	"version": "2.0.0-RC5",
-	"time": "2016-04-03",
+	"description": "mChat",
+	"homepage": "https://github.com/kasimi/mChat",
+	"version": "2.0.0-RC6",
+	"time": "2016-09-18",
 	"keywords": ["phpbb", "extension", "mchat"],
 	"license": "GPL-2.0",
 	"authors": [
+		{
+			"name": "kasimi",
+			"homepage": "https://kasimi.net",
+			"email": "mail@kasimi.net",
+			"role": "Extension Developer"
+		},
 		{
 			"name": "dmzx",
 			"homepage": "http://www.dmzx-web.net",
@@ -15,31 +21,22 @@
 			"role": "Extension Developer"
 		},
 		{
-			"name": "kasimi",
-			"homepage": "https://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=1330603",
-			"role": "Extension Co-Developer"
-		},
-		{
 			"name": "RMcGirr83",
 			"homepage": "http://rmcgirr83.org",
-			"role": "Author"
+			"role": "Original MOD author"
 		}
 	],
 	"require": {
-		"php": ">=5.3.3"
+		"php": ">=5.3.3",
+		"phpbb/phpbb": ">=3.1.7-PL1,<3.3.0@dev"
 	},
 	"require-dev": {
 		"phpbb/epv": "dev-master"
 	},
 	"extra": {
-		"display-name": "mChat Extension",
+		"display-name": "mChat",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.1.7-PL1,<3.3.0@dev"
-		},
-		"version-check": {
-			"host": "www.dmzx-web.net",
-			"directory": "/versions",
-			"filename": "mchat_version.json"
 		}
 	}
 }

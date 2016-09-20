@@ -11,6 +11,9 @@
 
 namespace dmzx\mchat\core;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use phpbb\exception\http_exception;
+
 class mchat
 {
 	/** @var \dmzx\mchat\core\functions */
@@ -54,6 +57,12 @@ class mchat
 
 	/** @var boolean */
 	protected $remove_disallowed_bbcodes = false;
+
+	/** @var array */
+	protected $active_users = null;
+
+	/** @var array */
+	protected $foes = null;
 
 	/**
 	 * Constructor
@@ -129,15 +138,20 @@ class mchat
 	{
 		if (!$this->auth->acl_get('u_mchat_view'))
 		{
-			throw new \phpbb\exception\http_exception(403, 'NOT_AUTHORISED');
+			if (!$this->user->data['is_registered'])
+			{
+				login_box();
+			}
+
+			throw new http_exception(403, 'NOT_AUTHORISED');
 		}
+
+		$this->user->add_lang_ext('dmzx/mchat', 'mchat');
 
 		if (!$this->settings->cfg('mchat_custom_page'))
 		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NO_CUSTOM_PAGE');
+			throw new http_exception(404, 'MCHAT_NO_CUSTOM_PAGE');
 		}
-
-		$this->functions->mchat_prune();
 
 		$this->functions->mchat_add_user_session();
 
@@ -152,7 +166,7 @@ class mchat
 		// Add to navlinks
 		$this->template->assign_block_vars('navlinks', array(
 			'FORUM_NAME'	=> $this->user->lang('MCHAT_TITLE'),
-			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_mchat_controller'),
+			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_mchat_page_custom_controller'),
 		));
 
 		return $this->helper->render('mchat_body.html', $this->user->lang('MCHAT_TITLE'));
@@ -165,12 +179,17 @@ class mchat
 	 */
 	public function page_archive()
 	{
+		$this->user->add_lang_ext('dmzx/mchat', 'mchat');
+
 		if (!$this->auth->acl_get('u_mchat_view') || !$this->auth->acl_get('u_mchat_archive'))
 		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS_ARCHIVE');
-		}
+			if (!$this->user->data['is_registered'])
+			{
+				login_box();
+			}
 
-		$this->functions->mchat_prune();
+			throw new http_exception(403, 'MCHAT_NOACCESS_ARCHIVE');
+		}
 
 		$this->template->assign_var('MCHAT_IS_ARCHIVE_PAGE', true);
 
@@ -180,11 +199,11 @@ class mchat
 		$this->template->assign_block_vars_array('navlinks', array(
 			array(
 				'FORUM_NAME'	=> $this->user->lang('MCHAT_TITLE'),
-				'U_VIEW_FORUM'	=> $this->helper->route('dmzx_mchat_controller'),
+				'U_VIEW_FORUM'	=> $this->helper->route('dmzx_mchat_page_custom_controller'),
 			),
 			array(
 				'FORUM_NAME'	=> $this->user->lang('MCHAT_ARCHIVE'),
-				'U_VIEW_FORUM'	=> $this->helper->route('dmzx_mchat_page_controller', array('page' => 'archive')),
+				'U_VIEW_FORUM'	=> $this->helper->route('dmzx_mchat_page_archive_controller'),
 			),
 		));
 
@@ -194,21 +213,29 @@ class mchat
 	/**
 	 * Controller for mChat IP WHOIS
 	 *
+	 * @param string $ip
 	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	 */
-	public function page_whois()
+	public function page_whois($ip)
 	{
 		if (!$this->auth->acl_get('u_mchat_ip'))
 		{
-			throw new \phpbb\exception\http_exception(403, 'NOT_AUTHORISED');
+			if (!$this->user->data['is_registered'])
+			{
+				login_box();
+			}
+
+			throw new http_exception(403, 'NOT_AUTHORISED');
 		}
+
+		$this->user->add_lang_ext('dmzx/mchat', 'mchat');
 
 		if (!function_exists('user_ipwhois'))
 		{
 			include($this->root_path . 'includes/functions_user.' . $this->php_ext);
 		}
 
-		$this->template->assign_var('WHOIS', user_ipwhois($this->request->variable('ip', '')));
+		$this->template->assign_var('WHOIS', user_ipwhois($ip));
 
 		return $this->helper->render('viewonline_whois.html', $this->user->lang('WHO_IS_ONLINE'));
 	}
@@ -222,13 +249,21 @@ class mchat
 	{
 		if (!$this->auth->acl_get('u_mchat_view'))
 		{
-			throw new \phpbb\exception\http_exception(403, 'NOT_AUTHORISED');
+			if (!$this->user->data['is_registered'])
+			{
+				login_box();
+			}
+
+			throw new http_exception(403, 'NOT_AUTHORISED');
 		}
 
+		$this->user->add_lang_ext('dmzx/mchat', 'mchat');
+
 		$lang_rules = $this->user->lang('MCHAT_RULES_MESSAGE');
+
 		if (!$this->settings->cfg('mchat_rules') && !$lang_rules)
 		{
-			throw new \phpbb\exception\http_exception(404, 'MCHAT_NO_RULES');
+			throw new http_exception(404, 'MCHAT_NO_RULES');
 		}
 
 		// If the rules are defined in the language file use them, else just use the entry in the database
@@ -242,184 +277,328 @@ class mchat
 	}
 
 	/**
+	 * Initialize AJAX action
+	 *
+	 * @param string $permission Permission that is required to perform the current action
+	 * @param bool $check_form_key
+	 */
+	protected function init_action($permission, $check_form_key = true)
+	{
+		if (!$this->request->is_ajax() || !$this->auth->acl_get($permission) || ($check_form_key && !check_form_key('mchat', -1)))
+		{
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		// Fix avatars & smilies
+		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
+		{
+			define('PHPBB_USE_BOARD_URL_PATH', true);
+		}
+
+		$this->user->add_lang_ext('dmzx/mchat', 'mchat');
+	}
+
+	/**
 	 * User submits a message
 	 *
+	 * @param bool $return_raw
 	 * @return array data sent to client as JSON
 	 */
-	public function action_add()
+	public function action_add($return_raw = false)
 	{
-		if (!$this->auth->acl_get('u_mchat_use') || !check_form_key('mchat', -1))
-		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
-		}
+		$this->init_action('u_mchat_use');
 
 		if ($this->functions->mchat_is_user_flooding())
 		{
-			throw new \phpbb\exception\http_exception(400, 'MCHAT_NOACCESS');
+			throw new http_exception(400, 'MCHAT_FLOOD');
 		}
 
 		$message = $this->request->variable('message', '', true);
 
-		if ($this->settings->cfg('mchat_capital_letter'))
-		{
-			$message = utf8_ucfirst($message);
-		}
-
-		$sql_ary = $this->process_message($message, array(
+		$message_data = array(
 			'user_id'			=> $this->user->data['user_id'],
 			'user_ip'			=> $this->user->data['session_ip'],
 			'message_time'		=> time(),
-		));
+		);
+
+		/**
+		 * Event to modify a new message before it is inserted in the database
+		 *
+		 * @event dmzx.mchat.action_add_before
+		 * @var	string	message			The message that is about to be processed and added to the database
+		 * @var array	message_data	Array containing additional information that is added to the database
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'message',
+			'message_data',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_add_before', compact($vars)));
+
+		$sql_ary = array_merge($this->process_message($message), $message_data);
+
+		if ($this->settings->cfg('mchat_capital_letter'))
+		{
+			$sql_ary['message'] = utf8_ucfirst($sql_ary['message']);
+		}
 
 		$is_new_session = $this->functions->mchat_action('add', $sql_ary);
 
-		/**
-		 * Event render_helper_add
-		 *
-		 * @event dmzx.mchat.core.render_helper_add
-		 * @since 0.1.2
-		 */
-		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_add');
-
-		$data = $this->action_refresh();
+		$response = $this->action_refresh(true);
 
 		if ($is_new_session)
 		{
-			$data['whois'] = true;
+			$response = array_merge($response, $this->action_whois(true));
 		}
 
-		return $data;
+		/**
+		 * Event to modify message data of a user's new message before it is sent back to the user
+		 *
+		 * @event dmzx.mchat.action_add_after
+		 * @var	string	message			The message that was added to the database
+		 * @var array	message_data	Array containing additional information that was added to the database
+		 * @var bool	is_new_session	Indicating whether the message triggered a new mChat session to be created for the user
+		 * @var array	response		The data that is sent back to the user
+		 * @var boolean	return_raw		Whether to return a raw array or a JsonResponse object
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'message',
+			'message_data',
+			'is_new_session',
+			'response',
+			'return_raw',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_add_after', compact($vars)));
+
+		return $return_raw ? $response : new JsonResponse($response);
 	}
 
 	/**
 	 * User edits a message
 	 *
+	 * @param bool $return_raw
 	 * @return array data sent to client as JSON
 	 */
-	public function action_edit()
+	public function action_edit($return_raw = false)
 	{
+		$this->init_action('u_mchat_use');
+
 		$message_id = $this->request->variable('message_id', 0);
 
-		if (!$message_id || !check_form_key('mchat', -1))
+		if (!$message_id)
 		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
 		$author = $this->functions->mchat_author_for_message($message_id);
 
-		if (!$author || !$this->auth_message('u_mchat_edit', $author['user_id'], $author['message_time']))
+		if (!$author || $author['post_id'] || !$this->auth_message('edit', $author['user_id'], $author['message_time']))
 		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
 		$this->template->assign_var('MCHAT_IS_ARCHIVE_PAGE', $this->request->variable('archive', false));
 
 		$message = $this->request->variable('message', '', true);
-
-		$sql_ary = $this->process_message($message, array(
-			'edit_time' => time(),
-		));
-
+		$sql_ary = $this->process_message($message);
 		$this->functions->mchat_action('edit', $sql_ary, $message_id);
 
-		/**
-		 * Event render_helper_edit
-		 *
-		 * @event dmzx.mchat.core.render_helper_edit
-		 * @since 0.1.4
-		 */
-		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_edit');
-
-		$sql_where = 'm.message_id = ' . (int) $message_id;
-		$rows = $this->functions->mchat_get_messages($sql_where, 1);
+		$rows = $this->functions->mchat_get_messages($message_id);
 
 		$this->assign_global_template_data();
 		$this->assign_messages($rows);
 
-		return array('edit' => $this->render_template('mchat_messages.html'));
+		$response = array('edit' => $this->render_template('mchat_messages.html'));
+
+		/**
+		 * Event to modify the data of an edited message
+		 *
+		 * @event dmzx.mchat.action_edit_after
+		 * @var int		message_id	The ID of the edited message
+		 * @var	string	message		The content of the edited message that was added to the database
+		 * @var array	author		Information about the message author
+		 * @var array	response	The data that is sent back to the user
+		 * @var boolean	return_raw	Whether to return a raw array or a JsonResponse object
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'message_id',
+			'message',
+			'author',
+			'response',
+			'return_raw',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_edit_after', compact($vars)));
+
+		return $return_raw ? $response : new JsonResponse($response);
 	}
 
 	/**
 	 * User deletes a message
 	 *
+	 * @param bool $return_raw
 	 * @return array data sent to client as JSON
 	 */
-	public function action_del()
+	public function action_del($return_raw = false)
 	{
+		$this->init_action('u_mchat_use');
+
 		$message_id = $this->request->variable('message_id', 0);
 
-		if (!$message_id || !check_form_key('mchat', -1))
+		if (!$message_id)
 		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
 		$author = $this->functions->mchat_author_for_message($message_id);
 
-		if (!$author || !$this->auth_message('u_mchat_delete', $author['user_id'], $author['message_time']))
+		if (!$author || !$this->auth_message('delete', $author['user_id'], $author['message_time']))
 		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
-
-		/**
-		 * Event render_helper_delete
-		 *
-		 * @event dmzx.mchat.core.render_helper_delete
-		 * @since 0.1.4
-		 */
-		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_delete');
 
 		$this->functions->mchat_action('del', null, $message_id);
 
-		return array('del' => true);
+		$response = array('del' => true);
+
+		/**
+		 * Event that is triggered after an mChat message was deleted
+		 *
+		 * @event dmzx.mchat.action_delete_after
+		 * @var int		message_id	The ID of the deleted message
+		 * @var array	author		Information about the message author
+		 * @var array	response	The data that is sent back to the user
+		 * @var boolean	return_raw	Whether to return a raw array or a JsonResponse object
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'message_id',
+			'author',
+			'response',
+			'return_raw',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_delete_after', compact($vars)));
+
+		return $return_raw ? $response : new JsonResponse($response);
 	}
 
 	/**
 	 * User checks for new messages
 	 *
+	 * @param bool $return_raw
 	 * @return array sent to client as JSON
 	 */
-	public function action_refresh()
+	public function action_refresh($return_raw = false)
 	{
-		if (!$this->auth->acl_get('u_mchat_view'))
-		{
-			throw new \phpbb\exception\http_exception(403, 'MCHAT_NOACCESS');
-		}
+		$this->init_action('u_mchat_view', false);
 
-		// Keep the session alive forever if there is no user session timeout
-		if (!$this->settings->cfg('mchat_timeout'))
+		// Keep the session alive forever if there is no session timeout
+		$keep_session_alive = !$this->settings->cfg('mchat_timeout');
+
+		// Whether to check the log table for new entries
+		$need_log_update = $this->settings->cfg('mchat_live_updates');
+
+		/**
+		 * Event that is triggered before new mChat messages are checked
+		 *
+		 * @event dmzx.mchat.action_refresh_before
+		 * @var bool	keep_session_alive	Whether to the user's phpBB session
+		 * @var bool	need_log_update		Whether to check the log table for new entries
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'keep_session_alive',
+			'need_log_update',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_refresh_before', compact($vars)));
+
+		if ($keep_session_alive)
 		{
 			$this->user->update_session_infos();
 		}
 
-		$message_first_id = $this->request->variable('message_first_id', 0);
-		$message_last_id = $this->request->variable('message_last_id', 0);
-		$message_edits = $this->request->variable('message_edits', array(0));
+		$response = array('refresh' => true);
+		$log_edit_del_ids = array(
+			'edit'	=> array(),
+			'del'	=> array(),
+		);
 
-		// Request new messages
-		$sql_where = 'm.message_id > ' . (int) $message_last_id;
-
-		// Request edited messages
-		if ($this->settings->cfg('mchat_live_updates') && $message_last_id > 0)
+		if ($need_log_update)
 		{
-			$sql_where .= sprintf(' OR (m.message_id BETWEEN %d AND %d AND m.edit_time > 0)', (int) $message_first_id , (int) $message_last_id);
-			if ($this->settings->cfg('mchat_edit_delete_limit'))
+			$log_id = $this->request->variable('log', 0);
+			$log_rows = $this->functions->mchat_get_logs($log_id);
+
+			$response['log'] = $log_rows['id'];
+			unset($log_rows['id']);
+
+			$edit_delete_limit = $this->settings->cfg('mchat_edit_delete_limit');
+			$time_limit = $edit_delete_limit ? time() - $edit_delete_limit : 0;
+
+			foreach ($log_rows as $log_row)
 			{
-				$sql_where .= sprintf(' AND m.message_time > %d', time() - $this->settings->cfg('mchat_edit_delete_limit'));
+				$log_type = $log_row['log_type'];
+
+				if (isset($this->functions->log_types[$log_type]))
+				{
+					if ($log_row['user_id'] != $this->user->data['user_id'] && $log_row['log_time'] > $time_limit)
+					{
+						$log_type_name = $this->functions->log_types[$log_type];
+						$log_edit_del_ids[$log_type_name][] = (int) $log_row['message_id'];
+					}
+				}
+
+				/**
+				 * Event that allows processing log messages
+				 *
+				 * @event dmzx.mchat.action_refresh_process_log_row
+				 * @var array	response	The data that is sent back to the user (still incomplete at this point)
+				 * @var array	log_row		The log data
+				 * @since 2.0.0-RC6
+				 */
+				$vars = array(
+					'response',
+					'log_row',
+				);
+				extract($this->dispatcher->trigger_event('dmzx.mchat.action_refresh_process_log_row', compact($vars)));
 			}
 		}
 
-		$rows = $this->functions->mchat_get_messages($sql_where);
+		$last_id = $this->request->variable('last', 0);
+		$total = 0;
+		$offset = 0;
+
+		/**
+		 * Event that allows modifying data before new mChat messages are fetched
+		 *
+		 * @event dmzx.mchat.action_refresh_get_messages_before
+		 * @var array	response			The data that is sent back to the user (still incomplete at this point)
+		 * @var array	log_edit_del_ids	An array containing IDs of messages that have been edited or deleted since the user's last refresh
+		 * @var int		last_id				The latest message that the user has
+		 * @var int		total				Limit the number of messages to fetch
+		 * @var int		offset				The number of messages to skip
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'response',
+			'log_edit_del_ids',
+			'last_id',
+			'total',
+			'offset',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_refresh_get_messages_before', compact($vars)));
+
+		$rows = $this->functions->mchat_get_messages($log_edit_del_ids['edit'], $last_id, $total, $offset);
 		$rows_refresh = array();
 		$rows_edit = array();
 
 		foreach ($rows as $row)
 		{
-			$message_id = $row['message_id'];
-			if ($message_id > $message_last_id)
+			if ($row['message_id'] > $last_id)
 			{
 				$rows_refresh[] = $row;
 			}
-			else if (!isset($message_edits[$message_id]) || $message_edits[$message_id] < $row['edit_time'])
+			else if (in_array($row['message_id'], $log_edit_del_ids['edit']))
 			{
 				$rows_edit[] = $row;
 			}
@@ -429,8 +608,6 @@ class mchat
 		{
 			$this->assign_global_template_data();
 		}
-
-		$response = array('refresh' => true);
 
 		// Assign new messages
 		if ($rows_refresh)
@@ -447,28 +624,65 @@ class mchat
 		}
 
 		// Assign deleted messages
-		if ($this->settings->cfg('mchat_live_updates') && $message_last_id > 0)
+		if ($log_edit_del_ids['del'])
 		{
-			$deleted_message_ids = $this->functions->mchat_deleted_ids($message_first_id);
-			if ($deleted_message_ids)
-			{
-				$response['del'] = $deleted_message_ids;
-			}
+			$response['del'] = $log_edit_del_ids['del'];
 		}
 
-		return $response;
+		/**
+		 * Event to modify the data that is sent to the user after checking for new mChat message
+		 *
+		 * @event dmzx.mchat.action_refresh_after
+		 * @var array	rows		The rows that where fetched from the database
+		 * @var array	response	The data that is sent back to the user
+		 * @var boolean	return_raw	Whether to return a raw array or a JsonResponse object
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'rows',
+			'response',
+			'return_raw',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_refresh_after', compact($vars)));
+
+		return $return_raw ? $response : new JsonResponse($response);
 	}
 
 	/**
 	 * User requests who is chatting
 	 *
+	 * @param bool $return_raw
 	 * @return array data sent to client as JSON
 	 */
-	public function action_whois()
+	public function action_whois($return_raw = false)
 	{
+		$this->init_action('u_mchat_view', false);
+
 		$this->assign_whois();
 
-		return array('whois' => $this->render_template('mchat_whois.html'));
+		$response = array('whois' => $this->render_template('mchat_whois.html'));
+
+		if ($this->settings->cfg('mchat_navbar_link_count') && $this->settings->cfg('mchat_navbar_link') && $this->settings->cfg('mchat_custom_page') && $this->active_users)
+		{
+			$response['navlink'] = $this->active_users['users_count_title'];
+			$response['navlink_title'] = strip_tags($this->active_users['users_total']);
+		}
+
+		/**
+		 * Event to modify the result of the Who Is Online update
+		 *
+		 * @event dmzx.mchat.action_whois_after
+		 * @var array	response	The data that is sent back to the user
+		 * @var boolean	return_raw	Whether to return a raw array or a JsonResponse object
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'response',
+			'return_raw',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.action_whois_after', compact($vars)));
+
+		return $return_raw ? $response : new JsonResponse($response);
 	}
 
 	/**
@@ -476,12 +690,34 @@ class mchat
 	 */
 	public function render_page_header_link()
 	{
-		$this->template->assign_vars(array(
-			'MCHAT_ALLOW_VIEW'		=> $this->auth->acl_get('u_mchat_view'),
-			'MCHAT_NAVBAR_LINK'		=> $this->settings->cfg('mchat_navbar_link'),
-			'MCHAT_CUSTOM_PAGE'		=> $this->settings->cfg('mchat_custom_page'),
-			'U_MCHAT'				=> $this->helper->route('dmzx_mchat_controller'),
-		));
+		if (!$this->auth->acl_get('u_mchat_view'))
+		{
+			return;
+		}
+
+		$navbar_link = $this->settings->cfg('mchat_navbar_link');
+		$custom_page = $this->settings->cfg('mchat_custom_page');
+
+		$template_data = array(
+			'MCHAT_NAVBAR_LINK'	=> $navbar_link,
+			'MCHAT_CUSTOM_PAGE'	=> $custom_page,
+			'MCHAT_TITLE'		=> $this->user->lang('MCHAT_TITLE'),
+			'MCHAT_TITLE_HINT'	=> $this->user->lang('MCHAT_TITLE'),
+			'U_MCHAT'			=> $this->helper->route('dmzx_mchat_page_custom_controller'),
+		);
+
+		if ($navbar_link && $custom_page && $this->settings->cfg('mchat_navbar_link_count'))
+		{
+			if ($this->active_users === null)
+			{
+				$this->active_users = $this->functions->mchat_active_users();
+			}
+
+			$template_data['MCHAT_TITLE'] = $this->active_users['users_count_title'];
+			$template_data['MCHAT_TITLE_HINT'] = strip_tags($this->active_users['users_total']);
+		}
+
+		$this->template->assign_vars($template_data);
 	}
 
 	/**
@@ -491,6 +727,18 @@ class mchat
 	 */
 	protected function render_page($page)
 	{
+		/**
+		 * Event that is triggered before mChat is rendered
+		 *
+		 * @event dmzx.mchat.render_page_before
+		 * @var string	page	The page that is rendered, one of index|custom|archive
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'page',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_before', compact($vars)));
+
 		// Add lang file
 		$this->user->add_lang('posting');
 
@@ -498,11 +746,8 @@ class mchat
 		$lang_static_message = $this->user->lang('MCHAT_STATIC_MESSAGE');
 		$static_message = $lang_static_message ?: $this->settings->cfg('mchat_static_message');
 
-		$u_mchat_use = $this->auth->acl_get('u_mchat_use');
-
 		$this->template->assign_vars(array(
-			'MCHAT_ALLOW_USE'				=> $u_mchat_use,
-			'S_BBCODE_ALLOWED'				=> $this->settings->cfg('allow_bbcode') && $this->auth->acl_get('u_mchat_bbcode'),
+			'MCHAT_PAGE'					=> $page,
 			'MCHAT_ALLOW_SMILES'			=> $this->settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies'),
 			'MCHAT_INPUT_AREA'				=> $this->settings->cfg('mchat_input_area'),
 			'MCHAT_MESSAGE_TOP'				=> $this->settings->cfg('mchat_message_top'),
@@ -517,18 +762,20 @@ class mchat
 			'MCHAT_PAUSE_ON_INPUT'			=> $this->settings->cfg('mchat_pause_on_input'),
 			'MCHAT_MESSAGE_LNGTH'			=> $this->settings->cfg('mchat_max_message_lngth'),
 			'MCHAT_WHOIS_INDEX'				=> $this->settings->cfg('mchat_whois_index'),
-			'MCHAT_WHOIS_REFRESH'			=> $this->settings->cfg('mchat_whois') ? $this->settings->cfg('mchat_whois_refresh') * 1000 : 0,
+			'MCHAT_WHOIS_REFRESH'			=> $this->settings->cfg('mchat_whois_index') || $this->settings->cfg('mchat_stats_index') ? $this->settings->cfg('mchat_whois_refresh') * 1000 : 0,
 			'MCHAT_REFRESH_JS'				=> $this->settings->cfg('mchat_refresh') * 1000,
 			'MCHAT_ARCHIVE'					=> $this->auth->acl_get('u_mchat_archive'),
 			'MCHAT_RULES'					=> $this->user->lang('MCHAT_RULES_MESSAGE') || $this->settings->cfg('mchat_rules'),
 			'MCHAT_WHOIS_REFRESH_EXPLAIN'	=> $this->user->lang('MCHAT_WHO_IS_REFRESH_EXPLAIN', $this->settings->cfg('mchat_whois_refresh')),
 			'MCHAT_SESSION_TIMELEFT'		=> $this->user->lang('MCHAT_SESSION_ENDS', gmdate('H:i:s', (int) $this->settings->cfg('mchat_timeout'))),
+			'MCHAT_LOG_ID'					=> $this->functions->get_latest_log_id(),
 			'MCHAT_STATIC_MESS'				=> htmlspecialchars_decode($static_message),
 			'A_MCHAT_MESS_LONG'				=> addslashes($this->user->lang('MCHAT_MESS_LONG', $this->settings->cfg('mchat_max_message_lngth'))),
 			'A_MCHAT_REFRESH_YES'			=> addslashes($this->user->lang('MCHAT_REFRESH_YES', $this->settings->cfg('mchat_refresh'))),
-			'U_MCHAT_CUSTOM_PAGE'			=> $this->helper->route('dmzx_mchat_controller'),
-			'U_MCHAT_RULES'					=> $this->helper->route('dmzx_mchat_page_controller', array('page' => 'rules')),
-			'U_MCHAT_ARCHIVE_URL'			=> $this->helper->route('dmzx_mchat_page_controller', array('page' => 'archive')),
+			'A_COOKIE_NAME'					=> addslashes($this->settings->cfg('cookie_name', true) . '_'),
+			'U_MCHAT_CUSTOM_PAGE'			=> $this->helper->route('dmzx_mchat_page_custom_controller'),
+			'U_MCHAT_RULES'					=> $this->helper->route('dmzx_mchat_page_rules_controller'),
+			'U_MCHAT_ARCHIVE_URL'			=> $this->helper->route('dmzx_mchat_page_archive_controller'),
 		));
 
 		// The template needs some language variables if we display relative time for messages
@@ -547,25 +794,25 @@ class mchat
 
 		// Get actions which the user is allowed to perform on the current page
 		$actions = array_keys(array_filter(array(
-			'edit'		=> $this->auth_message('u_mchat_edit', true, time()),
-			'del'		=> $this->auth_message('u_mchat_delete', true, time()),
+			'edit'		=> $this->auth_message('edit', true, time()),
+			'del'		=> $this->auth_message('delete', true, time()),
 			'refresh'	=> $page !== 'archive' && $this->auth->acl_get('u_mchat_view'),
-			'add'		=> $page !== 'archive' && $u_mchat_use,
-			'whois'		=> $page !== 'archive' && $this->settings->cfg('mchat_whois'),
+			'add'		=> $page !== 'archive' && $this->auth->acl_get('u_mchat_use'),
+			'whois'		=> $page !== 'archive' && ($this->settings->cfg('mchat_whois_index') || $this->settings->cfg('mchat_stats_index')),
 		)));
 
 		foreach ($actions as $i => $action)
 		{
 			$this->template->assign_block_vars('mchaturl', array(
 				'ACTION'	=> $action,
-				'URL'		=> $this->helper->route('dmzx_mchat_action_controller', array('action' => $action)),
+				'URL'		=> $this->helper->route('dmzx_mchat_action_' . $action . '_controller'),
 				'IS_LAST'	=> $i + 1 === count($actions),
 			));
 		}
 
 		$limit = $this->settings->cfg('mchat_message_num_' . $page);
 		$start = $page === 'archive' ? $this->request->variable('start', 0) : 0;
-		$rows = $this->functions->mchat_get_messages('', $limit, $start);
+		$rows = $this->functions->mchat_get_messages(array(), 0, $limit, $start);
 
 		$this->assign_global_template_data();
 		$this->assign_messages($rows);
@@ -573,14 +820,33 @@ class mchat
 		// Render pagination
 		if ($page === 'archive')
 		{
-			$archive_url = $this->helper->route('dmzx_mchat_page_controller', array('page' => 'archive'));
+			$archive_url = $this->helper->route('dmzx_mchat_page_archive_controller');
 			$total_messages = $this->functions->mchat_total_message_count();
+
+			/**
+			 * Event to modify mChat pagination on the archive page
+			 *
+			 * @event dmzx.mchat.render_page_pagination_before
+			 * @var string	archive_url		Pagination base URL
+			 * @var int		total_messages	Total number of messages
+			 * @var int		limit			Number of messages to display per page
+			 * @var int		start			The message which should be considered currently active, used to determine the page we're on
+			 * @since 2.0.0-RC6
+			 */
+			$vars = array(
+				'archive_url',
+				'total_messages',
+				'limit',
+				'start',
+			);
+			extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_pagination_before', compact($vars)));
+
 			$this->pagination->generate_template_pagination($archive_url, 'pagination', 'start', $total_messages, $limit, $start);
 			$this->template->assign_var('MCHAT_TOTAL_MESSAGES', $this->user->lang('MCHAT_TOTALMESSAGES', $total_messages));
 		}
 
 		// Render legend
-		if ($page !== 'index' && $this->settings->cfg('mchat_whois'))
+		if ($page !== 'index')
 		{
 			$legend = $this->functions->mchat_legend();
 			$this->template->assign_var('LEGEND', implode($this->user->lang('COMMA_SEPARATOR'), $legend));
@@ -593,7 +859,7 @@ class mchat
 			$this->template->assign_vars(array(
 				'MCHAT_IS_COLLAPSIBLE'	=> true,
 				'S_MCHAT_HIDDEN'		=> in_array($cc_fid, $this->cc_operator->get_user_categories()),
-					'U_MCHAT_COLLAPSE_URL'	=> $this->helper->route('phpbb_collapsiblecategories_main_controller', array(
+				'U_MCHAT_COLLAPSE_URL'	=> $this->helper->route('phpbb_collapsiblecategories_main_controller', array(
 					'forum_id'	=> $cc_fid,
 					'hash'		=> generate_link_hash('collapsible_' . $cc_fid),
 				)),
@@ -602,18 +868,24 @@ class mchat
 
 		$this->assign_authors();
 
-		if ($u_mchat_use)
+		if ($this->auth->acl_get('u_mchat_use'))
 		{
 			add_form_key('mchat');
 		}
 
 		/**
-		* Event render_helper_aft
-		*
-		* @event dmzx.mchat.core.render_helper_aft
-		* @since 0.1.2
-		*/
-		$this->dispatcher->dispatch('dmzx.mchat.core.render_helper_aft');
+		 * Event that is triggered after mChat was rendered
+		 *
+		 * @event dmzx.mchat.render_page_after
+		 * @var string	page	The page that was rendered, one of index|custom|archive
+		 * @var array	actions	Array containing URLs to actions the user is allowed to perform
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'page',
+			'actions',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_after', compact($vars)));
 	}
 
 	/**
@@ -627,7 +899,7 @@ class mchat
 		$author_names = array();
 		$author_homepages = array();
 
-		foreach ($meta['authors'] as $author)
+		foreach (array_slice($meta['authors'], 0, 2) as $author)
 		{
 			$author_names[] = $author['name'];
 			$author_homepages[] = sprintf('<a href="%1$s" title="%2$s">%2$s</a>', $author['homepage'], $author['name']);
@@ -643,22 +915,38 @@ class mchat
 	/**
 	 * Assigns common template data that is required for displaying messages
 	 */
-	protected function assign_global_template_data()
+	public function assign_global_template_data()
 	{
-		$this->template->assign_vars(array(
-			'MCHAT_ALLOW_IP'				=> $this->auth->acl_get('u_mchat_ip'),
-			'MCHAT_ALLOW_PM'				=> $this->auth->acl_get('u_mchat_pm'),
-			'MCHAT_ALLOW_LIKE'				=> $this->auth->acl_get('u_mchat_like'),
-			'MCHAT_ALLOW_QUOTE'				=> $this->auth->acl_get('u_mchat_quote'),
-			'MCHAT_ALLOW_PERMISSIONS'		=> $this->auth->acl_get('a_authusers'),
-			'MCHAT_EDIT_DELETE_LIMIT'		=> 1000 * $this->settings->cfg('mchat_edit_delete_limit'),
-			'MCHAT_EDIT_DELETE_IGNORE'		=> $this->settings->cfg('mchat_edit_delete_limit') && $this->auth->acl_get('m_'),
-			'MCHAT_RELATIVE_TIME'			=> $this->settings->cfg('mchat_relative_time'),
-			'MCHAT_USER_TIMEOUT'			=> 1000 * $this->settings->cfg('mchat_timeout'),
-			'S_MCHAT_AVATARS'				=> $this->display_avatars(),
-			'EXT_URL'						=> generate_board_url() . '/ext/dmzx/mchat/',
-			'STYLE_PATH'					=> generate_board_url() . '/styles/' . rawurlencode($this->user->style['style_path']),
-		));
+		$template_data = array(
+			'S_BBCODE_ALLOWED'			=> $this->auth->acl_get('u_mchat_bbcode') && $this->settings->cfg('allow_bbcode'),
+			'MCHAT_ALLOW_USE'			=> $this->auth->acl_get('u_mchat_use'),
+			'MCHAT_ALLOW_IP'			=> $this->auth->acl_get('u_mchat_ip'),
+			'MCHAT_ALLOW_PM'			=> $this->auth->acl_get('u_mchat_pm'),
+			'MCHAT_ALLOW_LIKE'			=> $this->auth->acl_get('u_mchat_like'),
+			'MCHAT_ALLOW_QUOTE'			=> $this->auth->acl_get('u_mchat_quote'),
+			'MCHAT_ALLOW_PERMISSIONS'	=> $this->auth->acl_get('a_authusers'),
+			'MCHAT_EDIT_DELETE_LIMIT'	=> 1000 * $this->settings->cfg('mchat_edit_delete_limit'),
+			'MCHAT_EDIT_DELETE_IGNORE'	=> $this->settings->cfg('mchat_edit_delete_limit') && ($this->auth->acl_get('u_mchat_moderator_edit') || $this->auth->acl_get('u_mchat_moderator_delete')),
+			'MCHAT_RELATIVE_TIME'		=> $this->settings->cfg('mchat_relative_time'),
+			'MCHAT_TIMEOUT'				=> 1000 * $this->settings->cfg('mchat_timeout'),
+			'S_MCHAT_AVATARS'			=> $this->display_avatars(),
+			'EXT_URL'					=> generate_board_url() . '/ext/dmzx/mchat/',
+			'STYLE_PATH'				=> generate_board_url() . '/styles/' . rawurlencode($this->user->style['style_path']),
+		);
+
+		/**
+		 * Event that allows adding global templte data for mChat
+		 *
+		 * @event dmzx.mchat.global_modify_template_data
+		 * @var array	template_data		The data that is about to be assigned to the template
+		 * @since 2.0.0-RC6
+		 */
+		$vars = array(
+			'template_data',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.global_modify_template_data', compact($vars)));
+
+		$this->template->assign_vars($template_data);
 	}
 
 	/**
@@ -676,26 +964,9 @@ class mchat
 	 *
 	 * @param array $rows
 	 */
-	protected function assign_messages($rows)
+	public function assign_messages($rows)
 	{
-		// Auth checks
-		foreach ($rows as $i => $row)
-		{
-			if ($row['forum_id'])
-			{
-				// No permission to read forum
-				if (!$this->auth->acl_get('f_read', $row['forum_id']))
-				{
-					unset($rows[$i]);
-				}
-
-				// Post is not approved and no approval permission
-				if ($row['post_visibility'] != ITEM_APPROVED && !$this->auth->acl_get('m_approve', $row['forum_id']))
-				{
-					unset($rows[$i]);
-				}
-			}
-		}
+		$rows = array_filter($rows, array($this, 'has_read_auth'));
 
 		if (!$rows)
 		{
@@ -708,13 +979,18 @@ class mchat
 			$rows = array_reverse($rows);
 		}
 
-		$foes = $this->functions->mchat_foes();
+		if ($this->foes === null)
+		{
+			$this->foes = $this->functions->mchat_foes();
+		}
 
+		// Remove template data from previous render
 		$this->template->destroy_block_vars('mchatrow');
 
 		$user_avatars = array();
 
-		foreach ($rows as $i => $row)
+		// Cache avatars
+		foreach ($rows as $row)
 		{
 			if (!isset($user_avatars[$row['user_id']]))
 			{
@@ -730,10 +1006,10 @@ class mchat
 
 		$board_url = generate_board_url() . '/';
 
-		foreach ($rows as $i => $row)
-		{
-			$message_for_edit = generate_text_for_edit($row['message'], $row['bbcode_uid'], $row['bbcode_options']);
+		$this->process_notifications($rows, $board_url);
 
+		foreach ($rows as $row)
+		{
 			$username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST'));
 
 			// Fix profile link root path by replacing relative paths with absolute board URL
@@ -742,46 +1018,198 @@ class mchat
 				$username_full = preg_replace('#(?<=href=")[\./]+?/(?=\w)#', $board_url, $username_full);
 			}
 
-			if (in_array($row['user_id'], $foes))
+			if (in_array($row['user_id'], $this->foes))
 			{
 				$row['message'] = $this->user->lang('MCHAT_FOE', $username_full);
 			}
 
 			$message_age = time() - $row['message_time'];
 			$minutes_ago = $this->get_minutes_ago($message_age);
-			$datetime = $this->user->format_date($row['message_time'], $this->settings->cfg('mchat_date'));
+			$datetime = $this->user->format_date($row['message_time'], $this->settings->cfg('mchat_date'), true);
 
 			$is_poster = $row['user_id'] != ANONYMOUS && $this->user->data['user_id'] == $row['user_id'];
 
-			$this->template->assign_block_vars('mchatrow', array(
-				'MCHAT_ALLOW_EDIT'			=> $this->auth_message('u_mchat_edit', $row['user_id'], $row['message_time']),
-				'MCHAT_ALLOW_DEL'			=> $this->auth_message('u_mchat_delete', $row['user_id'], $row['message_time']),
+			$message_for_edit = generate_text_for_edit($row['message'], $row['bbcode_uid'], $row['bbcode_options']);
+
+			$template_data = array(
+				'MCHAT_ALLOW_EDIT'			=> $this->auth_message('edit', $row['user_id'], $row['message_time']),
+				'MCHAT_ALLOW_DEL'			=> $this->auth_message('delete', $row['user_id'], $row['message_time']),
 				'MCHAT_USER_AVATAR'			=> $user_avatars[$row['user_id']],
 				'U_VIEWPROFILE'				=> $row['user_id'] != ANONYMOUS ? append_sid("{$board_url}{$this->root_path}memberlist.{$this->php_ext}", 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
 				'MCHAT_IS_POSTER'			=> $is_poster,
-				'MCHAT_PM'					=> !$is_poster && $this->settings->cfg('allow_privmsg') && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? append_sid("{$board_url}{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+				'MCHAT_IS_NOTIFICATION'		=> (bool) $row['post_id'],
+				'MCHAT_PM'					=> !$is_poster && $this->settings->cfg('allow_privmsg') && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? append_sid("{$board_url}{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;mchat_pm_quote_message=' . (int) $row['message_id'] . '&amp;u=' . $row['user_id']) : '',
 				'MCHAT_MESSAGE_EDIT'		=> $message_for_edit['text'],
 				'MCHAT_MESSAGE_ID'			=> $row['message_id'],
 				'MCHAT_USERNAME_FULL'		=> $username_full,
 				'MCHAT_USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST')),
 				'MCHAT_USERNAME_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour'], $this->user->lang('GUEST')),
 				'MCHAT_WHOIS_USER'			=> $this->user->lang('MCHAT_WHOIS_USER', $row['user_ip']),
-				'MCHAT_U_IP'				=> $this->helper->route('dmzx_mchat_page_controller', array('page' => 'whois', 'ip' => $row['user_ip'])),
-				'MCHAT_U_PERMISSIONS'		=> append_sid("{$board_url}{$this->root_path}adm/index.{$this->php_ext}" ,'i=permissions&amp;mode=setting_user_global&amp;user_id[0]=' . $row['user_id'], true, $this->user->session_id),
+				'MCHAT_U_IP'				=> $this->helper->route('dmzx_mchat_page_whois_controller', array('ip' => $row['user_ip'])),
+				'MCHAT_U_PERMISSIONS'		=> append_sid("{$board_url}{$this->root_path}adm/index.{$this->php_ext}", 'i=permissions&amp;mode=setting_user_global&amp;user_id%5B0%5D=' . $row['user_id'], true, $this->user->session_id),
 				'MCHAT_MESSAGE'				=> generate_text_for_display($row['message'], $row['bbcode_uid'], $row['bbcode_bitfield'], $row['bbcode_options']),
 				'MCHAT_TIME'				=> $minutes_ago === -1 ? $datetime : $this->user->lang('MCHAT_MINUTES_AGO', $minutes_ago),
 				'MCHAT_DATETIME'			=> $datetime,
 				'MCHAT_MINUTES_AGO'			=> $minutes_ago,
 				'MCHAT_RELATIVE_UPDATE'		=> 60 - $message_age % 60,
 				'MCHAT_MESSAGE_TIME'		=> $row['message_time'],
-				'MCHAT_EDIT_TIME'			=> $row['edit_time'],
-			));
+			);
+
+			/**
+			 * Event to modify the template data of an mChat message before it is sent to the template
+			 *
+			 * @event dmzx.mchat.message_modify_template_data
+			 * @var array	template_data		The data that is about to be assigned to the template
+			 * @var string	username_full		The link to the user profile, e.g. <a href="...">Username</a>
+			 * @var bool	is_notification		Whether or not this message is a notification
+			 * @var array	row					The raw message data as fetched from the database
+			 * @var int		message_age			The number of seconds that have passed since the message was posted
+			 * @var int		minutes_ago			The number of minutes that have passed since the message was posted, or -1
+			 * @var string	datetime			The full date in the user-specific date format
+			 * @var bool	is_poster			Whether or not the current user posted this message
+			 * @var array	message_for_edit	The data for editing the message
+			 * @since 2.0.0-RC6
+			 */
+			$vars = array(
+				'template_data',
+				'username_full',
+				'is_notification',
+				'row',
+				'message_age',
+				'minutes_ago',
+				'datetime',
+				'is_poster',
+				'message_for_edit',
+			);
+			extract($this->dispatcher->trigger_event('dmzx.mchat.message_modify_template_data', compact($vars)));
+
+			$this->template->assign_block_vars('mchatrow', $template_data);
 		}
 	}
 
 	/**
-	 * Calculates the number of minutes that have passed since the message was posted. If relative time is disabled
-	 * or the message is older than 59 minutes or we render for the archive, -1 is returned.
+	 * Returns true of the user is allowed to read the given message row
+	 *
+	 * @param array $row
+	 * @return bool
+	 */
+	protected function has_read_auth($row)
+	{
+		if ($row['forum_id'])
+		{
+			// No permission to read forum
+			if (!$this->auth->acl_get('f_read', $row['forum_id']))
+			{
+				return false;
+			}
+
+			// Post is not approved and no approval permission
+			if ($row['post_visibility'] != ITEM_APPROVED && !$this->auth->acl_get('m_approve', $row['forum_id']))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Checks the post rows for notifications and converts their language keys
+	 *
+	 * @param array $rows The rows to modify
+	 * @param string $board_url
+	 */
+	protected function process_notifications(&$rows, $board_url)
+	{
+		$notification_post_ids = array();
+
+		// All language keys of valid notifications. We need to check for them here because
+		// notifications in < 2.0.0-RC6 are plain text and don't need to be processed here.
+		$notification_lang = array(
+			'MCHAT_NEW_POST',
+			'MCHAT_NEW_QUOTE',
+			'MCHAT_NEW_EDIT',
+			'MCHAT_NEW_REPLY',
+			'MCHAT_NEW_LOGIN',
+		);
+
+		foreach ($rows as $i => $row)
+		{
+			// If post_id is 0 it's not a notification.
+			if ($row['post_id'] && in_array($row['message'], $notification_lang))
+			{
+				if ($row['forum_id'])
+				{
+					$notification_post_ids[] = $row['post_id'];
+				}
+				else
+				{
+					$rows[$i] = $this->process_notification($row, $board_url);
+				}
+			}
+		}
+
+		$notification_post_data = $this->functions->mchat_get_post_data($notification_post_ids);
+
+		if ($notification_post_data)
+		{
+			foreach ($rows as $i => $row)
+			{
+				if (in_array($row['post_id'], $notification_post_ids))
+				{
+					$rows[$i] = $this->process_notification($row, $board_url, $notification_post_data[$row['post_id']]);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Converts the message field of the post row so that it can be passed to generate_text_for_display()
+	 *
+	 * @param array $row
+	 * @param string $board_url
+	 * @param array $post_data
+	 * @return array
+	 */
+	protected function process_notification($row, $board_url, $post_data = null)
+	{
+		$args = array($row['message']);
+
+		// If forum_id is 0 it's a login notification.
+		// If forum_id is not 0 it's a post notification, we need to fetch forum name and post subject.
+		if ($row['forum_id'])
+		{
+			$viewtopic_url = append_sid($board_url . 'viewtopic.' . $this->php_ext, array(
+				'p' => $row['post_id'],
+				'#' => 'p' . $row['post_id'],
+			));
+
+			$viewforum_url = append_sid($board_url . 'viewforum.' . $this->php_ext, array(
+				'f' => $row['forum_id'],
+			));
+
+			$args[] = '[url=' . $viewtopic_url . ']' . $post_data['post_subject'] . '[/url]';
+			$args[] = '[url=' . $viewforum_url . ']' . $post_data['forum_name'] . '[/url]';
+		}
+		else if ($row['post_id'] == functions::LOGIN_HIDDEN)
+		{
+			$row['username'] = '<em>' . $row['username'] . '</em>';
+		}
+
+		$row['message'] = call_user_func_array(array($this->user, 'lang'), $args);
+
+		// Quick'n'dirty check if BBCodes are in the message
+		if (strpos($row['message'], '[') !== false)
+		{
+			generate_text_for_storage($row['message'], $row['bbcode_uid'], $row['bbcode_bitfield'], $row['bbcode_options'], true, true, true);
+		}
+
+		return $row;
+	}
+
+	/**
+	 * Calculates the number of minutes that have passed since the message was posted.
+	 * If relative time is disabled or the message is older than 59 minutes, -1 is returned.
 	 *
 	 * @param int $message_age
 	 * @return int
@@ -852,7 +1280,7 @@ class mchat
 				$this->template->assign_var($option['template_var'], !$is_disallowed);
 			}
 
-			$this->template->assign_var('A_MCHAT_DISALLOWED_BBCODES', addslashes(str_replace('=', '-', $this->settings->cfg('mchat_bbcode_disallowed'))));
+			$this->template->assign_var('A_MCHAT_DISALLOWED_BBCODES', addslashes($this->settings->cfg('mchat_bbcode_disallowed')));
 
 			if (!function_exists('display_custom_bbcodes'))
 			{
@@ -908,14 +1336,58 @@ class mchat
 		return $sql_ary;
 	}
 
-	/** Inserts a message with posting information into the database
+	/**
+	 * Inserts a message with posting information into the database
 	 *
-	 * @param string $mode One of post|quote|edit|reply
-	 * @param $data The post data
+	 * @param string $mode One of post|quote|edit|reply|login
+	 * @param int $forum_id Can be 0 if mode is login.
+	 * @param int $post_id Can be 0 if mode is login.
 	 */
-	public function insert_posting($mode, $data)
+	public function insert_posting($mode, $forum_id = 0, $post_id = 0)
 	{
-		$this->functions->mchat_insert_posting($mode, $data);
+		$is_hidden_login = $this->request->is_set_post('viewonline') || !$this->user->data['user_allow_viewonline'];
+		$this->functions->mchat_insert_posting($mode, $forum_id, $post_id, $is_hidden_login);
+	}
+
+	/**
+	 * Fetches the message text of the given ID, quotes it using the current user name and assigns it to the template
+	 *
+	 * @param int $mchat_message_id
+	 */
+	public function quote_message_text($mchat_message_id)
+	{
+		if (!$this->auth->acl_get('u_mchat_view'))
+		{
+			return;
+		}
+
+		$rows = $this->functions->mchat_get_messages($mchat_message_id);
+		$row = reset($rows);
+
+		if (!$row || !$this->has_read_auth($row))
+		{
+			return;
+		}
+
+		if ($row['post_id'])
+		{
+			$rows = array($row);
+			$this->process_notifications($rows, generate_board_url() . '/');
+			$row = reset($rows);
+		}
+
+		$message_for_edit = generate_text_for_edit($row['message'], $row['bbcode_uid'], $row['bbcode_options']);
+		$message = '[quote=&quot;' . $row['username'] . '&quot;]' . $message_for_edit['text'] . "[/quote]\n";
+
+		$this->template->assign_var('MESSAGE', $message);
+	}
+
+	/**
+	 * Remove expired sessions from the database
+	 */
+	public function session_gc()
+	{
+		$this->functions->mchat_session_gc();
 	}
 
 	/**
@@ -923,14 +1395,18 @@ class mchat
 	 */
 	protected function assign_whois()
 	{
-		if ($this->settings->cfg('mchat_whois') || $this->settings->cfg('mchat_stats_index') && $this->settings->cfg('mchat_stats_index'))
+		if ($this->settings->cfg('mchat_whois_index') || $this->settings->cfg('mchat_stats_index'))
 		{
-			$mchat_stats = $this->functions->mchat_active_users();
+			if ($this->active_users === null)
+			{
+				$this->active_users = $this->functions->mchat_active_users();
+			}
+
 			$this->template->assign_vars(array(
-				'MCHAT_STATS_INDEX'		=> $this->settings->cfg('mchat_stats_index') && $this->settings->cfg('mchat_stats_index'),
-				'MCHAT_USERS_COUNT'		=> $mchat_stats['mchat_users_count'],
-				'MCHAT_USERS_LIST'		=> $mchat_stats['online_userlist'] ?: '',
-				'MCHAT_ONLINE_EXPLAIN'	=> $mchat_stats['refresh_message'],
+				'MCHAT_STATS_INDEX'		=> $this->settings->cfg('mchat_stats_index'),
+				'MCHAT_USERS_TOTAL'		=> $this->active_users['users_total'],
+				'MCHAT_USERS_LIST'		=> $this->active_users['online_userlist'] ?: '',
+				'MCHAT_ONLINE_EXPLAIN'	=> $this->active_users['refresh_message'],
 			));
 		}
 	}
@@ -938,66 +1414,59 @@ class mchat
 	/**
 	 * Checks whether an author has edit or delete permissions for a message
 	 *
-	 * @param string $permission One of u_mchat_edit|u_mchat_delete
+	 * @param string $mode One of edit|delete
 	 * @param int $author_id The user id of the message
 	 * @param int $message_time The message created time
 	 * @return bool
 	 */
-	protected function auth_message($permission, $author_id, $message_time)
+	protected function auth_message($mode, $author_id, $message_time)
 	{
-		if (!$this->auth->acl_get($permission))
-		{
-			return false;
-		}
-
-		if ($this->auth->acl_get('m_'))
+		if ($this->auth->acl_get('u_mchat_moderator_' . $mode))
 		{
 			return true;
 		}
 
-		$can_edit_delete = !$this->settings->cfg('mchat_edit_delete_limit') || $message_time >= time() - $this->settings->cfg('mchat_edit_delete_limit');
-		return $can_edit_delete && $this->user->data['user_id'] == $author_id && $this->user->data['is_registered'];
+		if (!$this->user->data['is_registered'] || $this->user->data['user_id'] != $author_id || !$this->auth->acl_get('u_mchat_' . $mode))
+		{
+			return false;
+		}
+
+		return !$this->settings->cfg('mchat_edit_delete_limit') || $message_time >= time() - $this->settings->cfg('mchat_edit_delete_limit');
 	}
 
 	/**
-	 * Performs bound checks on the message and returns an array containing the message,
-	 * BBCode options and additional data ready to be sent to the database
+	 * Performs bound checks on the message and returns an array containing the message
+	 * and BBCode options ready to be sent to the database
 	 *
 	 * @param string $message
-	 * @param array $merge_ary
 	 * @return array
 	 */
-	protected function process_message($message, $merge_ary)
+	protected function process_message($message)
 	{
 		// Must have something other than bbcode in the message
-		$message_chars = trim(preg_replace('#\[/?[^\[\]]+\]#mi', '', $message));
-		if (!utf8_strlen($message_chars))
+		$message_without_bbcode = trim(preg_replace('#\[\/?[^\[\]]+\]#m', '', $message));
+		if (!utf8_strlen($message_without_bbcode))
 		{
-			throw new \phpbb\exception\http_exception(501, 'MCHAT_NOACCESS');
+			throw new http_exception(400, 'MCHAT_NOMESSAGEINPUT');
 		}
 
 		// Must not exceed character limit
 		if ($this->settings->cfg('mchat_max_message_lngth'))
 		{
-			if (utf8_strlen($message_chars) > $this->settings->cfg('mchat_max_message_lngth'))
+			if (utf8_strlen($message) > $this->settings->cfg('mchat_max_message_lngth'))
 			{
-				throw new \phpbb\exception\http_exception(413, 'MCHAT_MESS_LONG', array($this->settings->cfg('mchat_max_message_lngth')));
+				throw new http_exception(400, 'MCHAT_MESS_LONG', array($this->settings->cfg('mchat_max_message_lngth')));
 			}
 		}
 
-		$cfg_min_post_chars = $this->settings->cfg('min_post_chars');
-		$cfg_max_post_smilies = $this->settings->cfg('max_post_smilies');
-
-		// We override the $this->settings->cfg('min_post_chars') entry?
 		if ($this->settings->cfg('mchat_override_min_post_chars'))
 		{
-			$this->settings->set_cfg('min_post_chars', 0);
+			$this->settings->set_cfg('min_post_chars', 0, true);
 		}
 
-		// We do the same for the max number of smilies?
 		if ($this->settings->cfg('mchat_override_smilie_limit'))
 		{
-			$this->settings->cfg('max_post_smilies', 0);
+			$this->settings->set_cfg('max_post_smilies', 0, true);
 		}
 
 		$mchat_bbcode	= $this->settings->cfg('allow_bbcode') && $this->auth->acl_get('u_mchat_bbcode');
@@ -1018,23 +1487,19 @@ class mchat
 		if ($this->settings->cfg('mchat_bbcode_disallowed'))
 		{
 			$bbcode_replace = array(
-				'#\[(' . $this->settings->cfg('mchat_bbcode_disallowed') . ')[^\[\]]+\]#Usi',
-				'#\[/(' . $this->settings->cfg('mchat_bbcode_disallowed') . ')[^\[\]]+\]#Usi',
+				'#\[(' . str_replace('*', '\*', $this->settings->cfg('mchat_bbcode_disallowed')) . ')[^\[\]]+\]#Usi',
+				'#\[/(' . str_replace('*', '\*', $this->settings->cfg('mchat_bbcode_disallowed')) . ')[^\[\]]+\]#Usi',
 			);
 
 			$message = preg_replace($bbcode_replace, '', $message);
 		}
 
-		// Reset the config settings
-		$this->settings->set_cfg('min_post_chars', $cfg_min_post_chars);
-		$this->settings->set_cfg('max_post_smilies', $cfg_max_post_smilies);
-
-		return array_merge($merge_ary, array(
+		return array(
 			'message'			=> str_replace("'", '&#39;', $message),
 			'bbcode_bitfield'	=> $bitfield,
 			'bbcode_uid'		=> $uid,
 			'bbcode_options'	=> $options,
-		));
+		);
 	}
 
 	/**
@@ -1043,7 +1508,7 @@ class mchat
 	 * @param string $template_file
 	 * @return string
 	 */
-	protected function render_template($template_file)
+	public function render_template($template_file)
 	{
 		$this->template->set_filenames(array('body' => $template_file));
 		$content = $this->template->assign_display('body', '', true);

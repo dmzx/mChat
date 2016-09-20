@@ -65,7 +65,3 @@
 	left: auto;
 	right: 8px;
 }
-
-.mchat-button:before {
-	background-image: url("./images/message_icons.png");
-}

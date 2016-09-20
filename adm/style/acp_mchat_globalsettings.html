@@ -49,6 +49,11 @@
 			<dd><label><input type="radio" class="radio" name="mchat_navbar_link" value="1"<!-- IF MCHAT_NAVBAR_LINK --> id="mchat_navbar_link" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 				<label><input type="radio" class="radio" name="mchat_navbar_link" value="0"<!-- IF not MCHAT_NAVBAR_LINK --> id="mchat_navbar_link" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 		</dl>
+		<dl>
+			<dt><label for="mchat_navbar_link_count">{L_MCHAT_NAVBAR_LINK_COUNT}{L_COLON}</label></dt>
+			<dd><label><input type="radio" class="radio" name="mchat_navbar_link_count" value="1"<!-- IF MCHAT_NAVBAR_LINK_COUNT --> id="mchat_navbar_link_count" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="mchat_navbar_link_count" value="0"<!-- IF not MCHAT_NAVBAR_LINK_COUNT --> id="mchat_navbar_link_count" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
 	</fieldset>
 	<fieldset>
 		<legend>{L_MCHAT_SETTINGS_ARCHIVE}</legend>
@@ -61,7 +66,7 @@
 	<fieldset>
 		<legend>{L_MCHAT_SETTINGS_MESSAGES}</legend>
 		<dl>
-			<dt><label for="mchat_timeout">{L_MCHAT_USER_TIMEOUT}{L_COLON}</label><br />
+			<dt><label for="mchat_timeout">{L_MCHAT_TIMEOUT}{L_COLON}</label><br />
 				<span>{L_MCHAT_TIMEOUT_EXPLAIN}</span></dt>
 			<dd><input type="text" name="mchat_timeout" id="mchat_timeout" size="10" maxlength="4" value="{MCHAT_TIMEOUT}" /></dd>
 		</dl>
@@ -115,7 +120,7 @@
 		</dl>
 		<dl>
 			<dt><label for="mchat_static_message">{L_MCHAT_STATIC_MESSAGE}{L_COLON}</label><br />
-			<span>{L_MCHAT_STATIC_MESSAGE_EXPLAIN}</span></dt>
+				<span>{L_MCHAT_STATIC_MESSAGE_EXPLAIN}</span></dt>
 			<dd><textarea name="mchat_static_message" id="mchat_static_message" rows="5" cols="40">{MCHAT_STATIC_MESSAGE}</textarea></dd>
 		</dl>
 	</fieldset>
@@ -149,15 +154,23 @@
 				<label><input type="radio" name="mchat_posts_quote" value="0"<!-- IF not MCHAT_POSTS_QUOTE --> id="mchat_posts_quote" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 			</dd>
 		</dl>
+		<dl>
+			<dt><label for="mchat_posts_login">{L_MCHAT_POSTS_LOGIN}{L_COLON}</label></dt>
+			<dd>
+				<label><input type="radio" name="mchat_posts_login" value="1"<!-- IF MCHAT_POSTS_LOGIN --> id="mchat_posts_login" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" name="mchat_posts_login" value="0"<!-- IF not MCHAT_POSTS_LOGIN --> id="mchat_posts_login" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+			</dd>
+		</dl>
 	</fieldset>
 	<fieldset>
 		<legend>{L_MCHAT_SETTINGS_STATS}</legend>
 		<dl>
 			<dt><label for="mchat_whois_refresh">{L_MCHAT_WHOIS_REFRESH}{L_COLON}</label><br />
-			<span>{L_MCHAT_WHOIS_REFRESH_EXPLAIN}</span></dt>
+				<span>{L_MCHAT_WHOIS_REFRESH_EXPLAIN}</span></dt>
 			<dd><input type="text" name="mchat_whois_refresh" id="mchat_whois_refresh" size="10" value="{MCHAT_WHOIS_REFRESH}" /></dd>
 		</dl>
 	</fieldset>
+	<!-- IF MCHAT_FOUNDER -->
 	<fieldset>
 		<legend>{L_MCHAT_SETTINGS_PRUNE}</legend>
 		<dl>
@@ -167,10 +180,19 @@
 				<label><input type="radio" class="radio" name="mchat_prune" value="0"<!-- IF not MCHAT_PRUNE --> id="mchat_prune" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_prune_num">{L_MCHAT_PRUNE_NUM}{L_COLON}</label></dt>
+			<dt><label for="mchat_prune_num">{L_MCHAT_PRUNE_NUM}{L_COLON}</label><br />
+				<span>{L_MCHAT_PRUNE_NUM_EXPLAIN}</span></dt>
 			<dd><input type="text" name="mchat_prune_num" size="10" id="mchat_prune_num" value="{MCHAT_PRUNE_NUM}" /></dd>
 		</dl>
-		<!-- IF MCHAT_FOUNDER -->
+		<dl>
+			<dt><label for="mchat_prune_now">{L_MCHAT_PRUNE_NOW}{L_COLON}</label></dt>
+			<dd>
+				<input class="button1" type="submit" id="mchat_prune_now" name="mchat_prune_now" value="{L_MCHAT_PRUNE_NOW}" />
+				<label>{L_MCHAT_PRUNE_NOW_CONFIRM}{L_COLON}</label>
+				<label><input type="radio" name="mchat_prune_now_confirm" value="1" /> {L_YES}</label>
+				<label><input type="radio" name="mchat_prune_now_confirm" value="0" id="mchat_prune_now_confirm" checked="checked" /> {L_NO}</label>
+			</dd>
+		</dl>
 		<dl>
 			<dt><label for="mchat_purge">{L_MCHAT_PURGE}{L_COLON}</label></dt>
 			<dd>
@@ -180,12 +202,12 @@
 				<label><input type="radio" name="mchat_purge_confirm" value="0" id="mchat_purge_confirm" checked="checked" /> {L_NO}</label>
 			</dd>
 		</dl>
-		<!-- ENDIF -->
 	</fieldset>
+	<!-- ENDIF -->
 	<!-- EVENT acp_dmzx_mchat_globalsettings_after -->
 	<p class="submit-buttons">
-			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
 		{S_FORM_TOKEN}
 	</p>
 </form>

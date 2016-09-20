@@ -11,6 +11,7 @@
 
 namespace dmzx\mchat\event;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class acp_listener implements EventSubscriberInterface
@@ -66,11 +67,16 @@ class acp_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function permissions($event)
 	{
-		$mchat_permissions = array();
+		$ucp_configs = array();
+
+		foreach (array_keys($this->settings->ucp) as $config_name)
+		{
+			$ucp_configs[] = 'u_' . $config_name;
+		}
 
 		$permission_categories = array(
 			'mchat' => array(
@@ -78,6 +84,8 @@ class acp_listener implements EventSubscriberInterface
 				'u_mchat_view',
 				'u_mchat_edit',
 				'u_mchat_delete',
+				'u_mchat_moderator_edit',
+				'u_mchat_moderator_delete',
 				'u_mchat_ip',
 				'u_mchat_pm',
 				'u_mchat_like',
@@ -89,8 +97,10 @@ class acp_listener implements EventSubscriberInterface
 				'u_mchat_urls',
 				'a_mchat',
 			),
-			'mchat_user_config' => array_map(function($key) { return 'u_' . $key; }, array_keys($this->settings->ucp)),
+			'mchat_user_config' => $ucp_configs,
 		);
+
+		$mchat_permissions = array();
 
 		foreach ($permission_categories as $cat => $permissions)
 		{
@@ -107,12 +117,12 @@ class acp_listener implements EventSubscriberInterface
 
 		$event['categories'] = array_merge($event['categories'], array(
 			'mchat'				=> 'ACP_CAT_MCHAT',
-			'mchat_user_config'	=> 'ACP_CAT_MCHAT_USER_CONFIG'
+			'mchat_user_config'	=> 'ACP_CAT_MCHAT_USER_CONFIG',
 		));
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function acp_users_prefs_modify_sql($event)
 	{
@@ -150,7 +160,7 @@ class acp_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function acp_users_prefs_modify_template_data($event)
 	{

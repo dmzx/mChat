@@ -16,16 +16,17 @@
 	width: 0;
 }
 
+#mchat-body {
+	overflow: hidden;
+	width: 100%;
+}
+
 .icon-mchat {
 	background-image: url("./images/icon_mchat.png");
 }
 
 .mchat-ucp fieldset hr:first-child, .mchat-ucp fieldset hr:last-child, .mchat-ucp fieldset hr + hr {
 	display: none;
-}
-
-#mchat-body {
-	width: 100% !important;
 }
 
 #mchat-confirm textarea {
@@ -35,7 +36,6 @@
 
 #mchat-messages {
 	overflow: auto;
-	width: 100%;
 }
 
 .mchat-message-wrapper {
@@ -59,8 +59,17 @@
 
 @media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
 
+	#mchat-body {
+		overflow: visible;
+	}
+
 	.mchat-buttons > li {
-		padding: 0 8px !important;
+		padding: 0 6px !important;
+	}
+
+	#mchat-input {
+		width: 95% !important;
+		margin: 5px 0 !important;
 	}
 
 }
@@ -69,38 +78,34 @@
 	display: block;
 }
 
-.mchat-message .mchat-buttons li {
+.mchat-wrapper .mchat-buttons li {
 	opacity: .3;
 }
 
-.mchat-message:hover .mchat-buttons li {
+.mchat-wrapper li:hover .mchat-buttons li {
 	opacity: .6;
 }
 
-.mchat-message .mchat-buttons li:hover {
+.mchat-wrapper li:hover .mchat-buttons li:hover {
 	opacity: 1;
 }
 
-.mchat-buttons {
+.mchat-wrapper .mchat-buttons {
 	float: right;
 	list-style: none;
 	margin-top: 1px;
 }
 
-.mchat-message-wrapper .mchat-buttons > li {
+.mchat-wrapper .mchat-buttons > li {
 	float: left;
 	margin: 0 3px;
 }
 
-.mchat-button {
-	margin-left: 3px;
-}
-
-.mchat-button.fa {
+.mchat-wrapper .mchat-buttons .fa {
 	font-size: 12pt;
 }
 
-.mchat-button span {
+.mchat-wrapper .mchat-buttons span {
 	display: block;
 	height: 0;
 	overflow: hidden;
@@ -108,9 +113,16 @@
 	width: 1px;
 }
 
+.mchat-icons-black .mchat-icon:before {
+	background-image: url("./images/message_icons_black.png");
+}
+
+.mchat-icons-white .mchat-icon:before {
+	background-image: url("./images/message_icons_white.png");
+}
+
 .mchat-icon:before {
 	content: '';
-	background-image: url("./images/message_icons.png");
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -118,20 +130,24 @@
 	float: right;
 }
 
-.mchat-icon-mention:before      { background-position: -2px -2px; }
-.mchat-icon-edit:before         { background-position: -22px -2px; }
-.mchat-icon-pm:before           { background-position: -42px -2px; }
-.mchat-icon-quote:before        { background-position: -62px -2px; }
-.mchat-icon-like:before         { background-position: -82px -2px; }
-.mchat-icon-delete:before       { background-position: -102px -2px; }
-.mchat-icon-permissions:before  { background-position: -122px -2px; }
-.mchat-icon-ip:before           { background-position: -142px -2px; }
+.mchat-icon-mention:before		{ background-position: -2px -2px; }
+.mchat-icon-edit:before			{ background-position: -22px -2px; }
+.mchat-icon-pm:before			{ background-position: -42px -2px; }
+.mchat-icon-quote:before		{ background-position: -62px -2px; }
+.mchat-icon-like:before			{ background-position: -82px -2px; }
+.mchat-icon-delete:before		{ background-position: -102px -2px; }
+.mchat-icon-permissions:before	{ background-position: -122px -2px; }
+.mchat-icon-ip:before			{ background-position: -142px -2px; }
 
 .mchat-text {
 	clear: both;
 	overflow: hidden;
 	padding: 2px 5px;
 	font-size: 1.2em;
+}
+
+.mchat-notification-message .mchat-text {
+	font-style: italic;
 }
 
 .mchat-text strong {
@@ -160,12 +176,8 @@
 	list-style-type: circle;
 }
 
-.mchat-text blockquote {
-	margin-bottom: 5px;
-}
-
 .mchat-text blockquote, .mchat-text .codebox, .mchat-text ul, .mchat-text ol {
-	margin-top: 5px;
+	margin-bottom: 5px;
 	margin-left: 1em;
 }
 
@@ -185,8 +197,11 @@
 
 #mchat-character-count {
 	float: right;
-	visibility: hidden;
 	padding: 5px 0 0;
+}
+
+#mchat-character-count.hidden {
+	visibility: hidden;
 }
 
 #mchat-panel {
@@ -205,9 +220,15 @@
 #mchat-input {
 	cursor: text;
 	width: 50%;
+	min-width: 50%;
+	max-width: 90%;
 	font-size: 1.1em;
 	padding: 5px 5px 4px;
 	margin: 5px 20px;
+}
+
+textarea#mchat-input {
+	height: 8em;
 }
 
 #mchat-buttons {
@@ -229,6 +250,10 @@
 
 #mchat-bbcodes #colour_palette table {
 	margin: 0 auto 5px;
+}
+
+#mchat-bbcodes #colour_palette td a.remember-color {
+	box-shadow: 0 0 0 1px #F00;
 }
 
 #mchat-smilies {
@@ -288,6 +313,20 @@
 	background-image: url("./images/paused.gif");
 }
 
+.mchat-footer li {
+	display: inline;
+	padding-left: .1em;
+	white-space: nowrap;
+}
+
+.mchat-footer li:before {
+	content: '\2022\A';
+}
+
+.mchat-footer li:first-child:before, .mchat-footer li:last-child:before {
+	content: '';
+}
+
 #mchat-legend {
 	clear: both;
 }
@@ -342,5 +381,5 @@
 }
 
 .hidden-category + .forabg #mchat-body .topiclist.forums {
-    display: block;
+	display: block;
 }

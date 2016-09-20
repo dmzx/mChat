@@ -11,6 +11,7 @@
 
 namespace dmzx\mchat\event;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class main_listener implements EventSubscriberInterface
@@ -24,6 +25,9 @@ class main_listener implements EventSubscriberInterface
 	/** @var \phpbb\user */
 	protected $user;
 
+	/** @var \phpbb\request\request */
+	protected $request;
+
 	/** @var string */
 	protected $php_ext;
 
@@ -33,14 +37,16 @@ class main_listener implements EventSubscriberInterface
 	 * @param \dmzx\mchat\core\mchat	$mchat
 	 * @param \phpbb\controller\helper	$helper
 	 * @param \phpbb\user				$user
+	 * @param \phpbb\request\request	$request
 	 * @param string					$php_ext
 	 */
-	public function __construct(\dmzx\mchat\core\mchat $mchat, \phpbb\controller\helper $helper, \phpbb\user $user, $php_ext)
+	public function __construct(\dmzx\mchat\core\mchat $mchat, \phpbb\controller\helper $helper, \phpbb\user $user, \phpbb\request\request $request, $php_ext)
 	{
-		$this->mchat		= $mchat;
-		$this->helper		= $helper;
-		$this->user			= $user;
-		$this->php_ext		= $php_ext;
+		$this->mchat	= $mchat;
+		$this->helper	= $helper;
+		$this->user		= $user;
+		$this->request	= $request;
+		$this->php_ext	= $php_ext;
 	}
 
 	/**
@@ -53,26 +59,28 @@ class main_listener implements EventSubscriberInterface
 			'core.user_setup'							=> 'load_language_on_setup',
 			'core.page_header'							=> 'add_page_header_link',
 			'core.index_modify_page_title'				=> 'display_mchat_on_index',
-			'core.posting_modify_submit_post_after'		=> 'posting_modify_submit_post_after',
-			'core.display_custom_bbcodes_modify_sql'	=> 'display_custom_bbcodes_modify_sql',
+			'core.submit_post_end'						=> 'insert_posting',
+			'core.display_custom_bbcodes_modify_sql'	=> array(array('remove_disallowed_bbcodes'), array('pm_compose_add_quote')),
 			'core.user_add_modify_data'					=> 'user_registration_set_default_values',
+			'core.login_box_redirect'					=> 'user_login_success',
+			'core.session_gc_after'						=> 'session_gc',
 		);
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function add_page_viewonline($event)
 	{
 		if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/mchat') === 0)
 		{
 			$event['location'] = $this->user->lang('MCHAT_TITLE');
-			$event['location_url'] = $this->helper->route('dmzx_mchat_controller');
+			$event['location_url'] = $this->helper->route('dmzx_mchat_page_custom_controller');
 		}
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function load_language_on_setup($event)
 	{
@@ -87,7 +95,7 @@ class main_listener implements EventSubscriberInterface
 	/**
 	 * Create a URL to the mchat controller file for the header linklist
 	 *
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function add_page_header_link($event)
 	{
@@ -97,7 +105,7 @@ class main_listener implements EventSubscriberInterface
 	/**
 	 * Check if mchat should be displayed on index.
 	 *
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function display_mchat_on_index($event)
 	{
@@ -105,31 +113,58 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
-	public function posting_modify_submit_post_after($event)
+	public function insert_posting($event)
 	{
-		$this->mchat->insert_posting($event['mode'], array(
-			'forum_id'		=> $event['forum_id'],
-			'forum_name'	=> $event['post_data']['forum_name'],
-			'post_id'		=> $event['data']['post_id'],
-			'post_subject'	=> $event['post_data']['post_subject'],
-		));
+		$this->mchat->insert_posting($event['mode'], $event['data']['forum_id'], $event['data']['post_id']);
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
-	public function display_custom_bbcodes_modify_sql($event)
+	public function remove_disallowed_bbcodes($event)
 	{
 		$event['sql_ary'] = $this->mchat->remove_disallowed_bbcodes($event['sql_ary']);
 	}
 
 	/**
-	 * @param object $event The event object
+	 * @param Event $event
 	 */
 	public function user_registration_set_default_values($event)
 	{
 		$event['sql_ary'] = $this->mchat->set_user_default_values($event['sql_ary']);
+	}
+
+	/**
+	 * @param Event $event
+	 */
+	public function user_login_success($event)
+	{
+		if (!$event['admin'])
+		{
+			$this->mchat->insert_posting('login');
+		}
+	}
+
+	/**
+	 * @param Event $event
+	 */
+	public function pm_compose_add_quote($event)
+	{
+		$mchat_message_id = $this->request->variable('mchat_pm_quote_message', 0);
+
+		if ($mchat_message_id)
+		{
+			$this->mchat->quote_message_text($mchat_message_id);
+		}
+	}
+
+	/**
+	 * @param Event $event
+	 */
+	public function session_gc($event)
+	{
+		$this->mchat->session_gc();
 	}
 }

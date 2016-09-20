@@ -13,48 +13,59 @@ namespace dmzx\mchat\migrations;
 
 class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 {
-	/** @var array */
-	protected $mchat_config = null;
-
 	static public function depends_on()
 	{
 		return array('\phpbb\db\migration\data\v31x\v317pl1');
 	}
 
-	protected function get_config()
-	{
-		if ($this->mchat_config == null)
-		{
-			$yml_config_file = $this->phpbb_root_path . '/ext/dmzx/mchat/config/config_2_0_0.yml';
-			$yml_data = \Symfony\Component\Yaml\Yaml::parse($yml_config_file);
-			$this->mchat_config = $yml_data['parameters'];
-		}
-
-		return $this->mchat_config;
-	}
-
 	public function update_data()
 	{
-		$config = $this->get_config();
-		$update_data = array();
-
-		// Add configs
-		foreach (array('dmzx.mchat.config_global', 'dmzx.mchat.config_ucp') as $section)
-		{
-			foreach ($config[$section] as $key => $value)
-			{
-				$update_data[] = array('config.add', array($key, $value['default']));
-			}
-		}
-
-		// Add user permissions for customizing config values
-		foreach ($config['dmzx.mchat.config_ucp'] as $key => $value)
-		{
-			$update_data[] = array('permission.add', array('u_' . $key, true));
-		}
-
-		return array_merge($update_data, array(
+		return array(
 			array('config.add', array('mchat_version', '2.0.0-RC3')),
+
+			// Add global configs
+			array('config.add', array('mchat_bbcode_disallowed', '')),
+			array('config.add', array('mchat_custom_height', 350)),
+			array('config.add', array('mchat_custom_page', 1)),
+			array('config.add', array('mchat_edit_delete_limit', 0)),
+			array('config.add', array('mchat_flood_time', 0)),
+			array('config.add', array('mchat_index_height', 250)),
+			array('config.add', array('mchat_live_updates', 1)),
+			array('config.add', array('mchat_max_message_lngth', 500)),
+			array('config.add', array('mchat_message_num_archive', 25)),
+			array('config.add', array('mchat_message_num_custom', 10)),
+			array('config.add', array('mchat_message_num_index', 10)),
+			array('config.add', array('mchat_navbar_link', 1)),
+			array('config.add', array('mchat_override_min_post_chars', 0)),
+			array('config.add', array('mchat_override_smilie_limit', 0)),
+			array('config.add', array('mchat_posts_edit', 0)),
+			array('config.add', array('mchat_posts_quote', 0)),
+			array('config.add', array('mchat_posts_reply', 0)),
+			array('config.add', array('mchat_posts_topic', 0)),
+			array('config.add', array('mchat_prune', 0)),
+			array('config.add', array('mchat_prune_num', '0')),
+			array('config.add', array('mchat_refresh', 10)),
+			array('config.add', array('mchat_rules', '')),
+			array('config.add', array('mchat_static_message', '')),
+			array('config.add', array('mchat_timeout', 0)),
+			array('config.add', array('mchat_whois', 1)),
+			array('config.add', array('mchat_whois_refresh', 60)),
+
+			// Add global user configs
+			array('config.add', array('mchat_avatars', 1)),
+			array('config.add', array('mchat_capital_letter', 1)),
+			array('config.add', array('mchat_character_count', 1)),
+			array('config.add', array('mchat_date', 'D M d, Y g:i a')),
+			array('config.add', array('mchat_index', 1)),
+			array('config.add', array('mchat_input_area', 1)),
+			array('config.add', array('mchat_location', 1)),
+			array('config.add', array('mchat_message_top', 1)),
+			array('config.add', array('mchat_pause_on_input', 0)),
+			array('config.add', array('mchat_posts', 1)),
+			array('config.add', array('mchat_relative_time', 1)),
+			array('config.add', array('mchat_sound', 1)),
+			array('config.add', array('mchat_stats_index', 0)),
+			array('config.add', array('mchat_whois_index', 1)),
 
 			// Add user permissions
 			array('permission.add', array('u_mchat_use', true)),
@@ -70,6 +81,22 @@ class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 			array('permission.add', array('u_mchat_bbcode', true)),
 			array('permission.add', array('u_mchat_smilies', true)),
 			array('permission.add', array('u_mchat_urls', true)),
+
+			// Add user permissions for customizing config values
+			array('permission.add', array('u_mchat_avatars', true)),
+			array('permission.add', array('u_mchat_capital_letter', true)),
+			array('permission.add', array('u_mchat_character_count', true)),
+			array('permission.add', array('u_mchat_date', true)),
+			array('permission.add', array('u_mchat_index', true)),
+			array('permission.add', array('u_mchat_input_area', true)),
+			array('permission.add', array('u_mchat_location', true)),
+			array('permission.add', array('u_mchat_message_top', true)),
+			array('permission.add', array('u_mchat_pause_on_input', true)),
+			array('permission.add', array('u_mchat_posts', true)),
+			array('permission.add', array('u_mchat_relative_time', true)),
+			array('permission.add', array('u_mchat_sound', true)),
+			array('permission.add', array('u_mchat_stats_index', true)),
+			array('permission.add', array('u_mchat_whois_index', true)),
 
 			// Add admin permissions
 			array('permission.add', array('a_mchat', true)),
@@ -129,22 +156,14 @@ class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 				'UCP_MCHAT_CONFIG',
 				array('module_basename' => '\dmzx\mchat\ucp\ucp_mchat_module'),
 			)),
-		));
+		);
 	}
 
 	public function update_schema()
 	{
-		$config = $this->get_config();
-		$user_columns = array();
-
-		foreach ($config['dmzx.mchat.config_ucp'] as $key => $value)
-		{
-			$user_columns['user_' . $key] = array($value['type'], $value['default']);
-		}
-
 		return array(
-			'add_tables'	=> array(
-				$this->table_prefix . 'mchat'	=> array(
+			'add_tables' => array(
+				$this->table_prefix . 'mchat' => array(
 					'COLUMNS'		=> array(
 						'message_id'			=> array('UINT', null, 'auto_increment'),
 						'user_id'				=> array('UINT', 0),
@@ -163,7 +182,7 @@ class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 
 				$this->table_prefix . 'mchat_deleted_messages'	=> array(
 					'COLUMNS'		=> array(
-						'message_id'			=> array('UINT', null),
+						'message_id'			=> array('UINT', 0),
 					),
 					'PRIMARY_KEY'	=> 'message_id',
 				),
@@ -178,31 +197,53 @@ class mchat_2_0_0_rc3 extends \phpbb\db\migration\migration
 				),
 			),
 
-			'add_columns'	=> array(
-				$this->table_prefix . 'users' => $user_columns,
+			'add_columns' => array(
+				$this->table_prefix . 'users' => array(
+					'user_mchat_avatars'			=> array('BOOL', 1),
+					'user_mchat_capital_letter'		=> array('BOOL', 1),
+					'user_mchat_character_count'	=> array('BOOL', 1),
+					'user_mchat_date'				=> array('VCHAR:64', 'D M d, Y g:i a'),
+					'user_mchat_index'				=> array('BOOL', 1),
+					'user_mchat_input_area'			=> array('BOOL', 1),
+					'user_mchat_location'			=> array('BOOL', 1),
+					'user_mchat_message_top'		=> array('BOOL', 1),
+					'user_mchat_pause_on_input'		=> array('BOOL', 0),
+					'user_mchat_posts'				=> array('BOOL', 1),
+					'user_mchat_relative_time'		=> array('BOOL', 1),
+					'user_mchat_sound'				=> array('BOOL', 1),
+					'user_mchat_stats_index'		=> array('BOOL', 0),
+					'user_mchat_whois_index'		=> array('BOOL', 1),
+				),
 			),
 		);
 	}
 
 	public function revert_schema()
 	{
-		$config = $this->get_config();
-		$user_columns = array();
-
-		foreach (array_keys($config['dmzx.mchat.config_ucp']) as $key)
-		{
-			$user_columns[] = 'user_' . $key;
-		}
-
 		return array(
-			'drop_tables'	=> array(
+			'drop_tables' => array(
 				$this->table_prefix . 'mchat',
 				$this->table_prefix . 'mchat_deleted_messages',
 				$this->table_prefix . 'mchat_sessions',
 			),
 
-			'drop_columns'	=> array(
-				$this->table_prefix . 'users' => $user_columns,
+			'drop_columns' => array(
+				$this->table_prefix . 'users' => array(
+					'user_mchat_avatars',
+					'user_mchat_capital_letter',
+					'user_mchat_character_count',
+					'user_mchat_date',
+					'user_mchat_index',
+					'user_mchat_input_area',
+					'user_mchat_location',
+					'user_mchat_message_top',
+					'user_mchat_pause_on_input',
+					'user_mchat_posts',
+					'user_mchat_relative_time',
+					'user_mchat_sound',
+					'user_mchat_stats_index',
+					'user_mchat_whois_index',
+				),
 			),
 		);
 	}

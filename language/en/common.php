@@ -36,13 +36,14 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'MCHAT_TITLE'					=> 'mChat',
+	'MCHAT_TITLE_COUNT'				=> 'mChat [<strong>%1$d</strong>]',
 
 	// Who is chatting
 	'MCHAT_WHO_IS_CHATTING'			=> 'Who is chatting',
 	'MCHAT_ONLINE_USERS_TOTAL'		=> array(
 		0 => 'No one is chatting',
-		1 => 'There is <strong>%1$d</strong> user chatting',
-		2 => 'There are <strong>%1$d</strong> users chatting',
+		1 => '<strong>%1$d</strong> user is chatting',
+		2 => '<strong>%1$d</strong> users are chatting',
 	),
 	'MCHAT_ONLINE_EXPLAIN'			=> 'based on users active over the past %1$s',
 	'MCHAT_HOURS'					=> array(
@@ -63,4 +64,5 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_REPLY'				=> 'posted a reply: %1$s in %2$s',
 	'MCHAT_NEW_QUOTE'				=> 'replied with a quote: %1$s in %2$s',
 	'MCHAT_NEW_EDIT'				=> 'edited a post: %1$s in %2$s',
+	'MCHAT_NEW_LOGIN'				=> 'just logged in',
 ));

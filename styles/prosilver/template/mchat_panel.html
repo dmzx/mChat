@@ -4,7 +4,7 @@
 	<!-- ENDIF -->
 
 	<!-- IF MCHAT_CHARACTER_COUNT and not MCHAT_IS_ARCHIVE_PAGE -->
-		<div id="mchat-character-count">{MCHAT_CHARACTER_COUNT}</div>
+		<div id="mchat-character-count" class="hidden">{MCHAT_CHARACTER_COUNT}</div>
 	<!-- ENDIF -->
 
 	<form id="mchat-form" name="postform" action="{U_MCHAT_CUSTOM_PAGE}" method="POST">
@@ -15,29 +15,31 @@
 				<!-- IF MCHAT_INPUT_AREA -->
 					<input id="mchat-input" type="text" name="message" class="inputbox medium" autocomplete="off" />
 				<!-- ELSE -->
-					<textarea id="mchat-input" name="message" class="inputbox no-auto-resize" cols="32" rows="5"></textarea>
+					<textarea id="mchat-input" name="message" class="inputbox no-auto-resize"></textarea>
 				<!-- ENDIF -->
 			<!-- ENDIF -->
-			<!-- EVENT dmzx_mchat_buttons_before -->
+			<!-- EVENT dmzx_mchat_buttons_container_before -->
 			<div id="mchat-buttons">
+				<!-- EVENT dmzx_mchat_buttons_before -->
 				<!-- IF MCHAT_ALLOW_USE -->
-					<input id="mchat-add" type="button" class="button2" data-mchat-action="add" value="{L_MCHAT_ADD}" />
+					<input id="mchat-add" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" type="button" data-mchat-action="add" value="{L_MCHAT_ADD}" />
 					<!-- IF MCHAT_ALLOW_SMILES and .smiley -->
-						<input type="button" class="button2" data-mchat-toggle="smilies" value="{L_MCHAT_SMILES}" />
+						<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" data-mchat-toggle="smilies" value="{L_MCHAT_SMILES}" />
 					<!-- ENDIF -->
 					<!-- IF S_BBCODE_ALLOWED -->
-						<input type="button" class="button2" data-mchat-toggle="bbcodes" value="{L_MCHAT_BBCODES}" />
+						<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" data-mchat-toggle="bbcodes" value="{L_MCHAT_BBCODES}" />
 					<!-- ENDIF -->
 					<!-- IF MCHAT_RULES -->
-						<input type="button" class="button2" onclick="popup('{U_MCHAT_RULES}', 450, 275); return false;" value="{L_MCHAT_RULES}" />
+						<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" onclick="popup('{U_MCHAT_RULES}', 450, 275); return false;" value="{L_MCHAT_RULES}" />
 					<!-- ENDIF -->
 				<!-- ENDIF -->
 				<!-- EVENT dmzx_mchat_buttons_mid -->
 				<!-- IF MCHAT_ARCHIVE -->
-					<input type="button" class="button2" onclick="window.location.href = '{U_MCHAT_ARCHIVE_URL}';" value="{L_MCHAT_ARCHIVE}" />
+					<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" onclick="window.location.href = '{U_MCHAT_ARCHIVE_URL}';" value="{L_MCHAT_ARCHIVE}" />
 				<!-- ENDIF -->
 				<!-- EVENT dmzx_mchat_buttons_after -->
 			</div>
+			<!-- EVENT dmzx_mchat_buttons_container_after -->
 			<!-- IF MCHAT_ALLOW_USE and S_BBCODE_ALLOWED -->
 				<div id="mchat-bbcodes">
 					<!-- INCLUDE posting_buttons.html -->
@@ -55,16 +57,20 @@
 			<!-- ENDIF -->
 			<!-- EVENT dmzx_mchat_body_smiley_after -->
 			<div id="mchat-status">
-				<div id="mchat-status-icons">
-					<i id="mchat-status-load" class="<!-- IF IS_PHPBB31 -->mchat-status-load<!-- ELSEIF IS_PHPBB32 -->fa fa-refresh fa-spin icon icon-blue<!-- ENDIF -->" title="{L_LOADING}"></i>
-					<i id="mchat-status-ok" class="<!-- IF IS_PHPBB31 -->mchat-status-ok<!-- ELSEIF IS_PHPBB32 -->fa fa-check icon icon-green<!-- ENDIF -->" title="{L_MCHAT_OK}"></i>
-					<i id="mchat-status-paused" class="<!-- IF IS_PHPBB31 -->mchat-status-paused<!-- ELSEIF IS_PHPBB32 -->fa fa-pause icon icon-orange<!-- ENDIF -->" title="{L_MCHAT_PAUSE}"></i>
-					<i id="mchat-status-error" class="<!-- IF IS_PHPBB31 -->mchat-status-error<!-- ELSEIF IS_PHPBB32 -->fa fa-times icon icon-red<!-- ENDIF -->" title="{L_ERROR}"></i>
-				</div>
-				<span id="mchat-refresh-text">{MCHAT_REFRESH_YES}</span>
-				<!-- IF MCHAT_USER_TIMEOUT --> &bull; <span id="mchat-session">{MCHAT_SESSION_TIMELEFT}</span><!-- ENDIF -->
-				<!-- IF not MCHAT_SOUND_DISABLED --> &bull; <label for="mchat-user-sound">{L_MCHAT_USESOUND} <input type="checkbox" id="mchat-user-sound"<!-- IF MCHAT_SOUND --> checked="checked"<!-- ENDIF --> /></label><!-- ENDIF -->
-				<span class="mchat-copyright" title="{MCHAT_AUTHOR_NAMES}">&copy;</span>
+				<ul class="mchat-footer">
+					<li>
+						<span id="mchat-status-icons">
+							<i id="mchat-status-load" class="<!-- IF IS_PHPBB31 -->mchat-status-load<!-- ELSEIF IS_PHPBB32 -->fa fa-refresh fa-spin icon icon-blue<!-- ENDIF -->" title="{L_LOADING}"></i>
+							<i id="mchat-status-ok" class="<!-- IF IS_PHPBB31 -->mchat-status-ok<!-- ELSEIF IS_PHPBB32 -->fa fa-check icon icon-green<!-- ENDIF -->" title="{L_MCHAT_OK}"></i>
+							<i id="mchat-status-paused" class="<!-- IF IS_PHPBB31 -->mchat-status-paused<!-- ELSEIF IS_PHPBB32 -->fa fa-pause icon icon-orange<!-- ENDIF -->" title="{L_MCHAT_PAUSE}"></i>
+							<i id="mchat-status-error" class="<!-- IF IS_PHPBB31 -->mchat-status-error<!-- ELSEIF IS_PHPBB32 -->fa fa-times icon icon-red<!-- ENDIF -->" title="{L_ERROR}"></i>
+						</span>
+						<span id="mchat-refresh-text">{MCHAT_REFRESH_YES}</span>
+					</li>
+					<!-- IF MCHAT_TIMEOUT --><li><span id="mchat-session">{MCHAT_SESSION_TIMELEFT}</span></li><!-- ENDIF -->
+					<!-- IF not MCHAT_SOUND_DISABLED --><li><label for="mchat-user-sound">{L_MCHAT_USESOUND} <input type="checkbox" id="mchat-user-sound"<!-- IF MCHAT_SOUND --> checked="checked"<!-- ENDIF --> /></label></li><!-- ENDIF -->
+					<li><span class="mchat-copyright" title="{MCHAT_AUTHOR_NAMES}">&copy;</span></li>
+				</ul>
 			</div>
 		<!-- ENDIF -->
 	</form>

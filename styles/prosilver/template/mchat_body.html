@@ -2,16 +2,11 @@
 	<!-- INCLUDE overall_header.html -->
 <!-- ENDIF -->
 
-<!-- IF MCHAT_IS_ARCHIVE_PAGE or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) -->
-	<!-- INCLUDEJS {T_ASSETS_PATH}/javascript/editor.js -->
-<!-- ENDIF -->
-<!-- INCLUDEJS javascript/jquery.auto-grow-input.js -->
-<!-- INCLUDEJS javascript/jquery.titlealert.min.js -->
-<!-- INCLUDEJS javascript/js.cookie-2.0.4.min.js -->
-<!-- INCLUDEJS javascript/mchat.js -->
+<!-- INCLUDE mchat_script_data.html -->
 
 <!-- IF MCHAT_IS_ARCHIVE_PAGE and (.pagination or MCHAT_TOTAL_MESSAGES) -->
 <div class="action-bar bar-top">
+	<!-- EVENT dmzx_mchat_action_bar_top_before -->
 	<div class="pagination">
 		{MCHAT_TOTAL_MESSAGES}
 		<!-- IF .pagination -->
@@ -20,16 +15,17 @@
 			&bull; {PAGE_NUMBER}
 		<!-- ENDIF -->
 	</div>
+	<!-- EVENT dmzx_mchat_action_bar_top_after -->
 </div>
 <!-- ENDIF -->
 
-<!-- EVENT dmzx_mchat_body_before -->
+<!-- EVENT dmzx_mchat_before -->
 
 <!-- IF MCHAT_IS_COLLAPSIBLE -->
 	<a class="category<!-- IF S_MCHAT_HIDDEN --> hidden-category<!-- ENDIF --> mchat-category"></a>
 <!-- ENDIF -->
 
-<div class="forabg">
+<div class="forabg mchat-wrapper">
 	<a id="mChat"></a>
 	<div class="inner">
 		<ul class="topiclist">
@@ -46,9 +42,9 @@
 			</li>
 		</ul>
 
-		<div id="mchat-body" class="postbody<!-- IF MCHAT_IS_COLLAPSIBLE --> collapsible<!-- ENDIF -->">
-			<!-- INCLUDE mchat_script_data.html -->
+		<!-- EVENT dmzx_mchat_body_before -->
 
+		<div id="mchat-body"<!-- IF MCHAT_IS_COLLAPSIBLE --> class="collapsible"<!-- ENDIF -->>
 			<!-- IF not MCHAT_SOUND_DISABLED -->
 				<audio id="mchat-sound-add" class="hidden" src="{EXT_URL}sounds/add.mp3" preload="auto"></audio>
 				<audio id="mchat-sound-edit" class="hidden" src="{EXT_URL}sounds/edit.mp3" preload="auto"></audio>
@@ -58,8 +54,10 @@
 
 			<div id="mchat-confirm" class="hidden">
 				<h3>{L_CONFIRM}</h3>
-				<p></p>
-				<textarea></textarea>
+				<div class="mchat-confirm-fields">
+					<p></p>
+					<textarea></textarea>
+				</div>
 				<fieldset class="submit-buttons">
 					<input type="button" name="confirm" value="{L_MCHAT_OK}" class="button2" />&nbsp;
 					<input type="button" name="cancel" value="{L_CANCEL}" class="button2" />
@@ -73,6 +71,8 @@
 					</ul>
 				<!-- ENDIF -->
 
+				<!-- EVENT dmzx_mchat_messages_container_before -->
+
 				<ul id="mchat-messages" class="topiclist forums"<!-- IF not MCHAT_IS_ARCHIVE_PAGE --> style="height:<!-- IF MCHAT_IS_CUSTOM_PAGE -->{MCHAT_CUSTOM_HEIGHT}<!-- ELSE -->{MCHAT_INDEX_HEIGHT}<!-- ENDIF -->px"<!-- ENDIF -->>
 					<!-- IF .mchatrow -->
 						<!-- INCLUDE mchat_messages.html -->
@@ -80,15 +80,22 @@
 						<li class="row mchat-static mchat-no-messages">{L_MCHAT_NOMESSAGE}</li>
 					<!-- ENDIF -->
 				</ul>
+
+				<!-- EVENT dmzx_mchat_messages_container_after -->
 			</div>
 
 			<!-- INCLUDE mchat_panel.html -->
 		</div>
+
+		<!-- EVENT dmzx_mchat_body_after -->
 	</div>
 </div>
 
+<!-- EVENT dmzx_mchat_after -->
+
 <!-- IF MCHAT_IS_ARCHIVE_PAGE -->
 <div class="action-bar bottom">
+	<!-- EVENT dmzx_mchat_action_bar_bottom_before -->
 	<div class="pagination">
 		{MCHAT_TOTAL_MESSAGES}
 		<!-- IF .pagination -->
@@ -97,6 +104,7 @@
 			&bull; {PAGE_NUMBER}
 		<!-- ENDIF -->
 	</div>
+	<!-- EVENT dmzx_mchat_action_bar_top_after -->
 </div>
 <!-- ENDIF -->
 

@@ -20,7 +20,3 @@
 	content: '';
 	margin-right: 0;
 }
-
-.mchat-button:before {
-	background-image: url("./images/message_icons.png");
-}

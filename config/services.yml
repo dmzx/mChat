@@ -1,11 +1,11 @@
 imports:
     - { resource: tables.yml }
-    - { resource: config_2_0_0.yml }
 
 services:
     dmzx.mchat.acp.controller:
         class: dmzx\mchat\controller\acp_controller
         arguments:
+            - '@dmzx.mchat.functions'
             - '@template'
             - '@log'
             - '@user'
@@ -14,7 +14,7 @@ services:
             - '@request'
             - '@dmzx.mchat.settings'
             - '%dmzx.mchat.table.mchat%'
-            - '%dmzx.mchat.table.mchat_deleted_messages%'
+            - '%dmzx.mchat.table.mchat_log%'
             - '%core.root_path%'
             - '%core.php_ext%'
     dmzx.mchat.ucp.controller:
@@ -28,12 +28,6 @@ services:
             - '@dmzx.mchat.settings'
             - '%core.root_path%'
             - '%core.php_ext%'
-    dmzx.mchat.main.controller:
-        class: dmzx\mchat\controller\main_controller
-        arguments:
-            - '@user'
-            - '@dmzx.mchat.core'
-            - '@request'
     dmzx.mchat.core:
         class: dmzx\mchat\core\mchat
         arguments:
@@ -59,10 +53,11 @@ services:
             - '@log'
             - '@dbal.conn'
             - '@cache.driver'
+            - '@dispatcher'
             - '%core.root_path%'
             - '%core.php_ext%'
             - '%dmzx.mchat.table.mchat%'
-            - '%dmzx.mchat.table.mchat_deleted_messages%'
+            - '%dmzx.mchat.table.mchat_log%'
             - '%dmzx.mchat.table.mchat_sessions%'
     dmzx.mchat.settings:
         class: dmzx\mchat\core\settings
@@ -70,8 +65,6 @@ services:
             - '@user'
             - '@config'
             - '@auth'
-            - '%dmzx.mchat.config_global%'
-            - '%dmzx.mchat.config_ucp%'
     dmzx.mchat.acp.listener:
         class: dmzx\mchat\event\acp_listener
         arguments:
@@ -89,6 +82,16 @@ services:
             - '@dmzx.mchat.core'
             - '@controller.helper'
             - '@user'
+            - '@request'
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
+    dmzx.mchat.cron.task.mchat_prune:
+        class: dmzx\mchat\cron\mchat_prune
+        arguments:
+            - '@dmzx.mchat.functions'
+            - '@dmzx.mchat.settings'
+        calls:
+            - [set_name, [cron.task.mchat_prune]]
+        tags:
+            - { name: cron.task }

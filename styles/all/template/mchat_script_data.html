@@ -1,3 +1,11 @@
+<!-- IF MCHAT_IS_ARCHIVE_PAGE or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) -->
+	<!-- INCLUDEJS {T_ASSETS_PATH}/javascript/editor.js -->
+<!-- ENDIF -->
+
+<!-- INCLUDEJS javascript/jquery.autogrow-textarea.js -->
+<!-- INCLUDEJS javascript/jquery.titlealert.min.js -->
+<!-- INCLUDEJS javascript/mchat.js -->
+
 <script type="text/javascript">
 	// <![CDATA[
 	var form_name = 'postform';
@@ -9,6 +17,8 @@
 			{mchaturl.ACTION}: '{mchaturl.URL}'<!-- IF not mchaturl.IS_LAST -->,<!-- ENDIF -->
 			<!-- END mchaturl -->
 		},
+		page			: '{MCHAT_PAGE}',
+		cookie			: '{A_COOKIE_NAME}',
 		customPage		: <!-- IF MCHAT_IS_CUSTOM_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
 		archivePage		: <!-- IF MCHAT_IS_ARCHIVE_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
 		pause			: <!-- IF MCHAT_PAUSE_ON_INPUT -->true<!-- ELSE -->false<!-- ENDIF -->,
@@ -22,31 +32,33 @@
 		// Limits & timeouts
 		refreshTime		: {MCHAT_REFRESH_JS},
 		whoisRefresh	: {MCHAT_WHOIS_REFRESH},
-		userTimeout		: {MCHAT_USER_TIMEOUT},
+		timeout			: {MCHAT_TIMEOUT},
 		mssgLngth		: {MCHAT_MESSAGE_LNGTH},
 		editDeleteLimit	: {MCHAT_EDIT_DELETE_LIMIT},
+		logId			: {MCHAT_LOG_ID},
 		removeBBCodes	: '{A_MCHAT_DISALLOWED_BBCODES}',
 
 		// Language
-		minutesAgo		: {
-			<!-- BEGIN mchattime -->
-			{mchattime.KEY}: '{mchattime.A_LANG}'<!-- IF not mchattime.IS_LAST -->,<!-- ENDIF -->
-			<!-- END mchattime -->
-		},
-		newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
-		noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
-		noMessages		: '{LA_MCHAT_NOMESSAGE}',
-		editInfo		: '{LA_MCHAT_EDITINFO}',
-		noAccess		: '{LA_NO_AUTH_OPERATION}',
-		flood			: '{LA_MCHAT_FLOOD}',
-		delConfirm		: '{LA_MCHAT_DELCONFIRM}',
-		sessOut			: '{LA_MCHAT_SESSION_OUT}',
-		sessEnds		: '{LA_MCHAT_SESSION_ENDS_JS}',
-		refreshYes		: '{A_MCHAT_REFRESH_YES}',
-		refreshNo		: '{LA_MCHAT_REFRESH_NO}',
-		charCount		: '<!-- IF MCHAT_MESSAGE_LNGTH -->{LA_MCHAT_CHARACTER_COUNT_LIMIT}<!-- ELSE -->{LA_MCHAT_CHARACTER_COUNT}<!-- ENDIF -->',
-		mssgLngthLong	: '{A_MCHAT_MESS_LONG}',
-		likes			: '{LA_MCHAT_LIKES}'
+		lang: {
+			minutesAgo		: {
+				<!-- BEGIN mchattime -->
+				{mchattime.KEY}: '{mchattime.A_LANG}'<!-- IF not mchattime.IS_LAST -->,<!-- ENDIF -->
+				<!-- END mchattime -->
+			},
+			err				: '{LA_ERROR}',
+			parserErr		: '{LA_AJAX_ERROR_TEXT_PARSERERROR}',
+			newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
+			noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
+			editInfo		: '{LA_MCHAT_EDITINFO}',
+			delConfirm		: '{LA_MCHAT_DELCONFIRM}',
+			sessOut			: '{LA_MCHAT_SESSION_OUT}',
+			sessEnds		: '{LA_MCHAT_SESSION_ENDS_JS}',
+			refreshYes		: '{A_MCHAT_REFRESH_YES}',
+			refreshNo		: '{LA_MCHAT_REFRESH_NO}',
+			charCount		: '<!-- IF MCHAT_MESSAGE_LNGTH -->{LA_MCHAT_CHARACTER_COUNT_LIMIT}<!-- ELSE -->{LA_MCHAT_CHARACTER_COUNT}<!-- ENDIF -->',
+			mssgLngthLong	: '{A_MCHAT_MESS_LONG}',
+			likes			: '{LA_MCHAT_LIKES}'
+		}
 	};
 // ]]>
 </script>

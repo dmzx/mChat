@@ -24,7 +24,7 @@ class ucp_mchat_module
 
 		// Set template
 		$this->tpl_name = 'ucp_mchat';
-		$this->page_title = 'UCP_PROFILE_MCHAT';
+		$this->page_title = 'UCP_MCHAT_CONFIG';
 
 		// Get an instance of the UCP controller and display the options
 		$controller = $phpbb_container->get('dmzx.mchat.ucp.controller');

@@ -24,7 +24,7 @@ class ucp_mchat_info
 			'modes'		=> array(
 				'configuration'	=> array(
 					'title' => 'UCP_MCHAT_CONFIG',
-					'auth'	=> 'ext_dmzx/mchat && acl_u_mchat_use',
+					'auth'	=> 'ext_dmzx/mchat && acl_u_mchat_view',
 					'cat'	=> array('UCP_MCHAT_CONFIG'),
 				),
 			),

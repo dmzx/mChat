@@ -1,5 +1,8 @@
+<!-- EVENT dmzx_mchat_messages_before -->
+<!-- EVENT dmzx_mchat_messages_define_icons -->
+
 <!-- BEGIN mchatrow -->
-<li id="mchat-message-{mchatrow.MCHAT_MESSAGE_ID}" class="row mchat-message" data-mchat-id="{mchatrow.MCHAT_MESSAGE_ID}" data-mchat-username="{mchatrow.MCHAT_USERNAME}"<!-- IF mchatrow.MCHAT_USERNAME_COLOR --> data-mchat-usercolor="{mchatrow.MCHAT_USERNAME_COLOR}"<!-- ENDIF --> data-mchat-message="{mchatrow.MCHAT_MESSAGE_EDIT}" data-mchat-message-time="{mchatrow.MCHAT_MESSAGE_TIME}" data-mchat-edit-time="{mchatrow.MCHAT_EDIT_TIME}"<!-- IF MCHAT_EDIT_DELETE_LIMIT and not MCHAT_EDIT_DELETE_IGNORE and (mchatrow.MCHAT_ALLOW_EDIT or mchatrow.MCHAT_ALLOW_DEL) --> data-mchat-edit-delete-limit="1"<!-- ENDIF -->>
+<li id="mchat-message-{mchatrow.MCHAT_MESSAGE_ID}" class="row mchat-message<!-- IF mchatrow.MCHAT_IS_NOTIFICATION --> mchat-notification-message<!-- ENDIF -->" data-mchat-id="{mchatrow.MCHAT_MESSAGE_ID}" data-mchat-username="{mchatrow.MCHAT_USERNAME}"<!-- IF mchatrow.MCHAT_USERNAME_COLOR --> data-mchat-usercolor="{mchatrow.MCHAT_USERNAME_COLOR}"<!-- ENDIF --> data-mchat-message="{mchatrow.MCHAT_MESSAGE_EDIT}" data-mchat-message-time="{mchatrow.MCHAT_MESSAGE_TIME}"<!-- IF MCHAT_EDIT_DELETE_LIMIT and not MCHAT_EDIT_DELETE_IGNORE and (mchatrow.MCHAT_ALLOW_EDIT or mchatrow.MCHAT_ALLOW_DEL) --> data-mchat-edit-delete-limit="1"<!-- ENDIF --> <!-- EVENT dmzx_mchat_message_attributes -->>
 	<!-- IF S_MCHAT_AVATARS -->
 	<div class="mchat-avatar">
 		<!-- IF mchatrow.U_VIEWPROFILE --><a href="{mchatrow.U_VIEWPROFILE}" title="{L_READ_PROFILE}"><!-- ENDIF -->
@@ -14,3 +17,5 @@
 	</div>
 </li>
 <!-- END mchatrow -->
+
+<!-- EVENT dmzx_mchat_messages_after -->
