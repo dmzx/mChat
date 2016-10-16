@@ -1,3 +1,5 @@
+<!-- EVENT dmzx_mchat_acp_index_before -->
+
 <dl>
 	<dt><label for="user_mchat_index">{L_MCHAT_INDEX}{L_COLON}</label></dt>
 	<dd>
@@ -26,7 +28,13 @@
 		<label><input type="radio" name="user_mchat_location" value="0"<!-- IF not MCHAT_LOCATION --> id="user_mchat_location" checked="checked"<!-- ENDIF --><!-- IF MCHAT_LOCATION_NOAUTH --> disabled<!-- ENDIF --> /> {L_MCHAT_BOTTOM}</label>
 	</dd>
 </dl>
+
+<!-- EVENT dmzx_mchat_acp_location_after -->
+
 <hr />
+
+<!-- EVENT dmzx_mchat_acp_message_top_before -->
+
 <dl>
 	<dt><label for="user_mchat_message_top">{L_MCHAT_MESSAGE_TOP}{L_COLON}</label><br /><span>{L_MCHAT_MESSAGE_TOP_EXPLAIN}</span></dt>
 	<dd>
@@ -63,7 +71,7 @@
 	</dd>
 </dl>
 <dl>
-	<dt><label for="user_mchat_character_count">{L_MCHAT_CHARACTER_COUNT}{L_COLON}</label></dt>
+	<dt><label for="user_mchat_character_count">{L_MCHAT_DISPLAY_CHARACTER_COUNT}{L_COLON}</label></dt>
 	<dd>
 		<label><input type="radio" name="user_mchat_character_count" value="1"<!-- IF MCHAT_CHARACTER_COUNT --> id="user_mchat_character_count" checked="checked"<!-- ENDIF --><!-- IF MCHAT_CHARACTER_COUNT_NOAUTH --> disabled<!-- ENDIF --> /> {L_YES}</label>
 		<label><input type="radio" name="user_mchat_character_count" value="0"<!-- IF not MCHAT_CHARACTER_COUNT --> id="user_mchat_character_count" checked="checked"<!-- ENDIF --><!-- IF MCHAT_CHARACTER_COUNT_NOAUTH --> disabled<!-- ENDIF --> /> {L_NO}</label>
@@ -92,7 +100,13 @@
 		<label><input type="radio" name="user_mchat_relative_time" value="0"<!-- IF not MCHAT_RELATIVE_TIME --> id="user_mchat_relative_time" checked="checked"<!-- ENDIF --><!-- IF MCHAT_RELATIVE_TIME_NOAUTH --> disabled<!-- ENDIF --> /> {L_NO}</label>
 	</dd>
 </dl>
+
+<!-- EVENT dmzx_mchat_acp_relative_time_after -->
+
 <hr />
+
+<!-- EVENT dmzx_mchat_acp_posts_before -->
+
 <dl>
 	<dt><label for="user_mchat_posts"><!-- IF MCHAT_POSTS_ENABLED_LANG -->{MCHAT_POSTS_ENABLED_LANG}<!-- ELSE -->{L_MCHAT_POSTS}<!-- ENDIF -->{L_COLON}</label></dt>
 	<dd>
@@ -100,3 +114,5 @@
 		<label><input type="radio" name="user_mchat_posts" value="0"<!-- IF not MCHAT_POSTS --> id="user_mchat_posts" checked="checked"<!-- ENDIF --><!-- IF MCHAT_POSTS_NOAUTH --> disabled<!-- ENDIF --> /> {L_NO}</label>
 	</dd>
 </dl>
+
+<!-- EVENT dmzx_mchat_acp_posts_after -->

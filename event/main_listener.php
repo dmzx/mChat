@@ -4,28 +4,32 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
 namespace dmzx\mchat\event;
 
+use dmzx\mchat\core\mchat;
+use phpbb\controller\helper;
+use phpbb\request\request_interface;
+use phpbb\user;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class main_listener implements EventSubscriberInterface
 {
-	/** @var \dmzx\mchat\core\mchat */
+	/** @var mchat */
 	protected $mchat;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\request\request */
+	/** @var request_interface */
 	protected $request;
 
 	/** @var string */
@@ -34,13 +38,19 @@ class main_listener implements EventSubscriberInterface
 	/**
 	 * Constructor
 	 *
-	 * @param \dmzx\mchat\core\mchat	$mchat
-	 * @param \phpbb\controller\helper	$helper
-	 * @param \phpbb\user				$user
-	 * @param \phpbb\request\request	$request
-	 * @param string					$php_ext
+	 * @param mchat				$mchat
+	 * @param helper			$helper
+	 * @param user				$user
+	 * @param request_interface	$request
+	 * @param string			$php_ext
 	 */
-	public function __construct(\dmzx\mchat\core\mchat $mchat, \phpbb\controller\helper $helper, \phpbb\user $user, \phpbb\request\request $request, $php_ext)
+	public function __construct(
+		mchat $mchat,
+		helper $helper,
+		user $user,
+		request_interface $request,
+		$php_ext
+	)
 	{
 		$this->mchat	= $mchat;
 		$this->helper	= $helper;

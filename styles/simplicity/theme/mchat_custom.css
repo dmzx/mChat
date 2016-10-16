@@ -2,7 +2,7 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -64,4 +64,9 @@
 .rtl .navbar .nav-tabs .mchat .nav-link:after {
 	left: auto;
 	right: 8px;
+}
+
+@keyframes flash-message {
+	0% { background-color: #F6F4D0; }
+  100% { background-color: #F4F4F4; }
 }

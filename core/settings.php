@@ -4,23 +4,31 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
 namespace dmzx\mchat\core;
 
+use phpbb\auth\auth;
+use phpbb\config\config;
+use phpbb\event\dispatcher_interface;
+use phpbb\user;
+
 class settings
 {
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
+
+	/** @var dispatcher_interface */
+	protected $dispatcher;
 
 	/**
 	 * Keys for global settings that only the administrator is allowed to modify.
@@ -28,7 +36,7 @@ class settings
 	 *
 	 * @var array
 	 */
-	public $global;
+	protected $global_settings;
 
 	/**
 	 * Keys for user-specific settings for which the administrator can set default
@@ -39,7 +47,20 @@ class settings
 	 *
 	 * @var array
 	 */
-	public $ucp;
+	protected $ucp_settings;
+
+	/**
+	 * Prune modes listed in the ACP. For values other than messages the key is the
+	 * amount of hours that is later multiplied with the value that is set in the ACP.
+	 *
+	 * @var array
+	 */
+	public $prune_modes = array(
+		0	=> 'messages',
+		1	=> 'hours',
+		24	=> 'days',
+		168	=> 'weeks',
+	);
 
 	/** @var bool */
 	public $is_phpbb31;
@@ -50,17 +71,33 @@ class settings
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\user			$user
-	 * @param \phpbb\config\config	$config
-	 * @param \phpbb\auth\auth		$auth
+	 * @param user					$user
+	 * @param config				$config
+	 * @param auth					$auth
+	 * @param dispatcher_interface	$dispatcher
 	 */
-	public function __construct(\phpbb\user $user, \phpbb\config\config $config, \phpbb\auth\auth $auth)
+	public function __construct(
+		user $user,
+		config $config,
+		auth $auth,
+		dispatcher_interface $dispatcher
+	)
 	{
 		$this->user			= $user;
 		$this->config		= $config;
 		$this->auth			= $auth;
+		$this->dispatcher	= $dispatcher;
 
-		$this->global = array(
+		$this->is_phpbb31 = phpbb_version_compare(PHPBB_VERSION, '3.1.0@dev', '>=') && phpbb_version_compare(PHPBB_VERSION, '3.2.0@dev', '<');
+		$this->is_phpbb32 = phpbb_version_compare(PHPBB_VERSION, '3.2.0@dev', '>=') && phpbb_version_compare(PHPBB_VERSION, '3.3.0@dev', '<');
+	}
+
+	/**
+	 * @return array
+	 */
+	public function initialize_global_settings()
+	{
+		$global_settings = array(
 			'mchat_bbcode_disallowed'		=> array('default' => '',	'validation' => array('string', false, 0, 255)),
 			'mchat_custom_height'			=> array('default' => 350,	'validation' => array('num', false, 50, 1000)),
 			'mchat_custom_page'				=> array('default' => 1),
@@ -82,7 +119,9 @@ class settings
 			'mchat_posts_topic'				=> array('default' => 0),
 			'mchat_posts_login'				=> array('default' => 0),
 			'mchat_prune'					=> array('default' => 0),
-			'mchat_prune_num'				=> array('default' => '0'),
+			'mchat_prune_gc'				=> array('default' => strtotime('1 day', 0)),
+			'mchat_prune_mode'				=> array('default' => 0),
+			'mchat_prune_num'				=> array('default' => 0),
 			'mchat_refresh'					=> array('default' => 10,	'validation' => array('num', false, 5, 60)),
 			'mchat_rules'					=> array('default' => '',	'validation' => array('string', false, 0, 255)),
 			'mchat_static_message'			=> array('default' => '',	'validation' => array('string', false, 0, 255)),
@@ -90,7 +129,27 @@ class settings
 			'mchat_whois_refresh'			=> array('default' => 60,	'validation' => array('num', false, 10, 300)),
 		);
 
-		$this->ucp = array(
+		/**
+		 * Event to modify global settings data
+		 *
+		 * @event dmzx.mchat.global_settings_modify
+		 * @var array	global_settings		Array containing global settings data
+		 * @since 2.0.0-RC7
+		 */
+		$vars = array(
+			'global_settings',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.global_settings_modify', compact($vars)));
+
+		return $global_settings;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function initialize_ucp_settings()
+	{
+		$ucp_settings = array(
 			'mchat_avatars'					=> array('default' => 1),
 			'mchat_capital_letter'			=> array('default' => 1),
 			'mchat_character_count'			=> array('default' => 1),
@@ -107,8 +166,45 @@ class settings
 			'mchat_whois_index'				=> array('default' => 1),
 		);
 
-		$this->is_phpbb31 = phpbb_version_compare(PHPBB_VERSION, '3.1.0@dev', '>=') && phpbb_version_compare(PHPBB_VERSION, '3.2.0@dev', '<');
-		$this->is_phpbb32 = phpbb_version_compare(PHPBB_VERSION, '3.2.0@dev', '>=') && phpbb_version_compare(PHPBB_VERSION, '3.3.0@dev', '<');
+		/**
+		 * Event to modify UCP settings data
+		 *
+		 * @event dmzx.mchat.ucp_settings_modify
+		 * @var	array	ucp_settings		Array containing UCP settings data
+		 * @since 2.0.0-RC7
+		 */
+		$vars = array(
+			'ucp_settings',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.ucp_settings_modify', compact($vars)));
+
+		return $ucp_settings;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function global_settings()
+	{
+		if (empty($this->global_settings))
+		{
+			$this->global_settings = $this->initialize_global_settings();
+		}
+
+		return $this->global_settings;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function ucp_settings()
+	{
+		if (empty($this->ucp_settings))
+		{
+			$this->ucp_settings = $this->initialize_ucp_settings();
+		}
+
+		return $this->ucp_settings;
 	}
 
 	/**
@@ -124,13 +220,15 @@ class settings
 	/**
 	 * @param string $config
 	 * @param array $user_data
-	 * @param \phpbb\auth\auth $auth
+	 * @param auth $auth
 	 * @param bool $force_global
 	 * @return string
 	 */
 	public function cfg_user($config, $user_data, $auth, $force_global = false)
 	{
-		if (!$force_global && isset($this->ucp[$config]) && $auth->acl_get('u_' . $config))
+		$ucp_settings = $this->ucp_settings();
+
+		if (!$force_global && isset($ucp_settings[$config]) && $auth->acl_get('u_' . $config))
 		{
 			return $user_data['user_' . $config];
 		}
@@ -180,9 +278,11 @@ class settings
 		}
 		$dateformat_options .= '>' . $this->user->lang('MCHAT_CUSTOM_DATEFORMAT') . '</option>';
 
+		$ucp_settings = $this->ucp_settings();
+
 		return array(
 			'S_MCHAT_DATEFORMAT_OPTIONS'	=> $dateformat_options,
-			'A_MCHAT_DEFAULT_DATEFORMAT'	=> addslashes($this->ucp['mchat_date']['default']),
+			'A_MCHAT_DEFAULT_DATEFORMAT'	=> addslashes($ucp_settings['mchat_date']['default']),
 			'S_MCHAT_CUSTOM_DATEFORMAT'		=> $s_custom,
 		);
 	}

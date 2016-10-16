@@ -4,7 +4,7 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -15,6 +15,7 @@ class ext extends \phpbb\extension\base
 {
 	/**
 	 * Requires phpBB 3.1.7-PL1 due to usage of \phpbb\session:update_session_infos()
+	 * Requires phpBB 3.1.8-RC1 due to HTTPS in version check
 	 *
 	 * @return bool
 	 * @access public
@@ -36,9 +37,9 @@ class ext extends \phpbb\extension\base
 
 			if ($module_ids)
 			{
-				if (phpbb_version_compare($config['version'], '3.2.0-dev', '>='))
+				if (phpbb_version_compare(PHPBB_VERSION, '3.2.0-dev', '>='))
 				{
-					// For phpBB 3.2.x
+					// For phpBB >= 3.2.x
 					$lang = $this->container->get('language');
 					$lang->add_lang('mchat_acp', 'dmzx/mchat');
 				}
@@ -57,7 +58,7 @@ class ext extends \phpbb\extension\base
 			}
 		}
 
-		return phpbb_version_compare($config['version'], '3.1.7-PL1', '>=');
+		return phpbb_version_compare(PHPBB_VERSION, '3.1.8-RC1', '>=');
 	}
 
 	/**

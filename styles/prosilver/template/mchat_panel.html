@@ -1,10 +1,10 @@
 <div id="mchat-panel" class="panel cp-mini<!-- IF MCHAT_IS_ARCHIVE_PAGE --> hidden<!-- ENDIF -->">
 	<!-- IF MCHAT_IS_INDEX and MCHAT_WHOIS_REFRESH and MCHAT_WHOIS_INDEX -->
-		<!-- INCLUDE mchat_whois.html -->
+		<!-- INCLUDE @dmzx_mchat/mchat_whois.html -->
 	<!-- ENDIF -->
 
 	<!-- IF MCHAT_CHARACTER_COUNT and not MCHAT_IS_ARCHIVE_PAGE -->
-		<div id="mchat-character-count" class="hidden">{MCHAT_CHARACTER_COUNT}</div>
+		<div id="mchat-character-count" class="invisible">{MCHAT_CHARACTER_COUNT}</div>
 	<!-- ENDIF -->
 
 	<form id="mchat-form" name="postform" action="{U_MCHAT_CUSTOM_PAGE}" method="POST">
@@ -68,7 +68,7 @@
 						<span id="mchat-refresh-text">{MCHAT_REFRESH_YES}</span>
 					</li>
 					<!-- IF MCHAT_TIMEOUT --><li><span id="mchat-session">{MCHAT_SESSION_TIMELEFT}</span></li><!-- ENDIF -->
-					<!-- IF not MCHAT_SOUND_DISABLED --><li><label for="mchat-user-sound">{L_MCHAT_USESOUND} <input type="checkbox" id="mchat-user-sound"<!-- IF MCHAT_SOUND --> checked="checked"<!-- ENDIF --> /></label></li><!-- ENDIF -->
+					<!-- IF not MCHAT_SOUND_DISABLED --><li class="mchat-sound"><input type="checkbox" id="mchat-user-sound"<!-- IF MCHAT_SOUND --> checked="checked"<!-- ENDIF --> /><label for="mchat-user-sound">{L_MCHAT_USESOUND}</label></li><!-- ENDIF -->
 					<li><span class="mchat-copyright" title="{MCHAT_AUTHOR_NAMES}">&copy;</span></li>
 				</ul>
 			</div>

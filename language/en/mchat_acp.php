@@ -4,7 +4,7 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -52,6 +52,12 @@ $lang = array_merge($lang, array(
 	'MCHAT_ACP_USER_PREFS_EXPLAIN'					=> 'Below are listed all mChat preferences of the selected user. Settings for which the selected user does not have permission to customise are disabled. These settings can be changed in the <em>Global user settings</em> mChat configuration section.',
 
 	// ACP settings
+	'MCHAT_ACP_CHARACTERS'							=> 'characters',
+	'MCHAT_ACP_MESSAGES'							=> 'messages',
+	'MCHAT_ACP_SECONDS'								=> 'seconds',
+	'MCHAT_ACP_HOURS'								=> 'hours',
+	'MCHAT_ACP_DAYS'								=> 'days',
+	'MCHAT_ACP_WEEKS'								=> 'weeks',
 	'MCHAT_ACP_GLOBALSETTINGS_TITLE'				=> 'mChat Global settings',
 	'MCHAT_ACP_GLOBALUSERSETTINGS_TITLE'			=> 'mChat Global user settings',
 	'MCHAT_VERSION'									=> 'Version',
@@ -70,9 +76,10 @@ $lang = array_merge($lang, array(
 	'MCHAT_LIVE_UPDATES'							=> 'Live updates of edited and deleted messages',
 	'MCHAT_LIVE_UPDATES_EXPLAIN'					=> 'When a user edits or deletes messages, the changes are updated live for all others, without them having to refresh the page. Disable this if you experience performance issues.',
 	'MCHAT_PRUNE'									=> 'Enable message pruning',
-	'MCHAT_PRUNE_EXPLAIN'							=> 'The messages table is pruned every 24 hours.',
+	'MCHAT_PRUNE_GC'								=> 'Message prune task interval',
+	'MCHAT_PRUNE_GC_EXPLAIN'						=> 'The time in seconds that needs to pass before the next message pruning is triggered. Note: this setting controls <em>when</em> messages are checked if they can be deleted. It does <em>not</em> control <em>which</em> messages are deleted. <em>Default is 86400 = 24 hours.</em>',
 	'MCHAT_PRUNE_NUM'								=> 'Messages to retain when pruning',
-	'MCHAT_PRUNE_NUM_EXPLAIN'						=> 'You can specify either a number to keep a fixed number of messages (example: <em>42</em>) or a time period (examples: <em>24 hours</em>, <em>5 days</em>, <em>2 weeks</em>, <em>1 month</em>). All messages older than the time period at the time of pruning will be deleted.',
+	'MCHAT_PRUNE_NUM_EXPLAIN'						=> 'When using ’messages’ a fixed number of messages will be kept. When using ’hours’, ’days’ or ’weeks’ all messages older than the specified time period at the time of pruning will be deleted.',
 	'MCHAT_PRUNE_NOW'								=> 'Prune messages now',
 	'MCHAT_PRUNE_NOW_CONFIRM'						=> 'Confirm pruning messages',
 	'MCHAT_PRUNED'									=> '%1$d mChat messages have been pruned',
@@ -85,7 +92,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGE_NUM_ARCHIVE'						=> 'Number of messages to display on the archive page',
 	'MCHAT_MESSAGE_NUM_ARCHIVE_EXPLAIN'				=> 'The maximum number of messages to show per page on the archive page.<br /><em>You are limited from 10 to 100. Default is 25.</em>',
 	'MCHAT_FLOOD_TIME'								=> 'Flood time',
-	'MCHAT_FLOOD_TIME_EXPLAIN'						=> 'The number of seconds a user must wait before posting another message in the chat.<br /><em>You are limited from 5 to 60 seconds. Default is 0. Set to 0 to disable.</em>',
+	'MCHAT_FLOOD_TIME_EXPLAIN'						=> 'The number of seconds a user must wait before posting another message in the chat.<br /><em>You are limited from 0 to 60 seconds. Default is 0. Set to 0 to disable.</em>',
 	'MCHAT_EDIT_DELETE_LIMIT'						=> 'Time limit for editing and deleting messages',
 	'MCHAT_EDIT_DELETE_LIMIT_EXPLAIN'				=> 'Messages older than the specified number of seconds cannot be edited or deleted by the author any more.<br />Users who have <em>edit/delete permission as well as moderator permission are exempt</em> from this time limit.<br />Set to 0 to allow unlimited editing and deleting.',
 	'MCHAT_MAX_MESSAGE_LENGTH'						=> 'Maximum message length',

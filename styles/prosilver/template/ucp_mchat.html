@@ -15,6 +15,9 @@
 
 			<!-- IF MCHAT_AUTH_COUNT > 0 -->
 			<fieldset>
+
+				<!-- EVENT dmzx_mchat_ucp_index_before -->
+
 				<!-- IF MCHAT_INDEX_AUTH -->
 				<dl>
 					<dt><label for="user_mchat_index">{L_MCHAT_INDEX}{L_COLON}</label></dt>
@@ -51,7 +54,13 @@
 					</dd>
 				</dl>
 				<!-- ENDIF -->
+
+				<!-- EVENT dmzx_mchat_ucp_location_after -->
+
 				<hr />
+
+				<!-- EVENT dmzx_mchat_ucp_message_top_before -->
+
 				<!-- IF MCHAT_MESSAGE_TOP_AUTH -->
 				<dl>
 					<dt><label for="user_mchat_message_top">{L_MCHAT_MESSAGE_TOP}{L_COLON}</label><br /><span>{L_MCHAT_MESSAGE_TOP_EXPLAIN}</span></dt>
@@ -99,7 +108,7 @@
 				<!-- ENDIF -->
 				<!-- IF MCHAT_CHARACTER_COUNT_AUTH -->
 				<dl>
-					<dt><label for="user_mchat_character_count">{L_MCHAT_CHARACTER_COUNT}{L_COLON}</label></dt>
+					<dt><label for="user_mchat_character_count">{L_MCHAT_DISPLAY_CHARACTER_COUNT}{L_COLON}</label></dt>
 					<dd>
 						<label><input type="radio" name="user_mchat_character_count" value="1"<!-- IF MCHAT_CHARACTER_COUNT --> id="user_mchat_character_count" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 						<label><input type="radio" name="user_mchat_character_count" value="0"<!-- IF not MCHAT_CHARACTER_COUNT --> id="user_mchat_character_count" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
@@ -135,7 +144,13 @@
 					</dd>
 				</dl>
 				<!-- ENDIF -->
+
+				<!-- EVENT dmzx_mchat_ucp_relative_time_after -->
+
 				<hr />
+
+				<!-- EVENT dmzx_mchat_ucp_posts_before -->
+
 				<!-- IF MCHAT_POSTS_AUTH and MCHAT_POSTS_ENABLED_LANG -->
 				<dl>
 					<dt><label for="user_mchat_posts">{MCHAT_POSTS_ENABLED_LANG}{L_COLON}</label></dt>
@@ -145,6 +160,9 @@
 					</dd>
 				</dl>
 				<!-- ENDIF -->
+
+				<!-- EVENT dmzx_mchat_ucp_posts_after -->
+
 			</fieldset>
 			<!-- ENDIF -->
 		</div>

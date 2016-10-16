@@ -1,20 +1,25 @@
+<!-- EVENT dmzx_mchat_messages_icons_before -->
 <!-- IF not S_IS_BOT -->
 	<!-- DEFINE $MCHAT_ALLOW_MENTION = MCHAT_ALLOW_USE and not mchatrow.MCHAT_IS_POSTER and not MCHAT_IS_ARCHIVE_PAGE -->
 	<!-- DEFINE $MCHAT_ALLOW_QUOTE = MCHAT_ALLOW_USE and S_BBCODE_ALLOWED and MCHAT_ALLOW_QUOTE and not MCHAT_IS_ARCHIVE_PAGE -->
 	<!-- DEFINE $MCHAT_ALLOW_LIKE = MCHAT_ALLOW_USE and S_BBCODE_ALLOWED and MCHAT_ALLOW_LIKE and not MCHAT_IS_ARCHIVE_PAGE and not mchatrow.MCHAT_IS_POSTER -->
 	<!-- DEFINE $MCHAT_ALLOW_PM = MCHAT_ALLOW_PM and mchatrow.MCHAT_PM and mchatrow.U_VIEWPROFILE -->
+	<!-- DEFINE $MCHAT_ALLOW_IP = MCHAT_ALLOW_IP and TRUE -->
+	<!-- DEFINE $MCHAT_ALLOW_PERMISSIONS = MCHAT_ALLOW_PERMISSIONS and TRUE -->
 	<!-- DEFINE $MCHAT_ALLOW_EDIT = mchatrow.MCHAT_ALLOW_EDIT and not mchatrow.MCHAT_IS_NOTIFICATION -->
 	<!-- DEFINE $MCHAT_ALLOW_DEL = mchatrow.MCHAT_ALLOW_DEL -->
-	<!-- IF $MCHAT_ALLOW_MENTION or $MCHAT_ALLOW_QUOTE or $MCHAT_ALLOW_LIKE or $MCHAT_ALLOW_PM or MCHAT_ALLOW_IP or MCHAT_ALLOW_PERMISSIONS or $MCHAT_ALLOW_EDIT or $MCHAT_ALLOW_DEL -->
+	<!-- IF $MCHAT_ALLOW_MENTION or $MCHAT_ALLOW_QUOTE or $MCHAT_ALLOW_LIKE or $MCHAT_ALLOW_PM or MCHAT_ALLOW_IP or MCHAT_ALLOW_PERMISSIONS or $MCHAT_ALLOW_EDIT or $MCHAT_ALLOW_DEL or $MCHAT_ADD_CUSTOM_BUTTON -->
 		<ul class="mchat-buttons <!-- IF $MCHAT_USE_WHITE_MESSAGE_ICONS -->mchat-icons-white<!-- ELSE -->mchat-icons-black<!-- ENDIF -->">
+			<!-- EVENT dmzx_mchat_messages_icons_add_before -->
 			<!-- IF $MCHAT_ALLOW_MENTION --><li><a href="#" title="{L_MCHAT_RESPOND}" data-mchat-action="mention"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-mention<!-- ELSEIF IS_PHPBB32 -->fa fa-at<!-- ENDIF -->"><span>{L_MCHAT_RESPOND}</span></i></a></li><!-- ENDIF -->
 			<!-- IF $MCHAT_ALLOW_QUOTE --><li><a href="#" title="{L_REPLY_WITH_QUOTE}" data-mchat-action="quote"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-quote<!-- ELSEIF IS_PHPBB32 -->fa fa-quote-left<!-- ENDIF -->"><span>{L_REPLY_WITH_QUOTE}</span></i></a></li><!-- ENDIF -->
 			<!-- IF $MCHAT_ALLOW_LIKE --><li><a href="#" title="{L_MCHAT_LIKE}" data-mchat-action="like"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-like<!-- ELSEIF IS_PHPBB32 -->fa fa-thumbs-o-up<!-- ENDIF -->"><span>{L_MCHAT_LIKE}</span></i></a></li><!-- ENDIF -->
 			<!-- IF $MCHAT_ALLOW_PM --><li><a href="{mchatrow.MCHAT_PM}" title="{L_MCHAT_SEND_PM}"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-pm<!-- ELSEIF IS_PHPBB32 -->fa fa-envelope-o<!-- ENDIF -->"><span>{L_MCHAT_SEND_PM}</span></i></a></li><!-- ENDIF -->
-			<!-- IF MCHAT_ALLOW_IP --><li><a href="{mchatrow.MCHAT_U_IP}" title="{mchatrow.MCHAT_WHOIS_USER}" data-mchat-action="ip"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-ip<!-- ELSEIF IS_PHPBB32 -->fa fa-wifi<!-- ENDIF -->"><span>{mchatrow.MCHAT_WHOIS_USER}</span></i></a></li><!-- ENDIF -->
-			<!-- IF MCHAT_ALLOW_PERMISSIONS --><li><a href="{mchatrow.MCHAT_U_PERMISSIONS}" title="{L_MCHAT_PERMISSIONS}"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-permissions<!-- ELSEIF IS_PHPBB32 -->fa fa-exclamation-triangle<!-- ENDIF -->"><span>{L_MCHAT_PERMISSIONS}</span></i></a></li><!-- ENDIF -->
+			<!-- IF $MCHAT_ALLOW_IP --><li><a href="{mchatrow.MCHAT_U_IP}" title="{mchatrow.MCHAT_WHOIS_USER}" data-mchat-action="ip"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-ip<!-- ELSEIF IS_PHPBB32 -->fa fa-wifi<!-- ENDIF -->"><span>{mchatrow.MCHAT_WHOIS_USER}</span></i></a></li><!-- ENDIF -->
+			<!-- IF $MCHAT_ALLOW_PERMISSIONS --><li><a href="{mchatrow.MCHAT_U_PERMISSIONS}" title="{L_MCHAT_PERMISSIONS}"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-permissions<!-- ELSEIF IS_PHPBB32 -->fa fa-exclamation-triangle<!-- ENDIF -->"><span>{L_MCHAT_PERMISSIONS}</span></i></a></li><!-- ENDIF -->
 			<!-- IF $MCHAT_ALLOW_EDIT --><li><a href="#" title="{L_MCHAT_EDIT}" data-mchat-action="edit"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-edit<!-- ELSEIF IS_PHPBB32 -->fa fa-pencil<!-- ENDIF -->"><span>{L_MCHAT_EDIT}</span></i></a></li><!-- ENDIF -->
 			<!-- IF $MCHAT_ALLOW_DEL --><li><a href="#" title="{L_DELETE}" data-mchat-action="del"><i class="<!-- IF IS_PHPBB31 -->mchat-icon mchat-icon-delete<!-- ELSEIF IS_PHPBB32 -->fa fa-trash-o<!-- ENDIF -->"><span>{L_DELETE}</span></i></a></li><!-- ENDIF -->
+			<!-- EVENT dmzx_mchat_messages_icons_add_after -->
 		</ul>
 	<!-- ENDIF -->
 <!-- ENDIF -->

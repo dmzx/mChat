@@ -2,7 +2,7 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -12,13 +12,17 @@
 	visibility: hidden;
 }
 
-#mChat + .inner li.header dd {
+.mchat-wrapper li.header dd {
 	width: 0;
 }
 
 #mchat-body {
 	overflow: hidden;
 	width: 100%;
+}
+
+#mchat-main {
+	position: relative;
 }
 
 .icon-mchat {
@@ -51,27 +55,30 @@
 	overflow: hidden;
 }
 
+.mchat-message-flash {
+	animation-name: flash-message;
+	animation-duration: .4s;
+	animation-timing-function: ease-out;
+}
+
+@keyframes flash-message {
+
+	0% {
+		background-color: #FFD070;
+		opacity: 0;
+	}
+
+	100% {
+		background-color: transparent;
+		opacity: 1;
+	}
+
+}
+
 .mchat-avatar {
 	float: left;
 	width: 40px;
-	padding-right: 5px;
-}
-
-@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
-
-	#mchat-body {
-		overflow: visible;
-	}
-
-	.mchat-buttons > li {
-		padding: 0 6px !important;
-	}
-
-	#mchat-input {
-		width: 95% !important;
-		margin: 5px 0 !important;
-	}
-
+	margin-right: 5px;
 }
 
 .mchat-avatar a, .mchat-avatar img {
@@ -154,6 +161,10 @@
 	font-weight: bold !important;
 }
 
+.mchat-text img {
+	max-width: 100%;
+}
+
 .mchat-text li {
 	display: list-item !important;
 	list-style-type: inherit !important;
@@ -197,17 +208,17 @@
 
 #mchat-character-count {
 	float: right;
-	padding: 5px 0 0;
+	margin-top: 5px;
 }
 
-#mchat-character-count.hidden {
+#mchat-character-count.invisible {
 	visibility: hidden;
 }
 
 #mchat-panel {
 	text-align: center;
 	max-height: initial;
-	overflow-y: auto;
+	overflow: hidden;
 	padding: 0 5px 5px 5px;
 	margin: 0;
 	border-radius: 0;
@@ -221,10 +232,10 @@
 	cursor: text;
 	width: 50%;
 	min-width: 50%;
-	max-width: 90%;
+	max-width: 95%;
 	font-size: 1.1em;
 	padding: 5px 5px 4px;
-	margin: 5px 20px;
+	margin: 5px auto;
 }
 
 textarea#mchat-input {
@@ -232,7 +243,7 @@ textarea#mchat-input {
 }
 
 #mchat-buttons {
-	padding-bottom: 5px;
+	margin-bottom: 5px;
 }
 
 #mchat-bbcodes {
@@ -315,7 +326,6 @@ textarea#mchat-input {
 
 .mchat-footer li {
 	display: inline;
-	padding-left: .1em;
 	white-space: nowrap;
 }
 
@@ -323,8 +333,12 @@ textarea#mchat-input {
 	content: '\2022\A';
 }
 
-.mchat-footer li:first-child:before, .mchat-footer li:last-child:before {
+.mchat-footer li:first-child:before {
 	content: '';
+}
+
+.mchat-footer label {
+	padding-right: 0;
 }
 
 #mchat-legend {
@@ -355,6 +369,22 @@ textarea#mchat-input {
 
 #mchat-colour {
 	display: none;
+}
+
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+
+	#mchat-body {
+		overflow: visible;
+	}
+
+	.mchat-wrapper .mchat-buttons > li {
+		padding: 0 6px;
+	}
+
+	#mchat-input {
+		width: 95% !important;
+	}
+
 }
 
 /* Compatibility with Advanced BBCode Box extension */

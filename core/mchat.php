@@ -4,46 +4,56 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
 namespace dmzx\mchat\core;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use phpbb\auth\auth;
+use phpbb\collapsiblecategories\operator\operator as cc_operator;
+use phpbb\controller\helper;
+use phpbb\event\dispatcher_interface;
 use phpbb\exception\http_exception;
+use phpbb\extension\manager;
+use phpbb\pagination;
+use phpbb\request\request_interface;
+use phpbb\template\template;
+use phpbb\textformatter\parser_interface;
+use phpbb\user;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class mchat
 {
-	/** @var \dmzx\mchat\core\functions */
+	/** @var functions */
 	protected $functions;
 
-	/** @var \dmzx\mchat\core\settings */
+	/** @var settings */
 	protected $settings;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\pagination */
+	/** @var pagination */
 	protected $pagination;
 
-	/** @var \phpbb\request\request */
+	/** @var request_interface */
 	protected $request;
 
-	/** @var \phpbb\event\dispatcher_interface */
+	/** @var dispatcher_interface */
 	protected $dispatcher;
 
-	/** @var \phpbb\extension\manager */
+	/** @var manager */
 	protected $extension_manager;
 
 	/** @var string */
@@ -52,7 +62,10 @@ class mchat
 	/** @var string */
 	protected $php_ext;
 
-	/** @var \phpbb\collapsiblecategories\operator\operator */
+	/** @var parser_interface */
+	protected $parser;
+
+	/** @var cc_operator */
 	protected $cc_operator;
 
 	/** @var boolean */
@@ -67,21 +80,37 @@ class mchat
 	/**
 	 * Constructor
 	 *
-	 * @param \dmzx\mchat\core\functions						$functions
-	 * @param \dmzx\mchat\core\settings							$settings
-	 * @param \phpbb\controller\helper							$helper
-	 * @param \phpbb\template\template							$template
-	 * @param \phpbb\user										$user
-	 * @param \phpbb\auth\auth									$auth
-	 * @param \phpbb\pagination									$pagination
-	 * @param \phpbb\request\request							$request
-	 * @param \phpbb\event\dispatcher_interface 				$dispatcher
-	 * @param \phpbb\extension\manager 							$extension_manager
-	 * @param string											$root_path
-	 * @param string											$php_ext
-	 * @param \phpbb\collapsiblecategories\operator\operator	$cc_operator
+	 * @param functions				$functions
+	 * @param settings				$settings
+	 * @param helper				$helper
+	 * @param template				$template
+	 * @param user					$user
+	 * @param auth					$auth
+	 * @param pagination			$pagination
+	 * @param request_interface		$request
+	 * @param dispatcher_interface	$dispatcher
+	 * @param manager				$extension_manager
+	 * @param string				$root_path
+	 * @param string				$php_ext
+	 * @param parser_interface		$parser
+	 * @param cc_operator			$cc_operator
 	 */
-	public function __construct(\dmzx\mchat\core\functions $functions, \dmzx\mchat\core\settings $settings, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\request\request $request, \phpbb\event\dispatcher_interface $dispatcher, \phpbb\extension\manager $extension_manager, $root_path, $php_ext, \phpbb\collapsiblecategories\operator\operator $cc_operator = null)
+	public function __construct(
+		functions $functions,
+		settings $settings,
+		helper $helper,
+		template $template,
+		user $user,
+		auth $auth,
+		pagination $pagination,
+		request_interface $request,
+		dispatcher_interface $dispatcher,
+		manager $extension_manager,
+		$root_path,
+		$php_ext,
+		parser_interface $parser = null,
+		cc_operator $cc_operator = null
+	)
 	{
 		$this->functions			= $functions;
 		$this->settings				= $settings;
@@ -95,6 +124,7 @@ class mchat
 		$this->extension_manager	= $extension_manager;
 		$this->root_path			= $root_path;
 		$this->php_ext				= $php_ext;
+		$this->parser				= $parser;
 		$this->cc_operator			= $cc_operator;
 
 		$this->template->assign_vars(array(
@@ -315,11 +345,18 @@ class mchat
 
 		$message = $this->request->variable('message', '', true);
 
-		$message_data = array(
-			'user_id'			=> $this->user->data['user_id'],
-			'user_ip'			=> $this->user->data['session_ip'],
-			'message_time'		=> time(),
-		);
+		if ($this->settings->cfg('mchat_capital_letter'))
+		{
+			$message = utf8_ucfirst($message);
+		}
+
+		$message_data = $this->process_message($message);
+
+		$message_data = array_merge($message_data, array(
+			'user_id'		=> $this->user->data['user_id'],
+			'user_ip'		=> $this->user->data['session_ip'],
+			'message_time'	=> time(),
+		));
 
 		/**
 		 * Event to modify a new message before it is inserted in the database
@@ -335,14 +372,7 @@ class mchat
 		);
 		extract($this->dispatcher->trigger_event('dmzx.mchat.action_add_before', compact($vars)));
 
-		$sql_ary = array_merge($this->process_message($message), $message_data);
-
-		if ($this->settings->cfg('mchat_capital_letter'))
-		{
-			$sql_ary['message'] = utf8_ucfirst($sql_ary['message']);
-		}
-
-		$is_new_session = $this->functions->mchat_action('add', $sql_ary);
+		$is_new_session = $this->functions->mchat_action('add', $message_data);
 
 		$response = $this->action_refresh(true);
 
@@ -815,7 +845,7 @@ class mchat
 		$rows = $this->functions->mchat_get_messages(array(), 0, $limit, $start);
 
 		$this->assign_global_template_data();
-		$this->assign_messages($rows);
+		$this->assign_messages($rows, $page);
 
 		// Render pagination
 		if ($page === 'archive')
@@ -907,8 +937,8 @@ class mchat
 
 		$this->template->assign_vars(array(
 			'MCHAT_DISPLAY_NAME'		=> $meta['extra']['display-name'],
-			'MCHAT_AUTHOR_NAMES'		=> implode(' &bull; ', $author_names),
-			'MCHAT_AUTHOR_HOMEPAGES'	=> implode(' &bull; ', $author_homepages),
+			'MCHAT_AUTHOR_NAMES'		=> implode(' &amp; ', $author_names),
+			'MCHAT_AUTHOR_HOMEPAGES'	=> implode(' &amp; ', $author_homepages),
 		));
 	}
 
@@ -963,8 +993,9 @@ class mchat
 	 * Assigns all message rows to the template
 	 *
 	 * @param array $rows
+	 * @param string $page
 	 */
-	public function assign_messages($rows)
+	public function assign_messages($rows, $page = '')
 	{
 		$rows = array_filter($rows, array($this, 'has_read_auth'));
 
@@ -974,7 +1005,7 @@ class mchat
 		}
 
 		// Reverse the array if messages appear at the bottom
-		if (!$this->settings->cfg('mchat_message_top'))
+		if ($page !== 'archive' && !$this->settings->cfg('mchat_message_top'))
 		{
 			$rows = array_reverse($rows);
 		}
@@ -1188,8 +1219,15 @@ class mchat
 				'f' => $row['forum_id'],
 			));
 
-			$args[] = '[url=' . $viewtopic_url . ']' . $post_data['post_subject'] . '[/url]';
-			$args[] = '[url=' . $viewforum_url . ']' . $post_data['forum_name'] . '[/url]';
+			if ($post_data)
+			{
+				$args[] = '[url=' . $viewtopic_url . ']' . $post_data['post_subject'] . '[/url]';
+				$args[] = '[url=' . $viewforum_url . ']' . $post_data['forum_name'] . '[/url]';
+			}
+			else
+			{
+				$args[0] .= '_DELETED';
+			}
 		}
 		else if ($row['post_id'] == functions::LOGIN_HIDDEN)
 		{
@@ -1328,7 +1366,7 @@ class mchat
 	 */
 	public function set_user_default_values($sql_ary)
 	{
-		foreach (array_keys($this->settings->ucp) as $config_name)
+		foreach (array_keys($this->settings->ucp_settings()) as $config_name)
 		{
 			$sql_ary['user_' . $config_name] = $this->settings->cfg($config_name, true);
 		}
@@ -1469,22 +1507,34 @@ class mchat
 			$this->settings->set_cfg('max_post_smilies', 0, true);
 		}
 
-		$mchat_bbcode	= $this->settings->cfg('allow_bbcode') && $this->auth->acl_get('u_mchat_bbcode');
-		$mchat_urls		= $this->settings->cfg('allow_post_links') && $this->auth->acl_get('u_mchat_urls');
-		$mchat_smilies	= $this->settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies');
+		$disallowed_bbcodes = array_filter(explode('|', $this->settings->cfg('mchat_bbcode_disallowed')));
 
-		// Add function part code from http://wiki.phpbb.com/Parsing_text
-		$uid = $bitfield = $options = '';
-		generate_text_for_storage($message, $uid, $bitfield, $options, $mchat_bbcode, $mchat_urls, $mchat_smilies);
+		$mchat_bbcode		= $this->settings->cfg('allow_bbcode') && $this->auth->acl_get('u_mchat_bbcode');
+		$mchat_magic_urls	= $this->settings->cfg('allow_post_links') && $this->auth->acl_get('u_mchat_urls');
+		$mchat_smilies		= $this->settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies');
 
-		// Not allowed bbcodes
-		if (!$mchat_bbcode)
+		// These arguments for generate_text_for_storage() are ignored in 3.1.x
+		$mchat_img = $mchat_flash = $mchat_quote = $mchat_url = $mchat_bbcode;
+
+		// Disallowed bbcodes for 3.2.x
+		if ($disallowed_bbcodes && $this->parser !== null)
 		{
-			$message = preg_replace('#\[/?[^\[\]]+\]#Usi', '', $message);
+			$mchat_img		&= !in_array('img', $disallowed_bbcodes);
+			$mchat_flash	&= !in_array('flash', $disallowed_bbcodes);
+			$mchat_quote	&= !in_array('quote', $disallowed_bbcodes);
+			$mchat_url		&= !in_array('url', $disallowed_bbcodes);
+
+			foreach ($disallowed_bbcodes as $bbcode)
+			{
+				$this->parser->disable_bbcode($bbcode);
+			}
 		}
 
-		// Disallowed bbcodes
-		if ($this->settings->cfg('mchat_bbcode_disallowed'))
+		$uid = $bitfield = $options = '';
+		generate_text_for_storage($message, $uid, $bitfield, $options, $mchat_bbcode, $mchat_magic_urls, $mchat_smilies, $mchat_img, $mchat_flash, $mchat_quote, $mchat_url);
+
+		// Disallowed bbcodes for 3.1.x
+		if ($disallowed_bbcodes && $this->parser === null)
 		{
 			$bbcode_replace = array(
 				'#\[(' . str_replace('*', '\*', $this->settings->cfg('mchat_bbcode_disallowed')) . ')[^\[\]]+\]#Usi',

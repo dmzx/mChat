@@ -4,34 +4,41 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
 namespace dmzx\mchat\core;
 
+use phpbb\auth\auth;
+use phpbb\cache\driver\driver_interface as cache_interface;
+use phpbb\db\driver\driver_interface as db_interface;
+use phpbb\event\dispatcher_interface;
+use phpbb\log\log_interface;
+use phpbb\user;
+
 class functions
 {
-	/** @var \dmzx\mchat\core\settings */
+	/** @var settings */
 	protected $settings;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\log\log */
+	/** @var log_interface */
 	protected $log;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var db_interface */
 	protected $db;
 
-	/** @var \phpbb\cache\driver\driver_interface */
+	/** @var cache_interface */
 	protected $cache;
 
-	/** @var \phpbb\event\dispatcher_interface */
+	/** @var dispatcher_interface */
 	protected $dispatcher;
 
 	/** @var string */
@@ -70,33 +77,46 @@ class functions
 	/**
 	* Constructor
 	*
-	* @param \dmzx\mchat\core\settings				$settings
-	* @param \phpbb\user							$user
-	* @param \phpbb\auth\auth						$auth
-	* @param \phpbb\log\log_interface				$log
-	* @param \phpbb\db\driver\driver_interface		$db
-	* @param \phpbb\cache\driver\driver_interface	$cache
-	* @param \phpbb\event\dispatcher_interface		$dispatcher
-	* @param string									$root_path
-	* @param string									$php_ext
-	* @param string									$mchat_table
-	* @param string									$mchat_log_table
-	* @param string									$mchat_sessions_table
+	* @param settings				$settings
+	* @param user					$user
+	* @param auth					$auth
+	* @param log_interface			$log
+	* @param db_interface			$db
+	* @param cache_interface		$cache
+	* @param dispatcher_interface	$dispatcher
+	* @param string					$root_path
+	* @param string					$php_ext
+	* @param string					$mchat_table
+	* @param string					$mchat_log_table
+	* @param string					$mchat_sessions_table
 	*/
-	function __construct(\dmzx\mchat\core\settings $settings, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\log\log_interface $log, \phpbb\db\driver\driver_interface $db, \phpbb\cache\driver\driver_interface $cache, \phpbb\event\dispatcher_interface $dispatcher, $root_path, $php_ext, $mchat_table, $mchat_log_table, $mchat_sessions_table)
+	function __construct(
+		settings $settings,
+		user $user,
+		auth $auth,
+		log_interface $log,
+		db_interface $db,
+		cache_interface $cache,
+		dispatcher_interface $dispatcher,
+		$root_path,
+		$php_ext,
+		$mchat_table,
+		$mchat_log_table,
+		$mchat_sessions_table
+	)
 	{
-		$this->settings					= $settings;
-		$this->user						= $user;
-		$this->auth						= $auth;
-		$this->log						= $log;
-		$this->db						= $db;
-		$this->cache					= $cache;
-		$this->dispatcher				= $dispatcher;
-		$this->root_path				= $root_path;
-		$this->php_ext					= $php_ext;
-		$this->mchat_table				= $mchat_table;
-		$this->mchat_log_table			= $mchat_log_table;
-		$this->mchat_sessions_table		= $mchat_sessions_table;
+		$this->settings				= $settings;
+		$this->user					= $user;
+		$this->auth					= $auth;
+		$this->log					= $log;
+		$this->db					= $db;
+		$this->cache				= $cache;
+		$this->dispatcher			= $dispatcher;
+		$this->root_path			= $root_path;
+		$this->php_ext				= $php_ext;
+		$this->mchat_table			= $mchat_table;
+		$this->mchat_log_table		= $mchat_log_table;
+		$this->mchat_sessions_table	= $mchat_sessions_table;
 	}
 
 	/**
@@ -292,35 +312,33 @@ class functions
 	 */
 	public function mchat_prune()
 	{
-		$sql_aray = array(
+		$prune_num = (int) $this->settings->cfg('mchat_prune_num');
+		$prune_mode = (int) $this->settings->cfg('mchat_prune_mode');
+
+		if (empty($this->settings->prune_modes[$prune_mode]))
+		{
+			return array();
+		}
+
+		$sql_array = array(
 			'SELECT'	=> 'message_id',
 			'FROM'		=> array($this->mchat_table => 'm'),
 		);
 
-		$prune_num = $this->settings->cfg('mchat_prune_num');
-
-		if (ctype_digit($prune_num))
+		if ($this->settings->prune_modes[$prune_mode] === 'messages')
 		{
-			// Retain fixed number of messages
+			// Skip fixed number of messages, delete all others
+			$sql_array['ORDER_BY'] = 'm.message_id DESC';
 			$offset = $prune_num;
-			$sql_aray['ORDER_BY'] = 'message_id DESC';
 		}
 		else
 		{
-			// Retain messages of a time period
-			$time_period = strtotime($prune_num, 0);
-
-			if ($time_period === false)
-			{
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNE_FAIL', false, array($this->user->data['username']));
-				return false;
-			}
-
+			// Delete messages older than time period
+			$sql_array['WHERE'] = 'm.message_time < ' . (int) strtotime($prune_num * $prune_mode . ' hours ago');
 			$offset = 0;
-			$sql_aray['WHERE'] = 'message_time < ' . (int) (time() - $time_period);
 		}
 
-		$sql = $this->db->sql_build_query('SELECT', $sql_aray);
+		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, 0, $offset);
 		$rows = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -349,9 +367,9 @@ class functions
 			$this->db->sql_query('DELETE FROM ' . $this->mchat_table . ' WHERE ' . $this->db->sql_in_set('message_id', $prune_ids));
 			$this->db->sql_query('DELETE FROM ' . $this->mchat_log_table . ' WHERE ' . $this->db->sql_in_set('message_id', $prune_ids));
 			$this->cache->destroy('sql', $this->mchat_log_table);
-		}
 
-		$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED', false, array($this->user->data['username'], count($prune_ids)));
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED', false, array($this->user->data['username'], count($prune_ids)));
+		}
 
 		return $prune_ids;
 	}
@@ -363,9 +381,12 @@ class functions
 	 */
 	public function mchat_total_message_count()
 	{
+		$sql_where_ary = $this->get_sql_where_for_notifcation_messages();
+
 		$sql_array = array(
 			'SELECT'	=> 'COUNT(*) AS rows_total',
 			'FROM'		=> array($this->mchat_table => 'm'),
+			'WHERE'		=> $sql_where_ary ? $this->db->sql_escape('(' . implode(') AND (', $sql_where_ary) . ')') : '',
 		);
 
 		/**
@@ -418,22 +439,11 @@ class functions
 			$sql_where_message_id[] = $this->db->sql_in_set('m.message_id', array_map('intval', $message_ids));
 		}
 
-		$sql_where_ary = $sql_where_message_id ? array(implode(' OR ', $sql_where_message_id)) : array();
+		$sql_where_ary = $this->get_sql_where_for_notifcation_messages();
 
-		if ($this->settings->cfg('mchat_posts'))
+		if ($sql_where_message_id)
 		{
-			// If the current user doesn't have permission to see hidden users, exclude their login posts
-			if (!$this->auth->acl_get('u_viewonline'))
-			{
-				$sql_where_ary[] = 'm.post_id <> ' . (int) self::LOGIN_HIDDEN .	// Exclude all notifications that were created by hidden users ...
-					' OR m.user_id = ' . (int) $this->user->data['user_id'] .	// ... but include all login notifications of the current user
-					' OR m.forum_id <> 0';										// ... and include all post notifications
-			}
-		}
-		else
-		{
-			// Exclude all post notifications
-			$sql_where_ary[] = 'm.post_id = 0';
+			$sql_where_ary[] = implode(' OR ', $sql_where_message_id);
 		}
 
 		$sql_array = array(
@@ -488,6 +498,35 @@ class functions
 		}
 
 		return $rows;
+	}
+
+	/**
+	 * Generates SQL where conditions to include or exlude notifacation
+	 * messages based on the current user's settings and permissions
+	 *
+	 * @return array
+	 */
+	protected function get_sql_where_for_notifcation_messages()
+	{
+		$sql_where_ary = array();
+
+		if ($this->settings->cfg('mchat_posts'))
+		{
+			// If the current user doesn't have permission to see hidden users, exclude their login posts
+			if (!$this->auth->acl_get('u_viewonline'))
+			{
+				$sql_where_ary[] = 'm.post_id <> ' . (int) self::LOGIN_HIDDEN .	// Exclude all notifications that were created by hidden users ...
+					' OR m.user_id = ' . (int) $this->user->data['user_id'] .	// ... but include all login notifications of the current user
+					' OR m.forum_id <> 0';										// ... and include all post notifications
+			}
+		}
+		else
+		{
+			// Exclude all post notifications
+			$sql_where_ary[] = 'm.post_id = 0';
+		}
+
+		return $sql_where_ary;
 	}
 
 	/**
@@ -646,14 +685,18 @@ class functions
 
 		foreach ($rows as $row)
 		{
-			// Skip deleted posts
-			if (isset($row['post_subject']))
-			{
-				$post_subjects[$row['post_id']] = array(
-					'post_subject'	=> $row['post_subject'],
-					'forum_name'	=> $row['forum_name'],
-				);
-			}
+			$post_subjects[$row['post_id']] = array(
+				'post_subject'	=> $row['post_subject'],
+				'forum_name'	=> $row['forum_name'],
+			);
+		}
+
+		// Handle deleted posts
+		$non_existent_post_ids = array_diff($post_ids, array_keys($post_subjects));
+
+		foreach ($non_existent_post_ids as $post_id)
+		{
+			$post_subjects[$post_id] = null;
 		}
 
 		return $post_subjects;

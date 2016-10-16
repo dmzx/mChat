@@ -4,31 +4,38 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
 namespace dmzx\mchat\cron;
 
-class mchat_prune extends \phpbb\cron\task\base
+use dmzx\mchat\core\functions;
+use dmzx\mchat\core\settings;
+use phpbb\cron\task\base;
+
+class mchat_prune extends base
 {
-	/** @var \dmzx\mchat\core\functions */
+	/** @var functions */
 	protected $functions;
 
-	/** @var \dmzx\mchat\core\settings */
+	/** @var settings */
 	protected $settings;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \dmzx\mchat\core\functions	$functions
-	 * @param \dmzx\mchat\core\settings		$settings
+	 * @param functions	$functions
+	 * @param settings	$settings
 	 */
-	public function __construct(\dmzx\mchat\core\functions $functions, \dmzx\mchat\core\settings $settings)
+	public function __construct(
+		functions $functions,
+		settings $settings
+	)
 	{
-		$this->functions = $functions;
-		$this->settings = $settings;
+		$this->functions	= $functions;
+		$this->settings		= $settings;
 	}
 
 	/**

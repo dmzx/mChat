@@ -4,28 +4,33 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
 namespace dmzx\mchat\event;
 
+use dmzx\mchat\core\settings;
+use phpbb\auth\auth;
+use phpbb\request\request_interface;
+use phpbb\template\template;
+use phpbb\user;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class acp_listener implements EventSubscriberInterface
 {
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\request\request */
+	/** @var request_interface */
 	protected $request;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \dmzx\mchat\core\settings */
+	/** @var settings */
 	protected $settings;
 
 	/** @var string */
@@ -37,14 +42,21 @@ class acp_listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template	$template
-	* @param \phpbb\request\request		$request
-	* @param \phpbb\user				$user
-	* @param \dmzx\mchat\core\settings	$settings
-	* @param string						$root_path
-	* @param string						$php_ext
+	* @param template			$template
+	* @param request_interface	$request
+	* @param user				$user
+	* @param settings			$settings
+	* @param string				$root_path
+	* @param string				$php_ext
 	*/
-	public function __construct(\phpbb\template\template $template, \phpbb\request\request $request, \phpbb\user $user, \dmzx\mchat\core\settings $settings, $root_path, $php_ext)
+	public function __construct(
+		template $template,
+		request_interface $request,
+		user $user,
+		settings $settings,
+		$root_path,
+		$php_ext
+	)
 	{
 		$this->template		= $template;
 		$this->request		= $request;
@@ -73,7 +85,7 @@ class acp_listener implements EventSubscriberInterface
 	{
 		$ucp_configs = array();
 
-		foreach (array_keys($this->settings->ucp) as $config_name)
+		foreach (array_keys($this->settings->ucp_settings()) as $config_name)
 		{
 			$ucp_configs[] = 'u_' . $config_name;
 		}
@@ -131,11 +143,11 @@ class acp_listener implements EventSubscriberInterface
 
 		$user_id = $event['user_row']['user_id'];
 
-		$auth = new \phpbb\auth\auth();
+		$auth = new auth();
 		$userdata = $auth->obtain_user_data($user_id);
 		$auth->acl($userdata);
 
-		foreach ($this->settings->ucp as $config_name => $config_data)
+		foreach ($this->settings->ucp_settings() as $config_name => $config_data)
 		{
 			if ($auth->acl_get('u_' . $config_name))
 			{
@@ -168,7 +180,7 @@ class acp_listener implements EventSubscriberInterface
 
 		$user_id = $event['user_row']['user_id'];
 
-		$auth = new \phpbb\auth\auth();
+		$auth = new auth();
 		$userdata = $auth->obtain_user_data($user_id);
 		$auth->acl($userdata);
 
@@ -179,7 +191,7 @@ class acp_listener implements EventSubscriberInterface
 		$notifications_template_data = $this->settings->get_enabled_post_notifications_lang();
 		$this->template->assign_var('MCHAT_POSTS_ENABLED_LANG', $notifications_template_data);
 
-		foreach (array_keys($this->settings->ucp) as $config_name)
+		foreach (array_keys($this->settings->ucp_settings()) as $config_name)
 		{
 			$upper = strtoupper($config_name);
 			$this->template->assign_vars(array(

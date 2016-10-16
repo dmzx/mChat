@@ -4,7 +4,7 @@
  *
  * @package phpBB Extension - mChat
  * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -38,6 +38,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ADD'						=> 'Send',
 	'MCHAT_ARCHIVE'					=> 'Archive',
 	'MCHAT_ARCHIVE_PAGE'			=> 'mChat Archive',
+	'MCHAT_CUSTOM_PAGE'				=> 'mChat',
 	'MCHAT_BBCODES'					=> 'BBCodes',
 	'MCHAT_CUSTOM_BBCODES'			=> 'Custom BBCodes',
 	'MCHAT_DELCONFIRM'				=> 'Are you sure you want to delete this message?',
