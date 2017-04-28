@@ -91,7 +91,8 @@ class acp_controller
 		settings $settings,
 		$mchat_table,
 		$mchat_log_table,
-		$root_path, $php_ext
+		$root_path,
+		$php_ext
 	)
 	{
 		$this->functions		= $functions;
@@ -136,6 +137,9 @@ class acp_controller
 					$validation[$config_name] = $config_data['validation'];
 				}
 			}
+
+			// Remove leading & trailing | characters to not break allowed BBCodes
+			$mchat_new_config['mchat_bbcode_disallowed'] = trim($mchat_new_config['mchat_bbcode_disallowed'], '|');
 
 			// Don't allow changing pruning settings for non founders
 			if (!$is_founder)
@@ -194,8 +198,8 @@ class acp_controller
 		{
 			if ($is_founder && $this->request->is_set_post('mchat_purge') && $this->request->variable('mchat_purge_confirm', false) && check_form_key('acp_mchat'))
 			{
-				$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_table);
-				$this->db->sql_query('TRUNCATE TABLE ' . $this->mchat_log_table);
+				$this->db->sql_query('DELETE FROM ' . $this->mchat_table);
+				$this->db->sql_query('DELETE FROM ' . $this->mchat_log_table);
 				$this->cache->destroy('sql', $this->mchat_log_table);
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PURGED', false, array($this->user->data['username']));
 				trigger_error($this->user->lang('MCHAT_PURGED') . adm_back_link($u_action));

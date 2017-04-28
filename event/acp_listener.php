@@ -11,6 +11,7 @@
 
 namespace dmzx\mchat\event;
 
+use dmzx\mchat\core\functions;
 use dmzx\mchat\core\settings;
 use phpbb\auth\auth;
 use phpbb\request\request_interface;
@@ -33,6 +34,9 @@ class acp_listener implements EventSubscriberInterface
 	/** @var settings */
 	protected $settings;
 
+	/** @var functions */
+	protected $functions;
+
 	/** @var string */
 	protected $root_path;
 
@@ -46,6 +50,7 @@ class acp_listener implements EventSubscriberInterface
 	* @param request_interface	$request
 	* @param user				$user
 	* @param settings			$settings
+	* @param functions			$functions
 	* @param string				$root_path
 	* @param string				$php_ext
 	*/
@@ -54,6 +59,7 @@ class acp_listener implements EventSubscriberInterface
 		request_interface $request,
 		user $user,
 		settings $settings,
+		functions $functions,
 		$root_path,
 		$php_ext
 	)
@@ -62,6 +68,7 @@ class acp_listener implements EventSubscriberInterface
 		$this->request		= $request;
 		$this->user			= $user;
 		$this->settings		= $settings;
+		$this->functions	= $functions;
 		$this->root_path	= $root_path;
 		$this->php_ext		= $php_ext;
 	}
@@ -75,6 +82,8 @@ class acp_listener implements EventSubscriberInterface
 			'core.permissions'							=> 'permissions',
 			'core.acp_users_prefs_modify_sql'			=> 'acp_users_prefs_modify_sql',
 			'core.acp_users_prefs_modify_template_data'	=> 'acp_users_prefs_modify_template_data',
+			'core.acp_users_overview_before'			=> 'acp_users_overview_before',
+			'core.delete_user_after'					=> 'delete_user_after',
 		);
 	}
 
@@ -198,6 +207,30 @@ class acp_listener implements EventSubscriberInterface
 				$upper				=> $this->settings->cfg_user($config_name, $event['user_row'], $auth),
 				$upper . '_NOAUTH'	=> !$auth->acl_get('u_' . $config_name, $user_id),
 			));
+		}
+	}
+
+	/**
+	 * @param Event $event
+	 */
+	public function acp_users_overview_before($event)
+	{
+		$this->user->add_lang_ext('dmzx/mchat', 'mchat_acp');
+
+		$this->template->assign_vars(array(
+			'L_RETAIN_POSTS'	=> $this->user->lang('MCHAT_RETAIN_MESSAGES', $this->user->lang('RETAIN_POSTS')),
+			'L_DELETE_POSTS'	=> $this->user->lang('MCHAT_DELETE_MESSAGES', $this->user->lang('DELETE_POSTS')),
+		));
+	}
+
+	/**
+	 * @param Event $event
+	 */
+	public function delete_user_after($event)
+	{
+		if ($event['mode'] == 'remove')
+		{
+			$this->functions->mchat_prune($event['user_ids']);
 		}
 	}
 }

@@ -4,7 +4,7 @@
  * @copyright (c) 2009 Shapoval Andrey Vladimirovich (AllCity) ~ http://allcity.net.ru/
  * @copyright (c) 2013 Rich McGirr (RMcGirr83) http://rmcgirr83.org
  * @copyright (c) 2015 dmzx - http://www.dmzx-web.net
- * @copyright (c) 2016 kasimi - mail@kasimi.net
+ * @copyright (c) 2016 kasimi - https://kasimi.net
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
@@ -72,11 +72,35 @@ jQuery.fn.reverse = function(reverse) {
 	return reverse === 'undefined' || reverse ? jQuery(this.toArray().reverse()) : this;
 };
 
+function StorageWrapper(storage, prefix) {
+	this.prefix = prefix;
+	try {
+		this.storage = window[storage];
+		this.storage.setItem(prefix, prefix);
+		this.storage.removeItem(prefix);
+	} catch (e) {
+		this.storage = false;
+	}
+}
+
+StorageWrapper.prototype.get = function(key) {
+	return this.storage && this.storage.getItem(this.prefix + key);
+};
+
+StorageWrapper.prototype.set = function(key, value) {
+	this.storage && this.storage.setItem(this.prefix + key, value);
+};
+
+StorageWrapper.prototype.remove = function(key) {
+	return this.storage && this.storage.removeItem(this.prefix + key);
+};
+
 jQuery(function($) {
 
 	"use strict";
 
 	$.extend(mChat, {
+		storage: new StorageWrapper('localStorage', mChat.cookie + 'mchat_'),
 		ajaxRequest: function(mode, sendHiddenFields, data) {
 			var deferred = $.Deferred();
 			if (sendHiddenFields) {
@@ -88,73 +112,77 @@ jQuery(function($) {
 				timeout: Math.min(mChat.refreshTime, 10000),
 				type: 'POST',
 				dataType: 'json',
-				data: data
-			}).done(function(json, status, xhr) {
-				var data = {
+				data: data,
+				additionalData: {
 					mode: mode,
-					json: json,
-					status: status,
-					xhr: xhr,
-					handle: true
-				};
-				$(mChat).trigger('mchat_ajax_done_before', [data]);
-				if (data.handle) {
-					if (json[mode]) {
-						deferred.resolve(data.json, data.status, data.xhr);
-					} else {
-						deferred.reject(data.xhr, data.status, mChat.lang.parserErr);
+					deferred: deferred
+				}
+			}).done(mChat.ajaxDone).fail(deferred.reject);
+			return deferred.promise().fail(mChat.ajaxFail);
+		},
+		ajaxDone: function(json, status, xhr) {
+			var data = {
+				mode: this.additionalData.mode,
+				json: json,
+				status: status,
+				xhr: xhr,
+				handle: true
+			};
+			$(mChat).trigger('mchat_ajax_done_before', [data]);
+			if (data.handle) {
+				if (json[this.additionalData.mode]) {
+					this.additionalData.deferred.resolve(data.json, data.status, data.xhr);
+				} else {
+					this.additionalData.deferred.reject(data.xhr, data.status, mChat.lang.parserErr);
+				}
+			}
+		},
+		ajaxFail: function(xhr, textStatus, errorThrown) {
+			if (mChat.pageIsUnloading) {
+				return;
+			}
+			if (typeof console !== 'undefined' && console.log) {
+				console.log('AJAX error. status: ' + textStatus + ', message: ' + errorThrown + ' (' + xhr.responseText + ')');
+			}
+			var data = {
+				mode: this.additionalData.mode,
+				xhr: xhr,
+				textStatus: textStatus,
+				errorThrown: errorThrown,
+				updateSession: function() {
+					if (this.xhr.status == 403) {
+						mChat.endSession(true);
+					} else if (this.xhr.status == 400) {
+						mChat.resetSession();
 					}
 				}
-			}).fail(deferred.reject);
-			return deferred.promise().fail(function(xhr, textStatus, errorThrown) {
-				if (mChat.pageIsUnloading) {
-					return;
-				}
-				if (typeof console !== 'undefined' && console.log) {
-					console.log('AJAX error. status: ' + textStatus + ', message: ' + errorThrown + ' (' + xhr.responseText + ')');
-				}
-				var data = {
-					mode: mode,
-					xhr: xhr,
-					textStatus: textStatus,
-					errorThrown: errorThrown,
-					updateSession: function() {
-						if (this.xhr.status == 403) {
-							mChat.endSession(true);
-						} else if (this.xhr.status == 400) {
-							mChat.resetSession();
-						}
-					}
-				};
-				$(mChat).trigger('mchat_ajax_fail_before', [data]);
-				mChat.sound('error');
-				mChat.cached('status-load', 'status-ok', 'status-paused').hide();
-				mChat.cached('status-error').show();
-				var responseText;
-				try {
-					responseText = data.xhr.responseJSON.message || data.errorThrown;
-				} catch (e) {
-					responseText = data.errorThrown;
-				}
-				if (responseText && responseText !== 'timeout') {
-					phpbb.alert(mChat.lang.err, responseText);
-				}
-				data.updateSession();
-			});
+			};
+			$(mChat).trigger('mchat_ajax_fail_before', [data]);
+			mChat.sound('error');
+			mChat.cached('status-load', 'status-ok', 'status-paused').hide();
+			mChat.cached('status-error').show();
+			var responseText;
+			try {
+				responseText = data.xhr.responseJSON.message || data.errorThrown;
+			} catch (e) {
+				responseText = data.errorThrown;
+			}
+			if (responseText && responseText !== 'timeout') {
+				phpbb.alert(mChat.lang.err, responseText);
+			}
+			data.updateSession();
 		},
 		sound: function(file) {
-			if (!mChat.pageIsUnloading && !localStorage.getItem(mChat.cookie + 'mchat_no_sound')) {
-				var data = {
-					audio: mChat.cached('sound-' + file).get(0),
-					file: file,
-					play: true
-				};
-				$(mChat).trigger('mchat_sound_before', [data]);
-				if (data.play && data.audio.duration) {
-					data.audio.pause();
-					data.audio.currentTime = 0;
-					data.audio.play();
-				}
+			var data = {
+				audio: mChat.cached('sound-' + file).get(0),
+				file: file,
+				play: !mChat.pageIsUnloading && mChat.cached('user-sound').is(':checked')
+			};
+			$(mChat).trigger('mchat_sound_before', [data]);
+			if (data.play && data.audio && data.audio.duration) {
+				data.audio.pause();
+				data.audio.currentTime = 0;
+				data.audio.play();
 			}
 		},
 		titleAlert: function() {
@@ -171,9 +199,9 @@ jQuery(function($) {
 			var $elem = mChat.cached(name);
 			$elem.stop().slideToggle(200, function() {
 				if ($elem.is(':visible')) {
-					localStorage.setItem(mChat.cookie + 'mchat_show_' + name, 'yes');
+					mChat.storage.set('show_' + name, 'yes');
 				} else {
-					localStorage.removeItem(mChat.cookie + 'mchat_show_' + name);
+					mChat.storage.remove('show_' + name);
 				}
 			});
 		},
@@ -214,15 +242,15 @@ jQuery(function($) {
 			mChat.pauseSession();
 			var originalInputValue = mChat.cached('input').val();
 			var inputValue = originalInputValue;
-			var color = localStorage.getItem(mChat.cookie + 'mchat_color');
+			var color = mChat.storage.get('color');
 			if (color && inputValue.indexOf('[color=') === -1) {
 				inputValue = '[color=#' + color + '] ' + inputValue + ' [/color]';
 			}
-			mChat.cached('input').val('').focus();
+			mChat.cached('input').val('').trigger('update.autogrow').focus();
 			mChat.refresh(inputValue).done(function() {
 				mChat.resetSession();
 			}).fail(function() {
-				mChat.cached('input').val(originalInputValue);
+				mChat.cached('input').val(originalInputValue).trigger('update.autogrow');
 			}).always(function() {
 				mChat.cached('add').prop('disabled', false);
 				setTimeout(function() {
@@ -320,7 +348,7 @@ jQuery(function($) {
 		handleWhoisResponse: function(json) {
 			var $whois = $(json.whois);
 			var $userlist = $whois.find('#mchat-userlist');
-			if (localStorage.getItem(mChat.cookie + 'mchat_show_userlist')) {
+			if (mChat.storage.get('show_userlist')) {
 				$userlist.show();
 			}
 			mChat.cached('whois').replaceWith($whois);
@@ -484,8 +512,9 @@ jQuery(function($) {
 			var selector = '.mchat-time[data-mchat-relative-update]';
 			clearInterval($message.find(selector).addBack(selector).data('mchat-relative-interval'));
 		},
+		timeLeftRegex: /\d\d:(\d\d:\d\d)/,
 		timeLeft: function(sessionTime) {
-			return (new Date(sessionTime * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
+			return (new Date(sessionTime * 1000)).toUTCString().match(mChat.timeLeftRegex)[mChat.timeout >= 3600000 ? 0 : 1];
 		},
 		countDown: function() {
 			mChat.sessionTime -= 1;
@@ -562,25 +591,30 @@ jQuery(function($) {
 		mention: function() {
 			var $container = $(this).closest('.mchat-message');
 			var username = $container.data('mchat-username');
-			var usercolor = $container.data('mchat-usercolor');
-			if (usercolor) {
-				username = '[b][color=' + usercolor + ']' + username + '[/color][/b]';
-			} else if (mChat.allowBBCodes) {
-				username = '[b]' + username + '[/b]';
+			if (mChat.allowBBCodes) {
+				var usercolor = $container.data('mchat-usercolor');
+				var profileUrl = $container.find(".mchat-message-header a[class^='username']").prop('href');
+				if (usercolor) {
+					username = '[url=' + profileUrl + '][b][color=' + usercolor + ']' + username + '[/color][/b][/url]';
+				} else {
+					username = '[url=' + profileUrl + '][b]' + username + '[/b][/url]';
+				}
 			}
-			insert_text('@ ' + username + ', ');
+			insert_text(mChat.lang.mention.format({username: username}));
 		},
 		quote: function() {
 			var $container = $(this).closest('.mchat-message');
 			var username = $container.data('mchat-username');
 			var quote = $container.data('mchat-message');
 			insert_text('[quote="' + username + '"] ' + quote + '[/quote]');
+			mChat.cached('input').trigger('update.autogrow');
 		},
 		like: function() {
 			var $container = $(this).closest('.mchat-message');
 			var username = $container.data('mchat-username');
 			var quote = $container.data('mchat-message');
 			insert_text('[i]' + mChat.lang.likes + '[/i][quote="' + username + '"] ' + quote + '[/quote]');
+			mChat.cached('input').trigger('update.autogrow');
 		},
 		ip: function() {
 			popup(this.href, 750, 500);
@@ -618,13 +652,13 @@ jQuery(function($) {
 			}, 1);
 		}
 
-		mChat.cached('user-sound').prop('checked', mChat.playSound && !localStorage.getItem(mChat.cookie + 'mchat_no_sound')).change(function() {
+		mChat.cached('user-sound').prop('checked', mChat.playSound && !mChat.storage.get('no_sound')).change(function() {
 			if (this.checked) {
-				localStorage.removeItem(mChat.cookie + 'mchat_no_sound');
+				mChat.storage.remove('no_sound');
 			} else {
-				localStorage.setItem(mChat.cookie + 'mchat_no_sound', 'yes');
+				mChat.storage.set('no_sound', 'yes');
 			}
-		}).change();
+		});
 
 		$.each(mChat.removeBBCodes.split('|'), function(i, bbcode) {
 			var bbCodeClass = '.bbcode-' + bbcode.replaceMany({
@@ -639,7 +673,7 @@ jQuery(function($) {
 		$('#bbpalette,#abbc3_bbpalette,#color_wheel').prop('onclick', null).attr('data-mchat-toggle', 'colour');
 
 		$.each(['userlist', 'smilies', 'bbcodes', 'colour'], function(i, elem) {
-			if (localStorage.getItem(mChat.cookie + 'mchat_show_' + elem)) {
+			if (mChat.storage.get('show_' + elem)) {
 				mChat.cached(elem).toggle();
 			}
 		});
@@ -693,17 +727,17 @@ jQuery(function($) {
 			e.stopImmediatePropagation();
 			var $this = $(this);
 			var newColor = $this.data('color');
-			if (localStorage.getItem(mChat.cookie + 'mchat_color') === newColor) {
-				localStorage.removeItem(mChat.cookie + 'mchat_color');
+			if (mChat.storage.get('color') === newColor) {
+				mChat.storage.remove('color');
 			} else {
-				localStorage.setItem(mChat.cookie + 'mchat_color', newColor);
+				mChat.storage.set('color', newColor);
 				mChat.cached('colour').find('.colour-palette a').removeClass('remember-color');
 			}
 			$this.toggleClass('remember-color');
 		}
 	});
 
-	var color = localStorage.getItem(mChat.cookie + 'mchat_color');
+	var color = mChat.storage.get('color');
 	if (color) {
 		mChat.cached('colour').find('.colour-palette a[data-color="' + color + '"]').addClass('remember-color');
 	}

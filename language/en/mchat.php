@@ -59,6 +59,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_NOJAVASCRIPT'			=> 'Please enable JavaScript to use mChat.',
 	'MCHAT_NOMESSAGE'				=> 'No messages',
 	'MCHAT_NOMESSAGEINPUT'			=> 'You have not entered a message',
+	'MCHAT_MESSAGE_DELETED'			=> 'This message has been deleted.',
 	'MCHAT_OK'						=> 'OK',
 	'MCHAT_PAUSE'					=> 'Paused',
 	'MCHAT_PERMISSIONS'				=> 'Change user’s permissions',
@@ -83,6 +84,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_CHARACTER_COUNT'			=> '<strong>{current}</strong> characters',
 	'MCHAT_CHARACTER_COUNT_LIMIT'	=> '<strong>{current}</strong> out of {max} characters',
 	'MCHAT_SESSION_ENDS_JS'			=> 'Chat session ends in {timeleft}',
+	'MCHAT_MENTION'					=> ' @{username} ',
 
 	// Custom translations for administrators
 	'MCHAT_RULES_MESSAGE'			=> '',

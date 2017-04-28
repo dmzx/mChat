@@ -7,6 +7,18 @@
  *
  */
 
+.forabg.mchat-wrapper {
+	padding: 0;
+}
+
+.mchat-wrapper .collapse-box h2 a {
+	color: #888;
+}
+
+.mchat-wrapper .collapse-box h2 a:before {
+	content: '' !important;
+}
+
 .icon-mchat > a:before {
 	content: '\f086';
 	font-family: 'FontAwesome';

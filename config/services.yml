@@ -76,6 +76,7 @@ services:
             - '@request'
             - '@user'
             - '@dmzx.mchat.settings'
+            - '@dmzx.mchat.functions'
             - '%core.root_path%'
             - '%core.php_ext%'
         tags:

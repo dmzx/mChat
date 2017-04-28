@@ -135,28 +135,39 @@ class mchat_2_0_0_rc3 extends migration
 			array('module.add', array(
 				'acp',
 				'ACP_CAT_DOT_MODS',
-				'ACP_CAT_MCHAT'
+				'ACP_CAT_MCHAT',
 			)),
 
 			// Add ACP preferences module
 			array('module.add', array(
 				'acp',
 				'ACP_CAT_MCHAT',
-				array('module_basename' => '\dmzx\mchat\acp\acp_mchat_module'),
+				array(
+					'module_basename'	=> '\dmzx\mchat\acp\acp_mchat_module',
+					'modes'				=> array(
+						'globalsettings',
+						'globalusersettings',
+					),
+				),
 			)),
 
 			// Add UCP category
 			array('module.add', array(
 				'ucp',
 				0,
-				'UCP_MCHAT_CONFIG'
+				'UCP_MCHAT_CONFIG',
 			)),
 
 			// Add UCP preferences module
 			array('module.add', array(
 				'ucp',
 				'UCP_MCHAT_CONFIG',
-				array('module_basename' => '\dmzx\mchat\ucp\ucp_mchat_module'),
+				array(
+					'module_basename'	=> '\dmzx\mchat\ucp\ucp_mchat_module',
+					'modes'				=> array(
+						'configuration',
+					),
+				),
 			)),
 		);
 	}

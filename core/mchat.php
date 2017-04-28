@@ -423,7 +423,13 @@ class mchat
 
 		$author = $this->functions->mchat_author_for_message($message_id);
 
-		if (!$author || $author['post_id'] || !$this->auth_message('edit', $author['user_id'], $author['message_time']))
+		if (!$author)
+		{
+			throw new http_exception(410, 'MCHAT_MESSAGE_DELETED');
+		}
+
+		// If post_id is not 0 it's a notification and notifications can't be edited
+		if ($author['post_id'] || !$this->auth_message('edit', $author['user_id'], $author['message_time']))
 		{
 			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
@@ -483,7 +489,12 @@ class mchat
 
 		$author = $this->functions->mchat_author_for_message($message_id);
 
-		if (!$author || !$this->auth_message('delete', $author['user_id'], $author['message_time']))
+		if (!$author)
+		{
+			throw new http_exception(410, 'MCHAT_MESSAGE_DELETED');
+		}
+
+		if (!$this->auth_message('delete', $author['user_id'], $author['message_time']))
 		{
 			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
@@ -797,7 +808,7 @@ class mchat
 			'MCHAT_ARCHIVE'					=> $this->auth->acl_get('u_mchat_archive'),
 			'MCHAT_RULES'					=> $this->user->lang('MCHAT_RULES_MESSAGE') || $this->settings->cfg('mchat_rules'),
 			'MCHAT_WHOIS_REFRESH_EXPLAIN'	=> $this->user->lang('MCHAT_WHO_IS_REFRESH_EXPLAIN', $this->settings->cfg('mchat_whois_refresh')),
-			'MCHAT_SESSION_TIMELEFT'		=> $this->user->lang('MCHAT_SESSION_ENDS', gmdate('H:i:s', (int) $this->settings->cfg('mchat_timeout'))),
+			'MCHAT_SESSION_TIMELEFT'		=> $this->user->lang('MCHAT_SESSION_ENDS', gmdate($this->settings->cfg('mchat_timeout') >= 3600 ? 'H:i:s' : 'i:s', $this->settings->cfg('mchat_timeout'))),
 			'MCHAT_LOG_ID'					=> $this->functions->get_latest_log_id(),
 			'MCHAT_STATIC_MESS'				=> htmlspecialchars_decode($static_message),
 			'A_MCHAT_MESS_LONG'				=> addslashes($this->user->lang('MCHAT_MESS_LONG', $this->settings->cfg('mchat_max_message_lngth'))),
@@ -835,7 +846,7 @@ class mchat
 		{
 			$this->template->assign_block_vars('mchaturl', array(
 				'ACTION'	=> $action,
-				'URL'		=> $this->helper->route('dmzx_mchat_action_' . $action . '_controller'),
+				'URL'		=> $this->helper->route('dmzx_mchat_action_' . $action . '_controller', array(), false),
 				'IS_LAST'	=> $i + 1 === count($actions),
 			));
 		}
@@ -926,18 +937,15 @@ class mchat
 		$md_manager = $this->extension_manager->create_extension_metadata_manager('dmzx/mchat', $this->template);
 		$meta = $md_manager->get_metadata();
 
-		$author_names = array();
 		$author_homepages = array();
 
 		foreach (array_slice($meta['authors'], 0, 2) as $author)
 		{
-			$author_names[] = $author['name'];
 			$author_homepages[] = sprintf('<a href="%1$s" title="%2$s">%2$s</a>', $author['homepage'], $author['name']);
 		}
 
 		$this->template->assign_vars(array(
 			'MCHAT_DISPLAY_NAME'		=> $meta['extra']['display-name'],
-			'MCHAT_AUTHOR_NAMES'		=> implode(' &amp; ', $author_names),
 			'MCHAT_AUTHOR_HOMEPAGES'	=> implode(' &amp; ', $author_homepages),
 		));
 	}
@@ -1004,8 +1012,24 @@ class mchat
 			return;
 		}
 
-		// Reverse the array if messages appear at the bottom
-		if ($page !== 'archive' && !$this->settings->cfg('mchat_message_top'))
+		// At this point the rows are sorted by ID bottom to top.
+		// We need to reverse the array if they need to be sorted top to bottom.
+		$reverse = false;
+		$mchat_message_top = $this->settings->cfg('mchat_message_top');
+		if ($page === 'archive')
+		{
+			$mchat_archive_sort = $this->settings->cfg('mchat_archive_sort');
+			if ($mchat_archive_sort == settings::ARCHIVE_SORT_TOP_BOTTOM || $mchat_archive_sort == settings::ARCHIVE_SORT_USER && !$mchat_message_top)
+			{
+				$reverse = true;
+			}
+		}
+		else if (!$mchat_message_top)
+		{
+			$reverse = true;
+		}
+
+		if ($reverse)
 		{
 			$rows = array_reverse($rows);
 		}
@@ -1021,12 +1045,12 @@ class mchat
 		$user_avatars = array();
 
 		// Cache avatars
+		$display_avatar = $this->display_avatars();
 		foreach ($rows as $row)
 		{
 			if (!isset($user_avatars[$row['user_id']]))
 			{
-				$display_avatar = $this->display_avatars() && $row['user_avatar'];
-				$user_avatars[$row['user_id']] = !$display_avatar ? '' : phpbb_get_user_avatar(array(
+				$user_avatars[$row['user_id']] = !$display_avatar || !$row['user_avatar'] ? '' : phpbb_get_user_avatar(array(
 					'avatar'		=> $row['user_avatar'],
 					'avatar_type'	=> $row['user_avatar_type'],
 					'avatar_width'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 40 : 0,
@@ -1056,7 +1080,16 @@ class mchat
 
 			$message_age = time() - $row['message_time'];
 			$minutes_ago = $this->get_minutes_ago($message_age);
-			$datetime = $this->user->format_date($row['message_time'], $this->settings->cfg('mchat_date'), true);
+			$absolute_datetime = $this->user->format_date($row['message_time'], $this->settings->cfg('mchat_date'), true);
+			// If relative time is selected, also display "today" / "yesterday", else display absolute time.
+			if ($this->settings->cfg('mchat_relative_time'))
+			{
+				$datetime = $this->user->format_date($row['message_time'], $this->settings->cfg('mchat_date'), false);
+			}
+			else
+			{
+				$datetime = $this->user->format_date($row['message_time'], $this->settings->cfg('mchat_date'), true);
+			}
 
 			$is_poster = $row['user_id'] != ANONYMOUS && $this->user->data['user_id'] == $row['user_id'];
 
@@ -1080,7 +1113,7 @@ class mchat
 				'MCHAT_U_PERMISSIONS'		=> append_sid("{$board_url}{$this->root_path}adm/index.{$this->php_ext}", 'i=permissions&amp;mode=setting_user_global&amp;user_id%5B0%5D=' . $row['user_id'], true, $this->user->session_id),
 				'MCHAT_MESSAGE'				=> generate_text_for_display($row['message'], $row['bbcode_uid'], $row['bbcode_bitfield'], $row['bbcode_options']),
 				'MCHAT_TIME'				=> $minutes_ago === -1 ? $datetime : $this->user->lang('MCHAT_MINUTES_AGO', $minutes_ago),
-				'MCHAT_DATETIME'			=> $datetime,
+				'MCHAT_DATETIME'			=> $absolute_datetime,
 				'MCHAT_MINUTES_AGO'			=> $minutes_ago,
 				'MCHAT_RELATIVE_UPDATE'		=> 60 - $message_age % 60,
 				'MCHAT_MESSAGE_TIME'		=> $row['message_time'],
@@ -1215,8 +1248,12 @@ class mchat
 				'#' => 'p' . $row['post_id'],
 			));
 
+			// We prefer $post_data because it was fetched from the forums table just now.
+			// $row might contain outdated data if a post was moved to a new forum.
+			$forum_id = isset($post_data['forum_id']) ? $post_data['forum_id'] : $row['forum_id'];
+
 			$viewforum_url = append_sid($board_url . 'viewforum.' . $this->php_ext, array(
-				'f' => $row['forum_id'],
+				'f' => $forum_id,
 			));
 
 			if ($post_data)
@@ -1491,7 +1528,8 @@ class mchat
 		// Must not exceed character limit
 		if ($this->settings->cfg('mchat_max_message_lngth'))
 		{
-			if (utf8_strlen($message) > $this->settings->cfg('mchat_max_message_lngth'))
+			$message_without_entities = htmlspecialchars_decode($message, ENT_COMPAT);
+			if (utf8_strlen($message_without_entities) > $this->settings->cfg('mchat_max_message_lngth'))
 			{
 				throw new http_exception(400, 'MCHAT_MESS_LONG', array($this->settings->cfg('mchat_max_message_lngth')));
 			}

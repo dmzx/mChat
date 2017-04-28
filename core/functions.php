@@ -308,9 +308,10 @@ class functions
 	/**
 	 * Prune messages
 	 *
+	 * @param int|array $user_ids
 	 * @return array
 	 */
-	public function mchat_prune()
+	public function mchat_prune($user_ids = array())
 	{
 		$prune_num = (int) $this->settings->cfg('mchat_prune_num');
 		$prune_mode = (int) $this->settings->cfg('mchat_prune_mode');
@@ -325,7 +326,17 @@ class functions
 			'FROM'		=> array($this->mchat_table => 'm'),
 		);
 
-		if ($this->settings->prune_modes[$prune_mode] === 'messages')
+		if ($user_ids)
+		{
+			if (!is_array($user_ids))
+			{
+				$user_ids = array($user_ids);
+			}
+
+			$sql_array['WHERE'] = $this->db->sql_in_set('m.user_id', $user_ids);
+			$offset = 0;
+		}
+		else if ($this->settings->prune_modes[$prune_mode] === 'messages')
 		{
 			// Skip fixed number of messages, delete all others
 			$sql_array['ORDER_BY'] = 'm.message_id DESC';
@@ -355,10 +366,13 @@ class functions
 		 *
 		 * @event dmzx.mchat.prune_before
 		 * @var array	prune_ids	Array of message IDs that are about to be pruned
+		 * @var array	user_ids	Array of user IDs that are being pruned
 		 * @since 2.0.0-RC6
+		 * @changed 2.0.1 Added user_ids
 		 */
 		$vars = array(
 			'prune_ids',
+			'user_ids',
 		);
 		extract($this->dispatcher->trigger_event('dmzx.mchat.prune_before', compact($vars)));
 
@@ -368,7 +382,11 @@ class functions
 			$this->db->sql_query('DELETE FROM ' . $this->mchat_log_table . ' WHERE ' . $this->db->sql_in_set('message_id', $prune_ids));
 			$this->cache->destroy('sql', $this->mchat_log_table);
 
-			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED', false, array($this->user->data['username'], count($prune_ids)));
+			// Only add a log entry if message pruning was not triggered by user pruning
+			if (!$user_ids)
+			{
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MCHAT_TABLE_PRUNED', false, array($this->user->data['username'], count($prune_ids)));
+			}
 		}
 
 		return $prune_ids;
@@ -672,7 +690,7 @@ class functions
 			return array();
 		}
 
-		$sql = 'SELECT p.post_id, p.post_subject, f.forum_name
+		$sql = 'SELECT p.post_id, p.post_subject, f.forum_id, f.forum_name
 				FROM ' . POSTS_TABLE . ' p, ' . FORUMS_TABLE . ' f
 				WHERE p.forum_id = f.forum_id
 					AND ' . $this->db->sql_in_set('p.post_id', $post_ids);
@@ -687,6 +705,7 @@ class functions
 		{
 			$post_subjects[$row['post_id']] = array(
 				'post_subject'	=> $row['post_subject'],
+				'forum_id'		=> $row['forum_id'],
 				'forum_name'	=> $row['forum_name'],
 			);
 		}
@@ -812,14 +831,13 @@ class functions
 	/**
 	 * Returns user ID & name of the specified message
 	 *
-	 * @param $message_id
+	 * @param int $message_id
 	 * @return array
 	 */
 	public function mchat_author_for_message($message_id)
 	{
-		$sql = 'SELECT u.user_id, u.username, m.message_time, m.forum_id, m.post_id
+		$sql = 'SELECT m.user_id, m.message_time, m.post_id
 			FROM ' . $this->mchat_table . ' m
-			LEFT JOIN ' . USERS_TABLE . ' u ON m.user_id = u.user_id
 			WHERE m.message_id = ' . (int) $message_id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);

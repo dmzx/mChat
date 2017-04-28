@@ -69,6 +69,13 @@ class settings
 	public $is_phpbb32;
 
 	/**
+	 * Possible values of the global setting mchat_archive_sort
+	 */
+	const ARCHIVE_SORT_TOP_BOTTOM = 0;
+	const ARCHIVE_SORT_BOTTOM_TOP = 1;
+	const ARCHIVE_SORT_USER = 2;
+
+	/**
 	 * Constructor
 	 *
 	 * @param user					$user
@@ -98,6 +105,7 @@ class settings
 	public function initialize_global_settings()
 	{
 		$global_settings = array(
+			'mchat_archive_sort'			=> array('default' => self::ARCHIVE_SORT_BOTTOM_TOP),
 			'mchat_bbcode_disallowed'		=> array('default' => '',	'validation' => array('string', false, 0, 255)),
 			'mchat_custom_height'			=> array('default' => 350,	'validation' => array('num', false, 50, 1000)),
 			'mchat_custom_page'				=> array('default' => 1),

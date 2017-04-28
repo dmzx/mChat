@@ -1,10 +1,10 @@
 {
 	"name": "dmzx/mchat",
 	"type": "phpbb-extension",
-	"description": "mChat Extension",
+	"description": "mChat",
 	"homepage": "https://github.com/kasimi/mChat",
-	"version": "2.0.0",
-	"time": "2016-10-20",
+	"version": "2.0.1",
+	"time": "2017-02-03",
 	"keywords": ["phpbb", "extension", "mchat"],
 	"license": "GPL-2.0",
 	"authors": [
@@ -39,10 +39,9 @@
 			"phpbb/phpbb": ">=3.1.8-RC1,<3.3.0@dev"
 		},
 		"version-check": {
-			"host": "kasimi.github.io",
-			"directory": "/mChat",
-			"filename": "mchat_version.json",
-			"ssl": true
+			"host": "www.phpbb.com",
+			"directory": "/customise/db/extension/mchat_extension",
+			"filename": "version_check"
 		}
 	}
 }

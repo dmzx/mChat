@@ -11,7 +11,7 @@
 
 namespace dmzx\mchat\migrations;
 
-use \phpbb\db\migration\migration;
+use phpbb\db\migration\migration;
 
 class mchat_2_0_0 extends migration
 {

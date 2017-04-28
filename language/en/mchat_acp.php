@@ -62,7 +62,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_ACP_GLOBALUSERSETTINGS_TITLE'			=> 'mChat Global user settings',
 	'MCHAT_VERSION'									=> 'Version',
 	'MCHAT_RULES'									=> 'Rules',
-	'MCHAT_RULES_EXPLAIN'							=> 'Enter the rules of the forum here. HTML code is allowed. <em>You are limited to 255 characters.</em><br />This message can be translated: edit the MCHAT_RULES_MESSAGE language key in /ext/dmzx/mchat/language/XX/mchat.php.',
+	'MCHAT_RULES_EXPLAIN'							=> 'Enter the rules here. HTML code is allowed. <em>You are limited to 255 characters.</em><br />This message can be translated: edit the MCHAT_RULES_MESSAGE language key in /ext/dmzx/mchat/language/XX/mchat.php.',
 	'MCHAT_CONFIG_SAVED'							=> 'mChat configuration has been updated',
 	'MCHAT_AVATARS'									=> 'Display avatars',
 	'MCHAT_AVATARS_EXPLAIN'							=> 'If set to yes, resized user avatars will be displayed',
@@ -91,14 +91,17 @@ $lang = array_merge($lang, array(
 	'MCHAT_MESSAGE_NUM_INDEX_EXPLAIN'				=> '<em>You are limited from 5 to 50. Default is 10.</em>',
 	'MCHAT_MESSAGE_NUM_ARCHIVE'						=> 'Number of messages to display on the archive page',
 	'MCHAT_MESSAGE_NUM_ARCHIVE_EXPLAIN'				=> 'The maximum number of messages to show per page on the archive page.<br /><em>You are limited from 10 to 100. Default is 25.</em>',
+	'MCHAT_ARCHIVE_SORT'							=> 'Message sorting',
+	'MCHAT_ARCHIVE_SORT_TOP_BOTTOM'					=> 'Always sort messages top to bottom',
+	'MCHAT_ARCHIVE_SORT_BOTTOM_TOP'					=> 'Always sort messages bottom to top',
+	'MCHAT_ARCHIVE_SORT_USER'						=> 'Sort messages depending on the user’s <em>Location of new messages</em> preference',
 	'MCHAT_FLOOD_TIME'								=> 'Flood time',
 	'MCHAT_FLOOD_TIME_EXPLAIN'						=> 'The number of seconds a user must wait before posting another message in the chat.<br /><em>You are limited from 0 to 60 seconds. Default is 0. Set to 0 to disable.</em>',
 	'MCHAT_EDIT_DELETE_LIMIT'						=> 'Time limit for editing and deleting messages',
 	'MCHAT_EDIT_DELETE_LIMIT_EXPLAIN'				=> 'Messages older than the specified number of seconds cannot be edited or deleted by the author any more.<br />Users who have <em>edit/delete permission as well as moderator permission are exempt</em> from this time limit.<br />Set to 0 to allow unlimited editing and deleting.',
 	'MCHAT_MAX_MESSAGE_LENGTH'						=> 'Maximum message length',
 	'MCHAT_MAX_MESSAGE_LENGTH_EXPLAIN'				=> 'Maximum number of characters allowed per message posted.<br /><em>You are limited from 0 to 1000. Default is 500. Set to 0 to disable.</em>',
-	'MCHAT_CUSTOM_PAGE'								=> 'Enable custom Page',
-	'MCHAT_CUSTOM_PAGE_EXPLAIN'						=> 'Allow the use of the custom page',
+	'MCHAT_CUSTOM_PAGE'								=> 'Enable custom page',
 	'MCHAT_CUSTOM_HEIGHT'							=> 'Custom page height',
 	'MCHAT_CUSTOM_HEIGHT_EXPLAIN'					=> 'The height of the chat box in pixels on the custom page.<br /><em>You are limited from 50 to 1000. Default is 350.</em>',
 	'MCHAT_BBCODES_DISALLOWED'						=> 'Disallowed bbcodes',
@@ -118,6 +121,10 @@ $lang = array_merge($lang, array(
 	'MCHAT_PURGE'									=> 'Delete all messages now',
 	'MCHAT_PURGE_CONFIRM'							=> 'Confirm deleting all messages',
 	'MCHAT_PURGED'									=> 'All mChat messages have been successfully deleted',
+
+	// '%1$s' contains 'Retain posts' and 'Delete posts' respectively
+	'MCHAT_RETAIN_MESSAGES'							=> '%1$s and retain mChat messages',
+	'MCHAT_DELETE_MESSAGES'							=> '%1$s and delete mChat messages',
 
 	// Error reporting
 	'TOO_LONG_MCHAT_BBCODE_DISALLOWED'				=> 'The disallowed bbcodes value is too long.',
@@ -145,5 +152,5 @@ $lang = array_merge($lang, array(
 	'TOO_SMALL_MCHAT_WHOIS_REFRESH'					=> 'The whois refresh value is too small.',
 	'TOO_LARGE_MCHAT_WHOIS_REFRESH'					=> 'The whois refresh value is too large.',
 
-	'MCHAT_30X_REMNANTS'							=> 'The installation as been aborted.<br />There are remnant modules from the mChat MOD for phpBB 3.0.x in the database. The mChat extension does not work correctly with these modules present.<br />You need to entirely uninstall the mChat MOD before being able to install the mChat extension. Specifically, the modules with the following IDs need to be deleted from the %1$smodules table: %2$s',
+	'MCHAT_30X_REMNANTS'							=> 'The installation has been aborted.<br />There are remnant modules from the mChat MOD for phpBB 3.0.x in the database. The mChat extension does not work correctly with these modules present.<br />You need to entirely uninstall the mChat MOD before being able to install the mChat extension. Specifically, the modules with the following IDs need to be deleted from the %1$smodules table: %2$s',
 ));
