@@ -45,6 +45,6 @@ $lang = array_merge($lang, array(
 	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>Konfiguracja mChat zaktualizowana</strong><br />» %1$s',
 	'LOG_MCHAT_TABLE_PRUNED'		=> '<strong>Wiadomości mChat wyczyszczone: %2$d</strong><br />» %1$s',
 	'LOG_MCHAT_TABLE_PURGED'		=> '<strong>Wiadomości mChat wyczyszczone</strong><br />» %1$s',
-	'LOG_DELETED_MCHAT'				=> '<strong>Wiadomość mChat usunięta</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'				=> '<strong>Wiadomość mChat zedytowana</strong><br />» %1$s',
+	'LOG_DELETED_MCHAT'				=> '<strong>Wiadomość mChat została usunięta</strong><br />» %1$s',
+	'LOG_EDITED_MCHAT'				=> '<strong>Wiadomość mChat została zedytowana</strong><br />» %1$s',
 ));
