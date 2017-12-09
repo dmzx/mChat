@@ -1,4 +1,4 @@
-<!-- IF MCHAT_IS_INDEX or MCHAT_IS_ARCHIVE_PAGE or MCHAT_IS_CUSTOM_PAGE -->
+{% if MCHAT_PAGE %}
 	<br />
-	<span>{MCHAT_DISPLAY_NAME} &copy; {L_POST_BY_AUTHOR} {MCHAT_AUTHOR_HOMEPAGES}</span>
-<!-- ENDIF -->
+	<span>{{ MCHAT_DISPLAY_NAME }} &copy; {{ lang('POST_BY_AUTHOR') }} {{ MCHAT_AUTHOR_HOMEPAGES }}</span>
+{% endif %}

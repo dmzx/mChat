@@ -67,6 +67,7 @@ services:
         arguments:
             - '@user'
             - '@config'
+            - '@config_text'
             - '@auth'
             - '@dispatcher'
     dmzx.mchat.acp.listener:

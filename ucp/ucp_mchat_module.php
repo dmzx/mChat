@@ -13,6 +13,8 @@ namespace dmzx\mchat\ucp;
 
 class ucp_mchat_module
 {
+	public $tpl_name;
+	public $page_title;
 	public $u_action;
 
 	public function main($id, $mode)

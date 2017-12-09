@@ -1,142 +1,142 @@
-<!-- IF MCHAT_IS_ARCHIVE_PAGE or MCHAT_IS_CUSTOM_PAGE -->
-	<!-- INCLUDE overall_header.html -->
-<!-- ENDIF -->
+{% if MCHAT_PAGE in ['custom', 'archive'] %}
+	{% INCLUDE 'overall_header.html' %}
+{% endif %}
 
-<!-- EVENT dmzx_mchat_overall_header_after -->
+{% EVENT dmzx_mchat_overall_header_after %}
 
-<!-- EVENT dmzx_mchat_header_before -->
+{% EVENT dmzx_mchat_header_before %}
 
-<!-- IF MCHAT_IS_CUSTOM_PAGE -->
-		<h2>{L_MCHAT_CUSTOM_PAGE}</h2>
-<!-- ELSEIF MCHAT_IS_ARCHIVE_PAGE -->
-	<h2>{L_MCHAT_ARCHIVE_PAGE}</h2>
-<!-- ENDIF -->
+{% if MCHAT_PAGE == 'custom' %}
+		<h2>{{ lang('MCHAT_CUSTOM_PAGE') }}</h2>
+{% elseif MCHAT_PAGE == 'archive' %}
+	<h2>{{ lang('MCHAT_ARCHIVE_PAGE') }}</h2>
+{% endif %}
 
-<!-- EVENT dmzx_mchat_header_after -->
+{% EVENT dmzx_mchat_header_after %}
 
-<!-- INCLUDE @dmzx_mchat/mchat_script_data.html -->
+{% INCLUDE '@dmzx_mchat/mchat_script_data.html' %}
 
-<!-- IF MCHAT_IS_ARCHIVE_PAGE and (.pagination or MCHAT_TOTAL_MESSAGES) -->
+{% if MCHAT_PAGE == 'archive' and (loops.pagination|length or MCHAT_TOTAL_MESSAGES) %}
 <div class="action-bar bar-top">
-	<!-- EVENT dmzx_mchat_action_bar_top_before -->
+	{% EVENT dmzx_mchat_action_bar_top_before %}
 	<div class="pagination">
-		{MCHAT_TOTAL_MESSAGES}
-		<!-- IF .pagination -->
-			<!-- INCLUDE pagination.html -->
-		<!-- ELSE -->
-			&bull; {PAGE_NUMBER}
-		<!-- ENDIF -->
+		{{ MCHAT_TOTAL_MESSAGES }}
+		{% if loops.pagination|length %}
+			{% INCLUDE 'pagination.html' %}
+		{% else %}
+			&bull; {{ PAGE_NUMBER }}
+		{% endif %}
 	</div>
-	<!-- EVENT dmzx_mchat_action_bar_top_after -->
+	{% EVENT dmzx_mchat_action_bar_top_after %}
 </div>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- EVENT dmzx_mchat_before -->
+{% EVENT dmzx_mchat_before %}
 
-<!-- IF MCHAT_IS_COLLAPSIBLE -->
-	<a class="category<!-- IF S_MCHAT_HIDDEN --> hidden-category<!-- ENDIF --> mchat-category"></a>
-<!-- ENDIF -->
+{% if MCHAT_IS_COLLAPSIBLE %}
+	<a class="category{% if S_MCHAT_HIDDEN %} hidden-category{% endif %} mchat-category"></a>
+{% endif %}
 
 <div class="forabg mchat-wrapper">
 	<a id="mChat"></a>
 	<div class="inner">
 		<ul class="topiclist">
 			<li class="header">
-				<!-- INCLUDE @dmzx_mchat/mchat_header.html -->
-				<!-- IF MCHAT_IS_COLLAPSIBLE -->
-					<a href="{U_MCHAT_COLLAPSE_URL}"
-						class="collapse-btn collapse-<!-- IF S_MCHAT_HIDDEN -->show<!-- ELSE -->hide<!-- ENDIF --> mchat-collapse"
-						data-hidden="{S_MCHAT_HIDDEN}"
+				{% INCLUDE '@dmzx_mchat/mchat_header.html' %}
+				{% if MCHAT_IS_COLLAPSIBLE %}
+					<a href="{{ U_MCHAT_COLLAPSE_URL }}"
+						class="collapse-btn collapse-{{ S_MCHAT_HIDDEN ? 'show' : 'hide' }} mchat-collapse"
+						data-hidden="{{ S_MCHAT_HIDDEN }}"
 						data-ajax="phpbb_collapse"
 						data-overlay="true"
-						title="{L_MCHAT_COLLAPSE_TITLE}"></a>
-				<!-- ENDIF -->
+						title="{{ lang('MCHAT_COLLAPSE_TITLE') }}"></a>
+				{% endif %}
 			</li>
 		</ul>
 
-		<!-- EVENT dmzx_mchat_body_before -->
+		{% EVENT dmzx_mchat_body_before %}
 
-		<div id="mchat-body"<!-- IF MCHAT_IS_COLLAPSIBLE --> class="collapsible"<!-- ENDIF -->>
-			<!-- IF not MCHAT_SOUND_DISABLED -->
-				<audio id="mchat-sound-add" class="hidden" src="{EXT_URL}sounds/add.mp3" preload="auto"></audio>
-				<audio id="mchat-sound-edit" class="hidden" src="{EXT_URL}sounds/edit.mp3" preload="auto"></audio>
-				<audio id="mchat-sound-del" class="hidden" src="{EXT_URL}sounds/del.mp3" preload="auto"></audio>
-				<audio id="mchat-sound-error" class="hidden" src="{EXT_URL}sounds/error.mp3" preload="auto"></audio>
-			<!-- ENDIF -->
+		<div id="mchat-body"{% if MCHAT_IS_COLLAPSIBLE %} class="collapsible"{% endif %}>
+			{% if not MCHAT_SOUND_DISABLED %}
+				<audio id="mchat-sound-add" class="hidden" src="{{ EXT_URL }}sounds/add.mp3" preload="auto"></audio>
+				<audio id="mchat-sound-edit" class="hidden" src="{{ EXT_URL }}sounds/edit.mp3" preload="auto"></audio>
+				<audio id="mchat-sound-del" class="hidden" src="{{ EXT_URL }}sounds/del.mp3" preload="auto"></audio>
+				<audio id="mchat-sound-error" class="hidden" src="{{ EXT_URL }}sounds/error.mp3" preload="auto"></audio>
+			{% endif %}
 
 			<div id="mchat-confirm" class="hidden">
-				<h3>{L_CONFIRM}</h3>
+				<h3>{{ lang('CONFIRM') }}</h3>
 				<div class="mchat-confirm-fields">
 					<p></p>
 					<textarea></textarea>
 				</div>
 				<fieldset class="submit-buttons">
-					<input type="button" name="confirm" value="{L_MCHAT_OK}" class="button2" />&nbsp;
-					<input type="button" name="cancel" value="{L_CANCEL}" class="button2" />
+					<input type="button" name="confirm" value="{{ lang('MCHAT_OK') }}" class="button2" />&nbsp;
+					<input type="button" name="cancel" value="{{ lang('CANCEL') }}" class="button2" />
 				</fieldset>
 			</div>
 
-			<div id="mchat-main"<!-- IF MCHAT_MESSAGE_TOP --> class="mchat-messages-top"<!-- ENDIF -->>
-				<!-- IF MCHAT_STATIC_MESS and not MCHAT_IS_ARCHIVE_PAGE -->
+			<div id="mchat-main"{% if MCHAT_MESSAGE_TOP %} class="mchat-messages-top"{% endif %}>
+				{% if MCHAT_STATIC_MESS and MCHAT_PAGE != 'archive' %}
 					<ul class="topiclist forums">
-						<li class="row mchat-static">{MCHAT_STATIC_MESS}</li>
+						<li class="row mchat-static">{{ MCHAT_STATIC_MESS }}</li>
 					</ul>
-				<!-- ENDIF -->
+				{% endif %}
 
-				<!-- EVENT dmzx_mchat_messages_container_before -->
+				{% EVENT dmzx_mchat_messages_container_before %}
 
 				<ul id="mchat-messages" class="topiclist forums">
-					<!-- IF .mchatrow -->
-						<!-- INCLUDE @dmzx_mchat/mchat_messages.html -->
-					<!-- ELSE -->
-						<li class="row mchat-static mchat-no-messages">{L_MCHAT_NOMESSAGE}</li>
-					<!-- ENDIF -->
+					{% if loops.mchatrow|length %}
+						{% INCLUDE '@dmzx_mchat/mchat_messages.html' %}
+					{% else %}
+						<li class="row mchat-static mchat-no-messages">{{ lang('MCHAT_NOMESSAGE') }}</li>
+					{% endif %}
 				</ul>
 
-				<!-- EVENT dmzx_mchat_messages_container_after -->
+				{% EVENT dmzx_mchat_messages_container_after %}
 			</div>
 
-			<!-- INCLUDE @dmzx_mchat/mchat_panel.html -->
+			{% INCLUDE '@dmzx_mchat/mchat_panel.html' %}
 		</div>
 
-		<!-- EVENT dmzx_mchat_body_after -->
+		{% EVENT dmzx_mchat_body_after %}
 	</div>
 </div>
 
-<!-- EVENT dmzx_mchat_after -->
+{% EVENT dmzx_mchat_after %}
 
-<!-- IF MCHAT_IS_ARCHIVE_PAGE -->
+{% if MCHAT_PAGE == 'archive' %}
 <div class="action-bar bottom">
-	<!-- EVENT dmzx_mchat_action_bar_bottom_before -->
+	{% EVENT dmzx_mchat_action_bar_bottom_before %}
 	<div class="pagination">
-		{MCHAT_TOTAL_MESSAGES}
-		<!-- IF .pagination -->
-			<!-- INCLUDE pagination.html -->
-		<!-- ELSE -->
-			&bull; {PAGE_NUMBER}
-		<!-- ENDIF -->
+		{{ MCHAT_TOTAL_MESSAGES }}
+		{% if loops.pagination|length %}
+			{% INCLUDE 'pagination.html' %}
+		{% else %}
+			&bull; {{ PAGE_NUMBER }}
+		{% endif %}
 	</div>
-	<!-- EVENT dmzx_mchat_action_bar_top_after -->
+	{% EVENT dmzx_mchat_action_bar_top_after %}
 </div>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF MCHAT_IS_CUSTOM_PAGE and MCHAT_WHOIS_REFRESH -->
-	<h3>{L_MCHAT_WHO_IS_CHATTING}</h3>
-	<!-- INCLUDE @dmzx_mchat/mchat_whois.html -->
+{% if MCHAT_PAGE == 'custom' and MCHAT_WHOIS_REFRESH %}
+	<h3>{{ lang('MCHAT_WHO_IS_CHATTING') }}</h3>
+	{% INCLUDE '@dmzx_mchat/mchat_whois.html' %}
 	<div id="mchat-refresh">
-		<span id="mchat-refresh-explain">{MCHAT_WHOIS_REFRESH_EXPLAIN}</span>
-		<span id="mchat-refresh-pending" class="hidden">{L_MCHAT_REFRESHING}</span>
+		<span id="mchat-refresh-explain">{{ lang('MCHAT_WHO_IS_REFRESH_EXPLAIN', MCHAT_WHOIS_REFRESH / 1000) }}</span>
+		<span id="mchat-refresh-pending" class="hidden">{{ lang('MCHAT_REFRESHING') }}</span>
 	</div>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF (MCHAT_IS_CUSTOM_PAGE or MCHAT_IS_ARCHIVE_PAGE) and LEGEND -->
+{% if MCHAT_PAGE in ['custom', 'archive'] and LEGEND %}
 	<div id="mchat-legend">
-		<em>{L_LEGEND}{L_COLON} {LEGEND}</em>
+		<em>{{ lang('LEGEND') ~ lang('COLON') }} {{ LEGEND }}</em>
 	</div>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- EVENT dmzx_mchat_overall_footer_before -->
+{% EVENT dmzx_mchat_overall_footer_before %}
 
-<!-- IF MCHAT_IS_ARCHIVE_PAGE or MCHAT_IS_CUSTOM_PAGE -->
-	<!-- INCLUDE overall_footer.html -->
-<!-- ENDIF -->
+{% if MCHAT_PAGE in ['custom', 'archive'] %}
+	{% INCLUDE 'overall_footer.html' %}
+{% endif %}

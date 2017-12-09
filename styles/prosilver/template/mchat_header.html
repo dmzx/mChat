@@ -1,4 +1,12 @@
 <dl class="row-item">
-	<dt><!-- IF MCHAT_IS_ARCHIVE_PAGE -->{L_MCHAT_ARCHIVE_PAGE}<!-- ELSEIF MCHAT_CUSTOM_PAGE --><a href="{U_MCHAT_CUSTOM_PAGE}" title="{L_MCHAT_TITLE}">{L_MCHAT_TITLE}</a><!-- ELSE -->{L_MCHAT_TITLE}<!-- ENDIF --></dt>
+	<dt>
+		{% if MCHAT_PAGE == 'archive' %}
+			{{ lang('MCHAT_ARCHIVE_PAGE') }}
+		{% elseif MCHAT_CUSTOM_PAGE %}
+			<a href="{{ U_MCHAT_CUSTOM_PAGE }}" title="{{ lang('MCHAT_TITLE') }}">{{ lang('MCHAT_TITLE') }}</a>
+		{% else %}
+			{{ lang('MCHAT_TITLE') }}
+		{% endif %}
+	</dt>
 	<dd></dd>
 </dl>

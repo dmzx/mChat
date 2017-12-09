@@ -57,6 +57,9 @@ class functions
 	protected $mchat_sessions_table;
 
 	/** @var array */
+	protected $active_users;
+
+	/** @var array */
 	public $log_types = array(
 		1 => 'edit',
 		2 => 'del',
@@ -177,10 +180,16 @@ class functions
 	/**
 	 * Returns data about users who are currently chatting
 	 *
+	 * @param bool $cached Whether to return possibly cached data
 	 * @return array
 	 */
-	public function mchat_active_users()
+	public function mchat_active_users($cached = true)
 	{
+		if ($cached && $this->active_users)
+		{
+			return $this->active_users;
+		}
+
 		$check_time = time() - $this->mchat_session_time();
 
 		$sql_array = array(
@@ -258,6 +267,8 @@ class functions
 		);
 		extract($this->dispatcher->trigger_event('dmzx.mchat.active_users_after', compact($vars)));
 
+		$this->active_users = $active_users;
+
 		return $active_users;
 	}
 
@@ -284,7 +295,7 @@ class functions
 		{
 			$sql = 'INSERT INTO ' . $this->mchat_sessions_table . ' ' . $this->db->sql_build_array('INSERT', array(
 				'user_id'			=> (int) $this->user->data['user_id'],
-				'user_ip'			=> $this->user->data['user_ip'],
+				'user_ip'			=> $this->user->ip,
 				'user_lastupdate'	=> time(),
 			));
 			$this->db->sql_query($sql);
@@ -349,9 +360,23 @@ class functions
 			$offset = 0;
 		}
 
+		/**
+		 * Allow modifying SQL query before message ids to be pruned are retrieved.
+		 *
+		 * @event dmzx.mchat.prune_sql_before
+		 * @var array	user_ids	Array of user IDs that are being pruned, empty when pruning via cron
+		 * @var array	sql_array	SQL query data
+		 * @since 2.0.2
+		 */
+		$vars = array(
+			'user_ids',
+			'sql_array',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.prune_sql_before', compact($vars)));
+
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, 0, $offset);
-		$rows = $this->db->sql_fetchrowset();
+		$rows = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
 
 		$prune_ids = array();
@@ -366,7 +391,7 @@ class functions
 		 *
 		 * @event dmzx.mchat.prune_before
 		 * @var array	prune_ids	Array of message IDs that are about to be pruned
-		 * @var array	user_ids	Array of user IDs that are being pruned
+		 * @var array	user_ids	Array of user IDs that are being pruned, empty when pruning via cron
 		 * @since 2.0.0-RC6
 		 * @changed 2.0.1 Added user_ids
 		 */
@@ -395,7 +420,7 @@ class functions
 	/**
 	 * Returns the total number of messages
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function mchat_total_message_count()
 	{
@@ -757,7 +782,7 @@ class functions
 			'login' => 'mchat_posts_login',
 		);
 
-		$is_mode_enabled = !empty($mode_config[$mode]) && $this->settings->cfg($mode_config[$mode]);
+		$is_mode_enabled = !empty($mode_config[$mode]) && $this->settings->cfg($mode_config[$mode]) && (!$this->settings->cfg('mchat_posts_auth_check') || $this->auth->acl_get('u_mchat_use'));
 
 		// Special treatment for login notifications
 		if ($mode === 'login')
@@ -770,7 +795,7 @@ class functions
 			'forum_id'			=> (int) $forum_id,
 			'post_id'			=> (int) $post_id,
 			'user_id'			=> (int) $this->user->data['user_id'],
-			'user_ip'			=> $this->user->data['session_ip'],
+			'user_ip'			=> $this->user->ip,
 			'message'			=> 'MCHAT_NEW_' . strtoupper($mode),
 			'message_time'		=> time(),
 		);

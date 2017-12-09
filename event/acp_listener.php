@@ -187,7 +187,7 @@ class acp_listener implements EventSubscriberInterface
 	{
 		$this->user->add_lang_ext('dmzx/mchat', array('mchat_acp', 'mchat_ucp'));
 
-		$user_id = $event['user_row']['user_id'];
+		$user_id = (int) $event['user_row']['user_id'];
 
 		$auth = new auth();
 		$userdata = $auth->obtain_user_data($user_id);

@@ -176,6 +176,7 @@ class ucp_controller
 		}
 
 		$template_data = array_merge($template_data, array(
+			'MCHAT_ALLOW_USE'				=> $this->auth->acl_get('u_mchat_use'),
 			'MCHAT_POSTS_ENABLED_LANG'		=> $this->settings->get_enabled_post_notifications_lang(),
 			'ERROR'							=> sizeof($error) ? implode('<br />', $error) : '',
 			'MCHAT_AUTH_COUNT'				=> $auth_count,

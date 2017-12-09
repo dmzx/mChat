@@ -123,11 +123,13 @@ class acp_controller
 
 		$is_founder = $this->user->data['user_type'] == USER_FOUNDER;
 
+		$settings = array_merge($this->settings->global_settings(), $this->settings->global_text_settings());
+
 		if ($this->request->is_set_post('submit'))
 		{
 			$mchat_new_config = array();
 			$validation = array();
-			foreach ($this->settings->global_settings() as $config_name => $config_data)
+			foreach ($settings as $config_name => $config_data)
 			{
 				$default = $this->settings->cfg($config_name);
 				settype($default, gettype($config_data['default']));
@@ -221,7 +223,7 @@ class acp_controller
 			'U_ACTION'								=> $u_action,
 		);
 
-		foreach (array_keys($this->settings->global_settings()) as $key)
+		foreach (array_keys($settings) as $key)
 		{
 			$template_data[strtoupper($key)] = $this->settings->cfg($key);
 		}
@@ -364,8 +366,8 @@ class acp_controller
 	}
 
 	/**
-	 * @param $selected
-	 * @return array
+	 * @param int $selected
+	 * @return string
 	 */
 	protected function get_prune_mode_options($selected)
 	{

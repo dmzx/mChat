@@ -1,10 +1,10 @@
-<!-- IF MCHAT_IS_ARCHIVE_PAGE or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) -->
-	<!-- INCLUDEJS {T_ASSETS_PATH}/javascript/editor.js -->
-<!-- ENDIF -->
+{% if MCHAT_PAGE == 'archive' or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) %}
+	{% INCLUDEJS T_ASSETS_PATH ~ '/javascript/editor.js' %}
+{% endif %}
 
-<!-- INCLUDEJS @dmzx_mchat/javascript/jquery.autogrow-textarea.js -->
-<!-- INCLUDEJS @dmzx_mchat/javascript/jquery.titlealert.min.js -->
-<!-- INCLUDEJS @dmzx_mchat/javascript/mchat.js -->
+{% INCLUDEJS '@dmzx_mchat/javascript/jquery.autogrow-textarea.js' %}
+{% INCLUDEJS '@dmzx_mchat/javascript/jquery.titlealert.min.js' %}
+{% INCLUDEJS '@dmzx_mchat/javascript/mchat.js' %}
 
 <script type="text/javascript">
 	// <![CDATA[
@@ -13,52 +13,50 @@
 	var mChat = {
 		// General settings
 		actionUrls		: {
-			<!-- BEGIN mchaturl -->
-			{mchaturl.ACTION}: '{mchaturl.URL}'<!-- IF not mchaturl.IS_LAST -->,<!-- ENDIF -->
-			<!-- END mchaturl -->
+			{% for mchaturl in loops.mchaturl %}
+				{{ mchaturl.ACTION }}: '{{ mchaturl.URL }}'{{ loop.last ? '' : ',' }}
+			{% endfor %}
 		},
-		page			: '{MCHAT_PAGE}',
-		cookie			: '{A_COOKIE_NAME}',
-		customPage		: <!-- IF MCHAT_IS_CUSTOM_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
-		archivePage		: <!-- IF MCHAT_IS_ARCHIVE_PAGE -->true<!-- ELSE -->false<!-- ENDIF -->,
-		pause			: <!-- IF MCHAT_PAUSE_ON_INPUT -->true<!-- ELSE -->false<!-- ENDIF -->,
-		playSound		: <!-- IF MCHAT_SOUND -->true<!-- ELSE -->false<!-- ENDIF -->,
-		messageTop		: <!-- IF MCHAT_MESSAGE_TOP -->true<!-- ELSE -->false<!-- ENDIF -->,
-		allowBBCodes	: <!-- IF S_BBCODE_ALLOWED -->true<!-- ELSE -->false<!-- ENDIF -->,
-		liveUpdates		: <!-- IF MCHAT_LIVE_UPDATES -->true<!-- ELSE -->false<!-- ENDIF -->,
-		relativeTime	: <!-- IF MCHAT_RELATIVE_TIME -->true<!-- ELSE -->false<!-- ENDIF -->,
-		showCharCount	: <!-- IF MCHAT_CHARACTER_COUNT -->true<!-- ELSE -->false<!-- ENDIF -->,
+		page			: '{{ MCHAT_PAGE | escape('js') }}',
+		cookie			: '{{ COOKIE_NAME | escape('js') }}',
+		pause			: {{ MCHAT_PAUSE_ON_INPUT ? 'true' : 'false' }},
+		playSound		: {{ MCHAT_SOUND ? 'true' : 'false' }},
+		messageTop		: {{ MCHAT_MESSAGE_TOP ? 'true' : 'false' }},
+		allowBBCodes	: {{ S_BBCODE_ALLOWED ? 'true' : 'false' }},
+		liveUpdates		: {{ MCHAT_LIVE_UPDATES ? 'true' : 'false' }},
+		relativeTime	: {{ MCHAT_RELATIVE_TIME ? 'true' : 'false' }},
+		showCharCount	: {{ MCHAT_CHARACTER_COUNT ? 'true' : 'false' }},
 
 		// Limits & timeouts
-		refreshTime		: {MCHAT_REFRESH_JS},
-		whoisRefresh	: {MCHAT_WHOIS_REFRESH},
-		timeout			: {MCHAT_TIMEOUT},
-		mssgLngth		: {MCHAT_MESSAGE_LNGTH},
-		editDeleteLimit	: {MCHAT_EDIT_DELETE_LIMIT},
-		logId			: {MCHAT_LOG_ID},
-		removeBBCodes	: '{A_MCHAT_DISALLOWED_BBCODES}',
+		refreshTime		: {{ MCHAT_REFRESH_JS }},
+		whoisRefresh	: {{ MCHAT_WHOIS_REFRESH }},
+		timeout			: {{ MCHAT_TIMEOUT }},
+		mssgLngth		: {{ MCHAT_MESSAGE_LNGTH }},
+		editDeleteLimit	: {{ MCHAT_EDIT_DELETE_LIMIT }},
+		logId			: {{ MCHAT_LOG_ID }},
+		removeBBCodes	: '{{ MCHAT_DISALLOWED_BBCODES | escape('js') }}',
 
 		// Language
 		lang: {
 			minutesAgo		: {
-				<!-- BEGIN mchattime -->
-				{mchattime.KEY}: '{mchattime.A_LANG}'<!-- IF not mchattime.IS_LAST -->,<!-- ENDIF -->
-				<!-- END mchattime -->
+				{% for minute in 0..MCHAT_MINUTES_AGO_LIMIT-1 %}
+					{{ minute }}: '{{ lang('MCHAT_MINUTES_AGO', minute) | escape('js') }}'{{ loop.last ? '' : ',' }}
+				{% endfor %}
 			},
-			err				: '{LA_ERROR}',
-			parserErr		: '{LA_AJAX_ERROR_TEXT_PARSERERROR}',
-			newMessageAlert	: '{LA_MCHAT_NEW_CHAT}',
-			noMessageInput	: '{LA_MCHAT_NOMESSAGEINPUT}',
-			editInfo		: '{LA_MCHAT_EDITINFO}',
-			delConfirm		: '{LA_MCHAT_DELCONFIRM}',
-			sessOut			: '{LA_MCHAT_SESSION_OUT}',
-			sessEnds		: '{LA_MCHAT_SESSION_ENDS_JS}',
-			mention			: '{LA_MCHAT_MENTION}',
-			refreshYes		: '{A_MCHAT_REFRESH_YES}',
-			refreshNo		: '{LA_MCHAT_REFRESH_NO}',
-			charCount		: '<!-- IF MCHAT_MESSAGE_LNGTH -->{LA_MCHAT_CHARACTER_COUNT_LIMIT}<!-- ELSE -->{LA_MCHAT_CHARACTER_COUNT}<!-- ENDIF -->',
-			mssgLngthLong	: '{A_MCHAT_MESS_LONG}',
-			likes			: '{LA_MCHAT_LIKES}'
+			err				: '{{ lang('ERROR') | escape('js') }}',
+			parserErr		: '{{ lang('AJAX_ERROR_TEXT_PARSERERROR') | escape('js') }}',
+			newMessageAlert	: '{{ lang('MCHAT_NEW_CHAT') | escape('js') }}',
+			noMessageInput	: '{{ lang('MCHAT_NOMESSAGEINPUT') | escape('js') }}',
+			editInfo		: '{{ lang('MCHAT_EDITINFO') | escape('js') }}',
+			delConfirm		: '{{ lang('MCHAT_DELCONFIRM') | escape('js') }}',
+			sessOut			: '{{ lang('MCHAT_SESSION_OUT') | escape('js') }}',
+			sessEnds		: '{{ lang('MCHAT_SESSION_ENDS_JS') | escape('js') }}',
+			mention			: '{{ lang('MCHAT_MENTION') | escape('js') }}',
+			refreshYes		: '{{ lang('MCHAT_REFRESH_YES', MCHAT_REFRESH_RATE) | escape('js') }}',
+			refreshNo		: '{{ lang('MCHAT_REFRESH_NO') | escape('js') }}',
+			charCount		: '{{ lang(MCHAT_MESSAGE_LNGTH ? 'MCHAT_CHARACTER_COUNT_LIMIT' : 'MCHAT_CHARACTER_COUNT') | escape('js') }}',
+			mssgLngthLong	: '{{ lang('MCHAT_MESS_LONG', MCHAT_MAX_MESSAGE_LENGTH) | escape('js') }}',
+			likes			: '{{ lang('MCHAT_LIKES') | escape('js') }}'
 		}
 	};
 // ]]>

@@ -1,7 +1,7 @@
-<!-- IF (MCHAT_CUSTOM_HEIGHT or MCHAT_INDEX_HEIGHT) and not MCHAT_IS_ARCHIVE_PAGE -->
+{% if (MCHAT_CUSTOM_HEIGHT or MCHAT_INDEX_HEIGHT) and MCHAT_PAGE != 'archive' %}
 <style>
 #mchat-messages {
-	height: <!-- IF MCHAT_IS_CUSTOM_PAGE -->{MCHAT_CUSTOM_HEIGHT}<!-- ELSE -->{MCHAT_INDEX_HEIGHT}<!-- ENDIF -->px;
+	height: {{ MCHAT_PAGE == 'custom' ? MCHAT_CUSTOM_HEIGHT : MCHAT_INDEX_HEIGHT }}px;
 }
 </style>
-<!-- ENDIF -->
+{% endif %}

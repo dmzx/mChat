@@ -1,0 +1,6 @@
+.mchat-icon:before {
+	background-image: url("./images/message_icons_orange.png") !important;
+}
+.icon-mchat {
+    	background-image: url("./images/icon_mchat.png");
+}

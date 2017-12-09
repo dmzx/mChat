@@ -13,9 +13,9 @@ namespace dmzx\mchat\event;
 
 use dmzx\mchat\core\mchat;
 use phpbb\controller\helper;
+use phpbb\event\data;
 use phpbb\request\request_interface;
 use phpbb\user;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class main_listener implements EventSubscriberInterface
@@ -78,7 +78,7 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param data $event
 	 */
 	public function add_page_viewonline($event)
 	{
@@ -90,7 +90,7 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param data $event
 	 */
 	public function load_language_on_setup($event)
 	{
@@ -104,26 +104,22 @@ class main_listener implements EventSubscriberInterface
 
 	/**
 	 * Create a URL to the mchat controller file for the header linklist
-	 *
-	 * @param Event $event
 	 */
-	public function add_page_header_link($event)
+	public function add_page_header_link()
 	{
 		$this->mchat->render_page_header_link();
 	}
 
 	/**
 	 * Check if mchat should be displayed on index.
-	 *
-	 * @param Event $event
 	 */
-	public function display_mchat_on_index($event)
+	public function display_mchat_on_index()
 	{
 		$this->mchat->page_index();
 	}
 
 	/**
-	 * @param Event $event
+	 * @param data $event
 	 */
 	public function insert_posting($event)
 	{
@@ -131,7 +127,7 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param data $event
 	 */
 	public function remove_disallowed_bbcodes($event)
 	{
@@ -139,7 +135,7 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param data $event
 	 */
 	public function user_registration_set_default_values($event)
 	{
@@ -147,7 +143,7 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param data $event
 	 */
 	public function user_login_success($event)
 	{
@@ -158,9 +154,9 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 *
 	 */
-	public function pm_compose_add_quote($event)
+	public function pm_compose_add_quote()
 	{
 		$mchat_message_id = $this->request->variable('mchat_pm_quote_message', 0);
 
@@ -171,9 +167,9 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @param Event $event
+	 *
 	 */
-	public function session_gc($event)
+	public function session_gc()
 	{
 		$this->mchat->session_gc();
 	}

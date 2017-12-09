@@ -13,6 +13,7 @@ namespace dmzx\mchat\core;
 
 use phpbb\auth\auth;
 use phpbb\config\config;
+use phpbb\config\db_text;
 use phpbb\event\dispatcher_interface;
 use phpbb\user;
 
@@ -23,6 +24,9 @@ class settings
 
 	/** @var config */
 	protected $config;
+
+	/** @var db_text */
+	protected $config_text;
 
 	/** @var auth */
 	protected $auth;
@@ -37,6 +41,21 @@ class settings
 	 * @var array
 	 */
 	protected $global_settings;
+
+	/**
+	 * Keys for global text settings that only the administrator is allowed to modify.
+	 * The values are stored in the phpbb_config_text table.
+	 *
+	 * @var array
+	 */
+	protected $global_text_settings;
+
+	/**
+	 * Values for global text settings.
+	 *
+	 * @var array
+	 */
+	protected $global_text_values;
 
 	/**
 	 * Keys for user-specific settings for which the administrator can set default
@@ -80,18 +99,21 @@ class settings
 	 *
 	 * @param user					$user
 	 * @param config				$config
+	 * @param db_text				$config_text
 	 * @param auth					$auth
 	 * @param dispatcher_interface	$dispatcher
 	 */
 	public function __construct(
 		user $user,
 		config $config,
+		db_text $config_text,
 		auth $auth,
 		dispatcher_interface $dispatcher
 	)
 	{
 		$this->user			= $user;
 		$this->config		= $config;
+		$this->config_text	= $config_text;
 		$this->auth			= $auth;
 		$this->dispatcher	= $dispatcher;
 
@@ -121,6 +143,7 @@ class settings
 			'mchat_navbar_link_count'		=> array('default' => 1),
 			'mchat_override_min_post_chars' => array('default' => 0),
 			'mchat_override_smilie_limit'	=> array('default' => 0),
+			'mchat_posts_auth_check'		=> array('default' => 0),
 			'mchat_posts_edit'				=> array('default' => 0),
 			'mchat_posts_quote'				=> array('default' => 0),
 			'mchat_posts_reply'				=> array('default' => 0),
@@ -131,8 +154,6 @@ class settings
 			'mchat_prune_mode'				=> array('default' => 0),
 			'mchat_prune_num'				=> array('default' => 0),
 			'mchat_refresh'					=> array('default' => 10,	'validation' => array('num', false, 5, 60)),
-			'mchat_rules'					=> array('default' => '',	'validation' => array('string', false, 0, 255)),
-			'mchat_static_message'			=> array('default' => '',	'validation' => array('string', false, 0, 255)),
 			'mchat_timeout'					=> array('default' => 0,	'validation' => array('num', false, 0, (int) $this->cfg('session_length'))),
 			'mchat_whois_refresh'			=> array('default' => 60,	'validation' => array('num', false, 10, 300)),
 		);
@@ -150,6 +171,31 @@ class settings
 		extract($this->dispatcher->trigger_event('dmzx.mchat.global_settings_modify', compact($vars)));
 
 		return $global_settings;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function initialize_global_text_settings()
+	{
+		$global_text_settings = array(
+			'mchat_rules'					=> array('default' => ''),
+			'mchat_static_message'			=> array('default' => ''),
+		);
+
+		/**
+		 * Event to modify global text settings data
+		 *
+		 * @event dmzx.mchat.global_text_settings_modify
+		 * @var array	global_text_settings	Array containing global text settings data
+		 * @since 2.0.2
+		 */
+		$vars = array(
+			'global_text_settings',
+		);
+		extract($this->dispatcher->trigger_event('dmzx.mchat.global_text_settings_modify', compact($vars)));
+
+		return $global_text_settings;
 	}
 
 	/**
@@ -205,6 +251,46 @@ class settings
 	/**
 	 * @return array
 	 */
+	public function global_text_settings()
+	{
+		if (empty($this->global_text_settings))
+		{
+			$this->global_text_settings = $this->initialize_global_text_settings();
+		}
+
+		return $this->global_text_settings;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function global_text_values()
+	{
+		if (empty($this->global_text_values))
+		{
+			$global_text_values = $this->config_text->get_array(array_keys($this->global_text_settings()));
+
+			/**
+			 * Event to modify global text values
+			 *
+			 * @event dmzx.mchat.global_text_values_modify
+			 * @var array	global_text_values	Array containing global text values
+			 * @since 2.0.2
+			 */
+			$vars = array(
+				'global_text_values',
+			);
+			extract($this->dispatcher->trigger_event('dmzx.mchat.global_text_values_modify', compact($vars)));
+
+			$this->global_text_values = $global_text_values;
+		}
+
+		return $this->global_text_values;
+	}
+
+	/**
+	 * @return array
+	 */
 	public function ucp_settings()
 	{
 		if (empty($this->ucp_settings))
@@ -234,23 +320,48 @@ class settings
 	 */
 	public function cfg_user($config, $user_data, $auth, $force_global = false)
 	{
-		$ucp_settings = $this->ucp_settings();
-
-		if (!$force_global && isset($ucp_settings[$config]) && $auth->acl_get('u_' . $config))
+		if (!$force_global)
 		{
-			return $user_data['user_' . $config];
+			$ucp_settings = $this->ucp_settings();
+
+			if (isset($ucp_settings[$config]) && $auth->acl_get('u_' . $config))
+			{
+				return $user_data['user_' . $config];
+			}
+		}
+
+		$global_text_settings = $this->global_text_settings();
+
+		if (isset($global_text_settings[$config]))
+		{
+			$global_text_values = $this->global_text_values();
+			return $global_text_values[$config];
 		}
 
 		return $this->config[$config];
 	}
 
 	/**
-	 * @param $config
-	 * @param $value
+	 * @param string $config
+	 * @param mixed $value
 	 * @param bool $volatile
 	 */
 	public function set_cfg($config, $value, $volatile = false)
 	{
+		$global_text_settings = $this->global_text_settings();
+
+		if (isset($global_text_settings[$config]))
+		{
+			$this->global_text_values[$config] = $value;
+
+			if (!$volatile)
+			{
+				$this->config_text->set($config, $value);
+			}
+
+			return;
+		}
+
 		if ($volatile)
 		{
 			$this->config[$config] = $value;
@@ -290,7 +401,7 @@ class settings
 
 		return array(
 			'S_MCHAT_DATEFORMAT_OPTIONS'	=> $dateformat_options,
-			'A_MCHAT_DEFAULT_DATEFORMAT'	=> addslashes($ucp_settings['mchat_date']['default']),
+			'MCHAT_DEFAULT_DATEFORMAT'		=> $ucp_settings['mchat_date']['default'],
 			'S_MCHAT_CUSTOM_DATEFORMAT'		=> $s_custom,
 		);
 	}

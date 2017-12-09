@@ -1,76 +1,76 @@
-<div id="mchat-panel" class="panel cp-mini<!-- IF MCHAT_IS_ARCHIVE_PAGE --> hidden<!-- ENDIF -->">
-	<!-- IF MCHAT_IS_INDEX and MCHAT_WHOIS_REFRESH and MCHAT_WHOIS_INDEX -->
-		<!-- INCLUDE @dmzx_mchat/mchat_whois.html -->
-	<!-- ENDIF -->
+<div id="mchat-panel" class="panel cp-mini{% if MCHAT_PAGE == 'archive' %} hidden{% endif %}">
+	{% if MCHAT_PAGE == 'index' and MCHAT_WHOIS_REFRESH and MCHAT_WHOIS_INDEX %}
+		{% INCLUDE '@dmzx_mchat/mchat_whois.html' %}
+	{% endif %}
 
-	<!-- IF MCHAT_CHARACTER_COUNT and not MCHAT_IS_ARCHIVE_PAGE -->
-		<div id="mchat-character-count" class="invisible">{MCHAT_CHARACTER_COUNT}</div>
-	<!-- ENDIF -->
+	{% if MCHAT_CHARACTER_COUNT and MCHAT_PAGE != 'archive' %}
+		<div id="mchat-character-count" class="invisible">{{ MCHAT_CHARACTER_COUNT }}</div>
+	{% endif %}
 
-	<form id="mchat-form" name="postform" action="{U_MCHAT_CUSTOM_PAGE}" method="POST">
-		{S_FORM_TOKEN}
-		<!-- IF not MCHAT_IS_ARCHIVE_PAGE -->
-			<noscript><div class="error">{L_MCHAT_NOJAVASCRIPT}</div></noscript>
-			<!-- IF MCHAT_ALLOW_USE -->
-				<!-- IF MCHAT_INPUT_AREA -->
+	<form id="mchat-form" name="postform" action="{{ U_MCHAT_CUSTOM_PAGE }}" method="POST">
+		{{ S_FORM_TOKEN }}
+		{% if MCHAT_PAGE != 'archive' %}
+			<noscript><div class="error">{{ lang('MCHAT_NOJAVASCRIPT') }}</div></noscript>
+			{% if MCHAT_ALLOW_USE %}
+				{% if MCHAT_INPUT_AREA %}
 					<input id="mchat-input" type="text" name="message" class="inputbox medium" autocomplete="off" />
-				<!-- ELSE -->
+				{% else %}
 					<textarea id="mchat-input" name="message" class="inputbox no-auto-resize"></textarea>
-				<!-- ENDIF -->
-			<!-- ENDIF -->
-			<!-- EVENT dmzx_mchat_buttons_container_before -->
+				{% endif %}
+			{% endif %}
+			{% EVENT dmzx_mchat_buttons_container_before %}
 			<div id="mchat-buttons">
-				<!-- EVENT dmzx_mchat_buttons_before -->
-				<!-- IF MCHAT_ALLOW_USE -->
-					<input id="mchat-add" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" type="button" data-mchat-action="add" value="{L_MCHAT_ADD}" />
-					<!-- IF MCHAT_ALLOW_SMILES and .smiley -->
-						<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" data-mchat-toggle="smilies" value="{L_MCHAT_SMILES}" />
-					<!-- ENDIF -->
-					<!-- IF S_BBCODE_ALLOWED -->
-						<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" data-mchat-toggle="bbcodes" value="{L_MCHAT_BBCODES}" />
-					<!-- ENDIF -->
-					<!-- IF MCHAT_RULES -->
-						<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" onclick="popup('{U_MCHAT_RULES}', 450, 275); return false;" value="{L_MCHAT_RULES}" />
-					<!-- ENDIF -->
-				<!-- ENDIF -->
-				<!-- EVENT dmzx_mchat_buttons_mid -->
-				<!-- IF MCHAT_ARCHIVE -->
-					<input type="button" class="<!-- IF IS_PHPBB31 -->button2<!-- ELSEIF IS_PHPBB32 -->button<!-- ENDIF -->" onclick="window.location.href = '{U_MCHAT_ARCHIVE_URL}';" value="{L_MCHAT_ARCHIVE}" />
-				<!-- ENDIF -->
-				<!-- EVENT dmzx_mchat_buttons_after -->
+				{% EVENT dmzx_mchat_buttons_before %}
+				{% if MCHAT_ALLOW_USE %}
+					<input id="mchat-add" class="{% if IS_PHPBB31 %}button2{% elseif IS_PHPBB32 %}button{% endif %}" type="button" data-mchat-action="add" value="{{ lang('MCHAT_ADD') }}" />
+					{% if MCHAT_ALLOW_SMILES and loops.smiley|length %}
+						<input type="button" class="{% if IS_PHPBB31 %}button2{% elseif IS_PHPBB32 %}button{% endif %}" data-mchat-toggle="smilies" value="{{ lang('MCHAT_SMILES') }}" />
+					{% endif %}
+					{% if S_BBCODE_ALLOWED %}
+						<input type="button" class="{% if IS_PHPBB31 %}button2{% elseif IS_PHPBB32 %}button{% endif %}" data-mchat-toggle="bbcodes" value="{{ lang('MCHAT_BBCODES') }}" />
+					{% endif %}
+					{% if MCHAT_RULES %}
+						<input type="button" class="{% if IS_PHPBB31 %}button2{% elseif IS_PHPBB32 %}button{% endif %}" onclick="popup('{{ U_MCHAT_RULES }}', 450, 275); return false;" value="{{ lang('MCHAT_RULES') }}" />
+					{% endif %}
+				{% endif %}
+				{% EVENT dmzx_mchat_buttons_mid %}
+				{% if MCHAT_ARCHIVE %}
+					<input type="button" class="{% if IS_PHPBB31 %}button2{% elseif IS_PHPBB32 %}button{% endif %}" onclick="window.location.href = '{{ U_MCHAT_ARCHIVE_URL }}';" value="{{ lang('MCHAT_ARCHIVE') }}" />
+				{% endif %}
+				{% EVENT dmzx_mchat_buttons_after %}
 			</div>
-			<!-- EVENT dmzx_mchat_buttons_container_after -->
-			<!-- IF MCHAT_ALLOW_USE and S_BBCODE_ALLOWED -->
+			{% EVENT dmzx_mchat_buttons_container_after %}
+			{% if MCHAT_ALLOW_USE and S_BBCODE_ALLOWED %}
 				<div id="mchat-bbcodes">
-					<!-- INCLUDE posting_buttons.html -->
+					{% INCLUDE 'posting_buttons.html' %}
 				</div>
-			<!-- ENDIF -->
-			<!-- IF MCHAT_ALLOW_USE and MCHAT_ALLOW_SMILES and .smiley -->
+			{% endif %}
+			{% if MCHAT_ALLOW_USE and MCHAT_ALLOW_SMILES and loops.smiley|length %}
 				<div id="mchat-smilies" class="hidden">
-					<!-- BEGIN smiley -->
-						<a href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
-					<!-- END smiley -->
-					<!-- IF S_SHOW_SMILEY_LINK -->
-						<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
-					<!-- ENDIF -->
+					{% for smiley in loops.smiley %}
+						<a href="#" onclick="insert_text('{{ smiley.A_SMILEY_CODE }}', true); return false;"><img src="{{ smiley.SMILEY_IMG }}" width="{{ smiley.SMILEY_WIDTH }}" height="{{ smiley.SMILEY_HEIGHT }}" alt="{{ smiley.SMILEY_CODE }}" title="{{ smiley.SMILEY_DESC }}" /></a>
+					{% endfor %}
+					{% if S_SHOW_SMILEY_LINK %}
+						<a href="{{ U_MORE_SMILIES }}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{{ lang('MORE_SMILIES') }}</a>
+					{% endif %}
 				</div>
-			<!-- ENDIF -->
-			<!-- EVENT dmzx_mchat_body_smiley_after -->
+			{% endif %}
+			{% EVENT dmzx_mchat_body_smiley_after %}
 			<div id="mchat-status">
 				<ul class="mchat-footer">
 					<li>
 						<span id="mchat-status-icons">
-							<i id="mchat-status-load" class="<!-- IF IS_PHPBB31 -->mchat-status-load<!-- ELSEIF IS_PHPBB32 -->fa fa-refresh fa-spin icon icon-blue<!-- ENDIF -->" title="{L_LOADING}"></i>
-							<i id="mchat-status-ok" class="<!-- IF IS_PHPBB31 -->mchat-status-ok<!-- ELSEIF IS_PHPBB32 -->fa fa-check icon icon-green<!-- ENDIF -->" title="{L_MCHAT_OK}"></i>
-							<i id="mchat-status-paused" class="<!-- IF IS_PHPBB31 -->mchat-status-paused<!-- ELSEIF IS_PHPBB32 -->fa fa-pause icon icon-orange<!-- ENDIF -->" title="{L_MCHAT_PAUSE}"></i>
-							<i id="mchat-status-error" class="<!-- IF IS_PHPBB31 -->mchat-status-error<!-- ELSEIF IS_PHPBB32 -->fa fa-times icon icon-red<!-- ENDIF -->" title="{L_ERROR}"></i>
+							<i id="mchat-status-load" class="{% if IS_PHPBB31 %}mchat-status-load{% elseif IS_PHPBB32 %}fa fa-refresh fa-spin icon icon-blue{% endif %}" title="{{ lang('LOADING') }}"></i>
+							<i id="mchat-status-ok" class="{% if IS_PHPBB31 %}mchat-status-ok{% elseif IS_PHPBB32 %}fa fa-check icon icon-green{% endif %}" title="{{ lang('MCHAT_OK') }}"></i>
+							<i id="mchat-status-paused" class="{% if IS_PHPBB31 %}mchat-status-paused{% elseif IS_PHPBB32 %}fa fa-pause icon icon-orange{% endif %}" title="{{ lang('MCHAT_PAUSE') }}"></i>
+							<i id="mchat-status-error" class="{% if IS_PHPBB31 %}mchat-status-error{% elseif IS_PHPBB32 %}fa fa-times icon icon-red{% endif %}" title="{{ lang('ERROR') }}"></i>
 						</span>
-						<span id="mchat-refresh-text">{MCHAT_REFRESH_YES}</span>
+						<span id="mchat-refresh-text">{{ MCHAT_REFRESH_YES }}</span>
 					</li>
-					<!-- IF MCHAT_TIMEOUT --><li><span id="mchat-session">{MCHAT_SESSION_TIMELEFT}</span></li><!-- ENDIF -->
-					<!-- IF not MCHAT_SOUND_DISABLED --><li class="mchat-sound"><input type="checkbox" id="mchat-user-sound"<!-- IF MCHAT_SOUND --> checked="checked"<!-- ENDIF --> /><label for="mchat-user-sound">{L_MCHAT_USESOUND}</label></li><!-- ENDIF -->
+					{% if MCHAT_TIMEOUT %}<li><span id="mchat-session">{{ MCHAT_SESSION_TIMELEFT }}</span></li>{% endif %}
+					{% if not MCHAT_SOUND_DISABLED %}<li class="mchat-sound"><input type="checkbox" id="mchat-user-sound"{% if MCHAT_SOUND %} checked="checked"{% endif %} /><label for="mchat-user-sound">{{ lang('MCHAT_USESOUND') }}</label></li>{% endif %}
 				</ul>
 			</div>
-		<!-- ENDIF -->
+		{% endif %}
 	</form>
 </div>

@@ -1,0 +1,12 @@
+.mchat-wrapper .row-item {
+	top: -10px;
+}
+.mchat-wrapper .header {
+	padding-left: 15px;
+	padding-top: 10px;
+}
+#mchat-panel {
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
