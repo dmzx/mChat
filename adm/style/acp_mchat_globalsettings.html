@@ -18,12 +18,12 @@
 		{% EVENT dmzx_mchat_acp_index_height_before %}
 
 		<dl>
-			<dt><label for="mchat_index_height">{{ lang('MCHAT_INDEX_HEIGHT') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_index_height">{{ lang('MCHAT_INDEX_HEIGHT') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_INDEX_HEIGHT_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_index_height" id="mchat_index_height" size="10" maxlength="4" value="{{ MCHAT_INDEX_HEIGHT }}" />&nbsp;<span>{{ lang('PIXEL') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_message_num_index">{{ lang('MCHAT_MESSAGE_NUM_INDEX') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_message_num_index">{{ lang('MCHAT_MESSAGE_NUM_INDEX') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_MESSAGE_NUM_INDEX_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_message_num_index" id="mchat_message_num_index" size="10" maxlength="4" value="{{ MCHAT_MESSAGE_NUM_INDEX }}" />&nbsp;<span>{{ lang('MCHAT_ACP_MESSAGES') }}</span></dd>
 		</dl>
@@ -45,12 +45,12 @@
 				<label><input type="radio" class="radio" name="mchat_custom_page" value="0"{% if not MCHAT_CUSTOM_PAGE %} id="mchat_custom_page" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_custom_height">{{ lang('MCHAT_CUSTOM_HEIGHT') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_custom_height">{{ lang('MCHAT_CUSTOM_HEIGHT') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_CUSTOM_HEIGHT_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_custom_height" id="mchat_custom_height" size="10" maxlength="4" value="{{ MCHAT_CUSTOM_HEIGHT }}" />&nbsp;<span>{{ lang('PIXEL') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_message_num_custom">{{ lang('MCHAT_MESSAGE_NUM_CUSTOM') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_message_num_custom">{{ lang('MCHAT_MESSAGE_NUM_CUSTOM') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_MESSAGE_NUM_CUSTOM_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_message_num_custom" id="mchat_message_num_custom" size="10" value="{{ MCHAT_MESSAGE_NUM_CUSTOM }}" />&nbsp;<span>{{ lang('MCHAT_ACP_MESSAGES') }}</span></dd>
 		</dl>
@@ -74,7 +74,7 @@
 		{% EVENT dmzx_mchat_acp_message_num_archive_before %}
 
 		<dl>
-			<dt><label for="mchat_message_num_archive">{{ lang('MCHAT_MESSAGE_NUM_ARCHIVE') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_message_num_archive">{{ lang('MCHAT_MESSAGE_NUM_ARCHIVE') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_MESSAGE_NUM_ARCHIVE_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_message_num_archive" id="mchat_message_num_archive" size="10" value="{{ MCHAT_MESSAGE_NUM_ARCHIVE }}" />&nbsp;<span>{{ lang('MCHAT_ACP_MESSAGES') }}</span></dd>
 		</dl>
@@ -84,8 +84,8 @@
 		<dl>
 			<dt><label for="mchat_archive_sort">{{ lang('MCHAT_ARCHIVE_SORT') ~ lang('COLON') }}</label></dt>
 			<dd>
-				<label><input type="radio" class="radio" name="mchat_archive_sort" value="0"{% if MCHAT_ARCHIVE_SORT == 0 %} id="mchat_archive_sort" checked="checked"{% endif %} /> {{ lang('MCHAT_ARCHIVE_SORT_TOP_BOTTOM') }}</label><br />
-				<label><input type="radio" class="radio" name="mchat_archive_sort" value="1"{% if MCHAT_ARCHIVE_SORT == 1 %} id="mchat_archive_sort" checked="checked"{% endif %} /> {{ lang('MCHAT_ARCHIVE_SORT_BOTTOM_TOP') }}</label><br />
+				<label><input type="radio" class="radio" name="mchat_archive_sort" value="0"{% if MCHAT_ARCHIVE_SORT == 0 %} id="mchat_archive_sort" checked="checked"{% endif %} /> {{ lang('MCHAT_ARCHIVE_SORT_TOP_BOTTOM') }}</label><br>
+				<label><input type="radio" class="radio" name="mchat_archive_sort" value="1"{% if MCHAT_ARCHIVE_SORT == 1 %} id="mchat_archive_sort" checked="checked"{% endif %} /> {{ lang('MCHAT_ARCHIVE_SORT_BOTTOM_TOP') }}</label><br>
 				<label><input type="radio" class="radio" name="mchat_archive_sort" value="2"{% if MCHAT_ARCHIVE_SORT == 2 %} id="mchat_archive_sort" checked="checked"{% endif %} /> {{ lang('MCHAT_ARCHIVE_SORT_USER') }}</label>
 			</dd>
 		</dl>
@@ -96,60 +96,60 @@
 		{% EVENT dmzx_mchat_acp_timeout_before %}
 
 		<dl>
-			<dt><label for="mchat_timeout">{{ lang('MCHAT_TIMEOUT') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_timeout">{{ lang('MCHAT_TIMEOUT') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_TIMEOUT_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_timeout" id="mchat_timeout" size="10" maxlength="4" value="{{ MCHAT_TIMEOUT }}" />&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_refresh">{{ lang('MCHAT_REFRESH') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_refresh">{{ lang('MCHAT_REFRESH') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_REFRESH_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_refresh" id="mchat_refresh" size="10" value="{{ MCHAT_REFRESH }}" />&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_edit_delete_limit">{{ lang('MCHAT_EDIT_DELETE_LIMIT') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_edit_delete_limit">{{ lang('MCHAT_EDIT_DELETE_LIMIT') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_EDIT_DELETE_LIMIT_EXPLAIN') }}</span>
 			<dd><input type="text" name="mchat_edit_delete_limit" id="mchat_edit_delete_limit" size="10" value="{{ MCHAT_EDIT_DELETE_LIMIT }}" />&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_live_updates">{{ lang('MCHAT_LIVE_UPDATES') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_live_updates">{{ lang('MCHAT_LIVE_UPDATES') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_LIVE_UPDATES_EXPLAIN') }}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_live_updates" value="1"{% if MCHAT_LIVE_UPDATES %} id="mchat_live_updates" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 				<label><input type="radio" class="radio" name="mchat_live_updates" value="0"{% if not MCHAT_LIVE_UPDATES %} id="mchat_live_updates" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_flood_time">{{ lang('MCHAT_FLOOD_TIME') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_flood_time">{{ lang('MCHAT_FLOOD_TIME') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_FLOOD_TIME_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_flood_time" id="mchat_flood_time" size="10" value="{{ MCHAT_FLOOD_TIME }}" />&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_max_message_lngth">{{ lang('MCHAT_MAX_MESSAGE_LENGTH') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_max_message_lngth">{{ lang('MCHAT_MAX_MESSAGE_LENGTH') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_MAX_MESSAGE_LENGTH_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_max_message_lngth" id="mchat_max_message_lngth" size="10" value="{{ MCHAT_MAX_MESSAGE_LNGTH }}" />&nbsp;<span>{{ lang('MCHAT_ACP_CHARACTERS') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_override_min_post_chars">{{ lang('MCHAT_OVERRIDE_MIN_POST_CHARS') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_override_min_post_chars">{{ lang('MCHAT_OVERRIDE_MIN_POST_CHARS') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_OVERRIDE_MIN_POST_CHARS_EXPLAIN') }}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_override_min_post_chars" value="1"{% if MCHAT_OVERRIDE_MIN_POST_CHARS %} id="mchat_override_min_post_chars" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 				<label><input type="radio" class="radio" name="mchat_override_min_post_chars" value="0"{% if not MCHAT_OVERRIDE_MIN_POST_CHARS %} id="mchat_override_min_post_chars" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_override_smilie_limit">{{ lang('MCHAT_OVERRIDE_SMILIE_LIMIT') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_override_smilie_limit">{{ lang('MCHAT_OVERRIDE_SMILIE_LIMIT') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_OVERRIDE_SMILIE_LIMIT_EXPLAIN') }}</span></dt>
 			<dd><label><input type="radio" class="radio" name="mchat_override_smilie_limit" value="1"{% if MCHAT_OVERRIDE_SMILIE_LIMIT %} id="mchat_override_smilie_limit" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 				<label><input type="radio" class="radio" name="mchat_override_smilie_limit" value="0"{% if not MCHAT_OVERRIDE_SMILIE_LIMIT %} id="mchat_override_smilie_limit" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_bbcode_disallowed">{{ lang('MCHAT_BBCODES_DISALLOWED') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_bbcode_disallowed">{{ lang('MCHAT_BBCODES_DISALLOWED') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_BBCODES_DISALLOWED_EXPLAIN') }}</span></dt>
 			<dd><textarea name="mchat_bbcode_disallowed" id="mchat_bbcode_disallowed" rows="3" cols="40">{{ MCHAT_BBCODE_DISALLOWED }}</textarea></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_rules">{{ lang('MCHAT_RULES') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_rules">{{ lang('MCHAT_RULES') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_RULES_EXPLAIN') }}</span></dt>
 			<dd><textarea name="mchat_rules" id="mchat_rules" rows="5" cols="40">{{ MCHAT_RULES }}</textarea></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_static_message">{{ lang('MCHAT_STATIC_MESSAGE') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_static_message">{{ lang('MCHAT_STATIC_MESSAGE') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_STATIC_MESSAGE_EXPLAIN') }}</span></dt>
 			<dd><textarea name="mchat_static_message" id="mchat_static_message" rows="5" cols="40">{{ MCHAT_STATIC_MESSAGE }}</textarea></dd>
 		</dl>
@@ -198,7 +198,7 @@
 			</dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_posts_auth_check">{{ lang('MCHAT_POSTS_AUTH_CHECK') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_posts_auth_check">{{ lang('MCHAT_POSTS_AUTH_CHECK') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_POSTS_AUTH_CHECK_EXPLAIN') }}</span></dt>
 			<dd>
 				<label><input type="radio" name="mchat_posts_auth_check" value="1"{% if MCHAT_POSTS_AUTH_CHECK %} id="mchat_posts_auth_check" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
@@ -215,7 +215,7 @@
 		{% EVENT dmzx_mchat_acp_whois_refresh_before %}
 
 		<dl>
-			<dt><label for="mchat_whois_refresh">{{ lang('MCHAT_WHOIS_REFRESH') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_whois_refresh">{{ lang('MCHAT_WHOIS_REFRESH') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_WHOIS_REFRESH_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_whois_refresh" id="mchat_whois_refresh" size="10" value="{{ MCHAT_WHOIS_REFRESH }}" />&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
@@ -235,12 +235,12 @@
 				<label><input type="radio" class="radio" name="mchat_prune" value="0"{% if not MCHAT_PRUNE %} id="mchat_prune" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_prune_gc">{{ lang('MCHAT_PRUNE_GC') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_prune_gc">{{ lang('MCHAT_PRUNE_GC') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_PRUNE_GC_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_prune_gc" id="mchat_prune_gc" size="10" value="{{ MCHAT_PRUNE_GC }}" />&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
 		<dl>
-			<dt><label for="mchat_prune_num">{{ lang('MCHAT_PRUNE_NUM') ~ lang('COLON') }}</label><br />
+			<dt><label for="mchat_prune_num">{{ lang('MCHAT_PRUNE_NUM') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_PRUNE_NUM_EXPLAIN') }}</span></dt>
 			<dd>
 				<input type="text" name="mchat_prune_num" size="10" id="mchat_prune_num" value="{{ MCHAT_PRUNE_NUM }}" />

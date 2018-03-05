@@ -214,7 +214,7 @@ class acp_controller
 		}
 
 		$template_data = array(
-			'MCHAT_ERROR'							=> implode('<br />', $error),
+			'MCHAT_ERROR'							=> implode('<br>', $error),
 			'MCHAT_VERSION'							=> $this->settings->cfg('mchat_version'),
 			'MCHAT_FOUNDER'							=> $is_founder,
 			'S_MCHAT_PRUNE_MODE_OPTIONS'			=> $this->get_prune_mode_options($this->settings->cfg('mchat_prune_mode')),
@@ -343,7 +343,7 @@ class acp_controller
 
 		$template_data = array_merge($template_data, array(
 			'MCHAT_POSTS_ENABLED_LANG'	=> $this->settings->get_enabled_post_notifications_lang(),
-			'MCHAT_ERROR'				=> implode('<br />', $error),
+			'MCHAT_ERROR'				=> implode('<br>', $error),
 			'MCHAT_VERSION'				=> $this->settings->cfg('mchat_version'),
 			'U_ACTION'					=> $u_action,
 		));

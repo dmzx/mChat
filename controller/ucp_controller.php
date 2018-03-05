@@ -148,7 +148,7 @@ class ucp_controller
 				$this->db->sql_query($sql);
 
 				meta_refresh(3, $u_action);
-				$message = $this->user->lang('PROFILE_UPDATED') . '<br /><br />' . $this->user->lang('RETURN_UCP', '<a href="' . $u_action . '">', '</a>');
+				$message = $this->user->lang('PROFILE_UPDATED') . '<br><br>' . $this->user->lang('RETURN_UCP', '<a href="' . $u_action . '">', '</a>');
 				trigger_error($message);
 			}
 
@@ -178,7 +178,7 @@ class ucp_controller
 		$template_data = array_merge($template_data, array(
 			'MCHAT_ALLOW_USE'				=> $this->auth->acl_get('u_mchat_use'),
 			'MCHAT_POSTS_ENABLED_LANG'		=> $this->settings->get_enabled_post_notifications_lang(),
-			'ERROR'							=> sizeof($error) ? implode('<br />', $error) : '',
+			'ERROR'							=> sizeof($error) ? implode('<br>', $error) : '',
 			'MCHAT_AUTH_COUNT'				=> $auth_count,
 			'S_UCP_ACTION'					=> $u_action,
 		));

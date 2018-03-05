@@ -15,7 +15,7 @@
 	</dd>
 </dl>
 <dl>
-	<dt><label for="user_mchat_stats_index">{{ lang('MCHAT_STATS_INDEX') ~ lang('COLON') }}</label><br /><span>{{ lang('MCHAT_STATS_INDEX_EXPLAIN') }}</span></dt>
+	<dt><label for="user_mchat_stats_index">{{ lang('MCHAT_STATS_INDEX') ~ lang('COLON') }}</label><br><span>{{ lang('MCHAT_STATS_INDEX_EXPLAIN') }}</span></dt>
 	<dd>
 		<label><input type="radio" name="user_mchat_stats_index" value="1"{% if MCHAT_STATS_INDEX %} id="user_mchat_stats_index" checked="checked"{% endif %}{% if MCHAT_STATS_INDEX_NOAUTH %} disabled{% endif %} /> {{ lang('YES') }}</label>
 		<label><input type="radio" name="user_mchat_stats_index" value="0"{% if not MCHAT_STATS_INDEX %} id="user_mchat_stats_index" checked="checked"{% endif %}{% if MCHAT_STATS_INDEX_NOAUTH %} disabled{% endif %} /> {{ lang('NO') }}</label>
@@ -36,7 +36,7 @@
 {% EVENT dmzx_mchat_acp_message_top_before %}
 
 <dl>
-	<dt><label for="user_mchat_message_top">{{ lang('MCHAT_MESSAGE_TOP') ~ lang('COLON') }}</label><br /><span>{{ lang('MCHAT_MESSAGE_TOP_EXPLAIN') }}</span></dt>
+	<dt><label for="user_mchat_message_top">{{ lang('MCHAT_MESSAGE_TOP') ~ lang('COLON') }}</label><br><span>{{ lang('MCHAT_MESSAGE_TOP_EXPLAIN') }}</span></dt>
 	<dd>
 		<label><input type="radio" name="user_mchat_message_top" value="1"{% if MCHAT_MESSAGE_TOP %} id="user_mchat_message_top" checked="checked"{% endif %}{% if MCHAT_MESSAGE_TOP_NOAUTH %} disabled{% endif %} /> {{ lang('MCHAT_TOP') }}</label>
 		<label><input type="radio" name="user_mchat_message_top" value="0"{% if not MCHAT_MESSAGE_TOP %} id="user_mchat_message_top" checked="checked"{% endif %}{% if MCHAT_MESSAGE_TOP_NOAUTH %} disabled{% endif %} /> {{ lang('MCHAT_BOTTOM') }}</label>
@@ -78,14 +78,14 @@
 	</dd>
 </dl>
 <dl>
-	<dt><label for="user_mchat_pause_on_input">{{ lang('MCHAT_PAUSE_ON_INPUT') ~ lang('COLON') }}</label><br /><span>{{ lang('MCHAT_PAUSE_ON_INPUT_EXPLAIN') }}</span></dt>
+	<dt><label for="user_mchat_pause_on_input">{{ lang('MCHAT_PAUSE_ON_INPUT') ~ lang('COLON') }}</label><br><span>{{ lang('MCHAT_PAUSE_ON_INPUT_EXPLAIN') }}</span></dt>
 	<dd>
 		<label><input type="radio" name="user_mchat_pause_on_input" value="1"{% if MCHAT_PAUSE_ON_INPUT %} id="user_mchat_pause_on_input" checked="checked"{% endif %}{% if MCHAT_PAUSE_ON_INPUT_NOAUTH %} disabled{% endif %} /> {{ lang('YES') }}</label>
 		<label><input type="radio" name="user_mchat_pause_on_input" value="0"{% if not MCHAT_PAUSE_ON_INPUT %} id="user_mchat_pause_on_input" checked="checked"{% endif %}{% if MCHAT_PAUSE_ON_INPUT_NOAUTH %} disabled{% endif %} /> {{ lang('NO') }}</label>
 	</dd>
 </dl>
 <dl>
-	<dt><label for="user_mchat_dateoptions">{{ lang('MCHAT_DATE_FORMAT') ~ lang('COLON') }}</label><br /><span>{{ lang('MCHAT_DATE_FORMAT_EXPLAIN') }}</span></dt>
+	<dt><label for="user_mchat_dateoptions">{{ lang('MCHAT_DATE_FORMAT') ~ lang('COLON') }}</label><br><span>{{ lang('MCHAT_DATE_FORMAT_EXPLAIN') }}</span></dt>
 	<dd>
 		<select name="user_mchat_dateoptions" id="user_mchat_dateoptions" onchange="phpbb.toggleDisplay('user_mchat_custom_date', this.value == 'custom' ? 1 : -1); document.getElementById('user_mchat_date').value = this.value == 'custom' ? '{{ MCHAT_DEFAULT_DATEFORMAT | escape('js') }}' : this.value;"{% if MCHAT_DATE_NOAUTH %} disabled{% endif %}>
 			{{ S_MCHAT_DATEFORMAT_OPTIONS }}
@@ -94,7 +94,7 @@
 	<dd><div id="user_mchat_custom_date"{% if not S_MCHAT_CUSTOM_DATEFORMAT %} style="display:none;"{% endif %}><input type="text" name="user_mchat_date" id="user_mchat_date" value="{{ MCHAT_DATE }}"{% if MCHAT_DATE_NOAUTH %} disabled{% endif %} /></div></dd>
 </dl>
 <dl>
-	<dt><label for="user_mchat_relative_time">{{ lang('MCHAT_RELATIVE_TIME') ~ lang('COLON') }}</label><br /><span>{{ lang('MCHAT_RELATIVE_TIME_EXPLAIN') }}</span></dt>
+	<dt><label for="user_mchat_relative_time">{{ lang('MCHAT_RELATIVE_TIME') ~ lang('COLON') }}</label><br><span>{{ lang('MCHAT_RELATIVE_TIME_EXPLAIN') }}</span></dt>
 	<dd>
 		<label><input type="radio" name="user_mchat_relative_time" value="1"{% if MCHAT_RELATIVE_TIME %} id="user_mchat_relative_time" checked="checked"{% endif %}{% if MCHAT_RELATIVE_TIME_NOAUTH %} disabled{% endif %} /> {{ lang('YES') }}</label>
 		<label><input type="radio" name="user_mchat_relative_time" value="0"{% if not MCHAT_RELATIVE_TIME %} id="user_mchat_relative_time" checked="checked"{% endif %}{% if MCHAT_RELATIVE_TIME_NOAUTH %} disabled{% endif %} /> {{ lang('NO') }}</label>

@@ -42,9 +42,9 @@ $lang = array_merge($lang, array(
 	'ACP_MCHAT_GLOBALUSERSETTINGS'	=> 'Global user settings',
 
 	// Log entries (%1$s is replaced with the user name who triggered the event)
-	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>mChat configuration updated</strong><br />» %1$s',
+	'LOG_MCHAT_CONFIG_UPDATE'		=> '<strong>mChat configuration updated</strong><br>» %1$s',
 	'LOG_MCHAT_TABLE_PRUNED'		=> '<strong>mChat messages pruned: %2$d</strong>',
-	'LOG_MCHAT_TABLE_PURGED'		=> '<strong>mChat messages purged</strong><br />» %1$s',
-	'LOG_DELETED_MCHAT'				=> '<strong>mChat message deleted</strong><br />» %1$s',
-	'LOG_EDITED_MCHAT'				=> '<strong>mChat message edited</strong><br />» %1$s',
+	'LOG_MCHAT_TABLE_PURGED'		=> '<strong>mChat messages purged</strong><br>» %1$s',
+	'LOG_DELETED_MCHAT'				=> '<strong>mChat message deleted</strong><br>» %1$s',
+	'LOG_EDITED_MCHAT'				=> '<strong>mChat message edited</strong><br>» %1$s',
 ));

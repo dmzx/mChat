@@ -290,7 +290,7 @@ class mchat
 		// If the rules are defined in the language file use them, else just use the entry in the database
 		$mchat_rules = $lang_rules ?: $this->settings->cfg('mchat_rules');
 		$mchat_rules = htmlspecialchars_decode($mchat_rules);
-		$mchat_rules = str_replace("\n", '<br />', $mchat_rules);
+		$mchat_rules = str_replace("\n", '<br>', $mchat_rules);
 
 		$this->template->assign_var('MCHAT_RULES', $mchat_rules);
 
@@ -585,7 +585,7 @@ class mchat
 				 *
 				 * @event dmzx.mchat.action_refresh_process_log_row
 				 * @var array	response	The data that is sent back to the user (still incomplete at this point)
-				 * @var array	log_row		The log data
+				 * @var array	log_row		The log data (read only)
 				 * @since 2.0.0-RC6
 				 */
 				$vars = array(
@@ -593,6 +593,8 @@ class mchat
 					'log_row',
 				);
 				extract($this->dispatcher->trigger_event('dmzx.mchat.action_refresh_process_log_row', compact($vars)));
+
+				unset($log_row);
 			}
 		}
 
@@ -957,7 +959,7 @@ class mchat
 		);
 
 		/**
-		 * Event that allows adding global templte data for mChat
+		 * Event that allows adding global template data for mChat
 		 *
 		 * @event dmzx.mchat.global_modify_template_data
 		 * @var array	template_data		The data that is about to be assigned to the template
@@ -1582,6 +1584,6 @@ class mchat
 		$this->template->set_filenames(array('body' => $template_file));
 		$content = $this->template->assign_display('body', '', true);
 
-		return trim(str_replace(array("\r", "\n"), '', $content));
+		return trim($content);
 	}
 }

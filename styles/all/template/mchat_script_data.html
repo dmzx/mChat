@@ -39,9 +39,11 @@
 		// Language
 		lang: {
 			minutesAgo		: {
-				{% for minute in 0..MCHAT_MINUTES_AGO_LIMIT-1 %}
-					{{ minute }}: '{{ lang('MCHAT_MINUTES_AGO', minute) | escape('js') }}'{{ loop.last ? '' : ',' }}
-				{% endfor %}
+				{% if MCHAT_RELATIVE_TIME %}
+					{% for minute in 0..MCHAT_MINUTES_AGO_LIMIT-1 %}
+						{{ minute }}: '{{ lang('MCHAT_MINUTES_AGO', minute) | escape('js') }}'{{ loop.last ? '' : ',' }}
+					{% endfor %}
+				{% endif %}
 			},
 			err				: '{{ lang('ERROR') | escape('js') }}',
 			parserErr		: '{{ lang('AJAX_ERROR_TEXT_PARSERERROR') | escape('js') }}',
