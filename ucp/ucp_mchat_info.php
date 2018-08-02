@@ -15,19 +15,16 @@ class ucp_mchat_info
 {
 	function module()
 	{
-		global $config;
-
-		return array(
+		return [
 			'filename'	=> '\dmzx\mchat\ucp\ucp_mchat_module',
 			'title'		=> 'UCP_MCHAT_CONFIG',
-			'version'	=> $config['mchat_version'],
-			'modes'		=> array(
-				'configuration'	=> array(
+			'modes'		=> [
+				'configuration'	=> [
 					'title' => 'UCP_MCHAT_CONFIG',
 					'auth'	=> 'ext_dmzx/mchat && acl_u_mchat_view',
-					'cat'	=> array('UCP_MCHAT_CONFIG'),
-				),
-			),
-		);
+					'cat'	=> ['UCP_MCHAT_CONFIG'],
+				],
+			],
+		];
 	}
 }

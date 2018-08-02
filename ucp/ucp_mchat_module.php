@@ -19,10 +19,11 @@ class ucp_mchat_module
 
 	public function main($id, $mode)
 	{
-		global $phpbb_container, $user;
+		global $phpbb_container;
 
 		// Add the UCP lang file
-		$user->add_lang_ext('dmzx/mchat', 'mchat_ucp');
+		$language = $phpbb_container->get('language');
+		$language->add_lang('mchat_ucp', 'dmzx/mchat');
 
 		// Set template
 		$this->tpl_name = 'ucp_mchat';

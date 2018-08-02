@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACL_U_MCHAT_USE'						=> 'Can use mChat',
 	'ACL_U_MCHAT_VIEW'						=> 'Can view mChat',
 	'ACL_U_MCHAT_EDIT'						=> 'Can edit own messages',
@@ -43,8 +43,8 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_MODERATOR_DELETE'			=> 'Can delete anyone’s messages',
 	'ACL_U_MCHAT_IP'						=> 'Can view IP addresses',
 	'ACL_U_MCHAT_PM'						=> 'Can use private message',
-	'ACL_U_MCHAT_LIKE'						=> 'Can like messages',
-	'ACL_U_MCHAT_QUOTE'						=> 'Can quote messages',
+	'ACL_U_MCHAT_LIKE'						=> 'Can see like icon (requires BBCode permission)',
+	'ACL_U_MCHAT_QUOTE'						=> 'Can see quote icon (requires BBCode permission)',
 	'ACL_U_MCHAT_FLOOD_IGNORE'				=> 'Can ignore flood limit',
 	'ACL_U_MCHAT_ARCHIVE'					=> 'Can view the archive',
 	'ACL_U_MCHAT_BBCODE'					=> 'Can use BBCodes',
@@ -59,7 +59,6 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_INPUT_AREA'				=> 'Can customise <em>Input type</em>',
 	'ACL_U_MCHAT_LOCATION'					=> 'Can customise <em>Location of mChat on the index page</em>',
 	'ACL_U_MCHAT_MESSAGE_TOP'				=> 'Can customise <em>Location of new chat messages</em>',
-	'ACL_U_MCHAT_PAUSE_ON_INPUT'			=> 'Can customise <em>Pause on input</em>',
 	'ACL_U_MCHAT_POSTS'						=> 'Can customise <em>Display new posts</em>',
 	'ACL_U_MCHAT_RELATIVE_TIME'				=> 'Can customise <em>Display relative time</em>',
 	'ACL_U_MCHAT_SOUND'						=> 'Can customise <em>Play sounds</em>',
@@ -67,4 +66,4 @@ $lang = array_merge($lang, array(
 	'ACL_U_MCHAT_STATS_INDEX'				=> 'Can customise <em>Display who is chatting in the stats section</em>',
 
 	'ACL_A_MCHAT'							=> 'Can manage mChat settings',
-));
+]);

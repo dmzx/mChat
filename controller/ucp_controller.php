@@ -15,6 +15,7 @@ use dmzx\mchat\core\settings;
 use phpbb\auth\auth;
 use phpbb\db\driver\driver_interface as db_interface;
 use phpbb\event\dispatcher_interface;
+use phpbb\language\language;
 use phpbb\request\request_interface;
 use phpbb\template\template;
 use phpbb\user;
@@ -27,6 +28,9 @@ class ucp_controller
 	/** @var user */
 	protected $user;
 
+	/** @var language */
+	protected $lang;
+
 	/** @var auth */
 	protected $auth;
 
@@ -37,51 +41,42 @@ class ucp_controller
 	protected $request;
 
 	/** @var settings */
-	protected $settings;
+	protected $mchat_settings;
 
 	/** @var dispatcher_interface */
 	protected $dispatcher;
-
-	/** @var string */
-	protected $root_path;
-
-	/** @var string */
-	protected $php_ext;
 
 	/**
 	 * Constructor
 	 *
 	 * @param template				$template
 	 * @param user					$user
+	 * @param language				$lang
 	 * @param auth					$auth
 	 * @param db_interface			$db
 	 * @param request_interface		$request
-	 * @param settings				$settings
+	 * @param settings				$mchat_settings
 	 * @param dispatcher_interface 	$dispatcher
-	 * @param string				$root_path
-	 * @param string				$php_ext
 	 */
 	public function __construct(
 		template $template,
 		user $user,
+		language $lang,
 		auth $auth,
 		db_interface $db,
 		request_interface $request,
-		settings $settings,
-		dispatcher_interface $dispatcher,
-		$root_path,
-		$php_ext
+		settings $mchat_settings,
+		dispatcher_interface $dispatcher
 	)
 	{
-		$this->template		= $template;
-		$this->user			= $user;
-		$this->auth			= $auth;
-		$this->db			= $db;
-		$this->request		= $request;
-		$this->settings		= $settings;
-		$this->dispatcher	= $dispatcher;
-		$this->root_path	= $root_path;
-		$this->php_ext		= $php_ext;
+		$this->template			= $template;
+		$this->user				= $user;
+		$this->lang				= $lang;
+		$this->auth				= $auth;
+		$this->db				= $db;
+		$this->request			= $request;
+		$this->mchat_settings	= $mchat_settings;
+		$this->dispatcher		= $dispatcher;
 	}
 
 	/**
@@ -93,13 +88,13 @@ class ucp_controller
 	{
 		add_form_key('ucp_mchat');
 
-		$error = array();
+		$error = [];
 
 		if ($this->request->is_set_post('submit'))
 		{
-			$mchat_new_config = array();
-			$validation = array();
-			foreach ($this->settings->ucp_settings() as $config_name => $config_data)
+			$mchat_new_config = [];
+			$validation = [];
+			foreach ($this->mchat_settings->ucp_settings() as $config_name => $config_data)
 			{
 				if ($this->auth->acl_get('u_' . $config_name))
 				{
@@ -114,10 +109,7 @@ class ucp_controller
 				}
 			}
 
-			if (!function_exists('validate_data'))
-			{
-				include($this->root_path . 'includes/functions_user.' . $this->php_ext);
-			}
+			$this->mchat_settings->include_functions('user', 'validate_data');
 
 			$error = array_merge($error, validate_data($mchat_new_config, $validation));
 
@@ -134,10 +126,10 @@ class ucp_controller
 			 * @var array	error				Array with error lang keys
 			 * @since 2.0.0-RC7
 			 */
-			$vars = array(
+			$vars = [
 				'mchat_new_config',
 				'error',
-			);
+			];
 			extract($this->dispatcher->trigger_event('dmzx.mchat.ucp_update_data', compact($vars)));
 
 			if (!$error)
@@ -148,25 +140,25 @@ class ucp_controller
 				$this->db->sql_query($sql);
 
 				meta_refresh(3, $u_action);
-				$message = $this->user->lang('PROFILE_UPDATED') . '<br><br>' . $this->user->lang('RETURN_UCP', '<a href="' . $u_action . '">', '</a>');
+				$message = $this->lang->lang('PROFILE_UPDATED') . '<br><br>' . $this->lang->lang('RETURN_UCP', '<a href="' . $u_action . '">', '</a>');
 				trigger_error($message);
 			}
 
 			// Replace "error" strings with their real, localised form
-			$error = array_map(array($this->user, 'lang'), $error);
+			$error = array_map([$this->lang, 'lang'], $error);
 		}
 
-		$selected_date = $this->settings->cfg('mchat_date');
-		$template_data = $this->settings->get_date_template_data($selected_date);
+		$selected_date = $this->mchat_settings->cfg('mchat_date');
+		$template_data = $this->mchat_settings->get_date_template_data($selected_date);
 
 		$auth_count = 0;
 
-		foreach (array_keys($this->settings->ucp_settings()) as $config_name)
+		foreach (array_keys($this->mchat_settings->ucp_settings()) as $config_name)
 		{
 			$upper = strtoupper($config_name);
 			$auth = $this->auth->acl_get('u_' . $config_name);
 
-			$template_data[$upper] = $this->settings->cfg($config_name);
+			$template_data[$upper] = $this->mchat_settings->cfg($config_name);
 			$template_data[$upper . '_AUTH'] = $auth;
 
 			if ($auth)
@@ -175,13 +167,13 @@ class ucp_controller
 			}
 		}
 
-		$template_data = array_merge($template_data, array(
-			'MCHAT_ALLOW_USE'				=> $this->auth->acl_get('u_mchat_use'),
-			'MCHAT_POSTS_ENABLED_LANG'		=> $this->settings->get_enabled_post_notifications_lang(),
-			'ERROR'							=> sizeof($error) ? implode('<br>', $error) : '',
-			'MCHAT_AUTH_COUNT'				=> $auth_count,
-			'S_UCP_ACTION'					=> $u_action,
-		));
+		$template_data = array_merge($template_data, [
+			'MCHAT_ALLOW_USE'			=> $this->auth->acl_get('u_mchat_use'),
+			'MCHAT_POSTS_ENABLED_LANG'	=> $this->mchat_settings->get_enabled_post_notifications_lang(),
+			'ERROR'						=> sizeof($error) ? implode('<br>', $error) : '',
+			'MCHAT_AUTH_COUNT'			=> $auth_count,
+			'S_UCP_ACTION'				=> $u_action,
+		]);
 
 		/**
 		 * Event to modify UCP settings template data
@@ -192,11 +184,11 @@ class ucp_controller
 		 * @var array	error			Array with error lang keys
 		 * @since 2.0.0-RC7
 		 */
-		$vars = array(
+		$vars = [
 			'template_data',
 			'auth_count',
 			'error',
-		);
+		];
 		extract($this->dispatcher->trigger_event('dmzx.mchat.ucp_modify_template_data', compact($vars)));
 
 		$this->template->assign_vars($template_data);

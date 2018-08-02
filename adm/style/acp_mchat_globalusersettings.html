@@ -23,23 +23,23 @@
 		<dl>
 			<dt><label for="mchat_overwrite">{{ lang('MCHAT_GLOBALUSERSETTINGS_OVERWRITE') ~ lang('COLON') }}</label><br><span>{{ lang('MCHAT_GLOBALUSERSETTINGS_OVERWRITE_EXPLAIN') }}</span></dt>
 			<dd>
-				<label><input type="radio" name="mchat_overwrite" value="1" /> {{ lang('YES') }}</label>
-				<label><input type="radio" name="mchat_overwrite" value="0" id="mchat_overwrite" checked="checked" /> {{ lang('NO') }}</label>
+				<label><input type="radio" name="mchat_overwrite" value="1"> {{ lang('YES') }}</label>
+				<label><input type="radio" name="mchat_overwrite" value="0" id="mchat_overwrite" checked="checked"> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="mchat_overwrite_confirm">{{ lang('MCHAT_GLOBALUSERSETTINGS_OVERWRITE_CONFIRM') ~ lang('COLON') }}</label></dt>
 			<dd>
-				<label><input type="radio" name="mchat_overwrite_confirm" value="1" /> {{ lang('YES') }}</label>
-				<label><input type="radio" name="mchat_overwrite_confirm" value="0" id="mchat_overwrite_confirm" checked="checked" /> {{ lang('NO') }}</label>
+				<label><input type="radio" name="mchat_overwrite_confirm" value="1"> {{ lang('YES') }}</label>
+				<label><input type="radio" name="mchat_overwrite_confirm" value="0" id="mchat_overwrite_confirm" checked="checked"> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
 	</fieldset>
 	<fieldset>
 		<legend>{{ lang('ACP_SUBMIT_CHANGES') }}</legend>
 		<p class="submit-buttons">
-			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
-			<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
 		</p>
 		{{ S_FORM_TOKEN }}
 	</fieldset>

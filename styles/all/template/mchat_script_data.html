@@ -1,13 +1,13 @@
 {% if MCHAT_PAGE == 'archive' or not (MCHAT_ALLOW_USE and S_BBCODE_ALLOWED) %}
 	{% INCLUDEJS T_ASSETS_PATH ~ '/javascript/editor.js' %}
 {% endif %}
-
-{% INCLUDEJS '@dmzx_mchat/javascript/jquery.autogrow-textarea.js' %}
+{% if MCHAT_MAX_INPUT_HEIGHT %}
+	{% INCLUDEJS '@dmzx_mchat/javascript/autosize.min.js' %}
+{% endif %}
 {% INCLUDEJS '@dmzx_mchat/javascript/jquery.titlealert.min.js' %}
 {% INCLUDEJS '@dmzx_mchat/javascript/mchat.js' %}
 
-<script type="text/javascript">
-	// <![CDATA[
+<script>
 	var form_name = 'postform';
 	var text_name = 'message';
 	var mChat = {
@@ -19,7 +19,6 @@
 		},
 		page			: '{{ MCHAT_PAGE | escape('js') }}',
 		cookie			: '{{ COOKIE_NAME | escape('js') }}',
-		pause			: {{ MCHAT_PAUSE_ON_INPUT ? 'true' : 'false' }},
 		playSound		: {{ MCHAT_SOUND ? 'true' : 'false' }},
 		messageTop		: {{ MCHAT_MESSAGE_TOP ? 'true' : 'false' }},
 		allowBBCodes	: {{ S_BBCODE_ALLOWED ? 'true' : 'false' }},
@@ -31,7 +30,8 @@
 		refreshTime		: {{ MCHAT_REFRESH_JS }},
 		whoisRefresh	: {{ MCHAT_WHOIS_REFRESH }},
 		timeout			: {{ MCHAT_TIMEOUT }},
-		mssgLngth		: {{ MCHAT_MESSAGE_LNGTH }},
+		mssgLngth		: {{ MCHAT_MAX_MESSAGE_LENGTH }},
+		maxInputHeight	: {{ MCHAT_MAX_INPUT_HEIGHT }},
 		editDeleteLimit	: {{ MCHAT_EDIT_DELETE_LIMIT }},
 		logId			: {{ MCHAT_LOG_ID }},
 		removeBBCodes	: '{{ MCHAT_DISALLOWED_BBCODES | escape('js') }}',
@@ -48,18 +48,12 @@
 			err				: '{{ lang('ERROR') | escape('js') }}',
 			parserErr		: '{{ lang('AJAX_ERROR_TEXT_PARSERERROR') | escape('js') }}',
 			newMessageAlert	: '{{ lang('MCHAT_NEW_CHAT') | escape('js') }}',
-			noMessageInput	: '{{ lang('MCHAT_NOMESSAGEINPUT') | escape('js') }}',
 			editInfo		: '{{ lang('MCHAT_EDITINFO') | escape('js') }}',
 			delConfirm		: '{{ lang('MCHAT_DELCONFIRM') | escape('js') }}',
-			sessOut			: '{{ lang('MCHAT_SESSION_OUT') | escape('js') }}',
-			sessEnds		: '{{ lang('MCHAT_SESSION_ENDS_JS') | escape('js') }}',
 			mention			: '{{ lang('MCHAT_MENTION') | escape('js') }}',
-			refreshYes		: '{{ lang('MCHAT_REFRESH_YES', MCHAT_REFRESH_RATE) | escape('js') }}',
-			refreshNo		: '{{ lang('MCHAT_REFRESH_NO') | escape('js') }}',
-			charCount		: '{{ lang(MCHAT_MESSAGE_LNGTH ? 'MCHAT_CHARACTER_COUNT_LIMIT' : 'MCHAT_CHARACTER_COUNT') | escape('js') }}',
+			charCount		: '{{ lang(MCHAT_MAX_MESSAGE_LENGTH ? 'MCHAT_CHARACTER_COUNT_LIMIT' : 'MCHAT_CHARACTER_COUNT') | escape('js') }}',
 			mssgLngthLong	: '{{ lang('MCHAT_MESS_LONG', MCHAT_MAX_MESSAGE_LENGTH) | escape('js') }}',
 			likes			: '{{ lang('MCHAT_LIKES') | escape('js') }}'
 		}
 	};
-// ]]>
 </script>

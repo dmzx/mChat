@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,17 +34,18 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	// ACP Configuration sections
 	'MCHAT_SETTINGS_INDEX'							=> 'Index page settings',
-	'MCHAT_SETTINGS_CUSTOM'							=> 'Custom page settings',
+	'MCHAT_SETTINGS_CUSTOM'							=> 'mChat page settings',
 	'MCHAT_SETTINGS_ARCHIVE'						=> 'Archive page settings',
 	'MCHAT_SETTINGS_POSTS'							=> 'New posts settings',
 	'MCHAT_SETTINGS_MESSAGES'						=> 'Message settings',
 	'MCHAT_SETTINGS_PRUNE'							=> 'Pruning settings (adjustable for founders only)',
+	'MCHAT_SETTINGS_LOG'							=> 'Log settings (adjustable for founders only)',
 	'MCHAT_SETTINGS_STATS'							=> 'Who is chatting settings',
 
-	'MCHAT_GLOBALUSERSETTINGS_EXPLAIN'				=> 'Settings for which a user does <strong>not</strong> have permission to customise are applied as configured below.<br>New user accounts will have initial settings as configured below.<br><br>Go to the <em>mChat in UCP</em> tab of the user permissions section to adjust customisation permissions.<br>Go to the <em>Preferences</em> form in the <em>user management</em> section to see the status of each user’s settings.',
+	'MCHAT_GLOBALUSERSETTINGS_EXPLAIN'				=> 'Settings for which a user does <strong>not</strong> have permission to customise are applied as configured below.<br>New user accounts will have initial settings as configured below.<br><br>Go to the <em>mChat in UCP</em> tab of the user permissions section to adjust customisation permissions.<br>Go to the <em>Preferences</em> form in the <em>user management</em> section to adjust individual user settings.',
 	'MCHAT_GLOBALUSERSETTINGS_OVERWRITE'			=> 'Overwrite settings for all users',
 	'MCHAT_GLOBALUSERSETTINGS_OVERWRITE_EXPLAIN'	=> 'Applies the settings as defined above to <em>all</em> user accounts.',
 	'MCHAT_GLOBALUSERSETTINGS_OVERWRITE_CONFIRM'	=> 'Confirm overwriting mChat settings for all users',
@@ -72,7 +73,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_TOP_OF_FORUM'							=> 'Top',
 	'MCHAT_BOTTOM_OF_FORUM'							=> 'Bottom',
 	'MCHAT_REFRESH'									=> 'Refresh interval',
-	'MCHAT_REFRESH_EXPLAIN'							=> 'Number of seconds before the chat refreshes.<br><em>You are limited from 5 to 60 seconds. Default is 10.</em>',
+	'MCHAT_REFRESH_EXPLAIN'							=> 'Number of seconds between refreshing messages.<br><em>You are limited from 5 to 60 seconds. Default is 10.</em>',
 	'MCHAT_LIVE_UPDATES'							=> 'Live updates of edited and deleted messages',
 	'MCHAT_LIVE_UPDATES_EXPLAIN'					=> 'When a user edits or deletes messages, the changes are updated live for all others, without them having to refresh the page. Disable this if you experience performance issues.',
 	'MCHAT_PRUNE'									=> 'Enable message pruning',
@@ -83,9 +84,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_PRUNE_NOW'								=> 'Prune messages now',
 	'MCHAT_PRUNE_NOW_CONFIRM'						=> 'Confirm pruning messages',
 	'MCHAT_PRUNED'									=> '%1$d mChat messages have been pruned',
-	'MCHAT_NAVBAR_LINK'								=> 'Display link to the custom page in the navbar',
-	'MCHAT_NAVBAR_LINK_COUNT'						=> 'Display number of active chat sessions in navbar link',
-	'MCHAT_MESSAGE_NUM_CUSTOM'						=> 'Initial number of messages to display on the custom page',
+	'MCHAT_NAVBAR_LINK_COUNT'						=> 'Display number of active chat sessions in the navbar link',
+	'MCHAT_MESSAGE_NUM_CUSTOM'						=> 'Initial number of messages to display on the mChat page',
 	'MCHAT_MESSAGE_NUM_CUSTOM_EXPLAIN'				=> '<em>You are limited from 5 to 50. Default is 10.</em>',
 	'MCHAT_MESSAGE_NUM_INDEX'						=> 'Initial number of messages to display on the index page',
 	'MCHAT_MESSAGE_NUM_INDEX_EXPLAIN'				=> '<em>You are limited from 5 to 50. Default is 10.</em>',
@@ -101,9 +101,11 @@ $lang = array_merge($lang, array(
 	'MCHAT_EDIT_DELETE_LIMIT_EXPLAIN'				=> 'Messages older than the specified number of seconds cannot be edited or deleted by the author any more.<br>Users who have <em>edit/delete permission as well as moderator permission are exempt</em> from this time limit.<br>Set to 0 to allow unlimited editing and deleting.',
 	'MCHAT_MAX_MESSAGE_LENGTH'						=> 'Maximum message length',
 	'MCHAT_MAX_MESSAGE_LENGTH_EXPLAIN'				=> 'Maximum number of characters allowed per message posted.<br><em>You are limited from 0 to 1000. Default is 500. Set to 0 to disable.</em>',
-	'MCHAT_CUSTOM_PAGE'								=> 'Enable custom page',
-	'MCHAT_CUSTOM_HEIGHT'							=> 'Custom page height',
-	'MCHAT_CUSTOM_HEIGHT_EXPLAIN'					=> 'The height of the chat box in pixels on the custom page.<br><em>You are limited from 50 to 1000. Default is 350.</em>',
+	'MCHAT_MAX_INPUT_HEIGHT'						=> 'Maximum input field height',
+	'MCHAT_MAX_INPUT_HEIGHT_EXPLAIN'				=> 'The input field will not expand beyond this number of pixels.<br><em>You are limited from 0 to 1000. Default is 150. Set to 0 to not allow multi-line messages.</em>',
+	'MCHAT_CUSTOM_PAGE'								=> 'Enable mChat page',
+	'MCHAT_CUSTOM_HEIGHT'							=> 'mChat page height',
+	'MCHAT_CUSTOM_HEIGHT_EXPLAIN'					=> 'The height of the chat box in pixels on the mChat page.<br><em>You are limited from 50 to 1000. Default is 350.</em>',
 	'MCHAT_BBCODES_DISALLOWED'						=> 'Disallowed bbcodes',
 	'MCHAT_BBCODES_DISALLOWED_EXPLAIN'				=> 'Here you can input the bbcodes that are <strong>not</strong> to be used in a message.<br>Separate bbcodes with a vertical bar, for example:<br>b|i|u|code|list|list=|flash|quote and/or a %1$scustom bbcode tag name%2$s',
 	'MCHAT_STATIC_MESSAGE'							=> 'Static message',
@@ -114,6 +116,8 @@ $lang = array_merge($lang, array(
 	'MCHAT_OVERRIDE_SMILIE_LIMIT_EXPLAIN'			=> 'Set to yes to override the forums smilie limit setting for chat messages',
 	'MCHAT_OVERRIDE_MIN_POST_CHARS'					=> 'Override minimum characters limit',
 	'MCHAT_OVERRIDE_MIN_POST_CHARS_EXPLAIN'			=> 'Set to yes to override the forums minimum characters setting for chat messages',
+	'MCHAT_LOG_ENABLED'								=> 'Add entries to the admin log',
+	'MCHAT_LOG_ENABLED_EXPLAIN'						=> 'This affects message editing, deleting, pruning and purging.',
 
 	'MCHAT_POSTS_AUTH_CHECK'						=> 'Require user permission',
 	'MCHAT_POSTS_AUTH_CHECK_EXPLAIN'				=> 'If set to yes, users who can not use mChat will not generate any post/login notification messages.',
@@ -131,29 +135,27 @@ $lang = array_merge($lang, array(
 
 	// Error reporting
 	'TOO_LONG_MCHAT_BBCODE_DISALLOWED'				=> 'The disallowed bbcodes value is too long.',
-	'TOO_SMALL_MCHAT_CUSTOM_HEIGHT'					=> 'The custom height value is too small.',
-	'TOO_LARGE_MCHAT_CUSTOM_HEIGHT'					=> 'The custom height value is too large.',
+	'TOO_SMALL_MCHAT_CUSTOM_HEIGHT'					=> 'The mChat page height value is too small.',
+	'TOO_LARGE_MCHAT_CUSTOM_HEIGHT'					=> 'The mChat page height value is too large.',
 	'TOO_LONG_MCHAT_DATE'							=> 'The date format you entered is too long.',
 	'TOO_SHORT_MCHAT_DATE'							=> 'The date format you entered is too short.',
-	'TOO_SMALL_MCHAT_FLOOD_TIME'					=> 'The flood time value is too small.',
 	'TOO_LARGE_MCHAT_FLOOD_TIME'					=> 'The flood time value is too large.',
 	'TOO_SMALL_MCHAT_INDEX_HEIGHT'					=> 'The index height value is too small.',
 	'TOO_LARGE_MCHAT_INDEX_HEIGHT'					=> 'The index height value is too large.',
-	'TOO_SMALL_MCHAT_MAX_MESSAGE_LNGTH'				=> 'The max message length value is too small.',
 	'TOO_LARGE_MCHAT_MAX_MESSAGE_LNGTH'				=> 'The max message length value is too large.',
-	'TOO_SMALL_MCHAT_MESSAGE_NUM_CUSTOM'			=> 'The number of message to display on the custom page is too small.',
-	'TOO_LARGE_MCHAT_MESSAGE_NUM_CUSTOM'			=> 'The number of message to display on the custom page is too large.',
+	'TOO_LARGE_MCHAT_MAX_INPUT_HEIGHT'				=> 'The max input height value is too large.',
+	'TOO_SMALL_MCHAT_MESSAGE_NUM_CUSTOM'			=> 'The number of messages to display on the mChat page is too small.',
+	'TOO_LARGE_MCHAT_MESSAGE_NUM_CUSTOM'			=> 'The number of messages to display on the mChat page is too large.',
 	'TOO_SMALL_MCHAT_MESSAGE_NUM_INDEX'				=> 'The number of messages to display on the index page is too small.',
 	'TOO_LARGE_MCHAT_MESSAGE_NUM_INDEX'				=> 'The number of messages to display on the index page is too large.',
-	'TOO_SMALL_MCHAT_MESSAGE_NUM_ARCHIVE'			=> 'The number of message to display on the archive page is too small.',
-	'TOO_LARGE_MCHAT_MESSAGE_NUM_ARCHIVE'			=> 'The number of message to display on the archive page is too large.',
+	'TOO_SMALL_MCHAT_MESSAGE_NUM_ARCHIVE'			=> 'The number of messages to display on the archive page is too small.',
+	'TOO_LARGE_MCHAT_MESSAGE_NUM_ARCHIVE'			=> 'The number of messages to display on the archive page is too large.',
 	'TOO_SMALL_MCHAT_REFRESH'						=> 'The refresh value is too small.',
 	'TOO_LARGE_MCHAT_REFRESH'						=> 'The refresh value is too large.',
-	'TOO_LONG_MCHAT_STATIC_MESSAGE'					=> 'The static message value is too long.',
 	'TOO_SMALL_MCHAT_TIMEOUT'						=> 'The user timeout value is too small.',
 	'TOO_LARGE_MCHAT_TIMEOUT'						=> 'The user timeout value is too large.',
 	'TOO_SMALL_MCHAT_WHOIS_REFRESH'					=> 'The whois refresh value is too small.',
 	'TOO_LARGE_MCHAT_WHOIS_REFRESH'					=> 'The whois refresh value is too large.',
 
 	'MCHAT_30X_REMNANTS'							=> 'The installation has been aborted.<br>There are remnant modules from the mChat MOD for phpBB 3.0.x in the database. The mChat extension does not work correctly with these modules present.<br>You need to entirely uninstall the mChat MOD before being able to install the mChat extension. Specifically, the modules with the following IDs need to be deleted from the %1$smodules table: %2$s',
-));
+]);

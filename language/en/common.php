@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,30 +34,40 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'MCHAT_TITLE'					=> 'mChat',
-	'MCHAT_TITLE_COUNT'				=> 'mChat [<strong>%1$d</strong>]',
+	'MCHAT_TITLE_COUNT'				=> [
+		0 => 'mChat',
+		1 => 'mChat [<strong>%1$d</strong>]',
+	],
+	'MCHAT_NAVBAR_CUSTOM_PAGE'		=> 'mChat page',
+	'MCHAT_NAVBAR_ARCHIVE'			=> 'Archive',
+	'MCHAT_NAVBAR_RULES'			=> 'Rules',
 
 	// Who is chatting
 	'MCHAT_WHO_IS_CHATTING'			=> 'Who is chatting',
-	'MCHAT_ONLINE_USERS_TOTAL'		=> array(
+	'MCHAT_ONLINE_USERS_TOTAL'		=> [
 		0 => 'No one is chatting',
 		1 => '<strong>%1$d</strong> user is chatting',
 		2 => '<strong>%1$d</strong> users are chatting',
-	),
+	],
 	'MCHAT_ONLINE_EXPLAIN'			=> 'based on users active over the past %1$s',
-	'MCHAT_HOURS'					=> array(
+	'MCHAT_HOURS'					=> [
 		1 => '%1$d hour',
 		2 => '%1$d hours',
-	),
-	'MCHAT_MINUTES'					=> array(
+	],
+	'MCHAT_MINUTES'					=> [
 		1 => '%1$d minute',
 		2 => '%1$d minutes',
-	),
-	'MCHAT_SECONDS'					=> array(
+	],
+	'MCHAT_SECONDS'					=> [
 		1 => '%1$d second',
 		2 => '%1$d seconds',
-	),
+	],
+
+	// Custom translations for administrators
+	'MCHAT_RULES_MESSAGE'			=> '',
+	'MCHAT_STATIC_MESSAGE'			=> '',
 
 	// Post notification messages (%1$s is replaced with a link to the new/edited post, %2$s is replaced with a link to the forum)
 	'MCHAT_NEW_POST'				=> 'posted a new topic: %1$s in %2$s',
@@ -69,4 +79,4 @@ $lang = array_merge($lang, array(
 	'MCHAT_NEW_EDIT'				=> 'edited a post: %1$s in %2$s',
 	'MCHAT_NEW_EDIT_DELETED'		=> 'edited a post that was deleted',
 	'MCHAT_NEW_LOGIN'				=> 'just logged in',
-));
+]);

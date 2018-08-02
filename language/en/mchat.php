@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'MCHAT_ADD'						=> 'Send',
 	'MCHAT_ARCHIVE'					=> 'Archive',
 	'MCHAT_ARCHIVE_PAGE'			=> 'mChat Archive',
@@ -53,7 +53,7 @@ $lang = array_merge($lang, array(
 	'MCHAT_RULES'					=> 'Rules',
 	'MCHAT_WHOIS_USER'				=> 'IP whois for %1$s',
 	'MCHAT_MESS_LONG'				=> 'Your message is too long. Please limit it to %1$d characters.',
-	'MCHAT_NO_CUSTOM_PAGE'			=> 'The mChat custom page is not activated at this time.',
+	'MCHAT_NO_CUSTOM_PAGE'			=> 'The mChat page is not activated at this time.',
 	'MCHAT_NO_RULES'				=> 'The mChat rules page is not activated at this time.',
 	'MCHAT_NOACCESS_ARCHIVE'		=> 'You don’t have permission to view the archive.',
 	'MCHAT_NOJAVASCRIPT'			=> 'Please enable JavaScript to use mChat.',
@@ -64,29 +64,25 @@ $lang = array_merge($lang, array(
 	'MCHAT_PAUSE'					=> 'Paused',
 	'MCHAT_PERMISSIONS'				=> 'Change user’s permissions',
 	'MCHAT_REFRESHING'				=> 'Refreshing…',
-	'MCHAT_REFRESH_NO'				=> 'Update is off',
-	'MCHAT_REFRESH_YES'				=> 'Updates every <strong>%1$d</strong> seconds',
 	'MCHAT_RESPOND'					=> 'Respond to user',
-	'MCHAT_SESSION_ENDS'			=> 'Chat session ends in %1$s',
-	'MCHAT_SESSION_OUT'				=> 'Chat session has expired',
 	'MCHAT_SMILES'					=> 'Smilies',
 	'MCHAT_TOTALMESSAGES'			=> 'Total messages: <strong>%1$d</strong>',
 	'MCHAT_USESOUND'				=> 'Play sound',
+	'MCHAT_SOUND_ON'				=> 'Sound is on',
+	'MCHAT_SOUND_OFF'				=> 'Sound is off',
+	'MCHAT_ENTER'					=> 'Use Ctrl/Cmd + Enter for the alternative action',
+	'MCHAT_ENTER_SUBMIT'			=> 'Enter sends the message',
+	'MCHAT_ENTER_LINEBREAK'			=> 'Enter adds a new line',
 	'MCHAT_COLLAPSE_TITLE'			=> 'Toggle visibility of mChat',
 	'MCHAT_WHO_IS_REFRESH_EXPLAIN'	=> 'Refreshes every <strong>%1$d</strong> seconds',
-	'MCHAT_MINUTES_AGO'				=> array(
+	'MCHAT_MINUTES_AGO'				=> [
 		0 => 'just now',
 		1 => '%1$d minute ago',
 		2 => '%1$d minutes ago',
-	),
+	],
 
 	// These messages are formatted with JavaScript, hence {} and no %d
 	'MCHAT_CHARACTER_COUNT'			=> '<strong>{current}</strong> characters',
 	'MCHAT_CHARACTER_COUNT_LIMIT'	=> '<strong>{current}</strong> out of {max} characters',
-	'MCHAT_SESSION_ENDS_JS'			=> 'Chat session ends in {timeleft}',
 	'MCHAT_MENTION'					=> ' @{username} ',
-
-	// Custom translations for administrators
-	'MCHAT_RULES_MESSAGE'			=> '',
-	'MCHAT_STATIC_MESSAGE'			=> '',
-));
+]);

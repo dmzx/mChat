@@ -11,11 +11,14 @@
 
 namespace dmzx\mchat;
 
-class ext extends \phpbb\extension\base
+use phpbb\extension\base;
+
+class ext extends base
 {
 	/**
 	 * Requires phpBB 3.1.7-PL1 due to usage of \phpbb\session:update_session_infos()
 	 * Requires phpBB 3.1.8-RC1 due to HTTPS in version check
+	 * Requires phpBB 3.2.0 due to EoL of phpBB 3.1
 	 *
 	 * @return bool
 	 * @access public
@@ -37,28 +40,16 @@ class ext extends \phpbb\extension\base
 
 			if ($module_ids)
 			{
-				if (phpbb_version_compare(PHPBB_VERSION, '3.2.0-dev', '>='))
-				{
-					// For phpBB >= 3.2.x
-					$lang = $this->container->get('language');
-					$lang->add_lang('mchat_acp', 'dmzx/mchat');
-				}
-				else
-				{
-					// For phpBB 3.1.x
-					$user = $this->container->get('user');
-					$user->add_lang_ext('dmzx/mchat', 'mchat_acp');
-					$lang = $user;
-				}
-
+				$lang = $this->container->get('language');
+				$lang->add_lang('mchat_acp', 'dmzx/mchat');
 				$php_ext = $this->container->getParameter('core.php_ext');
-				$error_msg = $lang->lang('MCHAT_30X_REMNANTS', $table_prefix, implode($lang->lang('COMMA_SEPARATOR'), $module_ids)) . adm_back_link(append_sid('index.' . $php_ext, 'i=acp_extensions&amp;mode=main'));
+				$error_msg = $lang->lang('MCHAT_30X_REMNANTS', $table_prefix, implode($lang->lang('COMMA_SEPARATOR'), $module_ids)) . adm_back_link(append_sid('index.' . $php_ext, ['i' => 'acp_extensions', 'mode' => 'main']));
 
 				trigger_error($error_msg, E_USER_WARNING);
 			}
 		}
 
-		return phpbb_version_compare(PHPBB_VERSION, '3.1.8-RC1', '>=');
+		return phpbb_version_compare(PHPBB_VERSION, '3.2.0', '>=') && phpbb_version_compare(PHP_VERSION, '5.4.7', '>=');
 	}
 
 	/**
@@ -72,13 +63,13 @@ class ext extends \phpbb\extension\base
 	{
 		$db = $this->container->get('dbal.conn');
 
-		$mchat_30x_module_langnames = array(
+		$mchat_30x_module_langnames = [
 			'ACP_CAT_MCHAT',
 			'ACP_MCHAT_CONFIG',
 			'ACP_USER_MCHAT',
 			'UCP_CAT_MCHAT',
 			'UCP_MCHAT_CONFIG',
-		);
+		];
 
 		$sql = 'SELECT module_id
 			FROM ' . $table_prefix . 'modules
@@ -87,7 +78,7 @@ class ext extends \phpbb\extension\base
 		$rows = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
 
-		$module_ids = array();
+		$module_ids = [];
 
 		foreach ($rows as $row)
 		{

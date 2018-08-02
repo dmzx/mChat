@@ -7,7 +7,7 @@
 {% EVENT dmzx_mchat_header_before %}
 
 {% if MCHAT_PAGE == 'custom' %}
-   	<h2>{{ lang('MCHAT_CUSTOM_PAGE') }}</h2>
+	<h2>{{ lang('MCHAT_CUSTOM_PAGE') }}</h2>
 {% elseif MCHAT_PAGE == 'archive' %}
 	<h2>{{ lang('MCHAT_ARCHIVE_PAGE') }}</h2>
 {% endif %}
@@ -37,10 +37,10 @@
 	<a class="category{% if S_MCHAT_HIDDEN %} hidden-category{% endif %} mchat-category"></a>
 {% endif %}
 
-<div class="forabg mchat-wrapper">
+<div class="forabg mchat-wrapper{% if S_MCHAT_AVATARS %} mchat-avatars{% endif %}">
 	<a id="mChat"></a>
 	<div class="inner">
-		<ul class="topiclist">
+		<ul class="topiclist mchat-header">
 			<li class="header">
 				{% INCLUDE '@dmzx_mchat/mchat_header.html' %}
 				{% if MCHAT_IS_COLLAPSIBLE %}
@@ -57,7 +57,7 @@
 		{% EVENT dmzx_mchat_body_before %}
 
 		<div id="mchat-body"{% if MCHAT_IS_COLLAPSIBLE %} class="collapsible"{% endif %}>
-			{% if not MCHAT_SOUND_DISABLED %}
+			{% if MCHAT_SOUND_ENABLED %}
 				<audio id="mchat-sound-add" class="hidden" src="{{ EXT_URL }}sounds/add.mp3" preload="auto"></audio>
 				<audio id="mchat-sound-edit" class="hidden" src="{{ EXT_URL }}sounds/edit.mp3" preload="auto"></audio>
 				<audio id="mchat-sound-del" class="hidden" src="{{ EXT_URL }}sounds/del.mp3" preload="auto"></audio>
@@ -71,18 +71,20 @@
 					<textarea></textarea>
 				</div>
 				<fieldset class="submit-buttons">
-					<input type="button" name="confirm" value="{{ lang('MCHAT_OK') }}" class="button2" />&nbsp;
-					<input type="button" name="cancel" value="{{ lang('CANCEL') }}" class="button2" />
+					<input type="button" name="confirm" value="{{ lang('MCHAT_OK') }}" class="button2">&nbsp;
+					<input type="button" name="cancel" value="{{ lang('CANCEL') }}" class="button2">
 				</fieldset>
 			</div>
 
-			<div id="mchat-main"{% if MCHAT_MESSAGE_TOP %} class="mchat-messages-top"{% endif %}>
-				{% if MCHAT_STATIC_MESS and MCHAT_PAGE != 'archive' %}
-					<ul class="topiclist forums">
-						<li class="row mchat-static">{{ MCHAT_STATIC_MESS }}</li>
-					</ul>
-				{% endif %}
+			{% if MCHAT_STATIC_MESS and MCHAT_PAGE != 'archive' %}
+				{% EVENT dmzx_mchat_static_container_before %}
+				<ul class="topiclist forums mchat-static-container">
+					<li class="row mchat-static">{{ MCHAT_STATIC_MESS }}</li>
+				</ul>
+				{% EVENT dmzx_mchat_static_container_after %}
+			{% endif %}
 
+			<div id="mchat-main"{% if MCHAT_MESSAGE_TOP %} class="mchat-messages-top"{% endif %}>
 				{% EVENT dmzx_mchat_messages_container_before %}
 
 				<ul id="mchat-messages" class="topiclist forums">
@@ -120,7 +122,7 @@
 </div>
 {% endif %}
 
-{% if MCHAT_PAGE == 'custom' and MCHAT_WHOIS_REFRESH %}
+{% if MCHAT_PAGE == 'custom' and MCHAT_WHOIS_INDEX %}
 	<h3>{{ lang('MCHAT_WHO_IS_CHATTING') }}</h3>
 	{% INCLUDE '@dmzx_mchat/mchat_whois.html' %}
 	<div id="mchat-refresh">

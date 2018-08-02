@@ -18,35 +18,33 @@ use phpbb\cron\task\base;
 class mchat_prune extends base
 {
 	/** @var functions */
-	protected $functions;
+	protected $mchat_functions;
 
 	/** @var settings */
-	protected $settings;
+	protected $mchat_settings;
 
 	/**
 	 * Constructor
 	 *
-	 * @param functions	$functions
-	 * @param settings	$settings
+	 * @param functions	$mchat_functions
+	 * @param settings	$mchat_settings
 	 */
 	public function __construct(
-		functions $functions,
-		settings $settings
+		functions $mchat_functions,
+		settings $mchat_settings
 	)
 	{
-		$this->functions	= $functions;
-		$this->settings		= $settings;
+		$this->mchat_functions	= $mchat_functions;
+		$this->mchat_settings	= $mchat_settings;
 	}
 
 	/**
 	 * Runs this cron task.
-	 *
-	 * @return null
 	 */
 	public function run()
 	{
-		$this->functions->mchat_prune();
-		$this->settings->set_cfg('mchat_prune_last_gc', time());
+		$this->mchat_functions->mchat_prune();
+		$this->mchat_settings->set_cfg('mchat_prune_last_gc', time());
 	}
 
 	/**
@@ -58,7 +56,7 @@ class mchat_prune extends base
 	 */
 	public function is_runnable()
 	{
-		return $this->settings->cfg('mchat_prune');
+		return $this->mchat_settings->cfg('mchat_prune');
 	}
 
 	/**
@@ -69,6 +67,6 @@ class mchat_prune extends base
 	 */
 	public function should_run()
 	{
-		return $this->settings->cfg('mchat_prune_last_gc') < time() - $this->settings->cfg('mchat_prune_gc');
+		return $this->mchat_settings->cfg('mchat_prune_last_gc') < time() - $this->mchat_settings->cfg('mchat_prune_gc');
 	}
 }

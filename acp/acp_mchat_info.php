@@ -15,21 +15,21 @@ class acp_mchat_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> '\dmzx\mchat\acp\acp_mchat_module',
 			'title'		=> 'ACP_CAT_MCHAT',
-			'modes'		=> array(
-				'globalsettings'		=> array(
+			'modes'		=> [
+				'globalsettings'		=> [
 					'title'	=> 'ACP_MCHAT_GLOBALSETTINGS',
 					'auth'	=> 'ext_dmzx/mchat && acl_a_mchat',
-					'cat'	=> array('ACP_CAT_MCHAT'),
-				),
-				'globalusersettings'	=> array(
+					'cat'	=> ['ACP_CAT_MCHAT'],
+				],
+				'globalusersettings'	=> [
 					'title'	=> 'ACP_MCHAT_GLOBALUSERSETTINGS',
 					'auth'	=> 'ext_dmzx/mchat && acl_a_mchat',
-					'cat'	=> array('ACP_CAT_MCHAT'),
-				),
-			),
-		);
+					'cat'	=> ['ACP_CAT_MCHAT'],
+				],
+			],
+		];
 	}
 }
