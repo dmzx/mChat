@@ -14,10 +14,11 @@
 		// General settings
 		actionUrls		: {
 			{% for mchaturl in loops.mchaturl %}
-				{{ mchaturl.ACTION }}: '{{ mchaturl.URL }}'{{ loop.last ? '' : ',' }}
+				{{ mchaturl.ACTION }}: '{{ mchaturl.URL }}'{{ not loop.last ? ',' }}
 			{% endfor %}
 		},
 		page			: '{{ MCHAT_PAGE | escape('js') }}',
+		currentUrl		: '{{ MCHAT_CURRENT_URL | escape('js') }}',
 		cookie			: '{{ COOKIE_NAME | escape('js') }}',
 		playSound		: {{ MCHAT_SOUND ? 'true' : 'false' }},
 		messageTop		: {{ MCHAT_MESSAGE_TOP ? 'true' : 'false' }},
@@ -25,6 +26,7 @@
 		liveUpdates		: {{ MCHAT_LIVE_UPDATES ? 'true' : 'false' }},
 		relativeTime	: {{ MCHAT_RELATIVE_TIME ? 'true' : 'false' }},
 		showCharCount	: {{ MCHAT_CHARACTER_COUNT ? 'true' : 'false' }},
+		jumpTo			: {{ MCHAT_JUMP_TO }},
 
 		// Limits & timeouts
 		refreshTime		: {{ MCHAT_REFRESH_JS }},
@@ -41,7 +43,7 @@
 			minutesAgo		: {
 				{% if MCHAT_RELATIVE_TIME %}
 					{% for minute in 0..MCHAT_MINUTES_AGO_LIMIT-1 %}
-						{{ minute }}: '{{ lang('MCHAT_MINUTES_AGO', minute) | escape('js') }}'{{ loop.last ? '' : ',' }}
+						{{ minute }}: '{{ lang('MCHAT_MINUTES_AGO', minute) | escape('js') }}'{{ not loop.last ? ',' }}
 					{% endfor %}
 				{% endif %}
 			},

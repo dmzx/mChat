@@ -67,6 +67,7 @@ services:
             - '@ext.manager'
             - '@text_formatter.parser'
             - '@?phpbb.collapsiblecategories.operator'
+            - '@?rmcgirr83.authorizedforurls.listener'
 
     dmzx.mchat.functions:
         class: dmzx\mchat\core\functions

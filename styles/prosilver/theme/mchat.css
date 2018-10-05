@@ -77,16 +77,18 @@
 	animation-timing-function: ease-out;
 }
 
+.mchat-message-flash:target {
+	animation-duration: 2s;
+}
+
 @keyframes flash-message {
 
 	0% {
-		background-color: #FFD070;
-		opacity: 0;
+		background-color: #FFDC95;
 	}
 
 	100% {
 		background-color: transparent;
-		opacity: 1;
 	}
 
 }
@@ -141,6 +143,10 @@
 	overflow: hidden;
 	padding: 2px 5px;
 	font-size: 1.2em;
+}
+
+.mchat-text .postlink {
+	display: unset;
 }
 
 .mchat-notification-message .mchat-text {

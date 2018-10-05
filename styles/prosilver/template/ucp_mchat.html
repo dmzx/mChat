@@ -97,15 +97,6 @@
 					</dd>
 				</dl>
 				{% endif %}
-				{% if MCHAT_INPUT_AREA_AUTH and MCHAT_ALLOW_USE %}
-				<dl>
-					<dt><label for="user_mchat_input_area">{{ lang('MCHAT_CHAT_AREA') ~ lang('COLON') }}</label></dt>
-					<dd>
-						<label><input type="radio" name="user_mchat_input_area" value="1"{% if MCHAT_INPUT_AREA %} id="user_mchat_input_area" checked="checked"{% endif %}> {{ lang('MCHAT_INPUT_AREA') }}</label>
-						<label><input type="radio" name="user_mchat_input_area" value="0"{% if not MCHAT_INPUT_AREA %} id="user_mchat_input_area" checked="checked"{% endif %}> {{ lang('MCHAT_TEXT_AREA') }}</label>
-					</dd>
-				</dl>
-				{% endif %}
 				{% if MCHAT_CHARACTER_COUNT_AUTH and MCHAT_ALLOW_USE %}
 				<dl>
 					<dt><label for="user_mchat_character_count">{{ lang('MCHAT_DISPLAY_CHARACTER_COUNT') ~ lang('COLON') }}</label></dt>

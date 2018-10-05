@@ -241,7 +241,6 @@ class settings
 			'mchat_character_count'			=> ['default' => 1],
 			'mchat_date'					=> ['default' => 'D M d, Y g:i a', 'validation' => ['string', false, 0, 64]],
 			'mchat_index'					=> ['default' => 1],
-			'mchat_input_area'				=> ['default' => 1],
 			'mchat_location'				=> ['default' => 1],
 			'mchat_message_top'				=> ['default' => 1],
 			'mchat_posts'					=> ['default' => 1],

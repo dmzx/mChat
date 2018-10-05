@@ -23,6 +23,7 @@ use phpbb\request\request_interface;
 use phpbb\template\template;
 use phpbb\textformatter\parser_interface;
 use phpbb\user;
+use rmcgirr83\authorizedforurls\event\listener as authorizedforurls;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class mchat
@@ -72,6 +73,9 @@ class mchat
 	/** @var cc_operator */
 	protected $cc_operator;
 
+	/** @var authorizedforurls */
+	protected $authorized_for_urls;
+
 	/** @var boolean */
 	protected $remove_disallowed_bbcodes = false;
 
@@ -102,6 +106,7 @@ class mchat
 	 * @param manager				$extension_manager
 	 * @param parser_interface		$textformatter_parser
 	 * @param cc_operator			$cc_operator
+	 * @param authorizedforurls		$authorized_for_urls
 	 */
 	public function __construct(
 		functions $mchat_functions,
@@ -118,7 +123,8 @@ class mchat
 		dispatcher_interface $dispatcher,
 		manager $extension_manager,
 		parser_interface $textformatter_parser,
-		cc_operator $cc_operator = null
+		cc_operator $cc_operator = null,
+		authorizedforurls $authorized_for_urls = null
 	)
 	{
 		$this->mchat_functions		= $mchat_functions;
@@ -136,6 +142,7 @@ class mchat
 		$this->extension_manager	= $extension_manager;
 		$this->textformatter_parser	= $textformatter_parser;
 		$this->cc_operator			= $cc_operator;
+		$this->authorized_for_urls	= $authorized_for_urls;
 	}
 
 	/**
@@ -312,12 +319,6 @@ class mchat
 		if (!$this->request->is_ajax() || !$this->auth->acl_get($permission) || ($check_form_key && !check_form_key('mchat', -1)))
 		{
 			throw new http_exception(403, 'NO_AUTH_OPERATION');
-		}
-
-		// Fix avatars & smilies
-		if (!defined('PHPBB_USE_BOARD_URL_PATH'))
-		{
-			define('PHPBB_USE_BOARD_URL_PATH', true);
 		}
 
 		$this->lang->add_lang('mchat', 'dmzx/mchat');
@@ -757,14 +758,17 @@ class mchat
 		// Add lang file
 		$this->lang->add_lang('posting');
 
+		$is_archive = $page == 'archive';
+		$jump_to_id = $is_archive ? $this->request->variable('jumpto', 0) : 0;
+
 		// If the static message is not empty in the language file, use it, else ise the static message in the database
 		$static_message = $this->lang->lang('MCHAT_STATIC_MESSAGE') ?: $this->mchat_settings->cfg('mchat_static_message');
 		$whois_refresh = $this->mchat_settings->cfg('mchat_whois_index') || $this->mchat_settings->cfg('mchat_navbar_link_count');
 
-		$this->template->assign_vars([
+		$template_data = [
 			'MCHAT_PAGE'					=> $page,
+			'MCHAT_CURRENT_URL'				=> '.' . $this->user->page['script_path'] . $this->user->page['page'],
 			'MCHAT_ALLOW_SMILES'			=> $this->mchat_settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies'),
-			'MCHAT_INPUT_AREA'				=> $this->mchat_settings->cfg('mchat_input_area'),
 			'MCHAT_MESSAGE_TOP'				=> $this->mchat_settings->cfg('mchat_message_top'),
 			'MCHAT_INDEX_HEIGHT'			=> $this->mchat_settings->cfg('mchat_index_height'),
 			'MCHAT_CUSTOM_HEIGHT'			=> $this->mchat_settings->cfg('mchat_custom_height'),
@@ -783,22 +787,23 @@ class mchat
 			'MCHAT_STATIC_MESS'				=> htmlspecialchars_decode($static_message),
 			'MCHAT_MAX_INPUT_HEIGHT'		=> $this->mchat_settings->cfg('mchat_max_input_height'),
 			'MCHAT_MAX_MESSAGE_LENGTH'		=> $this->mchat_settings->cfg('mchat_max_message_lngth'),
+			'MCHAT_JUMP_TO'					=> $jump_to_id,
 			'COOKIE_NAME'					=> $this->mchat_settings->cfg('cookie_name', true) . '_',
-		]);
+		];
 
 		// The template needs some language variables if we display relative time for messages
 		if ($this->mchat_settings->cfg('mchat_relative_time'))
 		{
-			$this->template->assign_var('MCHAT_MINUTES_AGO_LIMIT', $this->get_relative_minutes_limit());
+			$template_data['MCHAT_MINUTES_AGO_LIMIT'] = $this->get_relative_minutes_limit();
 		}
 
 		// Get actions which the user is allowed to perform on the current page
 		$actions = array_keys(array_filter([
 			'edit'		=> $this->auth_message('edit', true, time()),
 			'del'		=> $this->auth_message('delete', true, time()),
-			'refresh'	=> $page !== 'archive' && $this->auth->acl_get('u_mchat_view'),
-			'add'		=> $page !== 'archive' && $this->auth->acl_get('u_mchat_use'),
-			'whois'		=> $page !== 'archive' && $whois_refresh,
+			'refresh'	=> !$is_archive && $this->auth->acl_get('u_mchat_view'),
+			'add'		=> !$is_archive && $this->auth->acl_get('u_mchat_use'),
+			'whois'		=> !$is_archive && $whois_refresh,
 		]));
 
 		foreach ($actions as $action)
@@ -810,14 +815,62 @@ class mchat
 		}
 
 		$limit = $this->mchat_settings->cfg('mchat_message_num_' . $page);
-		$start = $page === 'archive' ? $this->request->variable('start', 0) : 0;
-		$rows = $this->mchat_functions->mchat_get_messages([], 0, $limit, $start);
+
+		if ($is_archive)
+		{
+			if ($jump_to_id)
+			{
+				$sql_where_jump_to_id = 'm.message_id > ' . (int) $jump_to_id;
+				$sql_order_by = 'm.message_id ASC';
+				$num_subsequent_messages = $this->mchat_functions->mchat_total_message_count($sql_where_jump_to_id, $sql_order_by);
+				$start = (int) floor($num_subsequent_messages / $limit) * $limit;
+			}
+			else
+			{
+				$start = $this->request->variable('start', 0);
+			}
+		}
+		else
+		{
+			$start = 0;
+		}
+
+		$message_ids = [];
+		$last_id = 0;
+
+		/**
+		 * Event to modify arguments before fetching messages from the database
+		 *
+		 * @event dmzx.mchat.render_page_get_messages_before
+		 * @var string	page			The page that is rendered, one of index|custom|archive
+		 * @var array	message_ids		IDs of specific messages to fetch, should be an empty array
+		 * @var int		last_id			The ID of the latest message that the user has, should be 0
+		 * @var int		limit			Number of messages to display per page
+		 * @var int		start			The message which should be considered currently active, used to determine the page we're on
+		 * @var int		jump_to_id		The ID of the message that is being jumped to in the archive, usually when a user clicked on a quote reference
+		 * @var array	actions			Array containing URLs to actions the user is allowed to perform (read only)
+		 * @var array	template_data	The data that is about to be assigned to the template
+		 * @since 2.1.1
+		 */
+		$vars = [
+			'page',
+			'message_ids',
+			'last_id',
+			'limit',
+			'start',
+			'jump_to_id',
+			'actions',
+			'template_data',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_get_messages_before', compact($vars)));
+
+		$rows = $this->mchat_functions->mchat_get_messages($message_ids, $last_id, $limit, $start);
 
 		$this->assign_global_template_data();
 		$this->assign_messages($rows, $page);
 
 		// Render pagination
-		if ($page === 'archive')
+		if ($is_archive)
 		{
 			$archive_url = $this->helper->route('dmzx_mchat_page_archive_controller');
 			$total_messages = $this->mchat_functions->mchat_total_message_count();
@@ -830,38 +883,40 @@ class mchat
 			 * @var int		total_messages	Total number of messages
 			 * @var int		limit			Number of messages to display per page
 			 * @var int		start			The message which should be considered currently active, used to determine the page we're on
+			 * @var int		jump_to_id		The ID of the message that is being jumped to in the archive, usually when a user clicked on a quote reference
+			 * @var array	template_data	The data that is about to be assigned to the template
 			 * @since 2.0.0-RC6
+			 * @changed 2.1.1 added jump_to_id, template_data
 			 */
 			$vars = [
 				'archive_url',
 				'total_messages',
 				'limit',
 				'start',
+				'jump_to_id',
+				'template_data',
 			];
 			extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_pagination_before', compact($vars)));
 
 			$this->pagination->generate_template_pagination($archive_url, 'pagination', 'start', $total_messages, $limit, $start);
-			$this->template->assign_var('MCHAT_TOTAL_MESSAGES', $this->lang->lang('MCHAT_TOTALMESSAGES', $total_messages));
+			$template_data['MCHAT_TOTAL_MESSAGES'] = $this->lang->lang('MCHAT_TOTALMESSAGES', $total_messages);
 		}
 
 		// Render legend
 		if ($page !== 'index')
 		{
 			$legend = $this->mchat_functions->mchat_legend();
-			$this->template->assign_var('LEGEND', implode($this->lang->lang('COMMA_SEPARATOR'), $legend));
+			$template_data['LEGEND'] = implode($this->lang->lang('COMMA_SEPARATOR'), $legend);
 		}
 
 		// Make mChat collapsible
 		if ($page === 'index' && $this->cc_operator !== null)
 		{
 			$cc_fid = 'mchat';
-			$this->template->assign_vars([
+			$template_data = array_merge($template_data, [
 				'MCHAT_IS_COLLAPSIBLE'	=> true,
-				'S_MCHAT_HIDDEN'		=> in_array($cc_fid, $this->cc_operator->get_user_categories()),
-				'U_MCHAT_COLLAPSE_URL'	=> $this->helper->route('phpbb_collapsiblecategories_main_controller', [
-					'forum_id'	=> $cc_fid,
-					'hash'		=> generate_link_hash('collapsible_' . $cc_fid),
-				]),
+				'S_MCHAT_HIDDEN'		=> $this->cc_operator->is_collapsed($cc_fid),
+				'U_MCHAT_COLLAPSE_URL'	=> $this->cc_operator->get_collapsible_link($cc_fid),
 			]);
 		}
 
@@ -876,15 +931,20 @@ class mchat
 		 * Event that is triggered after mChat was rendered
 		 *
 		 * @event dmzx.mchat.render_page_after
-		 * @var string	page	The page that was rendered, one of index|custom|archive
-		 * @var array	actions	Array containing URLs to actions the user is allowed to perform
+		 * @var string	page			The page that was rendered, one of index|custom|archive
+		 * @var array	actions			Array containing URLs to actions the user is allowed to perform (read only)
+		 * @var array	template_data	The data that is about to be assigned to the template
 		 * @since 2.0.0-RC6
+		 * @changed 2.1.1 Added template_data
 		 */
 		$vars = [
 			'page',
 			'actions',
+			'template_data',
 		];
 		extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_after', compact($vars)));
+
+		$this->template->assign_vars($template_data);
 	}
 
 	/**
@@ -970,24 +1030,7 @@ class mchat
 			return;
 		}
 
-		// At this point the rows are sorted by ID bottom to top.
-		// We need to reverse the array if they need to be sorted top to bottom.
-		$reverse = false;
-		$mchat_message_top = $this->mchat_settings->cfg('mchat_message_top');
-		if ($page === 'archive')
-		{
-			$mchat_archive_sort = $this->mchat_settings->cfg('mchat_archive_sort');
-			if ($mchat_archive_sort == settings::ARCHIVE_SORT_TOP_BOTTOM || $mchat_archive_sort == settings::ARCHIVE_SORT_USER && !$mchat_message_top)
-			{
-				$reverse = true;
-			}
-		}
-		else if (!$mchat_message_top)
-		{
-			$reverse = true;
-		}
-
-		if ($reverse)
+		if ($this->messages_need_reversing($page))
 		{
 			$rows = array_reverse($rows);
 		}
@@ -1017,19 +1060,11 @@ class mchat
 			}
 		}
 
-		$board_url = generate_board_url() . '/';
-
 		$rows = $this->mchat_notifications->process($rows);
 
 		foreach ($rows as $row)
 		{
 			$username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $this->lang->lang('GUEST'));
-
-			// Fix profile link root path by replacing relative paths with absolute board URL
-			if ($this->request->is_ajax())
-			{
-				$username_full = preg_replace('#(?<=href=")[\./]+?/(?=\w)#', $board_url, $username_full);
-			}
 
 			if (in_array($row['user_id'], $this->foes))
 			{
@@ -1047,6 +1082,7 @@ class mchat
 			$message_for_edit = generate_text_for_edit($row['message'], $row['bbcode_uid'], $row['bbcode_options']);
 
 			$template_data = [
+				'MCHAT_USER_ID'				=> $row['user_id'],
 				'MCHAT_ALLOW_EDIT'			=> $this->auth_message('edit', $row['user_id'], $row['message_time']),
 				'MCHAT_ALLOW_DEL'			=> $this->auth_message('delete', $row['user_id'], $row['message_time']),
 				'MCHAT_USER_AVATAR'			=> $user_avatars[$row['user_id']],
@@ -1098,6 +1134,34 @@ class mchat
 
 			$this->template->assign_block_vars('mchatrow', $template_data);
 		}
+	}
+
+	/**
+	 * By default, rows are fetched by message ID descending. This method returns true if
+	 * the user wants them to be displayed ascending, otherwise false.
+	 *
+	 * @param string $page
+	 * @return bool
+	 */
+	protected function messages_need_reversing($page)
+	{
+		$mchat_message_top = $this->mchat_settings->cfg('mchat_message_top');
+
+		if ($page === 'archive')
+		{
+			$mchat_archive_sort = $this->mchat_settings->cfg('mchat_archive_sort');
+
+			if ($mchat_archive_sort == settings::ARCHIVE_SORT_TOP_BOTTOM || $mchat_archive_sort == settings::ARCHIVE_SORT_USER && !$mchat_message_top)
+			{
+				return true;
+			}
+		}
+		else if (!$mchat_message_top)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -1356,6 +1420,19 @@ class mchat
 			if (utf8_strlen($message_without_entities) > $this->mchat_settings->cfg('mchat_max_message_lngth'))
 			{
 				throw new http_exception(400, 'MCHAT_MESS_LONG', [$this->mchat_settings->cfg('mchat_max_message_lngth')]);
+			}
+		}
+
+		// Compatibility with Authorized for URLs by RMcGirr83 - requires at least 1.0.5
+		// https://www.phpbb.com/customise/db/extension/authorized_for_urls_2/
+		if ($this->authorized_for_urls !== null && is_callable([$this->authorized_for_urls, 'check_text']))
+		{
+			$authorized_for_urls_lang_args = $this->authorized_for_urls->check_text($message, true);
+
+			if ($authorized_for_urls_lang_args)
+			{
+				$authorized_for_urls_lang_key = array_shift($authorized_for_urls_lang_args);
+				throw new http_exception(400, $authorized_for_urls_lang_key, $authorized_for_urls_lang_args);
 			}
 		}
 

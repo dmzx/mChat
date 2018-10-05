@@ -107,7 +107,7 @@
 
 {% EVENT dmzx_mchat_after %}
 
-{% if MCHAT_PAGE == 'archive' %}
+{% if MCHAT_PAGE == 'archive' and (loops.pagination|length or MCHAT_TOTAL_MESSAGES) %}
 <div class="action-bar bottom">
 	{% EVENT dmzx_mchat_action_bar_bottom_before %}
 	<div class="pagination">

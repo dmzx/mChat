@@ -397,25 +397,35 @@ class functions
 	/**
 	 * Returns the total number of messages
 	 *
+	 * @param string $sql_where
+	 * @param string $sql_order_by
 	 * @return int
 	 */
-	public function mchat_total_message_count()
+	public function mchat_total_message_count($sql_where = '', $sql_order_by = '')
 	{
+		$sql_where_array = array_filter([$sql_where, $this->mchat_notifications->get_sql_where()]);
+
 		$sql_array = [
 			'SELECT'	=> 'COUNT(*) AS rows_total',
 			'FROM'		=> [$this->mchat_settings->get_table_mchat() => 'm'],
-			'WHERE'		=> $this->mchat_notifications->get_sql_where(),
+			'WHERE'		=> $sql_where_array ? ('(' . implode(') AND (', $sql_where_array) . ')') : '',
+			'ORDER_BY'	=> $sql_order_by,
 		];
 
 		/**
 		 * Event to modifying the SQL query that fetches the total number of mChat messages
 		 *
 		 * @event dmzx.mchat.total_message_count_modify_sql
-		 * @var array	sql_array	Array with SQL query data to fetch the total message count
+		 * @var array	sql_array		Array with SQL query data to fetch the total message count
+		 * @var string	sql_where		Additional SQL where condition passed to this method
+		 * @var string	sql_order_by	Additional SQL order by statement passed to this method
 		 * @since 2.0.0-RC6
+		 * @changed 2.1.1 Added sql_where, sql_order_by
 		 */
 		$vars = [
 			'sql_array',
+			'sql_where',
+			'sql_order_by',
 		];
 		extract($this->dispatcher->trigger_event('dmzx.mchat.total_message_count_modify_sql', compact($vars)));
 
@@ -454,7 +464,7 @@ class functions
 				$message_ids = [$message_ids];
 			}
 
-			$sql_where_message_id[] = $this->db->sql_in_set('m.message_id', array_map('intval', $message_ids));
+			$sql_where_message_id[] = $this->db->sql_in_set('m.message_id', $message_ids);
 		}
 
 		$sql_where_ary = array_filter([
