@@ -22,9 +22,15 @@
 
 .mchat-header .list-inner {
 	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
-	justify-content: left;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: left;
+	    -ms-flex-pack: left;
+	        justify-content: left;
 }
 
 .mchat-wrapper li.header dd {
@@ -38,7 +44,8 @@
 }
 
 #mchat-body * {
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 #mchat-main {
@@ -72,13 +79,29 @@
 }
 
 .mchat-message-flash {
-	animation-name: flash-message;
-	animation-duration: .4s;
-	animation-timing-function: ease-out;
+	-webkit-animation-name: flash-message;
+	        animation-name: flash-message;
+	-webkit-animation-duration: .4s;
+	        animation-duration: .4s;
+	-webkit-animation-timing-function: ease-out;
+	        animation-timing-function: ease-out;
 }
 
 .mchat-message-flash:target {
-	animation-duration: 2s;
+	-webkit-animation-duration: 2s;
+	        animation-duration: 2s;
+}
+
+@-webkit-keyframes flash-message {
+
+	0% {
+		background-color: #FFDC95;
+	}
+
+	100% {
+		background-color: transparent;
+	}
+
 }
 
 @keyframes flash-message {
@@ -147,6 +170,10 @@
 
 .mchat-text .postlink {
 	display: unset;
+}
+
+.mchat-text .text-strong {
+	color: unset;
 }
 
 .mchat-notification-message .mchat-text {
@@ -228,6 +255,8 @@
 }
 
 .mchat-controls {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	margin: 5px 0;
 }
@@ -237,7 +266,9 @@
 }
 
 .mchat-input-container {
-	flex: 1;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
 	position: relative;
 	max-width: 100%;
 	border-radius: 4px;
@@ -270,9 +301,15 @@
 
 .mchat-input-control {
 	position: absolute;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	width: 30px;
 	height: 100%;
 	top: 0;
@@ -297,7 +334,9 @@
 .mchat-status {
 	position: absolute;
 	top: calc(50% - 1px);
-	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	    -ms-transform: translateY(-50%);
+	        transform: translateY(-50%);
 	text-indent: 0;
 }
 
@@ -320,6 +359,8 @@
 }
 
 .mchat-panel-buttons {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	margin-left: 5px;
 }
@@ -354,6 +395,13 @@
 	display: none;
 }
 
+#mchat-bbcodes #colour_palette {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
+
 #mchat-bbcodes #colour_palette label {
 	display: none;
 }
@@ -362,8 +410,14 @@
 	margin: 0 auto 5px;
 }
 
+#mchat-bbcodes #colour_palette a {
+	cursor: pointer;
+}
+
 #mchat-bbcodes #colour_palette td a.remember-color {
-	box-shadow: 0 0 0 1px #F00;
+	position: relative;
+	-webkit-box-shadow: 0 0 2px 2px #F00;
+	        box-shadow: 0 0 2px 2px #F00;
 }
 
 #mchat-smilies {
@@ -384,12 +438,14 @@
 	float: left;
 }
 
-.mchat-copyright {
-	position: relative;
-	top: 1px;
-	font-weight: bold;
-	font-size: 1.1em;
-	cursor: help;
+.mchat-copyright.footer-row {
+	font-size: 10px;
+	line-height: 1.8;
+	margin: 0;
+}
+
+.footer-row + br {
+	display: none;
 }
 
 .mchat-static {
@@ -411,7 +467,10 @@
 	}
 
 	.mchat-controls {
-		flex-direction: column;
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		    -ms-flex-direction: column;
+		        flex-direction: column;
 	}
 
 	.mchat-panel-buttons {

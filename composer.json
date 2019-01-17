@@ -3,9 +3,13 @@
 	"type": "phpbb-extension",
 	"description": "mChat",
 	"homepage": "https://www.phpbb.com/customise/db/extension/mchat_extension/",
-	"version": "2.1.1",
-	"time": "2018-09-01",
-	"keywords": ["phpbb", "extension", "mchat"],
+	"version": "2.1.2",
+	"time": "2018-12-25",
+	"keywords": [
+		"phpbb",
+		"extension",
+		"mchat"
+	],
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -28,7 +32,8 @@
 	],
 	"require": {
 		"php": ">=5.4.7",
-		"composer/installers": "~1.0"
+		"composer/installers": "~1.0.0",
+		"phpbb/phpbb": ">=3.2.0"
 	},
 	"require-dev": {
 		"phpbb/epv": "dev-master"

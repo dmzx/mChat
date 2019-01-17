@@ -168,10 +168,10 @@ class settings
 			'mchat_live_updates'			=> ['default' => 1],
 			'mchat_log_enabled'				=> ['default' => 1],
 			'mchat_max_input_height'		=> ['default' => 150,	'validation' => ['num', false, 0, 1000]],
-			'mchat_max_message_lngth'		=> ['default' => 500,	'validation' => ['num', false, 0, 1000]],
+			'mchat_max_message_lngth'		=> ['default' => 500],
 			'mchat_message_num_archive'		=> ['default' => 25,	'validation' => ['num', false, 10, 100]],
-			'mchat_message_num_custom'		=> ['default' => 10,	'validation' => ['num', false, 5, 50]],
-			'mchat_message_num_index'		=> ['default' => 10,	'validation' => ['num', false, 5, 50]],
+			'mchat_message_num_custom'		=> ['default' => 10],
+			'mchat_message_num_index'		=> ['default' => 10],
 			'mchat_navbar_link_count'		=> ['default' => 1],
 			'mchat_override_min_post_chars' => ['default' => 0],
 			'mchat_override_smilie_limit'	=> ['default' => 0],
@@ -185,7 +185,7 @@ class settings
 			'mchat_prune_gc'				=> ['default' => strtotime('1 day', 0)],
 			'mchat_prune_mode'				=> ['default' => 0],
 			'mchat_prune_num'				=> ['default' => 0],
-			'mchat_refresh'					=> ['default' => 10,	'validation' => ['num', false, 5, 60]],
+			'mchat_refresh'					=> ['default' => 10,	'validation' => ['num', false, 2, 3600]],
 			'mchat_timeout'					=> ['default' => 0,		'validation' => ['num', false, 0, (int) $this->cfg('session_length')]],
 			'mchat_whois_refresh'			=> ['default' => 60,	'validation' => ['num', false, 10, 300]],
 		];
@@ -477,6 +477,27 @@ class settings
 		}
 
 		return implode($this->lang->lang('COMMA_SEPARATOR'), $enabled_notifications_lang);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_current_page()
+	{
+		$page = $this->user->page['page_name'];
+
+		// Remove app.php if URL rewriting is enabled in the ACP
+		if ($this->config['enable_mod_rewrite'])
+		{
+			$app_php = 'app.' . $this->php_ext . '/';
+
+			if (($app_position = strpos($page, $app_php)) !== false)
+			{
+				$page = substr($page, $app_position + strlen($app_php));
+			}
+		}
+
+		return generate_board_url() . '/' . $page;
 	}
 
 	/**

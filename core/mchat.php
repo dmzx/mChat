@@ -571,6 +571,7 @@ class mchat
 			unset($logs['latest']);
 
 			$log_edit_del_ids = $logs;
+			unset($logs);
 		}
 		else
 		{
@@ -761,18 +762,17 @@ class mchat
 		$is_archive = $page == 'archive';
 		$jump_to_id = $is_archive ? $this->request->variable('jumpto', 0) : 0;
 
-		// If the static message is not empty in the language file, use it, else ise the static message in the database
+		// If the static message is not empty in the language file, use it, else use the static message in the database
 		$static_message = $this->lang->lang('MCHAT_STATIC_MESSAGE') ?: $this->mchat_settings->cfg('mchat_static_message');
 		$whois_refresh = $this->mchat_settings->cfg('mchat_whois_index') || $this->mchat_settings->cfg('mchat_navbar_link_count');
 
 		$template_data = [
 			'MCHAT_PAGE'					=> $page,
-			'MCHAT_CURRENT_URL'				=> '.' . $this->user->page['script_path'] . $this->user->page['page'],
+			'MCHAT_CURRENT_URL'				=> $this->mchat_settings->get_current_page(),
 			'MCHAT_ALLOW_SMILES'			=> $this->mchat_settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies'),
 			'MCHAT_MESSAGE_TOP'				=> $this->mchat_settings->cfg('mchat_message_top'),
 			'MCHAT_INDEX_HEIGHT'			=> $this->mchat_settings->cfg('mchat_index_height'),
 			'MCHAT_CUSTOM_HEIGHT'			=> $this->mchat_settings->cfg('mchat_custom_height'),
-			'MCHAT_LIVE_UPDATES'			=> $this->mchat_settings->cfg('mchat_live_updates'),
 			'MCHAT_LOCATION'				=> $this->mchat_settings->cfg('mchat_location'),
 			'MCHAT_CHARACTER_COUNT'			=> $this->mchat_settings->cfg('mchat_character_count'),
 			'MCHAT_SOUND'					=> $this->mchat_settings->cfg('mchat_sound'),
@@ -1096,7 +1096,7 @@ class mchat
 				'MCHAT_USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour'], $this->lang->lang('GUEST')),
 				'MCHAT_USERNAME_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour'], $this->lang->lang('GUEST')),
 				'MCHAT_WHOIS_USER'			=> $this->lang->lang('MCHAT_WHOIS_USER', $row['user_ip']),
-				'MCHAT_U_IP'				=> $this->helper->route('dmzx_mchat_page_whois_controller', ['ip' => $row['user_ip']]),
+				'MCHAT_U_IP'				=> $this->auth->acl_get('u_mchat_ip') ? $this->helper->route('dmzx_mchat_page_whois_controller', ['ip' => $row['user_ip']]) : false,
 				'MCHAT_U_PERMISSIONS'		=> append_sid($this->mchat_settings->url('adm/index', true), ['i' => 'permissions', 'mode' => 'setting_user_global', rawurlencode('user_id[0]') => $row['user_id']], true, $this->user->session_id),
 				'MCHAT_MESSAGE'				=> generate_text_for_display($row['message'], $row['bbcode_uid'], $row['bbcode_bitfield'], $row['bbcode_options']),
 				'MCHAT_TIME'				=> $minutes_ago === -1 ? $datetime : $this->lang->lang('MCHAT_MINUTES_AGO', $minutes_ago),

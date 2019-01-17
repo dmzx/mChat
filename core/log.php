@@ -104,19 +104,48 @@ class log
 	}
 
 	/**
-	 * @param string $log_type The log type, one of edit|del
+	 * @param string $log_type The log type, one of edit|del or a custom type
 	 * @param int $message_id The ID of the message to which this log entry belongs
-	 * @return int The ID of the newly added log row
+	 * @return int The ID of the newly added log row, or 0 if no log row was added
 	 */
 	public function add_log($log_type, $message_id)
 	{
-		$this->db->sql_query('INSERT INTO ' . $this->mchat_settings->get_table_mchat_log() . ' ' . $this->db->sql_build_array('INSERT', [
+		$log_row = [
 			'log_type'		=> $this->get_type_id($log_type),
 			'user_id'		=> (int) $this->user->data['user_id'],
 			'message_id'	=> (int) $message_id,
 			'log_ip'		=> $this->user->ip,
 			'log_time'		=> time(),
-		]));
+		];
+
+		$insert_log = true;
+
+		/**
+		 * Event that allows adding log types
+		 *
+		 * @event dmzx.mchat.log_add_before
+		 * @var string	log_type	The log type, one of edit|del or a custom type
+		 * @var int		message_id	ID of the message to which this log entry belongs
+		 * @var array	log_row		Array that is about to be added to the mchat_log table
+		 * @var bool	insert_log	Whether or not to add the log_row
+		 * @since 2.1.2
+		 */
+		$vars = [
+			'log_type',
+			'message_id',
+			'log_row',
+			'insert_log',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.log_add_before', compact($vars)));
+
+		if (!$insert_log)
+		{
+			return 0;
+		}
+
+		$sql = 'INSERT INTO ' . $this->mchat_settings->get_table_mchat_log() . ' ' . $this->db->sql_build_array('INSERT', $log_row);
+
+		$this->db->sql_query($sql);
 
 		$log_id = (int) $this->db->sql_nextid();
 
@@ -171,12 +200,11 @@ class log
 			 * Event that allows processing log messages
 			 *
 			 * @event dmzx.mchat.action_refresh_process_log_row
-			 * @var array	response	The data that is sent back to the user (still incomplete at this point)
 			 * @var array	log_row		The log data (read only)
 			 * @since 2.0.0-RC6
+			 * @changed 2.1.2 Removed response
 			 */
 			$vars = [
-				'response',
 				'log_row',
 			];
 			extract($this->dispatcher->trigger_event('dmzx.mchat.action_refresh_process_log_row', compact($vars)));

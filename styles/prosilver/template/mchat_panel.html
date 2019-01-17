@@ -9,7 +9,7 @@
 				<div class="mchat-input-container inputbox">
 					<textarea id="mchat-input" name="message" class="no-auto-resize {{ MCHAT_MAX_INPUT_HEIGHT ? 'mchat-multi-line' : 'mchat-single-line' }}" rows="1" autocomplete="off"></textarea>
 					<div class="mchat-input-control">
-						<button class="mchat-button-add" id="mchat-add" data-mchat-action="add" title="{{ lang('MCHAT_ADD') }}">
+						<button type="button" class="mchat-button-add" id="mchat-add" data-mchat-action="add" title="{{ lang('MCHAT_ADD') }}">
 							<i class="icon icon-lightgray fa fa-chevron-right fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('MCHAT_ADD') }}</span>
 						</button>
 						{% if MCHAT_MAX_MESSAGE_LENGTH %}
@@ -22,13 +22,13 @@
 					<div class="mchat-panel-buttons">
 						{% EVENT dmzx_mchat_buttons_before %}
 						{% if MCHAT_ALLOW_SMILES and loops.smiley|length %}
-							<button class="button mchat-button-smilies mchat-button-down" data-mchat-action="toggle" data-mchat-element="smilies" title="{{ lang('MCHAT_SMILES') }}">
+							<button type="button" class="button mchat-button-smilies mchat-button-down" data-mchat-action="toggle" data-mchat-element="smilies" title="{{ lang('MCHAT_SMILES') }}">
 								<i class="icon fa fa-smile-o" aria-hidden="true"></i><span class="sr-only">{{ lang('MCHAT_SMILES') }}</span>
 							</button>
 						{% endif %}
 						{% EVENT dmzx_mchat_buttons_mid %}
 						{% if S_BBCODE_ALLOWED %}
-							<button class="button mchat-button-bbcodes mchat-button-down" data-mchat-action="toggle" data-mchat-element="bbcodes" title="{{ lang('MCHAT_BBCODES') }}">
+							<button type="button" class="button mchat-button-bbcodes mchat-button-down" data-mchat-action="toggle" data-mchat-element="bbcodes" title="{{ lang('MCHAT_BBCODES') }}">
 								<i class="icon fa fa-code fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('MCHAT_BBCODES') }}</span>
 							</button>
 						{% endif %}
