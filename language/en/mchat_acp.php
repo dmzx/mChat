@@ -37,6 +37,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// ACP Configuration sections
 	'MCHAT_SETTINGS_INDEX'							=> 'Index page settings',
+	'MCHAT_SETTINGS_ALL_PAGES'						=> 'On all pages',
 	'MCHAT_SETTINGS_CUSTOM'							=> 'mChat page settings',
 	'MCHAT_SETTINGS_ARCHIVE'						=> 'Archive page settings',
 	'MCHAT_SETTINGS_POSTS'							=> 'New posts settings',
@@ -91,6 +92,8 @@ $lang = array_merge($lang, [
 	'MCHAT_MESSAGE_NUM_INDEX_EXPLAIN'				=> '<em>Default is 10.</em>',
 	'MCHAT_MESSAGE_NUM_ARCHIVE'						=> 'Number of messages to display on the archive page',
 	'MCHAT_MESSAGE_NUM_ARCHIVE_EXPLAIN'				=> '<em>You are limited from 10 to 100. Default is 25.</em>',
+	'MCHAT_MESSAGE_NUM_FOOTER'						=> 'Number of messages to display in the mchat footer',
+	'MCHAT_MESSAGE_NUM_FOOTER_EXPLAIN'				=> '<em>Default is 10.</em>',
 	'MCHAT_ARCHIVE_SORT'							=> 'Message sorting',
 	'MCHAT_ARCHIVE_SORT_TOP_BOTTOM'					=> 'Always sort messages oldest to newest',
 	'MCHAT_ARCHIVE_SORT_BOTTOM_TOP'					=> 'Always sort messages newest to oldest',

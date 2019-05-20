@@ -170,6 +170,47 @@ class mchat
 	}
 
 	/**
+	 * Render mChat in footer
+	 */
+	public function in_footer()
+	{
+		if (!$this->auth->acl_get('u_mchat_view'))
+		{
+			return;
+		}
+
+		$this->assign_whois();
+
+		if (!$this->mchat_settings->cfg('mchat_footer'))
+		{
+			return;
+		}
+
+		// mchat_footer haven't to display on index if mchat_index is enabled
+		if ($this->auth->acl_get('u_mchat_index') && ($this->user->page['page_name'] == "index.php"))
+		{
+			return;
+		}
+
+		// mchat_footer haven't to display on custom and archive pages
+		$exclude = [
+			'custom'  => 'app.php/mchat',
+			'archive' => 'app.php/mchat/archive'
+		];
+
+		if (in_array($this->user->page['page_name'], $exclude))
+		{
+			return;
+		}
+
+		$this->lang->add_lang('mchat', 'dmzx/mchat');
+
+		$this->assign_bbcodes_smilies();
+
+		$this->render_page('footer');
+	}
+
+	/**
 	 * Render the mChat custom page
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
@@ -740,7 +781,7 @@ class mchat
 	/**
 	 * Renders data for a page
 	 *
-	 * @param string $page The page we are rendering for, one of index|custom|archive
+	 * @param string $page The page we are rendering for, one of index|custom|archive|footer
 	 */
 	protected function render_page($page)
 	{
@@ -748,7 +789,7 @@ class mchat
 		 * Event that is triggered before mChat is rendered
 		 *
 		 * @event dmzx.mchat.render_page_before
-		 * @var string	page	The page that is rendered, one of index|custom|archive
+		 * @var string	page	The page that is rendered, one of index|custom|archive|footer
 		 * @since 2.0.0-RC6
 		 */
 		$vars = [
@@ -778,6 +819,7 @@ class mchat
 			'MCHAT_SOUND'					=> $this->mchat_settings->cfg('mchat_sound'),
 			'MCHAT_SOUND_ENABLED'			=> $this->mchat_settings->cfg('mchat_sound') || $this->mchat_settings->cfg('mchat_sound', true),
 			'MCHAT_INDEX'					=> $this->mchat_settings->cfg('mchat_index'),
+			'MCHAT_FOOTER'					=> $this->auth->acl_get('u_mchat_footer'),
 			'MCHAT_WHOIS_INDEX'				=> $this->mchat_settings->cfg('mchat_whois_index'),
 			'MCHAT_WHOIS_REFRESH'			=> $whois_refresh ? $this->mchat_settings->cfg('mchat_whois_refresh') * 1000 : 0,
 			'MCHAT_REFRESH_JS'				=> $this->mchat_settings->cfg('mchat_refresh') * 1000,
@@ -902,15 +944,20 @@ class mchat
 			$template_data['MCHAT_TOTAL_MESSAGES'] = $this->lang->lang('MCHAT_TOTALMESSAGES', $total_messages);
 		}
 
+		$page_with_mChat_collapsible = [
+			'index',
+			'footer'
+		];
+
 		// Render legend
-		if ($page !== 'index')
+		if (!in_array($page, $page_with_mChat_collapsible))
 		{
 			$legend = $this->mchat_functions->mchat_legend();
 			$template_data['LEGEND'] = implode($this->lang->lang('COMMA_SEPARATOR'), $legend);
 		}
 
 		// Make mChat collapsible
-		if ($page === 'index' && $this->cc_operator !== null)
+		if (in_array($page, $page_with_mChat_collapsible) && $this->cc_operator !== null)
 		{
 			$cc_fid = 'mchat';
 			$template_data = array_merge($template_data, [

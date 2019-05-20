@@ -876,3 +876,14 @@ jQuery(function($) {
 		}
 	});
 });
+
+$(document).ready(function() {
+	$('.mchat-in-footer .topiclist.mchat-header').click(function() {
+		$('.mchat-in-footer #mchat-body').toggle();
+		if ($('.mchat-in-footer #mchat-body').css('display') == 'block') {
+			$('.mchat-in-footer').addClass('mchat-in-footer-mobile');
+		} else {
+			$('.mchat-in-footer').removeClass('mchat-in-footer-mobile');
+		}
+	})
+})
