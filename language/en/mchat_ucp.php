@@ -39,6 +39,7 @@ $lang = array_merge($lang, [
 	'MCHAT_NO_SETTINGS'				=> 'You are not authorised to customise any settings.',
 
 	'MCHAT_INDEX'					=> 'Display on the index page',
+	'MCHAT_FOOTER'					=> 'Display in the footer, on all pages',
 	'MCHAT_SOUND'					=> 'Enable sound',
 	'MCHAT_WHOIS_INDEX'				=> 'Display <em>Who is chatting</em> below the chat',
 	'MCHAT_STATS_INDEX'				=> 'Display <em>Who is chatting</em> in the stats section',

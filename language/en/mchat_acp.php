@@ -37,6 +37,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// ACP Configuration sections
 	'MCHAT_SETTINGS_INDEX'							=> 'Index page settings',
+	'MCHAT_SETTINGS_ALL_PAGES'						=> 'On all pages',
 	'MCHAT_SETTINGS_CUSTOM'							=> 'mChat page settings',
 	'MCHAT_SETTINGS_ARCHIVE'						=> 'Archive page settings',
 	'MCHAT_SETTINGS_POSTS'							=> 'New posts settings',

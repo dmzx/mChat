@@ -54,6 +54,15 @@
 					</dd>
 				</dl>
 				{% endif %}
+				{% if MCHAT_FOOTER_AUTH %}
+				<dl>
+					<dt><label for="user_mchat_footer">{{ lang('MCHAT_FOOTER') ~ lang('COLON') }}</label></dt>
+					<dd>
+						<label><input type="radio" name="user_mchat_footer" value="1"{% if MCHAT_FOOTER %} id="user_mchat_footer" checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" name="user_mchat_footer" value="0"{% if not MCHAT_FOOTER %} id="user_mchat_footer" checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				{% endif %}
 
 				{% EVENT dmzx_mchat_ucp_location_after %}
 

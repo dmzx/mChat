@@ -82,6 +82,7 @@ class main_listener implements EventSubscriberInterface
 			'core.viewonline_overwrite_location'		=> 'add_page_viewonline',
 			'core.user_setup'							=> 'load_language_on_setup',
 			'core.page_header'							=> 'add_page_header_link',
+			'core.page_footer'							=> 'display_mchat_in_footer',
 			'core.index_modify_page_title'				=> 'display_mchat_on_index',
 			'core.submit_post_end'						=> 'insert_posting',
 			'core.display_custom_bbcodes_modify_sql'	=> [['remove_disallowed_bbcodes'], ['pm_compose_add_quote']],
@@ -131,6 +132,14 @@ class main_listener implements EventSubscriberInterface
 	public function display_mchat_on_index()
 	{
 		$this->mchat->page_index();
+	}
+
+	/**
+	 * Check if mchat should be displayed in footer.
+	 */
+	public function display_mchat_in_footer()
+	{
+		$this->mchat->in_footer();
 	}
 
 	/**

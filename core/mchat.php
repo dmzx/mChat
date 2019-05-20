@@ -170,6 +170,30 @@ class mchat
 	}
 
 	/**
+	 * Render mChat in footer
+	 */
+	public function in_footer()
+	{
+		if (!$this->auth->acl_get('u_mchat_view'))
+		{
+			return;
+		}
+
+		$this->assign_whois();
+
+		if (!$this->mchat_settings->cfg('mchat_footer'))
+		{
+			return;
+		}
+
+		$this->lang->add_lang('mchat', 'dmzx/mchat');
+
+		$this->assign_bbcodes_smilies();
+
+		$this->render_page('footer');
+	}
+
+	/**
 	 * Render the mChat custom page
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
@@ -769,6 +793,7 @@ class mchat
 		$template_data = [
 			'MCHAT_PAGE'					=> $page,
 			'MCHAT_CURRENT_URL'				=> $this->mchat_settings->get_current_page(),
+			'MCHAT_CURRENT_SCRIPT'			=> $this->user->page['page_name'],
 			'MCHAT_ALLOW_SMILES'			=> $this->mchat_settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies'),
 			'MCHAT_MESSAGE_TOP'				=> $this->mchat_settings->cfg('mchat_message_top'),
 			'MCHAT_INDEX_HEIGHT'			=> $this->mchat_settings->cfg('mchat_index_height'),
@@ -789,6 +814,7 @@ class mchat
 			'MCHAT_MAX_MESSAGE_LENGTH'		=> $this->mchat_settings->cfg('mchat_max_message_lngth'),
 			'MCHAT_JUMP_TO'					=> $jump_to_id,
 			'COOKIE_NAME'					=> $this->mchat_settings->cfg('cookie_name', true) . '_',
+			'MCHAT_FOOTER'					=> $this->auth->acl_get('u_mchat_footer'),
 		];
 
 		// The template needs some language variables if we display relative time for messages
@@ -814,7 +840,14 @@ class mchat
 			]);
 		}
 
-		$limit = $this->mchat_settings->cfg('mchat_message_num_' . $page);
+		if ($page != "footer")
+		{
+			$limit = $this->mchat_settings->cfg('mchat_message_num_' . $page);
+		}
+		else
+		{
+			$limit = 10;
+		}
 
 		if ($is_archive)
 		{
@@ -902,15 +935,20 @@ class mchat
 			$template_data['MCHAT_TOTAL_MESSAGES'] = $this->lang->lang('MCHAT_TOTALMESSAGES', $total_messages);
 		}
 
+		$page_with_mChat_collapsible = [
+			'index',
+			'footer'
+		];
+
 		// Render legend
-		if ($page !== 'index')
+		if (!in_array($page, $page_with_mChat_collapsible))
 		{
 			$legend = $this->mchat_functions->mchat_legend();
 			$template_data['LEGEND'] = implode($this->lang->lang('COMMA_SEPARATOR'), $legend);
 		}
 
 		// Make mChat collapsible
-		if ($page === 'index' && $this->cc_operator !== null)
+		if (in_array($page, $page_with_mChat_collapsible) && $this->cc_operator !== null)
 		{
 			$cc_fid = 'mchat';
 			$template_data = array_merge($template_data, [
