@@ -87,6 +87,20 @@
 		</dl>
 	</fieldset>
 	<fieldset>
+		<legend>{{ lang('MCHAT_SETTINGS_ALL_PAGES') }}</legend>
+
+		{% EVENT dmzx_mchat_acp_message_num_footer_before %}
+
+		<dl>
+			<dt><label for="mchat_message_num_footer">{{ lang('MCHAT_MESSAGE_NUM_FOOTER') ~ lang('COLON') }}</label><br>
+				<span>{{ lang('MCHAT_MESSAGE_NUM_FOOTER_EXPLAIN') }}</span></dt>
+			<dd><input type="text" name="mchat_message_num_footer" id="mchat_message_num_footer" size="10" value="{{ MCHAT_MESSAGE_NUM_FOOTER }}">&nbsp;<span>{{ lang('MCHAT_ACP_MESSAGES') }}</span></dd>
+		</dl>
+
+		{% EVENT dmzx_mchat_acp_message_num_footer_after %}
+
+	</fieldset>
+	<fieldset>
 		<legend>{{ lang('MCHAT_SETTINGS_MESSAGES') }}</legend>
 
 		{% EVENT dmzx_mchat_acp_timeout_before %}

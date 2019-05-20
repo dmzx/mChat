@@ -27,6 +27,7 @@ class mchat_2_1_3_rc1 extends migration
             ['config.update', ['mchat_version', '2.1.3-rc1']],
 
 			['config.add', ['mchat_footer', 0]],
+			['config.add', ['mchat_message_num_footer', 10]],
 
 			['permission.add', ['u_mchat_footer', true]],
 			['permission.permission_set', ['REGISTERED', 'u_mchat_footer', 'group']],
