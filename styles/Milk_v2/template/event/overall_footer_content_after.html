@@ -1,3 +1,5 @@
-{% if MCHAT_PAGE == "footer" and MCHAT_CURRENT_SCRIPT != "index.php" %}
-    {% INCLUDE '@dmzx_mchat/mchat_body_in_footer.html' %}
+{% if MCHAT_FOOTER %}
+    {% if MCHAT_CURRENT_SCRIPT != "index.php" or MCHAT_CURRENT_SCRIPT == "index.php" and not MCHAT_INDEX %}
+        {% INCLUDE '@dmzx_mchat/mchat_body_in_footer.html' %}
+    {% endif %}
 {% endif %}

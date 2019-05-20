@@ -1,7 +1,7 @@
 <span class="mchat-title">
 	{% if MCHAT_PAGE == 'archive' %}
 		<a href="{{ U_MCHAT_ARCHIVE }}" title="{{ lang('MCHAT_ARCHIVE_PAGE') }}">{{ lang('MCHAT_ARCHIVE_PAGE') }}</a>
-	{% elseif MCHAT_PAGE == 'footer' and MCHAT_CURRENT_SCRIPT != "index.php" %}
+	{% elseif MCHAT_FOOTER and MCHAT_CURRENT_SCRIPT != "index.php" or MCHAT_CURRENT_SCRIPT == "index.php" and not MCHAT_INDEX %}
 		<i class="icon fa fa-comment" title="{{ lang('MCHAT_TITLE') }}"></i>
 	{% elseif U_MCHAT_CUSTOM_PAGE %}
 		<a href="{{ U_MCHAT_CUSTOM_PAGE }}" title="{{ lang('MCHAT_TITLE') }}">{{ lang('MCHAT_TITLE') }}</a>
