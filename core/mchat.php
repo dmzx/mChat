@@ -186,6 +186,23 @@ class mchat
 			return;
 		}
 
+		// mchat_footer haven't to display on index if mchat_index is enabled
+		if ($this->auth->acl_get('u_mchat_index') && ($this->user->page['page_name'] == "index.php"))
+		{
+			return;
+		}
+
+		// mchat_footer haven't to display on custom and archive pages
+		$exclude = [
+			'custom'  => 'app.php/mchat',
+			'archive' => 'app.php/mchat/archive'
+		];
+
+		if (in_array($this->user->page['page_name'], $exclude))
+		{
+			return;
+		}
+
 		$this->lang->add_lang('mchat', 'dmzx/mchat');
 
 		$this->assign_bbcodes_smilies();
@@ -764,7 +781,7 @@ class mchat
 	/**
 	 * Renders data for a page
 	 *
-	 * @param string $page The page we are rendering for, one of index|custom|archive
+	 * @param string $page The page we are rendering for, one of index|custom|archive|footer
 	 */
 	protected function render_page($page)
 	{
@@ -772,7 +789,7 @@ class mchat
 		 * Event that is triggered before mChat is rendered
 		 *
 		 * @event dmzx.mchat.render_page_before
-		 * @var string	page	The page that is rendered, one of index|custom|archive
+		 * @var string	page	The page that is rendered, one of index|custom|archive|footer
 		 * @since 2.0.0-RC6
 		 */
 		$vars = [
@@ -793,7 +810,6 @@ class mchat
 		$template_data = [
 			'MCHAT_PAGE'					=> $page,
 			'MCHAT_CURRENT_URL'				=> $this->mchat_settings->get_current_page(),
-			'MCHAT_CURRENT_SCRIPT'			=> $this->user->page['page_name'],
 			'MCHAT_ALLOW_SMILES'			=> $this->mchat_settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies'),
 			'MCHAT_MESSAGE_TOP'				=> $this->mchat_settings->cfg('mchat_message_top'),
 			'MCHAT_INDEX_HEIGHT'			=> $this->mchat_settings->cfg('mchat_index_height'),
@@ -803,6 +819,7 @@ class mchat
 			'MCHAT_SOUND'					=> $this->mchat_settings->cfg('mchat_sound'),
 			'MCHAT_SOUND_ENABLED'			=> $this->mchat_settings->cfg('mchat_sound') || $this->mchat_settings->cfg('mchat_sound', true),
 			'MCHAT_INDEX'					=> $this->mchat_settings->cfg('mchat_index'),
+			'MCHAT_FOOTER'					=> $this->auth->acl_get('u_mchat_footer'),
 			'MCHAT_WHOIS_INDEX'				=> $this->mchat_settings->cfg('mchat_whois_index'),
 			'MCHAT_WHOIS_REFRESH'			=> $whois_refresh ? $this->mchat_settings->cfg('mchat_whois_refresh') * 1000 : 0,
 			'MCHAT_REFRESH_JS'				=> $this->mchat_settings->cfg('mchat_refresh') * 1000,
@@ -814,7 +831,6 @@ class mchat
 			'MCHAT_MAX_MESSAGE_LENGTH'		=> $this->mchat_settings->cfg('mchat_max_message_lngth'),
 			'MCHAT_JUMP_TO'					=> $jump_to_id,
 			'COOKIE_NAME'					=> $this->mchat_settings->cfg('cookie_name', true) . '_',
-			'MCHAT_FOOTER'					=> $this->auth->acl_get('u_mchat_footer'),
 		];
 
 		// The template needs some language variables if we display relative time for messages
@@ -840,14 +856,7 @@ class mchat
 			]);
 		}
 
-		if ($page != "footer")
-		{
-			$limit = $this->mchat_settings->cfg('mchat_message_num_' . $page);
-		}
-		else
-		{
-			$limit = 10;
-		}
+		$limit = $this->mchat_settings->cfg('mchat_message_num_' . $page);
 
 		if ($is_archive)
 		{

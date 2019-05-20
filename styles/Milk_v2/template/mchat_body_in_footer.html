@@ -51,7 +51,7 @@
 				</fieldset>
 			</div>
 
-			{% if MCHAT_STATIC_MESS and MCHAT_PAGE != 'archive' %}
+			{% if MCHAT_STATIC_MESS %}
 				{% EVENT dmzx_mchat_static_container_before %}
 				<ul class="topiclist forums mchat-static-container">
 					<li class="row mchat-static">{{ MCHAT_STATIC_MESS }}</li>
