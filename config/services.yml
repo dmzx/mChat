@@ -83,7 +83,6 @@ services:
             - '@cache.driver'
             - '@dispatcher'
             - '@group_helper'
-            - '@text_formatter.parser'
 
     dmzx.mchat.settings:
         class: dmzx\mchat\core\settings

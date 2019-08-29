@@ -118,6 +118,11 @@
 			<dd><input type="text" name="mchat_flood_time" id="mchat_flood_time" size="10" value="{{ MCHAT_FLOOD_TIME }}">&nbsp;<span>{{ lang('MCHAT_ACP_SECONDS') }}</span></dd>
 		</dl>
 		<dl>
+			<dt><label for="mchat_flood_messages">{{ lang('MCHAT_FLOOD_MESSAGES') ~ lang('COLON') }}</label><br>
+				<span>{{ lang('MCHAT_FLOOD_MESSAGES_EXPLAIN') }}</span></dt>
+			<dd><input type="text" name="mchat_flood_messages" id="mchat_flood_messages" size="10" value="{{ MCHAT_FLOOD_MESSAGES }}">&nbsp;<span>{{ lang('MCHAT_ACP_MESSAGES') }}</span></dd>
+		</dl>
+		<dl>
 			<dt><label for="mchat_max_message_lngth">{{ lang('MCHAT_MAX_MESSAGE_LENGTH') ~ lang('COLON') }}</label><br>
 				<span>{{ lang('MCHAT_MAX_MESSAGE_LENGTH_EXPLAIN') }}</span></dt>
 			<dd><input type="text" name="mchat_max_message_lngth" id="mchat_max_message_lngth" size="10" value="{{ MCHAT_MAX_MESSAGE_LNGTH }}">&nbsp;<span>{{ lang('MCHAT_ACP_CHARACTERS') }}</span></dd>

@@ -631,24 +631,62 @@ class functions
 	 */
 	public function mchat_is_user_flooding()
 	{
-		if (!$this->mchat_settings->cfg('mchat_flood_time') || $this->auth->acl_get('u_mchat_flood_ignore'))
+		if ($this->auth->acl_get('u_mchat_flood_ignore'))
 		{
 			return false;
 		}
 
+		$sql_queries = [];
+
 		$sql_array = [
-			'SELECT'	=> 'm.message_time',
+			'SELECT'	=> 'm.user_id',
 			'FROM'		=> [$this->mchat_settings->get_table_mchat() => 'm'],
-			'WHERE'		=> 'm.user_id = ' . (int) $this->user->data['user_id'],
-			'ORDER_BY'	=> 'm.message_time DESC',
+			'ORDER_BY'	=> 'm.message_time DESC, m.message_id DESC',
 		];
 
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query_limit($sql, 1);
-		$message_time = (int) $this->db->sql_fetchfield('message_time');
-		$this->db->sql_freeresult($result);
+		if ($this->mchat_settings->cfg('mchat_flood_time'))
+		{
+			$sql = $this->db->sql_build_query('SELECT', array_merge($sql_array, [
+				'WHERE'	=> implode(' AND ', [
+					'm.user_id = ' . (int) $this->user->data['user_id'],
+					'message_time > ' . time() . ' - ' . (int) $this->mchat_settings->cfg('mchat_flood_time'),
+					$this->mchat_notifications->get_sql_where('exclude'),
+				]),
+			]));
 
-		return $message_time && time() - $message_time < $this->mchat_settings->cfg('mchat_flood_time');
+			$sql_queries[$sql] = 1;
+		}
+
+		if ($this->mchat_settings->cfg('mchat_flood_messages'))
+		{
+			$sql = $this->db->sql_build_query('SELECT', array_merge($sql_array, [
+				'WHERE'	=> $this->mchat_notifications->get_sql_where('exclude'),
+			]));
+
+			$sql_queries[$sql] = $this->mchat_settings->cfg('mchat_flood_messages');
+		}
+
+		foreach ($sql_queries as $sql => $limit)
+		{
+			$result = $this->db->sql_query_limit($sql, $limit);
+			$rows = $this->db->sql_fetchrowset($result);
+			$this->db->sql_freeresult($result);
+
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+					if ($row['user_id'] != $this->user->data['user_id'])
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

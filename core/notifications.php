@@ -208,6 +208,7 @@ class notifications
 		return $post_subjects + $missing_post_subjects;
 	}
 
+
 	/**
 	 * Converts the message field of the post row so that it can be passed to generate_text_for_display()
 	 *
@@ -374,12 +375,14 @@ class notifications
 	 * Generates an SQL WHERE condition to include or exlude notifacation
 	 * messages based on the current user's settings and permissions
 	 *
+	 * @param string $mode One of user|exclude. user mode uses the current user's settings to decide which notifications
+	 *                     to exclude. exclude mode always excludes all notifications.
 	 * @return string
 	 */
-	public function get_sql_where()
+	public function get_sql_where($mode = 'user')
 	{
 		// Exclude all post notifications
-		if (!$this->mchat_settings->cfg('mchat_posts'))
+		if ($mode == 'exclude' || !$this->mchat_settings->cfg('mchat_posts'))
 		{
 			return 'm.post_id = 0';
 		}
