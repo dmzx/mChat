@@ -187,7 +187,7 @@ class mchat
 		}
 
 		// mchat_footer haven't to display on index if mchat_index is enabled
-		if ($this->auth->acl_get('u_mchat_index') && ($this->user->page['page_name'] == "index.php"))
+		if ($this->auth->acl_get('u_mchat_index') && in_array($this->user->page['page_name'], ["index.php", "posting.php"]))
 		{
 			return;
 		}
