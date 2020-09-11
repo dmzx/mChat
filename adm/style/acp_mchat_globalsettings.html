@@ -8,7 +8,7 @@
 
 <h1>{{ lang('MCHAT_TITLE') }}</h1>
 
-{{ lang('MCHAT_VERSION') ~ lang('COLON') }} <em>{{ MCHAT_VERSION }}</em>
+{{ lang('MCHAT_VERSION') ~ lang('COLON') }} <em>{{ MCHAT_VERSION }}</em> | <span>{{ lang('MCHAT_REPARSER_STATUS') ~ lang('COLON') }} <span{{ S_REPARSER_ACTIVE ? ' class="errorbox"' }}>{{ lang(S_REPARSER_ACTIVE ? 'MCHAT_REPARSER_ACTIVE' : 'MCHAT_REPARSER_FINISHED') }}</span></span> <a href="https://www.phpbb.com/customise/db/extension/mchat_extension/faq/3311" title="{{ lang('MCHAT_REPARSER_STATUS') }}"><i class="icon fa-question-circle-o fa-fw" aria-hidden="true"></i></a>
 
 {% if MCHAT_ERROR %}
 	<div class="errorbox">

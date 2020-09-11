@@ -35,6 +35,7 @@
 		maxInputHeight	: {{ MCHAT_MAX_INPUT_HEIGHT }},
 		editDeleteLimit	: {{ MCHAT_EDIT_DELETE_LIMIT }},
 		logId			: {{ MCHAT_LOG_ID }},
+		latestMessageId	: {{ MCHAT_LATEST_MESSAGE_ID | default(0) }},
 		removeBBCodes	: '{{ MCHAT_DISALLOWED_BBCODES | escape('js') }}',
 
 		// Language

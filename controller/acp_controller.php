@@ -14,6 +14,7 @@ namespace dmzx\mchat\controller;
 use dmzx\mchat\core\functions;
 use dmzx\mchat\core\settings;
 use phpbb\cache\driver\driver_interface as cache_interface;
+use phpbb\config\db_text as config_text;
 use phpbb\db\driver\driver_interface as db_interface;
 use phpbb\event\dispatcher_interface;
 use phpbb\language\language;
@@ -42,6 +43,9 @@ class acp_controller
 	/** @var db_interface */
 	protected $db;
 
+	/** @var config_text */
+	protected $config_text;
+
 	/** @var cache_interface */
 	protected $cache;
 
@@ -63,6 +67,7 @@ class acp_controller
 	 * @param user					$user
 	 * @param language				$lang
 	 * @param db_interface			$db
+	 * @param config_text			$config_text
 	 * @param cache_interface		$cache
 	 * @param request_interface		$request
 	 * @param dispatcher_interface 	$dispatcher
@@ -75,6 +80,7 @@ class acp_controller
 		user $user,
 		language $lang,
 		db_interface $db,
+		config_text $config_text,
 		cache_interface $cache,
 		request_interface $request,
 		dispatcher_interface $dispatcher,
@@ -87,6 +93,7 @@ class acp_controller
 		$this->user				= $user;
 		$this->lang				= $lang;
 		$this->db				= $db;
+		$this->config_text		= $config_text;
 		$this->cache			= $cache;
 		$this->request			= $request;
 		$this->dispatcher		= $dispatcher;
@@ -122,6 +129,10 @@ class acp_controller
 					$validation[$config_name] = $config_data['validation'];
 				}
 			}
+
+			// Enable Emojis and rich text in Rules and Static Message
+			$mchat_new_config['mchat_rules'] = utf8_encode_ncr($mchat_new_config['mchat_rules']);
+			$mchat_new_config['mchat_static_message'] = utf8_encode_ncr($mchat_new_config['mchat_static_message']);
 
 			// Remove leading & trailing | characters to not break allowed BBCodes
 			$mchat_new_config['mchat_bbcode_disallowed'] = trim($mchat_new_config['mchat_bbcode_disallowed'], '|');
@@ -212,6 +223,7 @@ class acp_controller
 			'S_MCHAT_PRUNE_MODE_OPTIONS'			=> $this->get_prune_mode_options($this->settings->cfg('mchat_prune_mode')),
 			'L_MCHAT_BBCODES_DISALLOWED_EXPLAIN'	=> $this->lang->lang('MCHAT_BBCODES_DISALLOWED_EXPLAIN', '<a href="' . append_sid($this->settings->url('adm/index'), ['i' => 'bbcodes']) . '">', '</a>'),
 			'L_MCHAT_TIMEOUT_EXPLAIN'				=> $this->lang->lang('MCHAT_TIMEOUT_EXPLAIN','<a href="' . append_sid($this->settings->url('adm/index'), ['i' => 'board', 'mode' => 'load']) . '">', '</a>', $this->settings->cfg('session_length')),
+			'S_REPARSER_ACTIVE'						=> $this->is_reparser_active('dmzx.mchat.text_reparser.mchat_messages'),
 			'U_ACTION'								=> $u_action,
 		];
 
@@ -375,5 +387,28 @@ class acp_controller
 		}
 
 		return $prune_mode_options;
+	}
+
+	/**
+	 * @param string $reparser_name
+	 * @return bool
+	 */
+	protected function is_reparser_active($reparser_name)
+	{
+		$reparser_resume = $this->config_text->get('reparser_resume');
+
+		if (empty($reparser_resume))
+		{
+			return false;
+		}
+
+		$reparser_resume = @unserialize($reparser_resume);
+
+		if (!isset($reparser_resume[$reparser_name]['range-min']) || !isset($reparser_resume[$reparser_name]['range-max']))
+		{
+			return false;
+		}
+
+		return $reparser_resume[$reparser_name]['range-max'] >= $reparser_resume[$reparser_name]['range-min'];
 	}
 }

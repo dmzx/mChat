@@ -119,9 +119,8 @@ class notifications
 	 */
 	public function process($rows)
 	{
-		// All language keys of valid notifications for which we need to fetch post information
-		// from the database. We need to check for them here because notifications in < 2.0.0-RC6
-		// are plain text and don't need to be processed.
+		// All language keys of valid notifications. We need to check for them here because
+		// notifications in < 2.0.0-RC6 are plain text and don't need to be processed.
 		$notification_lang = [
 			'MCHAT_NEW_POST',
 			'MCHAT_NEW_QUOTE',
@@ -129,6 +128,20 @@ class notifications
 			'MCHAT_NEW_REPLY',
 			'MCHAT_NEW_LOGIN',
 		];
+
+		/**
+		 * Event that allows to modify rows and language keys before checking for notifications
+		 *
+		 * @event dmzx.mchat.process_notifications_before
+		 * @var array	rows				Message rows about to be checked for notifications
+		 * @var array	notification_lang	Unprocessed language keys of valid/known notifications
+		 * @since 2.1.4-RC1
+		 */
+		$vars = [
+			'rows',
+			'notification_lang',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.process_notifications_before', compact($vars)));
 
 		$notification_langs = array_merge(
 			// Raw notification messages in phpBB < 3.2
@@ -164,6 +177,24 @@ class notifications
 			$rows[$i] = $this->process_notification($rows[$i], $type, $lang_key, $post_data);
 		}
 
+		/**
+		 * Event that allows to modify rows after processing their notifications
+		 *
+		 * @event dmzx.mchat.process_notifications_after
+		 * @var array	rows					Message rows about to be checked for notifications
+		 * @var array	notification_lang		Unprocessed language keys of valid/known notifications
+		 * @var array	notification_langs		Processed language keys of valid/known notifications
+		 * @var array	notification_post_data	Post data of notifications found in the rows array
+		 * @since 2.1.4-RC1
+		 */
+		$vars = [
+			'rows',
+			'notification_lang',
+			'notification_langs',
+			'notification_post_data',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.process_notifications_after', compact($vars)));
+
 		return $rows;
 	}
 
@@ -191,23 +222,14 @@ class notifications
 		$rows = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
 
-		$post_subjects = [];
-
-		foreach ($rows as $row)
-		{
-			$post_subjects[$row['post_id']] = [
-				'post_subject'	=> $row['post_subject'],
-				'forum_id'		=> $row['forum_id'],
-				'forum_name'	=> $row['forum_name'],
-			];
-		}
+		$existing_post_ids = array_column($rows, 'post_id');
+		$existing_posts = array_combine($existing_post_ids, $rows);
 
 		// Map IDs of missing posts to null
-		$missing_post_subjects = array_fill_keys(array_diff($post_ids, array_keys($post_subjects)), null);
+		$missing_posts = array_fill_keys(array_diff($post_ids, $existing_post_ids), null);
 
-		return $post_subjects + $missing_post_subjects;
+		return $existing_posts + $missing_posts;
 	}
-
 
 	/**
 	 * Converts the message field of the post row so that it can be passed to generate_text_for_display()
@@ -398,5 +420,34 @@ class notifications
 		}
 
 		return '';
+	}
+
+	/**
+	 * Delete post notification messages, for example when disapproving posts
+	 *
+	 * @param array $post_ids
+	 */
+	public function delete_post_notifications($post_ids)
+	{
+		if ($post_ids)
+		{
+			$sql = 'DELETE FROM ' . $this->mchat_settings->get_table_mchat() . '
+		 		WHERE forum_id <> 0 AND ' . $this->db->sql_in_set('post_id', $post_ids);
+			$this->db->sql_query($sql);
+		}
+	}
+
+	/**
+	 * Change the user to which a post notification belongs
+	 *
+	 * @param int $post_id
+	 * @param int $user_id
+	 */
+	public function update_post_notification_user($post_id, $user_id)
+	{
+		$sql = 'UPDATE ' . $this->mchat_settings->get_table_mchat() . '
+			SET user_id = ' . (int) $user_id . '
+			WHERE forum_id <> 0 AND post_id = ' . (int) $post_id;
+		$this->db->sql_query($sql);
 	}
 }

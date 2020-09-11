@@ -1,10 +1,10 @@
 imports:
-    - { resource: tables.yml }
+    - { resource: 'tables.yml' }
 
 services:
 
     dmzx.mchat.acp.controller:
-        class: dmzx\mchat\controller\acp_controller
+        class: 'dmzx\mchat\controller\acp_controller'
         arguments:
             - '@dmzx.mchat.functions'
             - '@template'
@@ -12,13 +12,14 @@ services:
             - '@user'
             - '@language'
             - '@dbal.conn'
+            - '@config_text'
             - '@cache.driver'
             - '@request'
             - '@dispatcher'
             - '@dmzx.mchat.settings'
 
     dmzx.mchat.ucp.controller:
-        class: dmzx\mchat\controller\ucp_controller
+        class: 'dmzx\mchat\controller\ucp_controller'
         arguments:
             - '@template'
             - '@user'
@@ -30,7 +31,7 @@ services:
             - '@dispatcher'
 
     dmzx.mchat.notifications:
-        class: dmzx\mchat\core\notifications
+        class: 'dmzx\mchat\core\notifications'
         arguments:
             - '@dmzx.mchat.settings'
             - '@user'
@@ -41,7 +42,7 @@ services:
             - '@text_formatter.parser'
 
     dmzx.mchat.log:
-        class: dmzx\mchat\core\log
+        class: 'dmzx\mchat\core\log'
         arguments:
             - '@dmzx.mchat.settings'
             - '@user'
@@ -50,7 +51,7 @@ services:
             - '@dispatcher'
 
     dmzx.mchat.core:
-        class: dmzx\mchat\core\mchat
+        class: 'dmzx\mchat\core\mchat'
         arguments:
             - '@dmzx.mchat.functions'
             - '@dmzx.mchat.notifications'
@@ -70,7 +71,7 @@ services:
             - '@?rmcgirr83.authorizedforurls.listener'
 
     dmzx.mchat.functions:
-        class: dmzx\mchat\core\functions
+        class: 'dmzx\mchat\core\functions'
         arguments:
             - '@dmzx.mchat.settings'
             - '@dmzx.mchat.notifications'
@@ -85,7 +86,7 @@ services:
             - '@group_helper'
 
     dmzx.mchat.settings:
-        class: dmzx\mchat\core\settings
+        class: 'dmzx\mchat\core\settings'
         arguments:
             - '@user'
             - '@language'
@@ -100,7 +101,7 @@ services:
             - '%dmzx.mchat.table.mchat_sessions%'
 
     dmzx.mchat.acp.listener:
-        class: dmzx\mchat\event\acp_listener
+        class: 'dmzx\mchat\event\acp_listener'
         arguments:
             - '@template'
             - '@request'
@@ -108,10 +109,10 @@ services:
             - '@dmzx.mchat.settings'
             - '@dmzx.mchat.functions'
         tags:
-            - { name: event.listener }
+            - { name: 'event.listener' }
 
     dmzx.mchat.main.listener:
-        class: dmzx\mchat\event\main_listener
+        class: 'dmzx\mchat\event\main_listener'
         arguments:
             - '@dmzx.mchat.core'
             - '@dmzx.mchat.notifications'
@@ -121,30 +122,30 @@ services:
             - '@request'
             - '%core.php_ext%'
         tags:
-            - { name: event.listener }
+            - { name: 'event.listener' }
 
     dmzx.mchat.cron.task.mchat_prune:
-        class: dmzx\mchat\cron\mchat_prune
+        class: 'dmzx\mchat\cron\mchat_prune'
         arguments:
             - '@dmzx.mchat.functions'
             - '@dmzx.mchat.settings'
         calls:
-            - [set_name, [cron.task.mchat_prune]]
+            - ['set_name', ['cron.task.mchat_prune']]
         tags:
-            - { name: cron.task }
+            - { name: 'cron.task' }
 
     dmzx.mchat.text_reparser.mchat_messages:
-        class: dmzx\mchat\textreparser\plugins\mchat_messages
+        class: 'dmzx\mchat\textreparser\plugins\mchat_messages'
         arguments:
             - '@dbal.conn'
             - '%dmzx.mchat.table.mchat%'
         calls:
-            - [set_name, [dmzx.mchat.text_reparser.mchat_messages]]
+            - ['set_name', ['dmzx.mchat.text_reparser.mchat_messages']]
         tags:
-            - { name: text_reparser.plugin }
+            - { name: 'text_reparser.plugin' }
 
     dmzx.mchat.text_reparser.reparser:
-        class: phpbb\cron\task\text_reparser\reparser
+        class: 'phpbb\cron\task\text_reparser\reparser'
         arguments:
             - '@config'
             - '@config_text'
@@ -152,7 +153,7 @@ services:
             - '@text_reparser.manager'
             - '@text_reparser_collection'
         calls:
-            - [set_name, [dmzx.mchat.text_reparser.reparser]]
-            - [set_reparser, [dmzx.mchat.text_reparser.mchat_messages]]
+            - ['set_name', ['dmzx.mchat.text_reparser.reparser']]
+            - ['set_reparser', ['dmzx.mchat.text_reparser.mchat_messages']]
         tags:
-            - { name: cron.task }
+            - { name: 'cron.task' }

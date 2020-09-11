@@ -733,6 +733,27 @@ class mchat
 			$template_data['MCHAT_TITLE'] = $active_users['users_count_title'];
 			$template_data['MCHAT_TITLE_HINT'] = strip_tags($active_users['users_total']);
 		}
+		else
+		{
+			$active_users = [];
+		}
+
+		/**
+		 * Event that is triggered before data for the navigation bar is assigned to the template
+		 *
+		 * @event dmzx.mchat.header_link_template_data
+		 * @var array	template_data	The data that is abbout to be assigned to the template
+		 * @var array	active_users	Array containing information about active users. Available array keys:
+		 *           					online_userlist, users_count_title, users_total, refresh_message
+		 * 								Note:	This array is empty if the number of active chat sessions is not
+		 * 										displayed in the navbar.
+		 * @since 2.1.4-RC1
+		 */
+		$vars = [
+			'template_data',
+			'active_users',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.header_link_template_data', compact($vars)));
 
 		$this->template->assign_vars($template_data);
 	}
@@ -766,6 +787,8 @@ class mchat
 		$static_message = $this->lang->lang('MCHAT_STATIC_MESSAGE') ?: $this->mchat_settings->cfg('mchat_static_message');
 		$whois_refresh = $this->mchat_settings->cfg('mchat_whois_index') || $this->mchat_settings->cfg('mchat_navbar_link_count');
 
+		$total_messages = $this->mchat_functions->mchat_total_message_count();
+
 		$template_data = [
 			'MCHAT_PAGE'					=> $page,
 			'MCHAT_CURRENT_URL'				=> $this->mchat_settings->get_current_page(),
@@ -787,6 +810,7 @@ class mchat
 			'MCHAT_STATIC_MESS'				=> htmlspecialchars_decode($static_message),
 			'MCHAT_MAX_INPUT_HEIGHT'		=> $this->mchat_settings->cfg('mchat_max_input_height'),
 			'MCHAT_MAX_MESSAGE_LENGTH'		=> $this->mchat_settings->cfg('mchat_max_message_lngth'),
+			'MCHAT_TOTAL_MESSAGES'			=> $total_messages,
 			'MCHAT_JUMP_TO'					=> $jump_to_id,
 			'COOKIE_NAME'					=> $this->mchat_settings->cfg('cookie_name', true) . '_',
 		];
@@ -850,7 +874,9 @@ class mchat
 		 * @var int		jump_to_id		The ID of the message that is being jumped to in the archive, usually when a user clicked on a quote reference
 		 * @var array	actions			Array containing URLs to actions the user is allowed to perform (read only)
 		 * @var array	template_data	The data that is about to be assigned to the template
+		 * @var int		total_messages	Total number of messages
 		 * @since 2.1.1
+		 * @changed 2.1.4-RC1 added total_messages
 		 */
 		$vars = [
 			'page',
@@ -861,26 +887,44 @@ class mchat
 			'jump_to_id',
 			'actions',
 			'template_data',
+			'total_messages',
 		];
 		extract($this->dispatcher->trigger_event('dmzx.mchat.render_page_get_messages_before', compact($vars)));
 
-		$rows = $this->mchat_functions->mchat_get_messages($message_ids, $last_id, $limit, $start);
-
 		$this->assign_global_template_data();
-		$this->assign_messages($rows, $page);
+
+		// Always fetch at least one message so that we can extract the latest_message_id
+		$soft_limit = max(1, $limit);
+
+		$rows = $this->mchat_functions->mchat_get_messages($message_ids, $last_id, $soft_limit, $start);
+
+		if ($limit)
+		{
+			$this->assign_messages($rows, $page);
+		}
+
+		// Pass the latest_message_id to the template so that we know later where to start looking for new messages
+		$latest_message_id = 0;
+
+		if ($rows)
+		{
+			$latest_message = reset($rows);
+			$latest_message_id = $latest_message['message_id'];
+		}
+
+		$template_data['MCHAT_LATEST_MESSAGE_ID'] = $latest_message_id;
 
 		// Render pagination
 		if ($is_archive)
 		{
 			$archive_url = $this->helper->route('dmzx_mchat_page_archive_controller');
-			$total_messages = $this->mchat_functions->mchat_total_message_count();
 
 			/**
 			 * Event to modify mChat pagination on the archive page
 			 *
 			 * @event dmzx.mchat.render_page_pagination_before
 			 * @var string	archive_url		Pagination base URL
-			 * @var int		total_messages	Total number of messages
+			 * @var int		total_messages	Total number of messages in the mChat table
 			 * @var int		limit			Number of messages to display per page
 			 * @var int		start			The message which should be considered currently active, used to determine the page we're on
 			 * @var int		jump_to_id		The ID of the message that is being jumped to in the archive, usually when a user clicked on a quote reference
@@ -1054,8 +1098,8 @@ class mchat
 				$user_avatars[$row['user_id']] = !$display_avatar || !$row['user_avatar'] ? '' : phpbb_get_user_avatar([
 					'avatar'		=> $row['user_avatar'],
 					'avatar_type'	=> $row['user_avatar_type'],
-					'avatar_width'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 40 : 0,
-					'avatar_height'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 0 : 40,
+					'avatar_width'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 36 : 0,
+					'avatar_height'	=> $row['user_avatar_width'] >= $row['user_avatar_height'] ? 0 : 36,
 				]);
 			}
 		}
@@ -1235,8 +1279,26 @@ class mchat
 	 */
 	protected function assign_bbcodes_smilies()
 	{
+		$display_bbcodes = $this->mchat_settings->cfg('allow_bbcode') && $this->auth->acl_get('u_mchat_bbcode');
+
+		$display_smilies = $this->mchat_settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies') && !$this->smilies_generated;
+
+		/**
+		 * Event to decide whether or to display BBCodes or smilies
+		 *
+		 * @event dmzx.mchat.assign_bbcodes_smilies_before
+		 * @var bool	display_bbcodes		Whether or not to render BBCodes
+		 * @var bool	display_smilies		Whether or not to render smilies
+		 * @since 2.1.4-RC1
+		 */
+		$vars = [
+			'display_bbcodes',
+			'display_smilies',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.assign_bbcodes_smilies_before', compact($vars)));
+
 		// Display BBCodes
-		if ($this->mchat_settings->cfg('allow_bbcode') && $this->auth->acl_get('u_mchat_bbcode'))
+		if ($display_bbcodes)
 		{
 			$bbcode_template_vars = [
 				'quote'	=> [
@@ -1275,7 +1337,7 @@ class mchat
 		}
 
 		// Display smilies
-		if ($this->mchat_settings->cfg('allow_smilies') && $this->auth->acl_get('u_mchat_smilies') && !$this->smilies_generated)
+		if ($display_smilies)
 		{
 			$this->mchat_settings->include_functions('posting', 'generate_smilies');
 
@@ -1467,6 +1529,30 @@ class mchat
 				$this->textformatter_parser->disable_bbcode($bbcode);
 			}
 		}
+
+		/**
+		 * Event to modify the raw mChat message before it is processed
+		 *
+		 * @event dmzx.mchat.process_message_before
+		 * @var string	message					The raw message as entered by the user
+		 * @var string	message_without_bbcode	The message stripped of all BBCode tags
+		 * @var array	disallowed_bbcodes		The list of disallowed BBCode tags
+		 * @var bool	mchat_img				Whether or not the img BBCode is allowed
+		 * @var	bool	mchat_flash				Whether or not the flash BBCode is allowed
+		 * @var bool	mchat_quote				Whether or not the quote BBCode is allowed
+		 * @var bool	mchat_url				Whether or not the url BBCode is allowed
+		 * @since 2.1.4-RC1
+		 */
+		$vars = [
+			'message',
+			'message_without_bbcode',
+			'disallowed_bbcodes',
+			'mchat_img',
+			'mchat_flash',
+			'mchat_quote',
+			'mchat_url',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.process_message_before', compact($vars)));
 
 		$uid = $bitfield = $options = '';
 		generate_text_for_storage($message, $uid, $bitfield, $options, $mchat_bbcode, $mchat_magic_urls, $mchat_smilies, $mchat_img, $mchat_flash, $mchat_quote, $mchat_url, 'mchat');

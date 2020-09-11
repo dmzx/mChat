@@ -15,6 +15,7 @@ use phpbb\auth\auth;
 use phpbb\config\config;
 use phpbb\config\db_text;
 use phpbb\event\dispatcher_interface;
+use phpbb\exception\runtime_exception;
 use phpbb\language\language;
 use phpbb\user;
 
@@ -361,6 +362,11 @@ class settings
 			}
 		}
 
+		if (isset($this->config[$config]))
+		{
+			return $this->config[$config];
+		}
+
 		$global_text_settings = $this->global_text_settings();
 
 		if (isset($global_text_settings[$config]))
@@ -369,7 +375,7 @@ class settings
 			return $global_text_values[$config];
 		}
 
-		return $this->config[$config];
+		throw new runtime_exception();
 	}
 
 	/**

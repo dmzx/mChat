@@ -26,11 +26,11 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
-	-webkit-box-pack: left;
-	    -ms-flex-pack: left;
-	        justify-content: left;
+	   -ms-flex-align: center;
+	      align-items: center;
+	-webkit-box-pack: start;
+	   -ms-flex-pack: start;
+	 justify-content: start;
 }
 
 .mchat-wrapper li.header dd {
@@ -118,7 +118,7 @@
 
 .mchat-avatar {
 	float: left;
-	width: 40px;
+	width: 36px;
 	margin-right: 5px;
 }
 
@@ -149,7 +149,7 @@
 	margin: 0 3px;
 }
 
-.mchat-wrapper .mchat-buttons .fa {
+.mchat-wrapper .mchat-buttons .icon {
 	font-size: 12pt;
 }
 
@@ -164,7 +164,7 @@
 .mchat-text {
 	clear: both;
 	overflow: hidden;
-	padding: 2px 5px;
+	padding: 0 5px 1px;
 	font-size: 1.2em;
 }
 

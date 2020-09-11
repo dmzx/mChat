@@ -64,7 +64,7 @@ $lang = array_merge($lang, [
 	'MCHAT_VERSION'									=> 'Version',
 	'MCHAT_RULES'									=> 'Rules',
 	'MCHAT_RULES_EXPLAIN'							=> 'Enter the rules here. HTML code is allowed. Set to empty to disable the display.<br>This message can be translated: edit the MCHAT_RULES_MESSAGE language key in /ext/dmzx/mchat/language/XX/mchat.php.',
-	'MCHAT_CONFIG_SAVED'							=> 'mChat configuration has been updated',
+	'MCHAT_CONFIG_SAVED'							=> 'mChat configuration has been updated.',
 	'MCHAT_AVATARS'									=> 'Display avatars',
 	'MCHAT_AVATARS_EXPLAIN'							=> 'If set to yes, resized user avatars will be displayed.',
 	'MCHAT_INDEX'									=> 'Display mChat on the index page',
@@ -129,7 +129,11 @@ $lang = array_merge($lang, [
 	'MCHAT_SOUND'									=> 'Play sounds for new, edited and deleted messages',
 	'MCHAT_PURGE'									=> 'Delete all messages now',
 	'MCHAT_PURGE_CONFIRM'							=> 'Confirm deleting all messages',
-	'MCHAT_PURGED'									=> 'All mChat messages have been successfully deleted',
+	'MCHAT_PURGED'									=> 'All mChat messages have been successfully deleted.',
+
+	'MCHAT_REPARSER_STATUS'							=> 'Message reparser status',
+	'MCHAT_REPARSER_ACTIVE'							=> 'active',
+	'MCHAT_REPARSER_FINISHED'						=> 'finished',
 
 	// '%1$s' contains 'Retain posts' and 'Delete posts' respectively
 	'MCHAT_RETAIN_MESSAGES'							=> '%1$s and retain mChat messages',

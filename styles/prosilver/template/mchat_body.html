@@ -84,13 +84,13 @@
 				{% EVENT dmzx_mchat_static_container_after %}
 			{% endif %}
 
-			<div id="mchat-main"{% if MCHAT_MESSAGE_TOP %} class="mchat-messages-top"{% endif %}>
+			<div id="mchat-main" class="{{ MCHAT_MESSAGE_TOP ? 'mchat-messages-top' : 'mchat-messages-bottom' }}">
 				{% EVENT dmzx_mchat_messages_container_before %}
 
 				<ul id="mchat-messages" class="topiclist forums">
 					{% if loops.mchatrow|length %}
 						{% INCLUDE '@dmzx_mchat/mchat_messages.html' %}
-					{% else %}
+					{% elseif not MCHAT_TOTAL_MESSAGES %}
 						<li class="row mchat-static mchat-no-messages">{{ lang('MCHAT_NOMESSAGE') }}</li>
 					{% endif %}
 				</ul>
