@@ -1,0 +1,114 @@
+/**
+ *
+ * @package phpBB Extension - mChat
+ * @copyright (c) 2016 dmzx - http://www.dmzx-web.net
+ * @copyright (c) 2016 kasimi - https://kasimi.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+*/
+.mchat-header dl {
+	transform: translateY(3px);
+}
+
+.mchat-buttons {
+	opacity: 0.5;
+	transition: opacity ease-in 250ms;
+}
+
+.mchat-message-wrapper:hover .mchat-buttons {
+	opacity: 1;
+}
+
+.mchat-message-flash {
+	-webkit-animation-name: flash-message;
+	animation-name: flash-message;
+	-webkit-animation-duration: .4s;
+	animation-duration: .4s;
+	-webkit-animation-timing-function: ease-out;
+	animation-timing-function: ease-out;
+}
+
+.mchat-message-flash:target {
+	-webkit-animation-duration: 2s;
+	animation-duration: 2s;
+}
+
+@-webkit-keyframes flash-message {
+
+	0% {
+		background-color: #FFDC95;
+	}
+
+	100% {
+		background-color: transparent;
+	}
+
+}
+
+@keyframes flash-message {
+
+	0% {
+		background-color: #FFDC95;
+	}
+
+	100% {
+		background-color: transparent;
+	}
+
+}
+.mchat-notification-message .mchat-text {
+	font-style: italic;
+}
+
+.mchat-text strong {
+	font-weight: bold !important;
+}
+
+.mchat-text img {
+	max-width: 100%;
+}
+.mchat-mention {
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+}
+
+#mchat-no-message {
+	font-size: 1.2em;
+}
+
+.mchat-nav-item-enabled .mchat-nav-item-disabled,
+.mchat-nav-item-disabled .mchat-nav-item-enabled {
+	display: none;
+}
+
+.mchat-input-error > textarea {
+	border-color: var(--bs-danger) !important;
+}
+
+/* Compatibility with Collapsible Categories extension */
+
+.mchat-category {
+	display: none;
+	height: 0;
+}
+
+.mchat-collapse {
+	display: none;
+	line-height: 0;
+}
+
+.hidden-category + .forabg #mchat-body .topiclist.forums {
+	display: block;
+}
+
+/* Compatibility with Advanced BBCode Box extension */
+
+#mchat-panel #abbc3_buttons {
+	margin: 0 !important;
+	padding-bottom: 5px;
+}
+
+#mchat-panel #abbc3_buttons .abbc3_buttons_row {
+	margin: 0 auto !important;
+}

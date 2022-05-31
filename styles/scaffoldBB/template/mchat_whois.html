@@ -1,0 +1,12 @@
+<div class="clearfix">
+	<div id="mchat-whois" class="my-1 px-1 float-start">
+		<span title="{{ MCHAT_ONLINE_EXPLAIN }}">
+			{% if MCHAT_USERS_LIST %}
+				<a class="text-decoration-none" href="#" data-mchat-action="toggle" data-mchat-element="userlist">{{ MCHAT_USERS_TOTAL }}</a>
+			{% else %}
+				{{ MCHAT_USERS_TOTAL }}
+			{% endif %}
+		</span>
+		<div id="mchat-userlist" class="hidden">{{ MCHAT_USERS_LIST }}</div>
+	</div>
+</div>
